@@ -1,0 +1,173 @@
+{
+  "nav": {
+    "home": "Start",
+    "blog": "Blog",
+    "privacy": "Datenschutz"
+  },
+  "hero": {
+    "title": "Plane deine Reise zur Weltmeisterschaft 2026 und vernetze dich mit Fans",
+    "subtitle": "Stadtführer, Fan‑Treffen und Tipps für den Spieltag — von Fans für Fans.",
+    "emailPlaceholder": "Deine E‑Mail",
+    "interestLabel": "Ich bin...",
+    "interest": {
+      "home": "Ich schaue von zu Hause",
+      "hope": "Ich hoffe auf Tickets",
+      "going": "Ich fahre — haltet mich auf dem Laufenden"
+    },
+    "consent": "Ich stimme der Datenschutzrichtlinie zu",
+    "cta": "Warteliste beitreten",
+    "viewBlog": "Blog ansehen"
+  },
+  "features": {
+    "title": "Was du bekommst",
+    "items": [
+      {
+        "title": "Community‑Treffen",
+        "desc": "Finde und organisiere Fan‑Treffen in jeder Gastgeberstadt."
+      },
+      {
+        "title": "Fan‑orientierte Stadtführer",
+        "desc": "Top‑Spots nahe der Stadien, Verkehrstipps und mehr."
+      },
+      {
+        "title": "Spieltag‑Planung",
+        "desc": "Wichtigste Infos auf einen Blick für jeden Spielort."
+      }
+    ]
+  },
+  "landing": {
+    "social": {
+      "headline": "Trusted by fan communities",
+      "subhead": "across 2026 host cities worldwide.",
+      "badges": ["Supporters clubs", "Local guides", "City volunteers", "Fan creators"]
+    },
+    "chunks": {
+      "title": "What you'll get next",
+      "cta": "Get early access",
+      "items": [
+        {
+          "title": "Community meetups",
+          "desc": "Find and host gatherings with fans in every host city.",
+          "bullets": [
+            "Map and list views",
+            "RSVPs with capacity badges",
+            "Verified organizer badges"
+          ]
+        },
+        {
+          "title": "Fan‑centric city guides",
+          "desc": "Stadium‑adjacent picks, neighborhoods, transit tips and public viewing spots.",
+          "bullets": [
+            "Near‑stadium food and bars",
+            "Neighborhoods and safety notes",
+            "Transit and airport tips"
+          ]
+        },
+        {
+          "title": "Matchday planning",
+          "desc": "Timezone‑aware schedule with filters and stadium info.",
+          "bullets": [
+            "Filter by team, city, stadium",
+            "Kickoff times in your timezone",
+            "Add to calendar links"
+          ]
+        },
+        {
+          "title": "Trip builder",
+          "desc": "Pick cities and matches—get suggested meetups and activities.",
+          "bullets": [
+            "Conflict detection across dates",
+            "Budget rough‑cut and areas to stay",
+            "Export to Google/Apple Calendar"
+          ]
+        },
+        {
+          "title": "Live community pulse",
+          "desc": "Realtime RSVP counts and trending meetups during the tournament.",
+          "bullets": [
+            "Live updates as events fill",
+            "Organizer check‑in tools",
+            "Report/flag for safety"
+          ]
+        }
+      ]
+    },
+    "gallery": {
+      "title": "A peek at what’s coming",
+      "desc": "Screens from the upcoming Cities, Matches, Meetups and Trip Builder.",
+      "caption": "Work‑in‑progress designs—subject to change.",
+      "imageAlt": "App mockup preview"
+    },
+    "blogTeaser": {
+      "title": "Travel tips and community updates",
+      "desc": "We’re building in public. Read the latest posts as features ship.",
+      "cta": "Read the blog"
+    },
+    "roadmap": {
+      "title": "Our roadmap",
+      "desc": "A simple view of what’s shipping now, next and later.",
+      "groups": [
+        {
+          "label": "Now",
+          "items": [
+            "Landing page and blog",
+            "Email waitlist capture",
+            "Design system and color tokens"
+          ]
+        },
+        {
+          "label": "Next",
+          "items": [
+            "Matches explorer with filters",
+            "City guides starter content",
+            "Meetups listing and RSVP (MVP)"
+          ]
+        },
+        {
+          "label": "Later",
+          "items": [
+            "Trip builder with shareable itinerary",
+            "Realtime community pulse",
+            "Organizer tools and safety features"
+          ]
+        }
+      ]
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": [
+        {
+          "q": "Is the app live yet?",
+          "a": "We’re pre‑launch and gathering a waitlist. You’ll get early access as features roll out."
+        },
+        {
+          "q": "Will meetups be moderated?",
+          "a": "Yes. Organizers are verified and events go through checks with community reporting."
+        },
+        {
+          "q": "Which cities are covered?",
+          "a": "All 2026 host cities at launch, with guides prioritized by demand."
+        },
+        {
+          "q": "How will my data be used?",
+          "a": "Email is only used for product updates and invites. No spam, no selling."
+        },
+        {
+          "q": "Can I contribute guides?",
+          "a": "Yes—fan contributors and local experts can submit tips and updates."
+        }
+      ]
+    }
+  },
+  "blog": {
+    "title": "Insights zu Reisen WM 2026 und Fan‑Community",
+    "empty": "Noch keine Beiträge. Schau bald wieder vorbei."
+  },
+  "privacy": {
+    "title": "Datenschutz",
+    "content": "Dies ist eine vorläufige Seite zur Datenschutzrichtlinie."
+  },
+  "footer": {
+    "rights": "Alle Rechte vorbehalten."
+  }
+}
