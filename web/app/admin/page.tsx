@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 interface BlogPost {
+  id: number;
   title: string;
   preview: string;
   substackUrl: string;
