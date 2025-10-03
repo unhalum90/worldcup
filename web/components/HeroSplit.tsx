@@ -28,7 +28,7 @@ export default function HeroSplit() {
                 className="w-full h-auto"
               >
                 <source src="/hero-video.mp4" type="video/mp4" />
-                Your browser doesn't support video playback.
+                Your browser doesn&apos;t support video playback.
               </video>
             </div>
           </div>
