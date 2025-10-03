@@ -1,5 +1,6 @@
 import HeroSplit from "@/components/HeroSplit";
-import SocialProof from "@/components/landing/SocialProof";
+import CountdownTimer from "@/components/CountdownTimer";
+import WorldCupTimeline from "@/components/landing/WorldCupTimeline";
 import FeatureChunks from "@/components/landing/FeatureChunks";
 import GalleryCarousel from "@/components/landing/GalleryCarousel";
 import RoadmapTimeline from "@/components/landing/RoadmapTimeline";
@@ -10,7 +11,15 @@ export default function Home() {
   return (
     <>
       <HeroSplit />
-      <SocialProof />
+      
+      {/* Countdown Section */}
+      <section className="container mt-8 sm:mt-10 flex justify-center">
+        <CountdownTimer />
+      </section>
+
+      {/* World Cup Timeline */}
+      <WorldCupTimeline />
+
       <FeatureChunks />
       <GalleryCarousel />
       <RoadmapTimeline />

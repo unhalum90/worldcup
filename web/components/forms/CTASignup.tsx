@@ -5,7 +5,11 @@ import { useTranslations } from "next-intl";
 
 type Interest = "home" | "hope" | "going";
 
-export default function CTASignup() {
+interface CTASignupProps {
+  onSuccess?: () => void;
+}
+
+export default function CTASignup({ onSuccess }: CTASignupProps) {
   const t = useTranslations("hero");
   const [email, setEmail] = useState("");
   const [interest, setInterest] = useState<Interest>("home");
@@ -27,32 +31,41 @@ export default function CTASignup() {
     setEmail("");
     setInterest("home");
     setConsent(false);
+    
+    // Call success callback if provided
+    if (onSuccess) {
+      setTimeout(() => {
+        onSuccess();
+      }, 500);
+    }
   }
 
   return (
     <form
       onSubmit={onSubmit}
-      className="w-full max-w-xl rounded-[var(--radius-lg)] border border-[color:var(--color-neutral-100)] p-4 sm:p-5 bg-white shadow-sm"
+      className="w-full"
       aria-describedby="cta-helper"
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
         {/* Email */}
-        <label className="text-sm font-medium" htmlFor="cta-email">
-          {t("emailPlaceholder")}
-        </label>
-        <input
-          id="cta-email"
-          type="email"
-          required
-          placeholder={t("emailPlaceholder")}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full border rounded-md px-3 py-2 border-[color:var(--color-neutral-100)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]"
-        />
+        <div>
+          <label className="text-sm font-semibold text-gray-700 mb-2 block" htmlFor="cta-email">
+            {t("emailPlaceholder")}
+          </label>
+          <input
+            id="cta-email"
+            type="email"
+            required
+            placeholder={t("emailPlaceholder")}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border-2 rounded-xl px-4 py-3 border-gray-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)] focus:border-transparent transition-all"
+          />
+        </div>
 
         {/* Interest segmented control */}
-        <fieldset className="mt-2">
-          <legend className="text-sm font-medium mb-2">{t("interestLabel")}</legend>
+        <fieldset className="mt-1">
+          <legend className="text-sm font-semibold text-gray-700 mb-3">{t("interestLabel")}</legend>
           <div className="flex flex-col sm:flex-row gap-2">
             <label className="flex-1">
               <input
@@ -63,7 +76,7 @@ export default function CTASignup() {
                 onChange={() => setInterest("home")}
                 className="peer sr-only"
               />
-              <span className="block text-center px-3 py-2 rounded-md border border-[color:var(--color-neutral-100)] cursor-pointer peer-checked:border-[color:var(--color-primary)] peer-checked:bg-[color:var(--color-neutral-100)]">
+              <span className="block text-center text-sm px-3 py-2.5 rounded-lg border-2 border-gray-200 cursor-pointer transition-all peer-checked:border-[color:var(--color-primary)] peer-checked:bg-[color:var(--color-primary)] peer-checked:text-white font-medium hover:border-gray-300">
                 {t("interest.home")}
               </span>
             </label>
@@ -76,7 +89,7 @@ export default function CTASignup() {
                 onChange={() => setInterest("hope")}
                 className="peer sr-only"
               />
-              <span className="block text-center px-3 py-2 rounded-md border border-[color:var(--color-neutral-100)] cursor-pointer peer-checked:border-[color:var(--color-primary)] peer-checked:bg-[color:var(--color-neutral-100)]">
+              <span className="block text-center text-sm px-3 py-2.5 rounded-lg border-2 border-gray-200 cursor-pointer transition-all peer-checked:border-[color:var(--color-primary)] peer-checked:bg-[color:var(--color-primary)] peer-checked:text-white font-medium hover:border-gray-300">
                 {t("interest.hope")}
               </span>
             </label>
@@ -89,7 +102,7 @@ export default function CTASignup() {
                 onChange={() => setInterest("going")}
                 className="peer sr-only"
               />
-              <span className="block text-center px-3 py-2 rounded-md border border-[color:var(--color-neutral-100)] cursor-pointer peer-checked:border-[color:var(--color-primary)] peer-checked:bg-[color:var(--color-neutral-100)]">
+              <span className="block text-center text-sm px-3 py-2.5 rounded-lg border-2 border-gray-200 cursor-pointer transition-all peer-checked:border-[color:var(--color-primary)] peer-checked:bg-[color:var(--color-primary)] peer-checked:text-white font-medium hover:border-gray-300">
                 {t("interest.going")}
               </span>
             </label>
@@ -97,30 +110,43 @@ export default function CTASignup() {
         </fieldset>
 
         {/* Consent */}
-        <label className="inline-flex items-center gap-2 mt-3 text-sm">
+        <label className="inline-flex items-start gap-3 mt-2 text-sm text-gray-700 cursor-pointer">
           <input
             type="checkbox"
             required
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
-            className="h-4 w-4 accent-[color:var(--color-accent-green)]"
+            className="h-5 w-5 mt-0.5 rounded accent-[color:var(--color-accent-green)] cursor-pointer"
           />
           <span>
             {t("consent")}{" "}
-            <span className="underline underline-offset-4 text-[color:var(--color-primary)]">
+            <span className="underline underline-offset-4 text-[color:var(--color-primary)] font-medium">
               Privacy
             </span>
           </span>
         </label>
 
         {/* Submit */}
-        <div className="mt-4">
+        <div className="mt-2">
           <button
             type="submit"
             disabled={!consent || !email}
-            className="inline-flex items-center justify-center px-4 py-2 rounded-md font-semibold text-white bg-[color:var(--color-accent-red)] hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white bg-[color:var(--color-accent-red)] hover:brightness-110 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all text-base shadow-lg"
           >
             {t("cta")}
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
           </button>
         </div>
 

@@ -3,6 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #111827;
+  
+  /* World Cup 2026 Color Palette */
+  --wc-green: #3CAC3B;
+  --wc-blue: #2A398D;
+  --wc-red: #E61D25;
+  --wc-light-gray: #D1D4D1;
+  --wc-dark-gray: #474A4A;
 }
 
 @theme inline {
@@ -26,7 +33,14 @@
 
 
 body {
-  background: var(--background);
+  background: linear-gradient(to bottom, 
+    rgba(42, 57, 141, 0.04) 0%,          /* Light blue at top */
+    rgba(42, 57, 141, 0.08) 20%,         /* Blue tint */
+    rgba(42, 57, 141, 0.12) 40%,         /* Medium blue */
+    rgba(60, 172, 59, 0.12) 60%,         /* Mix to green */
+    rgba(60, 172, 59, 0.16) 80%,         /* Stronger green */
+    rgba(42, 57, 141, 0.20) 100%);       /* Darker blue at bottom */
+  min-height: 100vh;
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
