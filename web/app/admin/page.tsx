@@ -2,10 +2,17 @@
 
 import { useState } from "react";
 
+interface BlogPost {
+  title: string;
+  preview: string;
+  substackUrl: string;
+  publishDate: string;
+}
+
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [formData, setFormData] = useState({
     title: "",
     preview: "",

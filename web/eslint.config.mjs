@@ -20,6 +20,11 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      "no-console": "off", // Allow console.log for development
+    },
+  },
 ];
 
 export default eslintConfig;

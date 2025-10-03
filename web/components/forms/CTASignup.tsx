@@ -19,7 +19,6 @@ export default function CTASignup({ onSuccess }: CTASignupProps) {
     e.preventDefault();
     // No-op submit for this phase
     // Placeholder: this is where we will later POST to Supabase or Formspree
-    // eslint-disable-next-line no-console
     console.log("CTA submit (no-op)", {
       email,
       interest,
