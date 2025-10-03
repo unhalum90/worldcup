@@ -9,6 +9,5 @@ export default createMiddleware({
 });
 
 export const config = {
-  // Temporarily disable middleware to diagnose 404s
-  matcher: [],
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };
