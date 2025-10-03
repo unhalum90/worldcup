@@ -17,16 +17,18 @@ export default function HeroSplit() {
     <>
       <section className="container mt-8 sm:mt-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {/* Video */}
+                    {/* Video */}
           <div className="order-2 md:order-1">
             <div className="rounded-[var(--radius-lg)] overflow-hidden border border-[color:var(--color-neutral-100)] shadow-lg bg-black">
               <video
-                autoPlay
                 muted
                 playsInline
+                controls
+                poster="/globe.svg"
                 className="w-full h-auto"
               >
                 <source src="/hero-video.mp4" type="video/mp4" />
+                Your browser doesn't support video playback.
               </video>
             </div>
           </div>
