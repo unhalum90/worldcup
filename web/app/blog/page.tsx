@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 type Post = {
@@ -12,7 +11,6 @@ type Post = {
 };
 
 export default function BlogPage() {
-  const t = useTranslations("blog");
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -32,10 +30,10 @@ export default function BlogPage() {
     <main className="container py-8 sm:py-12">
       <header className="mb-8 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-          {t("title")}
+          Progress Blog
         </h1>
         <p className="text-lg text-[color:var(--color-neutral-700)] max-w-2xl">
-          {t("subtitle")}
+          Follow our journey building the ultimate 2026 World Cup fan experience
         </p>
       </header>
 

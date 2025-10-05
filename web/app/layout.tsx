@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { NextIntlClientProvider } from "next-intl";
-import { cookies } from "next/headers";
-import { locales, defaultLocale } from "../i18n";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,23 +33,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const cookieLocale = cookieStore.get("NEXT_LOCALE")?.value;
-  const locale = (locales as readonly string[]).includes(
-    (cookieLocale as unknown as string) ?? ""
-  )
-    ? ((cookieLocale as unknown as string) as string)
-    : defaultLocale;
-
-  const messages = (await import(`../messages/${locale}.json`)).default;
-  const dir = locale === "ar" ? "rtl" : "ltr";
-
+  const messages = await getMessages();
+  
   return (
-    <html lang={locale} dir={dir} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextIntlClientProvider messages={messages} locale={locale}>
+        <NextIntlClientProvider messages={messages}>
           <Header />
           <main>{children}</main>
           <Footer />
