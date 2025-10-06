@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import CTASignup from "@/components/forms/CTASignup";
 
@@ -12,6 +12,20 @@ import CTASignup from "@/components/forms/CTASignup";
 export default function HeroSplit() {
   const t = useTranslations("hero");
   const [showModal, setShowModal] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  // Try to autoplay muted video on mount. If the browser blocks it, ignore the error.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v) {
+      const p = v.play();
+      if (p && typeof p.then === "function") {
+        p.catch(() => {
+          // Autoplay prevented; user will see controls and can click play.
+        });
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -21,11 +35,13 @@ export default function HeroSplit() {
           <div className="order-2 md:order-1">
             <div className="rounded-[var(--radius-lg)] overflow-hidden border border-[color:var(--color-neutral-100)] shadow-lg bg-black">
               <video
+                ref={videoRef}
                 muted
+                autoPlay
                 playsInline
                 controls
                 poster="/globe.svg"
-                className="w-full h-auto"
+                className="w-full h-[320px] md:h-[420px] lg:h-[520px] object-cover"
               >
                 <source src="/hero-video.mp4" type="video/mp4" />
                 Your browser doesn&apos;t support video playback.
