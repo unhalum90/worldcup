@@ -42,9 +42,7 @@ export default function FeatureChunks() {
             >
               {/* Text Content */}
               <div className="flex-1 space-y-4">
-                <div className="inline-block px-3 py-1 rounded-full bg-[color:var(--color-accent-red)]/10 text-[color:var(--color-accent-red)] text-sm font-semibold mb-2">
-                  Feature {idx + 1}
-                </div>
+                {/* Badge removed per request */}
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
                   {it.title}
                 </h3>
