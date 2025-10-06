@@ -17,26 +17,33 @@ export default function CTASignup({ onSuccess }: CTASignupProps) {
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // No-op submit for this phase
-    // Placeholder: this is where we will later POST to Supabase or Formspree
-    console.log("CTA submit (no-op)", {
-      email,
-      interest,
-      consent,
-      locale:
-        typeof document !== "undefined" ? document.documentElement.lang : "en",
-    });
-    // Optional UX: simple success UI reset
-    setEmail("");
-    setInterest("home");
-    setConsent(false);
-    
-    // Call success callback if provided
-    if (onSuccess) {
-      setTimeout(() => {
-        onSuccess();
-      }, 500);
-    }
+    // Post to our subscribe API
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        interest,
+        source: 'hero',
+        tags: [interest]
+      })
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error('Failed to subscribe');
+        // success UI
+        setEmail('');
+        setInterest('home');
+        setConsent(false);
+        // analytics event (optional)
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          try { (window as any).gtag('event', 'subscribe', { method: 'hero' }); } catch {}
+        }
+        if (onSuccess) onSuccess();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Sorry, we could not subscribe your email. Please try again later.');
+      });
   }
 
   return (
