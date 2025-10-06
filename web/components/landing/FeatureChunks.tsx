@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import Wireframe from "@/components/wireframes/Wireframe";
 
 export default function FeatureChunks() {
   const t = useTranslations("landing.chunks");
@@ -11,12 +12,11 @@ export default function FeatureChunks() {
     bullets: string[];
   }[];
 
-  // Map features to their corresponding mockup images
-  const featureImages = [
-    "/mockups/mobile_mockup_match_schedule.png", // Matchday Planning
-    "/mockups/mobile_mockup_travel_plan.png",    // Trip Builder
-    "/mockups/mobile_mockup_city_guide.png",     // City Guide
-    "/mockups/mobile_mockup_community.png",      // Community
+  const wireVariants: Array<"schedule" | "trip" | "city" | "community"> = [
+    "schedule",
+    "trip",
+    "city",
+    "community",
   ];
 
   return (
@@ -99,18 +99,9 @@ export default function FeatureChunks() {
               {/* Image/Mockup */}
               <div className="flex-1 relative">
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-50 to-purple-50 p-8">
-                  {featureImages[idx] && (
-                    <div className="relative w-full max-w-[300px] mx-auto">
-                      <Image
-                        src={featureImages[idx]}
-                        alt={it.title}
-                        width={300}
-                        height={600}
-                        className="w-full h-auto"
-                        priority={idx === 0}
-                      />
-                    </div>
-                  )}
+                  <div className="relative w-full max-w-[320px] mx-auto">
+                    <Wireframe variant={wireVariants[idx]} />
+                  </div>
                 </div>
                 {/* Decorative element */}
                 <div
