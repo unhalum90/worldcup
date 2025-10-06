@@ -3,13 +3,18 @@ import type { NextRequest } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY; // requires service role key for inserts from server
+// Accept either the common name or alternate name the env may have.
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
   console.warn('Supabase credentials are not set in environment.');
 }
 
 const supabase = createClient(SUPABASE_URL || '', SUPABASE_SERVICE_KEY || '');
+
+const MAILERLITE_KEY = process.env.MAILERLITE_API_KEY;
+const MAILERLITE_WEBSITE_GROUP_ID = process.env.MAILERLITE_WEBSITE_GROUP_ID;
+const MAILERLITE_NEWSLETTER_GROUP_ID = process.env.MAILERLITE_NEWSLETTER_GROUP_ID;
 
 export async function POST(req: NextRequest) {
   try {
@@ -39,7 +44,49 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // Optionally: call MailerLite API here to add to group -- keep separate to avoid embedding keys
+    // Optionally: call MailerLite API here to add to group
+    if (MAILERLITE_KEY) {
+      try {
+        const headers = {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${MAILERLITE_KEY}`,
+        };
+
+        // Add to website group if configured
+        if (MAILERLITE_WEBSITE_GROUP_ID) {
+          try {
+            await fetch(
+              `https://api.mailerlite.com/api/v2/groups/${MAILERLITE_WEBSITE_GROUP_ID}/subscribers`,
+              {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({ email: email.toLowerCase().trim() }),
+              }
+            );
+          } catch (mlErr) {
+            console.error('MailerLite website group add failed', mlErr);
+          }
+        }
+
+        // Add to newsletter group if configured
+        if (MAILERLITE_NEWSLETTER_GROUP_ID) {
+          try {
+            await fetch(
+              `https://api.mailerlite.com/api/v2/groups/${MAILERLITE_NEWSLETTER_GROUP_ID}/subscribers`,
+              {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({ email: email.toLowerCase().trim() }),
+              }
+            );
+          } catch (mlErr) {
+            console.error('MailerLite newsletter group add failed', mlErr);
+          }
+        }
+      } catch (err) {
+        console.error('Error while calling MailerLite', err);
+      }
+    }
 
     return NextResponse.json({ ok: true, id: data.id });
   } catch (err) {
