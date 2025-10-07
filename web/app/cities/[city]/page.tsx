@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import MapEmbed from '@/components/MapEmbed';
 
 type Props = { params: { city: string } };
 
@@ -80,8 +81,13 @@ export default async function CityGuide({ params }: Props) {
           <aside className="space-y-6">
             <div className="rounded-lg p-4 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
               <h3 className="font-bold mb-2">Map</h3>
-              {/* Map placeholder: swap with an embedded map or static image later */}
-              <div className="w-full h-48 bg-[color:var(--color-neutral-50)] rounded-md flex items-center justify-center text-sm text-[color:var(--color-neutral-600)]">Map placeholder (embed Google Maps / Mapbox)</div>
+              {/* Use MapEmbed if the city metadata provides an embed URL (e.g., Google My Maps) */}
+              {/* MapEmbed is a client component that lazy-loads the iframe for performance */}
+              {city?.map_embed ? (
+                <MapEmbed src={city.map_embed} title={`${city?.name || citySlug} map`} height={240} />
+              ) : (
+                <div className="w-full h-48 bg-[color:var(--color-neutral-50)] rounded-md flex items-center justify-center text-sm text-[color:var(--color-neutral-600)]">Map placeholder (embed Google My Maps / Mapbox)</div>
+              )}
             </div>
 
             <div className="rounded-lg p-4 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
