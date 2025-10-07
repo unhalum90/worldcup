@@ -35,8 +35,9 @@ export default function CTASignup({ onSuccess }: CTASignupProps) {
         setInterest('home');
         setConsent(false);
         // analytics event (optional)
-        if (typeof window !== 'undefined' && (window as any).gtag) {
-          try { (window as any).gtag('event', 'subscribe', { method: 'hero' }); } catch {}
+        if (typeof window !== 'undefined') {
+          const w = window as Window & { gtag?: (...args: unknown[]) => void };
+          try { w.gtag?.('event', 'subscribe', { method: 'hero' }); } catch {}
         }
         if (onSuccess) onSuccess();
       })

@@ -239,6 +239,34 @@ export default function AdminPage() {
               </div>
             )}
           </div>
+
+          {/* Simple Forum Admin: delete thread by ID */}
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold mb-3">Forum Admin</h2>
+            <p className="text-sm text-gray-600 mb-2">Delete a forum thread by ID (moderator/admin only).</p>
+            <div className="flex gap-2">
+              <input id="threadIdToDelete" placeholder="thread-id" className="px-3 py-2 border rounded flex-1" />
+              <button
+                className="px-3 py-2 bg-red-600 text-white rounded"
+                onClick={async () => {
+                  const el = document.getElementById('threadIdToDelete') as HTMLInputElement | null;
+                  const id = el?.value?.trim();
+                  if (!id) return alert('Enter thread id');
+                  const headers: Record<string,string> = { 'Content-Type': 'application/json' };
+                  if (process.env.NODE_ENV === 'development') {
+                    const secret = (window as any).__ADMIN_SECRET || null;
+                    if (secret) headers['x-admin-secret'] = secret;
+                  }
+                  const res = await fetch('/api/admin/delete-thread', { method: 'POST', headers, body: JSON.stringify({ threadId: id }) });
+                  const json = await res.json();
+                  if (!res.ok) alert('Error: ' + (json.error || res.statusText));
+                  else alert('Thread deleted');
+                }}
+              >
+                Delete Thread
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

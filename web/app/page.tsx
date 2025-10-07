@@ -1,11 +1,9 @@
 import HeroSplit from "@/components/HeroSplit";
 import CountdownTimer from "@/components/CountdownTimer";
 import WorldCupTimeline from "@/components/landing/WorldCupTimeline";
-import FeatureChunks from "@/components/landing/FeatureChunks";
-import GalleryCarousel from "@/components/landing/GalleryCarousel";
-import RoadmapTimeline from "@/components/landing/RoadmapTimeline";
-import BlogTeaser from "@/components/landing/BlogTeaser";
-import FAQ from "@/components/landing/FAQ";
+import BostonDemo from "@/components/landing/BostonDemo";
+import PricingTimeline from "@/components/landing/PricingTimeline";
+// Other landing sections removed for staged rebuild: FeatureChunks, GalleryCarousel, RoadmapTimeline, BlogTeaser, FAQ
 
 export default function Home() {
   return (
@@ -20,11 +18,8 @@ export default function Home() {
       {/* World Cup Timeline */}
       <WorldCupTimeline />
 
-      <FeatureChunks />
-      <GalleryCarousel />
-      <RoadmapTimeline />
-      <BlogTeaser />
-      <FAQ />
+    {/* Boston demo exemplar (page cleared below this section for staged rebuild) */}
+    <BostonDemo />
     </>
   );
 }

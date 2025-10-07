@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import Image from "next/image";
+// Image import removed — using Wireframe components instead
 import Wireframe from "@/components/wireframes/Wireframe";
 
 export default function FeatureChunks() {

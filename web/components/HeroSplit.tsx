@@ -81,12 +81,19 @@ export default function HeroSplit() {
 
             {/* Secondary Links */}
             <div className="mt-4 flex flex-wrap items-center gap-4">
-              <Link
-                href="/blog"
-                className="inline-flex items-center text-sm font-medium underline underline-offset-4 text-[color:var(--color-primary)]"
-              >
-                {t("viewBlog")}
-              </Link>
+                <Link
+                  href="/forums/boston"
+                  className="inline-flex items-center text-sm font-medium underline underline-offset-4 text-[color:var(--color-primary)]"
+                >
+                  See the Boston Demo
+                </Link>
+
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center text-sm font-medium underline underline-offset-4 text-[color:var(--color-primary)]"
+                >
+                  {t("viewBlog")}
+                </Link>
 
               {/* Social Proof */}
               <div className="flex items-center gap-2 text-[color:var(--color-neutral-800)] text-sm">
