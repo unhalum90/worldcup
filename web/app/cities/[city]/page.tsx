@@ -53,76 +53,117 @@ export default async function CityGuide({ params }: Props) {
           {/* Main content */}
           <main className="lg:col-span-2 space-y-8">
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h2 className="text-xl font-bold mb-2">Overview</h2>
-              <p className="text-[color:var(--color-neutral-800)]">Gillette Stadium (marketed as “Boston Stadium” for FIFA) sits in Foxborough ~22 miles southwest of downtown. It will host seven matches in 2026. Because the venue is suburban, plan travel carefully: decide between staying on-site for convenience or in downtown Boston for the city experience and take event trains on matchday.</p>
+              <h2 className="text-2xl font-bold mb-3">Your First Trip to Gillette Stadium: A Stress-Free Guide</h2>
+              <p className="text-[color:var(--color-neutral-800)]">So, you've got tickets to Gillette Stadium (marketed as "Boston Stadium" for FIFA). Foxborough is suburban — about 22 miles (35 km) from downtown — so planning is everything. This guide collects crowd-sourced, practical advice to help you choose lodging, transportation, and a matchday plan that fits your budget and tolerance for post-event congestion.</p>
             </section>
 
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h2 className="text-xl font-bold mb-2">Getting to and from the stadium</h2>
-
-              <h3 className="font-semibold mt-2">Public transport — special event trains</h3>
-              <p className="text-[color:var(--color-neutral-800)]">The recommended approach to avoid Route 1 traffic is the MBTA’s Foxboro Event Service: direct, special trains from Boston South Station and Providence to Foxboro station. These trains are separate from regular commuter service and usually require a special round‑trip ticket purchased in advance (often via the MBTA mTicket app).</p>
+              <h3 className="text-xl font-bold mb-2">1. Where to stay — Your home base decision</h3>
+              <p className="text-[color:var(--color-neutral-800)]">Your choice of lodging has the biggest impact on logistics. Three common options:</p>
               <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)] mt-3">
-                <li><strong>Schedule:</strong> Trains typically arrive ~90 minutes before kickoff and depart ~30 minutes after the final whistle — plan accordingly.</li>
-                <li><strong>Walk:</strong> Foxboro station is about an eight‑minute walk to the stadium via marked pedestrian paths.</li>
-                <li><strong>Capacity & upgrades:</strong> MBTA has planned platform upgrades to allow faster boarding during major events; tickets sell out quickly.</li>
-                <li><strong>Other rail:</strong> On non‑event days, Foxboro sees limited commuter‑rail service. Use Franklin Line stops (Walpole/Norwood) plus taxi/rideshare for off‑day visits.</li>
+                <li><strong>On-site (Patriot Place)</strong> — Unbeatable convenience; walk back to your room after the event. Cons: expensive on event nights.</li>
+                <li><strong>Downtown Boston</strong> — Great if you want to explore the city before/after the match; expect a ~1 hour journey without traffic.</li>
+                <li><strong>Providence, RI</strong> — Often cheaper and closer than Boston; a solid mid-point that many visitors prefer.</li>
               </ul>
+            </section>
 
-              <h3 className="font-semibold mt-4">Driving & parking</h3>
-              <p className="text-[color:var(--color-neutral-800)]">Route 1 is the primary road to Gillette Stadium and can be heavily congested. If driving, arrive early and secure parking in advance when possible.</p>
+            <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
+              <h3 className="text-xl font-bold mb-2">2. Getting to the stadium — Choosing your ride</h3>
+              <p className="text-[color:var(--color-neutral-800)]">Decide between driving or taking the special event rail. Both are valid but have trade-offs; read the details to pick the right plan.</p>
+
+              <h4 className="font-semibold mt-3">Driving — control and tailgating, but expect exit jams</h4>
+              <p className="text-[color:var(--color-neutral-800)]">Driving gives flexibility and tailgating options, but post-event traffic is infamous. Typical reports include multi-hour waits to exit official lots. Proven strategies:</p>
+              <ol className="list-decimal pl-5 text-[color:var(--color-neutral-800)] mt-3">
+                <li><strong>Park smart & walk:</strong> Private cash lots ~1 mile away let you avoid stadium jam in exchange for a 15–20 minute walk.</li>
+                <li><strong>Leave early:</strong> Exit 15–20 minutes before the end to avoid the initial surge.</li>
+                <li><strong>Wait it out:</strong> Tailgate an extra hour; many fans prefer to relax and leave once traffic eases.</li>
+              </ol>
+
+              <h4 className="font-semibold mt-3">Parking lot intel</h4>
               <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)] mt-3">
-                <li><strong>Free general parking:</strong> Often available across Route 1 and included with some tickets; pedestrian bridges/tunnels provide access.</li>
-                <li><strong>Stadium‑side paid parking:</strong> Prepaid passes (~US$35–50) can be bought via Ticketmaster; limited availability.</li>
-                <li><strong>ADA parking:</strong> Accessible spaces are on the stadium side and fill quickly—plan to arrive when lots open.</li>
-                <li><strong>Oversize & RVs:</strong> Park in designated lots (e.g., Lot 52) and follow tailgating rules; overnight parking is typically prohibited.</li>
-                <li><strong>Offsite options:</strong> Private lots and nearby hotels sometimes offer parking to avoid Route 1 congestion — expect a 10–30 minute walk from remote lots.</li>
+                <li>Free general parking: across Route 1 — heavy post-event delays.</li>
+                <li>Prepaid stadium-side parking: limited and expensive; buy early.</li>
+                <li>Delayed-exit lots: agree to wait 75–90 minutes, receive a gift card incentive.</li>
+                <li>Private lots: cash lots run by local businesses/residents for faster exits.</li>
               </ul>
 
-              <h3 className="font-semibold mt-4">Rideshare, taxis & shuttles</h3>
-              <p className="text-[color:var(--color-neutral-800)]">Rideshare drop‑off/pick‑up typically runs from Lot 15 (near the CVS Health Gate). Lines can be long after the match; consider walking to nearby neighborhoods (Walpole) to find a faster pickup. Some hotels and coach services run shuttle buses on match days.</p>
-
-              <h3 className="font-semibold mt-4">Air travel & regional airports</h3>
-              <p className="text-[color:var(--color-neutral-800)]">Boston Logan International (BOS) is the main gateway. From Logan, take the MBTA Blue Line + transfers or the Silver Line to South Station to connect to event trains. T.F. Green (PVD) and Bradley (BDL) are alternatives depending on fares.</p>
-            </section>
-
-            <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h2 className="text-xl font-bold mb-2">Accommodation options</h2>
-              <p className="text-[color:var(--color-neutral-800)]">Staying at Patriot Place hotels eliminates most transport headaches. On‑site options and nearby hotels range from convenient to budget‑friendly; downtown Boston gives you more dining and nightlife but requires catching event trains to Foxboro.</p>
+              <h4 className="font-semibold mt-3">2.2 Riding the rails — event trains</h4>
+              <p className="text-[color:var(--color-neutral-800)]">MBTA runs special Foxboro Event Service trains from South Station and Providence to Foxboro station. These are typically the best way to bypass road traffic but have strict schedules and limited seats.</p>
               <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)] mt-3">
-                <li><strong>On‑site:</strong> Renaissance Boston Patriot Place; Hilton Garden Inn Foxborough/Patriot Place — highly convenient but sell out fast.</li>
-                <li><strong>Nearby:</strong> Fairfield Inn (Walpole), Courtyard by Marriott (Norwood/Canton), Home2 Suites (Franklin), SpringHill Suites (Wrentham).</li>
-                <li><strong>Downtown Boston:</strong> Club Quarters (Faneuil Hall), InterContinental, The Langham — choose these if you want to explore the city pre/post match.</li>
+                <li>Round-trip tickets (~$20) sell out quickly; buy on the MBTA mTicket app.</li>
+                <li>Trains usually arrive ~90 minutes before kickoff and depart ~30 minutes after the event; missed trains can leave you scrambling.</li>
+                <li>Foxboro station is ~8 minutes' walk to Gillette via marked pedestrian paths.</li>
+                <li>Rally Buses/private coaches are alternative options that often wait longer than the trains' tight windows.</li>
               </ul>
             </section>
 
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h2 className="text-xl font-bold mb-2">Stadium policies & guest services</h2>
-              <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)]">
-                <li><strong>Mobile‑only entry:</strong> The stadium is cashless and mobile‑ticket only — use the Gillette Stadium or FIFA app for entry.</li>
-                <li><strong>Security screening:</strong> Evolv Express weapon‑detection systems are used; all guests consent to search and must follow the code of conduct.</li>
-                <li><strong>Bag policy:</strong> Only clear bags (up to 12 × 12 × 6 in), one‑gallon freezer bags, or small wristlets are allowed. Exceptions for medical needs must be requested in advance.</li>
-                <li><strong>Cashless concessions:</strong> No ATMs inside; use cards or mobile pay. Cash‑to‑card kiosks are usually available near the ticket office.</li>
-                <li><strong>Accessible services:</strong> Accessible seating and ADA facilities are provided; contact the stadium ADA hotline for assistance.</li>
-              </ul>
-              <p className="text-[color:var(--color-neutral-700)] mt-3">Concessions include The Ale House, Backyard Barbeque, The Beacon, and craft beer bars near the lighthouse. Many stands support mobile ordering and contactless pickup.</p>
+              <h3 className="text-xl font-bold mb-2">3. Uber/Lyft & taxis</h3>
+              <p className="text-[color:var(--color-neutral-800)]">Designated rideshare pickup is Lot 15. Beware surge pricing after events — fares back to Boston can be very high. If you choose rideshare, consider walking to nearby neighborhoods for faster pickup.</p>
             </section>
 
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h2 className="text-xl font-bold mb-2">Fan tips & tricks</h2>
-              <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)]">
-                <li><strong>Buy early:</strong> Event train tickets and match tickets sell out quickly — secure them as soon as sales open.</li>
-                <li><strong>Essential apps:</strong> MBTA mTicket, Gillette Stadium/FIFA app for match tickets, and ride‑share apps (Uber/Lyft).</li>
-                <li><strong>Dress & packing:</strong> Prepare for variable New England weather — layers, a poncho, sunscreen, and comfortable shoes.</li>
-                <li><strong>Clear bag & belongings:</strong> Carry only permitted items and small essentials to speed entry.</li>
-                <li><strong>Tailgating:</strong> Permitted four hours before kickoff with rules (no kegs, contained grills). Patriot Place offers pre‑match food and shopping.</li>
-              </ul>
+              <h3 className="text-xl font-bold mb-2">4. Pre-event guide to Patriot Place</h3>
+              <p className="text-[color:var(--color-neutral-800)]">Arrive early and explore Patriot Place: restaurants, Patriots Hall of Fame, bowling, cinema, and shopping. It’s the easiest way to fill hours before gates open.</p>
             </section>
 
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h2 className="text-xl font-bold mb-2">After the match</h2>
-              <p className="text-[color:var(--color-neutral-800)]">Expect delays. Trains and roads will be busy; patience is required. Many drivers use the paid‑to‑park program to wait out traffic. For assistance, text 50894 with location or email customerservice@gillettestadium.com.</p>
-              <p className="text-[color:var(--color-neutral-700)] mt-3">Final thought: with planning — pick your lodging, book trains or parking early, and note the clear‑bag and cashless policies — you’ll focus on the match and have a great day.</p>
+              <h3 className="text-xl font-bold mb-2">5. Final checklist</h3>
+              <ol className="list-decimal pl-5 text-[color:var(--color-neutral-800)]">
+                <li>Plan your transport (drive, train, or shuttle) before you arrive.</li>
+                <li>Buy event train tickets immediately when available.</li>
+                <li>If driving, pick a private lot or have an exit plan.</li>
+                <li>Arrive early — enjoy Patriot Place and tailgating rules.</li>
+              </ol>
+            </section>
+
+            <section className="rounded-lg p-6 bg-[color:var(--color-neutral-50)] border border-[color:var(--color-neutral-100)] shadow-sm">
+              <h3 className="text-lg font-bold mb-2">Core template architecture (for editors)</h3>
+              <p className="text-[color:var(--color-neutral-800)]">Below is the canonical structure we use for each city guide. Editors can follow this template when creating new city pages.</p>
+              <pre className="mt-3 p-3 bg-white rounded text-sm overflow-auto border border-[color:var(--color-neutral-100)]"><code>
+# {{city_name}} — World Cup 2026 Fan Zone Guide
+
+## 1. Overview
+Quick context about {{city_name}}, main vibe, and what to expect for matchdays.
+
+## 2. Getting There
+- Airports: {{airport_primary}} ({{airport_code}}) — {{distance}} km from city center
+- Public Transit:
+- Rideshare:
+- Parking:
+- Average Costs:
+
+## 3. Stadium Experience
+- Stadium Name: {{stadium_name}}
+- Capacity: {{stadium_capacity}}
+- Getting There: 
+- Gates & Security:
+- Accessibility:
+- Food & Drink Highlights:
+
+## 4. Fan Meetups & Bars
+Top local spots by fan nationality:
+| Nation | Bar/Area | Notes |
+
+## 5. Transportation & Parking
+Best routes, parking tips, exit strategies, and “what locals know.”
+
+## 6. Safety & Local Laws
+Neighborhood do’s/don’ts, alcohol laws, crowd control notes.
+
+## 7. Things to Do
+Short activities within 1 hour.
+
+## 8. Fan Tips
+Bullet list of verified crowd-sourced advice.
+
+## 9. Essential Links & Maps
+- [Official City Page]({{city_official_url}})
+- [Transit Map]({{transit_pdf_link}})
+- [Google Maps Stadium]({{gmap_link}})
+
+_Last updated May 2026_
+</code></pre>
             </section>
           </main>
 
