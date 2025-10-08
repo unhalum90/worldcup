@@ -120,8 +120,7 @@ export default async function CityGuide({ params }: Props) {
             <section className="rounded-lg p-6 bg-[color:var(--color-neutral-50)] border border-[color:var(--color-neutral-100)] shadow-sm">
               <h3 className="text-lg font-bold mb-2">Core template architecture (for editors)</h3>
               <p className="text-[color:var(--color-neutral-800)]">Below is the canonical structure we use for each city guide. Editors can follow this template when creating new city pages.</p>
-              <pre className="mt-3 p-3 bg-white rounded text-sm overflow-auto border border-[color:var(--color-neutral-100)]"><code>
-# {{city_name}} — World Cup 2026 Fan Zone Guide
+              <pre className="mt-3 p-3 bg-white rounded text-sm overflow-auto border border-[color:var(--color-neutral-100)]"><code>{`# {{city_name}} — World Cup 2026 Fan Zone Guide
 
 ## 1. Overview
 Quick context about {{city_name}}, main vibe, and what to expect for matchdays.
@@ -162,8 +161,7 @@ Bullet list of verified crowd-sourced advice.
 - [Transit Map]({{transit_pdf_link}})
 - [Google Maps Stadium]({{gmap_link}})
 
-_Last updated May 2026_
-</code></pre>
+_Last updated May 2026_`}</code></pre>
             </section>
           </main>
 
