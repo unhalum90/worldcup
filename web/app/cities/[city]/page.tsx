@@ -120,21 +120,21 @@ export default async function CityGuide({ params }: Props) {
             <section className="rounded-lg p-6 bg-[color:var(--color-neutral-50)] border border-[color:var(--color-neutral-100)] shadow-sm">
               <h3 className="text-lg font-bold mb-2">Core template architecture (for editors)</h3>
               <p className="text-[color:var(--color-neutral-800)]">Below is the canonical structure we use for each city guide. Editors can follow this template when creating new city pages.</p>
-              <pre className="mt-3 p-3 bg-white rounded text-sm overflow-auto border border-[color:var(--color-neutral-100)]"><code>{`# {{city_name}} — World Cup 2026 Fan Zone Guide
+              <pre className="mt-3 p-3 bg-white rounded text-sm overflow-auto border border-[color:var(--color-neutral-100)]"><code>{`# &#123;&#123;city_name&#125;&#125; — World Cup 2026 Fan Zone Guide
 
 ## 1. Overview
-Quick context about {{city_name}}, main vibe, and what to expect for matchdays.
+Quick context about &#123;&#123;city_name&#125;&#125;, main vibe, and what to expect for matchdays.
 
 ## 2. Getting There
-- Airports: {{airport_primary}} ({{airport_code}}) — {{distance}} km from city center
+- Airports: &#123;&#123;airport_primary&#125;&#125; (&#123;&#123;airport_code&#125;&#125;) — &#123;&#123;distance&#125;&#125; km from city center
 - Public Transit:
 - Rideshare:
 - Parking:
 - Average Costs:
 
 ## 3. Stadium Experience
-- Stadium Name: {{stadium_name}}
-- Capacity: {{stadium_capacity}}
+- Stadium Name: &#123;&#123;stadium_name&#125;&#125;
+- Capacity: &#123;&#123;stadium_capacity&#125;&#125;
 - Getting There: 
 - Gates & Security:
 - Accessibility:
@@ -157,9 +157,9 @@ Short activities within 1 hour.
 Bullet list of verified crowd-sourced advice.
 
 ## 9. Essential Links & Maps
-- [Official City Page]({{city_official_url}})
-- [Transit Map]({{transit_pdf_link}})
-- [Google Maps Stadium]({{gmap_link}})
+- [Official City Page](&#123;&#123;city_official_url&#125;&#125;)
+- [Transit Map](&#123;&#123;transit_pdf_link&#125;&#125;)
+- [Google Maps Stadium](&#123;&#123;gmap_link&#125;&#125;)
 
 _Last updated May 2026_`}</code></pre>
             </section>
