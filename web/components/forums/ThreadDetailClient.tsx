@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import type { Post, Thread } from '@/types/forum';
 
 type Props = {
   threadId: string;
-  thread: any;
+  thread: Thread;
   citySlug: string;
 };
 
@@ -14,7 +15,7 @@ export default function ThreadDetailClient({ threadId, thread, citySlug }: Props
 
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [threadVote, setThreadVote] = useState<number | null>(null);
   const [threadScore, setThreadScore] = useState<number>(thread.score || 0);
   const [replyBody, setReplyBody] = useState('');
@@ -256,7 +257,7 @@ export default function ThreadDetailClient({ threadId, thread, citySlug }: Props
             })()}
           </div>
           <div className="mt-1 flex items-center justify-between text-sm text-gray-500">
-            <div>Posted by author • {timeAgo(thread.created_at)}</div>
+            <div>Posted by author • {thread.created_at ? timeAgo(thread.created_at) : ''}</div>
             {/* mobile inline vote */}
             <div className="sm:hidden flex items-center gap-2">
               <button
@@ -328,7 +329,7 @@ export default function ThreadDetailClient({ threadId, thread, citySlug }: Props
                       })()}
                     </div>
                   <div className="mt-1 flex items-center justify-between text-sm text-gray-500">
-                    <div>By user • {timeAgo(post.created_at)}</div>
+                    <div>By user • {post.created_at ? timeAgo(post.created_at) : ''}</div>
                     <div className="sm:hidden flex items-center gap-2">
                       <button
                         onClick={(e) => togglePostUpvote(e, post.id, idx)}

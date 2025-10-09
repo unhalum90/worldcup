@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
+import type { Thread } from '@/types/forum';
 
 type ThreadCardProps = {
-  thread: any; // minimal typing for now
+  thread: Thread;
 };
 
 export default function ThreadCard({ thread }: ThreadCardProps) {
@@ -49,6 +50,20 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
   }
   const cardBg = hexToRgba(accent, 0.12);
 
+  function timeAgo(dateStr: string) {
+    const then = new Date(dateStr).getTime();
+    const diff = Date.now() - then;
+    const sec = Math.floor(diff / 1000);
+    if (sec < 60) return `${sec}s`;
+    const min = Math.floor(sec / 60);
+    if (min < 60) return `${min}m`;
+    const hr = Math.floor(min / 60);
+    if (hr < 24) return `${hr}h`;
+    const days = Math.floor(hr / 24);
+    if (days < 7) return `${days}d`;
+    return new Date(dateStr).toLocaleDateString();
+  }
+
   useEffect(() => {
     let mounted = true;
     async function init() {
@@ -83,7 +98,9 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
       <div className="flex items-start justify-between">
         <div className="flex-1 pr-3">
           <h3 className="text-sm font-semibold" style={{ color: '#0f172a' }}>{thread.title}</h3>
-          <div className="text-xs mt-1" style={{ color: '#0f172a' }}>by {thread.author_handle} • {thread._ago}</div>
+          <div className="text-xs mt-1" style={{ color: '#0f172a' }}>
+            by {thread.author_handle} • {thread.created_at ? timeAgo(thread.created_at) : ''}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <div

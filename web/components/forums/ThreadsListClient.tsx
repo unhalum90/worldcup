@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import ThreadCard from '@/components/ThreadCard';
+import type { Thread } from '@/types/forum';
 import NewThreadForm from './NewThreadForm';
 import QuickSignUp from './QuickSignUp';
 
@@ -17,7 +18,7 @@ export default function ThreadsListClient({ cityId, citySlug }: Props) {
   const _supabase = supabase;
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [threads, setThreads] = useState<any[]>([]);
+  const [threads, setThreads] = useState<Thread[]>([]);
   const [resolvedCityId, setResolvedCityId] = useState<string | null>(cityId ?? null);
   const [showForm, setShowForm] = useState(false);
   const [sortOption, setSortOption] = useState<'newest'|'oldest'|'most_votes'|'least_votes'>('newest');
@@ -250,7 +251,7 @@ export default function ThreadsListClient({ cityId, citySlug }: Props) {
         <div className="p-4 border rounded bg-white">No threads yet. Use the form above to start a discussion!</div>
       ) : (
         threads.map((t) => (
-          <ThreadCard key={t.id} thread={{ ...t, author_handle: 'anon', _ago: new Date(t.created_at).toLocaleString(), city_slug: citySlug }} />
+          <ThreadCard key={t.id} thread={{ ...t, author_handle: 'anon', city_slug: citySlug }} />
         ))
       )}
     </div>
