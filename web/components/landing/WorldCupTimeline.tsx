@@ -22,7 +22,7 @@ export default function WorldCupTimeline() {
       icon: "🎫",
     },
     {
-      date: "Dec 13, 2025",
+      date: "Dec 5, 2025",
       title: "Final Draw",
       desc: "Group stage draw ceremony",
       phase: "upcoming",
