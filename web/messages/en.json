@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "blog": "Blog",
+    "blog": "Newsletter",
     "privacy": "Privacy"
   },
   "hero": {
@@ -16,7 +16,7 @@
     },
     "consent": "I agree to the Privacy Policy",
     "cta": "Join the waitlist",
-    "viewBlog": "Explore blog"
+    "viewBlog": "Explore newsletter"
   },
   "features": {
     "title": "What you'll get",
@@ -101,7 +101,7 @@
     "blogTeaser": {
       "title": "Travel tips and community updates",
       "desc": "We’re building in public. Read the latest posts as features ship.",
-      "cta": "Read the blog"
+      "cta": "Read the newsletter"
     },
     "roadmap": {
       "title": "Our roadmap",

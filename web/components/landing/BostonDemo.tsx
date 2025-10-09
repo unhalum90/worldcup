@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import fs from 'fs';
+import path from 'path';
 
 type Feature = {
   title: string;
@@ -41,11 +43,26 @@ function FeatureRow({ f, reverse }: { f: Feature; reverse?: boolean }) {
 }
 
 export default function BostonDemo() {
+  // Attempt to read a small summary from a local markdown file if present.
+  let bostonSummary: string | null = null;
+  try {
+    const mdPath = path.join(process.cwd(), 'web', 'components', 'cities', 'boston.md');
+    if (fs.existsSync(mdPath)) {
+      const raw = fs.readFileSync(mdPath, 'utf8').trim();
+      if (raw.length > 20) {
+        // take the first paragraph (split on two newlines) and trim to ~240 chars
+        const para = raw.split(/\n\s*\n/)[0].replace(/\n/g, ' ').trim();
+        bostonSummary = para.length > 240 ? para.slice(0, 237) + '...' : para;
+      }
+    }
+  } catch (e) {
+    // ignore — fall back to static copy
+  }
   return (
     <section className="container mt-12 mb-12">
       <div className="rounded-[var(--radius-lg)] border border-[color:var(--color-neutral-100)] bg-white p-6 shadow-sm">
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">Boston — exemplar city guide</h2>
-        <p className="text-[color:var(--color-neutral-800)] mb-6">This page demonstrates the core features we will build for every host city. We will develop Boston first as the exemplar.</p>
+  <p className="text-[color:var(--color-neutral-800)] mb-6">{bostonSummary ?? 'This page demonstrates the core features we will build for every host city. We will develop Boston first as the exemplar.'}</p>
 
         {features.map((f, i) => (
           <FeatureRow key={f.title} f={f} reverse={i % 2 === 1} />

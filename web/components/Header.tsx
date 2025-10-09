@@ -16,12 +16,14 @@ export default function Header() {
         </Link>
 
         <nav aria-label="Primary" className="flex items-center gap-6">
-          <Link
-            href="/blog"
+          <a
+            href="https://wc26fanzone.beehiiv.com/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm hover:underline underline-offset-4 text-[color:var(--color-neutral-800)]"
           >
-            {t("blog")}
-          </Link>
+            Newsletter
+          </a>
           <LanguageSwitcher />
         </nav>
       </div>

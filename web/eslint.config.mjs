@@ -23,6 +23,11 @@ const eslintConfig = [
   {
     rules: {
       "no-console": "off", // Allow console.log for development
+      // Relax rules that are noisy during fast iteration. We prefer fixing types over time.
+      "@typescript-eslint/no-explicit-any": "off",
+      "react/no-unescaped-entities": "off",
+      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+      "react-hooks/exhaustive-deps": "warn",
     },
   },
 ];

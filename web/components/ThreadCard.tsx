@@ -73,78 +73,73 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
 
   return (
     <div
-      className="rounded-lg py-3 px-4 cursor-pointer my-2 shadow-sm"
-      style={{ backgroundColor: cardBg, border: `2px solid ${accent}` }}
+      className="py-2 cursor-pointer my-1"
+      style={{ backgroundColor: cardBg, borderLeft: `4px solid ${accent}` }}
       onClick={() => router.push(`/forums/${thread.city_slug}/threads/${thread.id}`)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter') router.push(`/forums/${thread.city_slug}/threads/${thread.id}`); }}
     >
       <div className="flex items-start justify-between">
-        <div className="flex-1 pr-4">
-          <h3 className="text-base font-semibold" style={{ color: '#0f172a' }}>{thread.title}</h3>
-          <div className="text-sm mt-1" style={{ color: '#0f172a' }}>by {thread.author_handle} • {thread._ago}</div>
+        <div className="flex-1 pr-3">
+          <h3 className="text-sm font-semibold" style={{ color: '#0f172a' }}>{thread.title}</h3>
+          <div className="text-xs mt-1" style={{ color: '#0f172a' }}>by {thread.author_handle} • {thread._ago}</div>
         </div>
         <div className="flex items-center gap-2">
           <div
-            className="flex items-center gap-2 rounded-md px-2 py-1"
-            style={{ backgroundColor: accent, color: accentText, minWidth: 56 }}
+            className="flex items-center gap-2 rounded-md px-2 py-0.5"
+            style={{ backgroundColor: accent, color: accentText, minWidth: 48 }}
           >
             <button
               onClick={async (e) => {
                 e.stopPropagation();
-              // toggle upvote
-              const { data } = await supabase.auth.getUser();
-              if (!data.user) {
-                alert('Please sign in to vote');
-                return;
-              }
+                // toggle upvote (existing logic unchanged)
+                const { data } = await supabase.auth.getUser();
+                if (!data.user) {
+                  alert('Please sign in to vote');
+                  return;
+                }
 
-              // fetch existing vote
-              const { data: existing } = await supabase
-                .from('votes')
-                .select('id, value')
-                .eq('user_id', data.user.id)
-                .eq('target_type', 'thread')
-                .eq('target_id', thread.id)
-                .maybeSingle();
+                const { data: existing } = await supabase
+                  .from('votes')
+                  .select('id, value')
+                  .eq('user_id', data.user.id)
+                  .eq('target_type', 'thread')
+                  .eq('target_id', thread.id)
+                  .maybeSingle();
 
-              if (!existing) {
-                // insert upvote
-                const { error } = await supabase.from('votes').insert({
-                  user_id: data.user.id,
-                  target_type: 'thread',
-                  target_id: thread.id,
-                  value: 1
-                });
-                if (!error) {
-                  setVoteValue(1);
-                  setScore((s) => s + 1);
+                if (!existing) {
+                  const { error } = await supabase.from('votes').insert({
+                    user_id: data.user.id,
+                    target_type: 'thread',
+                    target_id: thread.id,
+                    value: 1
+                  });
+                  if (!error) {
+                    setVoteValue(1);
+                    setScore((s) => s + 1);
+                  }
+                } else if (existing.value === 1) {
+                  const { error } = await supabase.from('votes').delete().eq('id', existing.id);
+                  if (!error) {
+                    setVoteValue(null);
+                    setScore((s) => s - 1);
+                  }
+                } else {
+                  const { error } = await supabase.from('votes').update({ value: 1 }).eq('id', existing.id);
+                  if (!error) {
+                    setVoteValue(1);
+                    setScore((s) => s + 2);
+                  }
                 }
-              } else if (existing.value === 1) {
-                // remove upvote
-                const { error } = await supabase.from('votes').delete().eq('id', existing.id);
-                if (!error) {
-                  setVoteValue(null);
-                  setScore((s) => s - 1);
-                }
-              } else {
-                // switch from -1 to +1
-                const { error } = await supabase.from('votes').update({ value: 1 }).eq('id', existing.id);
-                if (!error) {
-                  setVoteValue(1);
-                  setScore((s) => s + 2);
-                }
-              }
-            }}
-            className={`p-1 rounded ${voteValue === 1 ? 'bg-white/20' : 'bg-white text-black/70'}`}
-            aria-label="Upvote"
-          >
-            ▲
-          </button>
+              }}
+              className={`p-0.5 rounded ${voteValue === 1 ? 'bg-white/20' : 'bg-white text-black/70'}`}
+              aria-label="Upvote"
+            >
+              ▲
+            </button>
             <div className="flex flex-col items-start">
               <div className="font-semibold text-sm" style={{ color: accentText }}>{score}</div>
-              <div className="text-xs" style={{ color: accentText }}>votes</div>
             </div>
           </div>
         </div>

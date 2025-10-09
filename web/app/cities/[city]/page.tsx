@@ -4,17 +4,39 @@ import MapEmbed from '@/components/MapEmbed';
 
 type Props = { params: { city: string } };
 
-export default async function CityGuide({ params }: Props) {
-  const citySlug = (await params).city;
+const EDITOR_TEMPLATE = `# {{city_name}} — World Cup 2026 Fan Zone Guide
 
-  // Server-side fetch for city metadata (name, country, hero image) if available
+1. Overview
+2. Getting There
+3. Stadium Experience
+4. Fan Meetups & Bars
+5. Transportation & Parking
+6. Safety & Local Laws
+7. Things to Do
+8. Fan Tips
+9. Essential Links & Maps
+`;
+
+export default async function CityGuide({ params }: Props) {
+  const { city: citySlug } = await params;
+
+  // Server-side fetch for optional city metadata (hero_image, map_embed, name)
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/cities?slug=eq.${citySlug}&select=*&limit=1`, {
-    headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` },
-    cache: 'no-store',
-  });
-  const cities = await res.json();
-  const city = Array.isArray(cities) && cities.length ? cities[0] : null;
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+
+  let city: any = null;
+  if (base) {
+    try {
+      const res = await fetch(`${base}/rest/v1/cities?slug=eq.${encodeURIComponent(citySlug)}&select=*&limit=1`, {
+        headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` },
+        cache: 'no-store',
+      });
+      const json = await res.json();
+      city = Array.isArray(json) && json.length ? json[0] : null;
+    } catch (e) {
+      // ignore network / parsing errors and show placeholders
+    }
+  }
 
   const title = city?.name ? `${city.name} — City Guide` : `${citySlug} — City Guide`;
 
@@ -27,7 +49,6 @@ export default async function CityGuide({ params }: Props) {
           <p className="text-[color:var(--color-neutral-700)] mt-2">Practical travel tips, neighborhoods, transit, stadium access, and community recommendations.</p>
         </div>
 
-        {/* Hero / gallery */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="md:col-span-2 rounded-[var(--radius-lg)] overflow-hidden border border-[color:var(--color-neutral-100)] shadow-lg">
             <Image
@@ -49,123 +70,125 @@ export default async function CityGuide({ params }: Props) {
           </div>
         </div>
 
-  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <main className="lg:col-span-2 space-y-8">
+
+            {/* 1. Overview */}
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h2 className="text-2xl font-bold mb-3">Your First Trip to Gillette Stadium: A Stress-Free Guide</h2>
-              <p className="text-[color:var(--color-neutral-800)]">So, you've got tickets to Gillette Stadium (marketed as "Boston Stadium" for FIFA). Foxborough is suburban — about 22 miles (35 km) from downtown — so planning is everything. This guide collects crowd-sourced, practical advice to help you choose lodging, transportation, and a matchday plan that fits your budget and tolerance for post-event congestion.</p>
+              <h2 className="text-2xl font-bold mb-3">Overview</h2>
+              <p className="text-[color:var(--color-neutral-800)]">Gillette Stadium (Foxborough) will host multiple World Cup 2026 matches. Foxborough is suburban — about an hour from downtown Boston without traffic — so lodging and transport choices strongly shape your matchday experience.</p>
+              <p className="text-[color:var(--color-neutral-800)] mt-3">This guide distills practical, veteran-tested advice to help you plan lodging, choose the best travel mode, and avoid the worst of the post-event congestion.</p>
             </section>
 
+            {/* 2. Getting There */}
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h3 className="text-xl font-bold mb-2">1. Where to stay — Your home base decision</h3>
-              <p className="text-[color:var(--color-neutral-800)]">Your choice of lodging has the biggest impact on logistics. Three common options:</p>
-              <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)] mt-3">
-                <li><strong>On-site (Patriot Place)</strong> — Unbeatable convenience; walk back to your room after the event. Cons: expensive on event nights.</li>
-                <li><strong>Downtown Boston</strong> — Great if you want to explore the city before/after the match; expect a ~1 hour journey without traffic.</li>
-                <li><strong>Providence, RI</strong> — Often cheaper and closer than Boston; a solid mid-point that many visitors prefer.</li>
+              <h2 className="text-2xl font-bold mb-3">Getting There</h2>
+              <h3 className="font-semibold mt-2">Airports</h3>
+              <p className="text-[color:var(--color-neutral-800)]">Primary gateway: Boston Logan International (BOS). Alternatives: T.F. Green (PVD) in Providence and Bradley (BDL) near Hartford.</p>
+
+              <h3 className="font-semibold mt-3">Public Transit</h3>
+              <p className="text-[color:var(--color-neutral-800)]">For major events the MBTA often runs special event commuter rail service to Foxboro station. These trains (from South Station and Providence) are convenient but limited in capacity — buy round-trip tickets on the MBTA mTicket app as soon as they’re available.</p>
+
+              <h3 className="font-semibold mt-3">Rideshare</h3>
+              <p className="text-[color:var(--color-neutral-800)]">Designated pickup/dropoff is in Lot 15 (near Bass Pro Shops). Expect surge pricing and long waits after events; fares back to Boston have been reported in the $100–$150 range on busy nights.</p>
+
+              <h3 className="font-semibold mt-3">Parking</h3>
+              <p className="text-[color:var(--color-neutral-800)]">On-site lots are convenient to the stadium but suffer severe post-event congestion. Private off-site lots (cash, $40–$60) located about a mile away offer a faster escape in exchange for a short walk. Prepaid stadium-side parking typically costs around $50 and must be purchased in advance; delayed-exit lots are occasionally offered for selected events.</p>
+
+              <h3 className="font-semibold mt-3">Average Costs</h3>
+              <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)]">
+                <li>Commuter rail round-trip: ~ $20 (mTicket)</li>
+                <li>Prepaid stadium parking: ~ $50</li>
+                <li>Private cash lots: $40–$60</li>
+                <li>Rideshare to Boston (surge): $100+</li>
               </ul>
             </section>
 
+            {/* 3. Stadium Experience */}
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h3 className="text-xl font-bold mb-2">2. Getting to the stadium — Choosing your ride</h3>
-              <p className="text-[color:var(--color-neutral-800)]">Decide between driving or taking the special event rail. Both are valid but have trade-offs; read the details to pick the right plan.</p>
-
-              <h4 className="font-semibold mt-3">Driving — control and tailgating, but expect exit jams</h4>
-              <p className="text-[color:var(--color-neutral-800)]">Driving gives flexibility and tailgating options, but post-event traffic is infamous. Typical reports include multi-hour waits to exit official lots. Proven strategies:</p>
-              <ol className="list-decimal pl-5 text-[color:var(--color-neutral-800)] mt-3">
-                <li><strong>Park smart & walk:</strong> Private cash lots ~1 mile away let you avoid stadium jam in exchange for a 15–20 minute walk.</li>
-                <li><strong>Leave early:</strong> Exit 15–20 minutes before the end to avoid the initial surge.</li>
-                <li><strong>Wait it out:</strong> Tailgate an extra hour; many fans prefer to relax and leave once traffic eases.</li>
-              </ol>
-
-              <h4 className="font-semibold mt-3">Parking lot intel</h4>
-              <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)] mt-3">
-                <li>Free general parking: across Route 1 — heavy post-event delays.</li>
-                <li>Prepaid stadium-side parking: limited and expensive; buy early.</li>
-                <li>Delayed-exit lots: agree to wait 75–90 minutes, receive a gift card incentive.</li>
-                <li>Private lots: cash lots run by local businesses/residents for faster exits.</li>
-              </ul>
-
-              <h4 className="font-semibold mt-3">2.2 Riding the rails — event trains</h4>
-              <p className="text-[color:var(--color-neutral-800)]">MBTA runs special Foxboro Event Service trains from South Station and Providence to Foxboro station. These are typically the best way to bypass road traffic but have strict schedules and limited seats.</p>
-              <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)] mt-3">
-                <li>Round-trip tickets (~$20) sell out quickly; buy on the MBTA mTicket app.</li>
-                <li>Trains usually arrive ~90 minutes before kickoff and depart ~30 minutes after the event; missed trains can leave you scrambling.</li>
-                <li>Foxboro station is ~8 minutes' walk to Gillette via marked pedestrian paths.</li>
-                <li>Rally Buses/private coaches are alternative options that often wait longer than the trains' tight windows.</li>
-              </ul>
+              <h2 className="text-2xl font-bold mb-3">Stadium Experience</h2>
+              <dl className="text-[color:var(--color-neutral-800)]">
+                <div className="flex justify-between py-1"><dt className="font-medium">Stadium Name</dt><dd>Gillette Stadium (Foxborough)</dd></div>
+                <div className="flex justify-between py-1"><dt className="font-medium">Capacity</dt><dd>~ 65k (approx.)</dd></div>
+                <div className="flex justify-between py-1"><dt className="font-medium">Getting There</dt><dd>Event trains, driving, private lots, and shuttles (see Transport section)</dd></div>
+                <div className="flex justify-between py-1"><dt className="font-medium">Gates & Security</dt><dd>Expect screening and bag checks; follow stadium policies.</dd></div>
+                <div className="flex justify-between py-1"><dt className="font-medium">Accessibility</dt><dd>ADA seating and services are available; contact the stadium in advance for special arrangements.</dd></div>
+                <div className="flex justify-between py-1"><dt className="font-medium">Food & Drink</dt><dd>Patriot Place and the stadium offer many dining options; most concessions are cashless and support mobile ordering.</dd></div>
+              </dl>
             </section>
 
+            {/* 4. Fan Meetups & Bars */}
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h3 className="text-xl font-bold mb-2">3. Uber/Lyft & taxis</h3>
-              <p className="text-[color:var(--color-neutral-800)]">Designated rideshare pickup is Lot 15. Beware surge pricing after events — fares back to Boston can be very high. If you choose rideshare, consider walking to nearby neighborhoods for faster pickup.</p>
+              <h2 className="text-2xl font-bold mb-3">Fan Meetups & Bars</h2>
+              <p className="text-[color:var(--color-neutral-800)]">Pre- and post-match meetups are common at Patriot Place. For downtown meetups and supporter clubs, look to Back Bay, the North End, and Fenway. We'll add nationality-specific meetup guides as the community contributes.</p>
+              <table className="w-full mt-4 text-sm border-collapse">
+                <thead>
+                  <tr className="text-left border-b"><th className="pb-2">Nation</th><th className="pb-2">Bar / Area</th><th className="pb-2">Notes</th></tr>
+                </thead>
+                <tbody>
+                  <tr className="align-top border-b"><td className="py-2">General</td><td className="py-2">Patriot Place / Back Bay / Fenway</td><td className="py-2">Good starting points for supporter meetups.</td></tr>
+                </tbody>
+              </table>
             </section>
 
+            {/* 5. Transportation & Parking (locals' tips) */}
             <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h3 className="text-xl font-bold mb-2">4. Pre-event guide to Patriot Place</h3>
-              <p className="text-[color:var(--color-neutral-800)]">Arrive early and explore Patriot Place: restaurants, Patriots Hall of Fame, bowling, cinema, and shopping. It’s the easiest way to fill hours before gates open.</p>
-            </section>
-
-            <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h3 className="text-xl font-bold mb-2">5. Final checklist</h3>
+              <h2 className="text-2xl font-bold mb-3">Transportation & Parking</h2>
+              <p className="text-[color:var(--color-neutral-800)]">Local veterans recommend one of three strategies: park off-site and walk to avoid the worst post-event jams; leave slightly early to beat the initial surge; or plan to linger at a tailgate or Patriot Place for 45–90 minutes until traffic eases.</p>
+              <h3 className="font-semibold mt-3">Tips</h3>
               <ol className="list-decimal pl-5 text-[color:var(--color-neutral-800)]">
-                <li>Plan your transport (drive, train, or shuttle) before you arrive.</li>
-                <li>Buy event train tickets immediately when available.</li>
-                <li>If driving, pick a private lot or have an exit plan.</li>
-                <li>Arrive early — enjoy Patriot Place and tailgating rules.</li>
+                <li>Park 0.5–1 mile away in private lots ($40–$60) and walk — best tradeoff between time and cost.</li>
+                <li>Buy prepaid stadium-side parking only if you need immediate proximity — passes sell out and can be pricey.</li>
+                <li>Consider organized shuttles or Rally Bus services as an alternative to strict train schedules.</li>
               </ol>
+            </section>
+
+            {/* 6. Safety & Local Laws */}
+            <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
+              <h2 className="text-2xl font-bold mb-3">Safety & Local Laws</h2>
+              <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)]">
+                <li>Keep valuables secure in crowded areas.</li>
+                <li>Respect stadium rules and code of conduct; violations can lead to ejection.</li>
+                <li>Watch for transit alerts and service changes on matchday.</li>
+              </ul>
+            </section>
+
+            {/* 7. Things to Do */}
+            <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
+              <h2 className="text-2xl font-bold mb-3">Things to Do</h2>
+              <p className="text-[color:var(--color-neutral-800)]">Spend extra time at Patriot Place (shopping, restaurants, Patriots Hall of Fame). For more tourist activities, downtown Boston offers historic sites, nightlife, and dining options.</p>
+            </section>
+
+            {/* 8. Fan Tips */}
+            <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
+              <h2 className="text-2xl font-bold mb-3">Fan Tips</h2>
+              <ol className="list-decimal pl-5 text-[color:var(--color-neutral-800)]">
+                <li>Plan your transport early and commit to a strategy.</li>
+                <li>Buy event train tickets as soon as they are available if you plan to ride the commuter rail.</li>
+                <li>For driving, have an exit strategy (private lot, leave early, or wait it out).</li>
+                <li>Arrive early to enjoy Patriot Place and reduce stress.</li>
+              </ol>
+            </section>
+
+            {/* 9. Essential Links & Maps */}
+            <section className="rounded-lg p-6 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
+              <h2 className="text-2xl font-bold mb-3">Essential Links & Maps</h2>
+              <ul className="list-disc pl-5 text-[color:var(--color-neutral-800)]">
+                <li><a className="text-[color:var(--color-primary)] hover:underline" href="https://www.patriots.com/gillette-stadium">Gillette Stadium official site</a></li>
+                <li><a className="text-[color:var(--color-primary)] hover:underline" href="https://www.mbta.com">MBTA / event train info (mTicket)</a></li>
+                <li><a className="text-[color:var(--color-primary)] hover:underline" href="https://www.google.com/maps/place/Gillette+Stadium">Google Maps – Gillette Stadium</a></li>
+              </ul>
+              <p className="text-[color:var(--color-neutral-700)] mt-3">Use the sidebar map or add a Google My Maps link to the city metadata for stadium & parking overlays.</p>
             </section>
 
             <section className="rounded-lg p-6 bg-[color:var(--color-neutral-50)] border border-[color:var(--color-neutral-100)] shadow-sm">
-              <h3 className="text-lg font-bold mb-2">Core template architecture (for editors)</h3>
-              <p className="text-[color:var(--color-neutral-800)]">Below is the canonical structure we use for each city guide. Editors can follow this template when creating new city pages.</p>
-              <pre className="mt-3 p-3 bg-white rounded text-sm overflow-auto border border-[color:var(--color-neutral-100)]"><code>{`# &#123;&#123;city_name&#125;&#125; — World Cup 2026 Fan Zone Guide
-
-## 1. Overview
-Quick context about &#123;&#123;city_name&#125;&#125;, main vibe, and what to expect for matchdays.
-
-## 2. Getting There
-- Airports: &#123;&#123;airport_primary&#125;&#125; (&#123;&#123;airport_code&#125;&#125;) — &#123;&#123;distance&#125;&#125; km from city center
-- Public Transit:
-- Rideshare:
-- Parking:
-- Average Costs:
-
-## 3. Stadium Experience
-- Stadium Name: &#123;&#123;stadium_name&#125;&#125;
-- Capacity: &#123;&#123;stadium_capacity&#125;&#125;
-- Getting There: 
-- Gates & Security:
-- Accessibility:
-- Food & Drink Highlights:
-
-## 4. Fan Meetups & Bars
-Top local spots by fan nationality:
-| Nation | Bar/Area | Notes |
-
-## 5. Transportation & Parking
-Best routes, parking tips, exit strategies, and “what locals know.”
-
-## 6. Safety & Local Laws
-Neighborhood do’s/don’ts, alcohol laws, crowd control notes.
-
-## 7. Things to Do
-Short activities within 1 hour.
-
-## 8. Fan Tips
-Bullet list of verified crowd-sourced advice.
-
-## 9. Essential Links & Maps
-- [Official City Page](&#123;&#123;city_official_url&#125;&#125;)
-- [Transit Map](&#123;&#123;transit_pdf_link&#125;&#125;)
-- [Google Maps Stadium](&#123;&#123;gmap_link&#125;&#125;)
-
-_Last updated May 2026_`}</code></pre>
+              <h3 className="text-lg font-bold mb-2">Editor template</h3>
+              <p className="text-[color:var(--color-neutral-800)]">Copy this structure for new city guides.</p>
+              <pre className="mt-3 p-3 bg-white rounded text-sm overflow-auto border border-[color:var(--color-neutral-100)]"><code>{EDITOR_TEMPLATE}</code></pre>
             </section>
+
           </main>
 
-          {/* Sidebar */}
           <aside className="space-y-6">
             <div className="rounded-lg p-4 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
               <h3 className="font-bold mb-2">At a glance</h3>
@@ -176,10 +199,9 @@ _Last updated May 2026_`}</code></pre>
                 <div className="flex justify-between py-1"><dt className="font-medium">Language</dt><dd>English</dd></div>
               </dl>
             </div>
+
             <div className="rounded-lg p-4 bg-white border border-[color:var(--color-neutral-100)] shadow-sm">
               <h3 className="font-bold mb-2">Map</h3>
-              {/* Use MapEmbed if the city metadata provides an embed URL (e.g., Google My Maps) */}
-              {/* MapEmbed is a client component that lazy-loads the iframe for performance */}
               {city?.map_embed ? (
                 <MapEmbed src={city.map_embed} title={`${city?.name || citySlug} map`} height={240} />
               ) : (
@@ -216,3 +238,4 @@ _Last updated May 2026_`}</code></pre>
     </div>
   );
 }
+

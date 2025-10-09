@@ -13,12 +13,14 @@ export default function BlogTeaser() {
           <h2 className="text-2xl sm:text-3xl font-bold">{t("title")}</h2>
           <p className="text-[color:var(--color-neutral-800)] mt-1">{t("desc")}</p>
         </div>
-        <Link
-          href="/blog"
+        <a
+          href="https://wc26fanzone.beehiiv.com/"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center justify-center px-4 py-2 rounded-md font-semibold text-white bg-[color:var(--color-accent-red)] hover:brightness-95"
         >
-          {t("cta")}
-        </Link>
+          Newsletter
+        </a>
       </div>
     </section>
   );

@@ -20,6 +20,8 @@ export default function ThreadDetailClient({ threadId, thread, citySlug }: Props
   const [replyBody, setReplyBody] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
+  const [expandedPosts, setExpandedPosts] = useState<Record<string, boolean>>({});
+  const [threadExpanded, setThreadExpanded] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -188,56 +190,165 @@ export default function ThreadDetailClient({ threadId, thread, citySlug }: Props
     );
   }
 
+  function timeAgo(dateStr: string) {
+    const then = new Date(dateStr).getTime();
+    const diff = Date.now() - then;
+    const sec = Math.floor(diff / 1000);
+    if (sec < 60) return `${sec}s`;
+    const min = Math.floor(sec / 60);
+    if (min < 60) return `${min}m`;
+    const hr = Math.floor(min / 60);
+    if (hr < 24) return `${hr}h`;
+    const days = Math.floor(hr / 24);
+    if (days < 7) return `${days}d`;
+    return new Date(dateStr).toLocaleDateString();
+  }
+
   return (
-    <div className="space-y-6">
-      {/* Original Thread Body */}
-      <div className="p-6 border rounded bg-white">
-        <div className="prose max-w-none">
-          <p className="whitespace-pre-wrap">{thread.body_md}</p>
+    <div className="space-y-3">
+      {/* Original Thread Body (compact, with left vote column) */}
+      <div className="flex items-start gap-3 py-2 border-b">
+        <div className="w-12 hidden sm:flex flex-shrink-0 flex-col items-center text-xs text-gray-600">
+          <button
+            onClick={toggleThreadUpvote}
+            className={`mb-1 p-0.5 rounded ${threadVote === 1 ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
+            aria-label="Upvote thread"
+          >
+            ▲
+          </button>
+          <div className="font-semibold text-xs mt-1">{threadScore}</div>
         </div>
-        <div className="mt-4 text-sm text-gray-600 flex items-center justify-between">
-          <div>Posted by author • {new Date(thread.created_at).toLocaleString()}</div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={toggleThreadUpvote}
-              className={`p-1 rounded ${threadVote === 1 ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
-            >
-              ▲
-            </button>
-            <div className="font-bold">{threadScore}</div>
+
+        <div className="flex-1">
+          <div className="prose max-w-none">
+            {(() => {
+              const threshold = 500;
+              const body = thread.body_md || '';
+              const isLong = body.length > threshold;
+              if (isLong && !threadExpanded) {
+                return (
+                  <p className="whitespace-pre-wrap text-[color:var(--color-neutral-800)]">
+                    {body.slice(0, threshold)}…
+                    <button
+                      type="button"
+                      onClick={() => setThreadExpanded(true)}
+                      className="ml-2 text-sm text-blue-600 hover:underline"
+                    >
+                      Read more
+                    </button>
+                  </p>
+                );
+              }
+              return (
+                <p className="whitespace-pre-wrap text-[color:var(--color-neutral-800)]">
+                  {body}
+                  {isLong && threadExpanded && (
+                    <button
+                      type="button"
+                      onClick={() => setThreadExpanded(false)}
+                      className="ml-2 text-sm text-blue-600 hover:underline"
+                    >
+                      Show less
+                    </button>
+                  )}
+                </p>
+              );
+            })()}
+          </div>
+          <div className="mt-1 flex items-center justify-between text-sm text-gray-500">
+            <div>Posted by author • {timeAgo(thread.created_at)}</div>
+            {/* mobile inline vote */}
+            <div className="sm:hidden flex items-center gap-2">
+              <button
+                onClick={toggleThreadUpvote}
+                className={`p-1 rounded ${threadVote === 1 ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
+                aria-label="Upvote thread"
+              >
+                ▲
+              </button>
+              <div className="font-semibold">{threadScore}</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Posts/Replies */}
+      {/* Posts/Replies (stacked, subtle separators) */}
       {posts.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">{posts.length} {posts.length === 1 ? 'Reply' : 'Replies'}</h3>
-          {posts.map((post, idx) => (
-            <div key={post.id} className="p-4 border rounded bg-gray-50 flex flex-col gap-3">
-              <div className="prose max-w-none">
-                <p className="whitespace-pre-wrap">{post.body_md}</p>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-600">By user • {new Date(post.created_at).toLocaleString()}</div>
-                <div className="flex items-center gap-3">
+        <div>
+          <h3 className="text-lg font-semibold mb-2">{posts.length} {posts.length === 1 ? 'Reply' : 'Replies'}</h3>
+          <div className="flex flex-col">
+            {posts.map((post, idx) => (
+              <div key={post.id} className="flex items-start gap-3 py-2 border-b last:border-b-0">
+                <div className="w-12 hidden sm:flex flex-shrink-0 flex-col items-center text-xs text-gray-600">
                   <button
                     onClick={(e) => togglePostUpvote(e, post.id, idx)}
-                    className="p-1 rounded bg-gray-100"
+                    className="mb-1 p-0.5 rounded bg-gray-100"
+                    aria-label="Upvote reply"
                   >
                     ▲
                   </button>
-                  <div className="font-medium">{post.score || 0}</div>
+                  <div className="font-medium text-xs mt-1">{post.score || 0}</div>
+                </div>
+
+                <div className="flex-1">
+                  <div className="prose max-w-none">
+                      {(() => {
+                        const threshold = 300;
+                        const body = post.body_md || '';
+                        const isLong = body.length > threshold;
+                        const isExpanded = !!expandedPosts[post.id];
+                        if (isLong && !isExpanded) {
+                          return (
+                            <p className="whitespace-pre-wrap text-[color:var(--color-neutral-800)]">
+                              {body.slice(0, threshold)}…
+                              <button
+                                type="button"
+                                onClick={() => setExpandedPosts((s) => ({ ...s, [post.id]: true }))}
+                                className="ml-2 text-sm text-blue-600 hover:underline"
+                              >
+                                Read more
+                              </button>
+                            </p>
+                          );
+                        }
+                        return (
+                          <p className="whitespace-pre-wrap text-[color:var(--color-neutral-800)]">
+                            {body}
+                            {isLong && isExpanded && (
+                              <button
+                                type="button"
+                                onClick={() => setExpandedPosts((s) => ({ ...s, [post.id]: false }))}
+                                className="ml-2 text-sm text-blue-600 hover:underline"
+                              >
+                                Show less
+                              </button>
+                            )}
+                          </p>
+                        );
+                      })()}
+                    </div>
+                  <div className="mt-1 flex items-center justify-between text-sm text-gray-500">
+                    <div>By user • {timeAgo(post.created_at)}</div>
+                    <div className="sm:hidden flex items-center gap-2">
+                      <button
+                        onClick={(e) => togglePostUpvote(e, post.id, idx)}
+                        className="p-1 rounded bg-gray-100"
+                      >
+                        ▲
+                      </button>
+                      <div className="font-medium">{post.score || 0}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 
-      {/* Reply Form */}
-      <div className="p-4 border rounded bg-white">
-        <h3 className="text-lg font-semibold mb-4">Post a Reply</h3>
+      {/* Reply Form (compact) */}
+      <div className="py-3">
+        <h3 className="text-lg font-semibold mb-2">Post a Reply</h3>
         <form onSubmit={submitReply} className="space-y-3">
           <textarea
             value={replyBody}
@@ -255,15 +366,11 @@ export default function ThreadDetailClient({ threadId, thread, citySlug }: Props
             >
               {submitting ? 'Posting...' : 'Post Reply'}
             </button>
-            <span className="text-sm text-gray-500">
-              Signed in as {user.email}
-            </span>
+            <span className="text-sm text-gray-500">Signed in as {user.email}</span>
           </div>
         </form>
         {message && (
-          <p className={`mt-2 text-sm ${message.includes('Error') ? 'text-red-600' : 'text-green-600'}`}>
-            {message}
-          </p>
+          <p className={`mt-2 text-sm ${message.includes('Error') ? 'text-red-600' : 'text-green-600'}`}>{message}</p>
         )}
       </div>
     </div>

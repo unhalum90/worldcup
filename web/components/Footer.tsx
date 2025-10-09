@@ -16,9 +16,14 @@ export default function Footer() {
           <Link href="/" className="hover:underline underline-offset-4">
             {t("nav.home")}
           </Link>
-          <Link href="/blog" className="hover:underline underline-offset-4">
-            {t("nav.blog")}
-          </Link>
+          <a
+            href="https://wc26fanzone.beehiiv.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline underline-offset-4"
+          >
+            Newsletter
+          </a>
         </nav>
       </div>
     </footer>

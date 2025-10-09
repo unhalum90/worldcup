@@ -41,7 +41,7 @@ export default function HeroSplit() {
                 playsInline
                 controls
                 poster="/globe.svg"
-                className="w-full h-[320px] md:h-[420px] lg:h-[520px] object-cover"
+                className="w-full h-[360px] md:h-[460px] lg:h-[560px] object-cover"
               >
                 <source src="/hero-video.mp4" type="video/mp4" />
                 Your browser doesn&apos;t support video playback.
@@ -88,12 +88,14 @@ export default function HeroSplit() {
                   See the Boston Demo
                 </Link>
 
-                <Link
-                  href="/blog"
+                <a
+                  href="https://wc26fanzone.beehiiv.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center text-sm font-medium underline underline-offset-4 text-[color:var(--color-primary)]"
                 >
-                  {t("viewBlog")}
-                </Link>
+                  Newsletter
+                </a>
 
               {/* Social Proof */}
               <div className="flex items-center gap-2 text-[color:var(--color-neutral-800)] text-sm">
