@@ -1,46 +1,20 @@
-import Image from 'next/image';
 import fs from 'fs';
 import path from 'path';
 
-type Feature = {
-  title: string;
-  desc: string;
-  img: string;
-};
-
-const features: Feature[] = [
+const features = [
   {
-    title: 'Feature 1 — City Guide',
+    title: 'City Guide',
     desc: 'A complete Boston guide with neighborhood tips, transit, stadium access, and verified recommendations.',
-    img: '/mockups/desktop_mockup_city_guide.png',
   },
   {
-    title: 'Feature 2 — Forums',
+    title: 'Forums',
     desc: "City-specific forums with pinned 'Start Here' threads, matchday live threads, and community Q&A.",
-    img: '/mockups/desktop_mockup_community.png',
   },
   {
-    title: 'Feature 3 — AI Travel Builder',
+    title: 'AI Travel Builder',
     desc: 'Generate personalized day-by-day itineraries for matches, including transport, dining, and alternatives. (Photos to be provided)',
-    img: '/mockups/desktop_mockup_travel_plan.png',
   },
 ];
-
-function FeatureRow({ f, reverse }: { f: Feature; reverse?: boolean }) {
-  return (
-    <div className={`md:flex md:items-center md:gap-8 py-8 ${reverse ? 'md:flex-row-reverse' : ''}`}>
-      <div className="md:flex-1">
-        <h3 className="text-xl font-bold mb-2">{f.title}</h3>
-        <p className="text-[color:var(--color-neutral-800)]">{f.desc}</p>
-      </div>
-      <div className="md:w-96 mt-4 md:mt-0 flex items-center justify-center">
-        <div className="w-full rounded-lg overflow-hidden border border-[color:var(--color-neutral-100)] shadow-sm">
-          <Image src={f.img} alt={f.title} width={720} height={420} className="w-full h-auto object-cover" />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function BostonDemo() {
   // Attempt to read a small summary from a local markdown file if present.
@@ -64,9 +38,17 @@ export default function BostonDemo() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">Boston — exemplar city guide</h2>
   <p className="text-[color:var(--color-neutral-800)] mb-6">{bostonSummary ?? 'This page demonstrates the core features we will build for every host city. We will develop Boston first as the exemplar.'}</p>
 
-        {features.map((f, i) => (
-          <FeatureRow key={f.title} f={f} reverse={i % 2 === 1} />
-        ))}
+        <div className="coming-soon">
+          <h3 className="coming-soon__title">Coming soon</h3>
+          <div className="coming-soon__items">
+            {features.map((f) => (
+              <div key={f.title} className="coming-soon__item">
+                <h4 className="coming-soon__feature">{f.title}</h4>
+                <p className="coming-soon__desc">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

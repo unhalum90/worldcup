@@ -45,17 +45,24 @@ export async function POST(req: NextRequest) {
     }
 
     // Optionally: call MailerLite API here to add to group
+    const mailerliteResults: Record<string, { status: number; body?: string } | null> = {
+      website: null,
+      newsletter: null,
+    };
+
     if (MAILERLITE_KEY) {
       try {
         const headers = {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${MAILERLITE_KEY}`,
+          // MailerLite sometimes accepts the legacy header name; include it for compatibility
+          'X-MailerLite-ApiKey': MAILERLITE_KEY,
         };
 
         // Add to website group if configured
         if (MAILERLITE_WEBSITE_GROUP_ID) {
           try {
-            await fetch(
+            const res = await fetch(
               `https://api.mailerlite.com/api/v2/groups/${MAILERLITE_WEBSITE_GROUP_ID}/subscribers`,
               {
                 method: 'POST',
@@ -63,15 +70,21 @@ export async function POST(req: NextRequest) {
                 body: JSON.stringify({ email: email.toLowerCase().trim() }),
               }
             );
+            const text = await res.text().catch(() => '');
+            if (!res.ok) {
+              console.error('MailerLite website group add failed', res.status, text);
+            }
+            mailerliteResults.website = { status: res.status, body: text };
           } catch (mlErr) {
             console.error('MailerLite website group add failed', mlErr);
+            mailerliteResults.website = { status: 0, body: String(mlErr) };
           }
         }
 
         // Add to newsletter group if configured
         if (MAILERLITE_NEWSLETTER_GROUP_ID) {
           try {
-            await fetch(
+            const res = await fetch(
               `https://api.mailerlite.com/api/v2/groups/${MAILERLITE_NEWSLETTER_GROUP_ID}/subscribers`,
               {
                 method: 'POST',
@@ -79,8 +92,14 @@ export async function POST(req: NextRequest) {
                 body: JSON.stringify({ email: email.toLowerCase().trim() }),
               }
             );
+            const text = await res.text().catch(() => '');
+            if (!res.ok) {
+              console.error('MailerLite newsletter group add failed', res.status, text);
+            }
+            mailerliteResults.newsletter = { status: res.status, body: text };
           } catch (mlErr) {
             console.error('MailerLite newsletter group add failed', mlErr);
+            mailerliteResults.newsletter = { status: 0, body: String(mlErr) };
           }
         }
       } catch (err) {
@@ -88,7 +107,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ ok: true, id: data.id });
+    return NextResponse.json({ ok: true, id: data.id, mailerlite: mailerliteResults });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });

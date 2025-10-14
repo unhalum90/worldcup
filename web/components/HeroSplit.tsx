@@ -81,21 +81,14 @@ export default function HeroSplit() {
 
             {/* Secondary Links */}
             <div className="mt-4 flex flex-wrap items-center gap-4">
-                <Link
-                  href="/forums/boston"
-                  className="inline-flex items-center text-sm font-medium underline underline-offset-4 text-[color:var(--color-primary)]"
-                >
-                  See the Boston Demo
-                </Link>
-
-                <a
-                  href="https://wc26fanzone.beehiiv.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-sm font-medium underline underline-offset-4 text-[color:var(--color-primary)]"
-                >
-                  Newsletter
-                </a>
+              <a
+                href="https://wc26fanzone.beehiiv.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-sm font-medium underline underline-offset-4 text-[color:var(--color-primary)]"
+              >
+                Newsletter
+              </a>
 
               {/* Social Proof */}
               <div className="flex items-center gap-2 text-[color:var(--color-neutral-800)] text-sm">

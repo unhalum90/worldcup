@@ -4,23 +4,33 @@ import { useTranslations } from "next-intl";
 
 export default function Features() {
   const t = useTranslations("features");
-  const items = t.raw("items") as { title: string; desc: string }[];
+  // Simplified coming soon layout - we intentionally do not render images here
 
   return (
-    <section className="container mt-12 sm:mt-16">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-6">{t("title")}</h2>
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((it, idx) => (
-          <div
-            key={idx}
-            className="rounded-[var(--radius-md)] border border-[color:var(--color-neutral-100)] bg-white p-4 sm:p-5 shadow-sm"
-          >
-            <h3 className="text-lg font-semibold mb-2">{it.title}</h3>
-            <p className="text-[color:var(--color-neutral-800)] text-sm">
-              {it.desc}
-            </p>
-          </div>
-        ))}
+    <section className="coming-soon container mt-12 sm:mt-16">
+      <h2 className="coming-soon__title">Coming soon</h2>
+
+      <div className="coming-soon__items">
+        <div className="coming-soon__item">
+          <h3 className="coming-soon__feature">City Guide</h3>
+          <p className="coming-soon__desc">
+            A complete Boston guide with neighborhood tips, transit, stadium access, and verified recommendations.
+          </p>
+        </div>
+
+        <div className="coming-soon__item">
+          <h3 className="coming-soon__feature">Forums</h3>
+          <p className="coming-soon__desc">
+            City-specific forums with pinned "Start Here" threads, matchday live threads, and community Q&A.
+          </p>
+        </div>
+
+        <div className="coming-soon__item">
+          <h3 className="coming-soon__feature">AI Travel Builder</h3>
+          <p className="coming-soon__desc">
+            Generate personalized day-by-day itineraries for matches, including transport, dining, and alternatives.
+          </p>
+        </div>
       </div>
     </section>
   );
