@@ -34,13 +34,13 @@ export default function CityGuidesPage() {
                   </div>
                 </div>
 
-                <div className="sm:col-span-8 flex justify-start sm:justify-end items-center">
-                  <div className="flex gap-2 flex-wrap">
+                <div className="sm:col-span-8 flex justify-start sm:justify-start items-center sm:pl-8">
+                  <div className="flex gap-3 flex-wrap">
                     {languages.map((lang, langIdx) => {
                       const url = city.products[lang.key as keyof typeof city.products];
                       const available = Boolean(url && url.length > 0);
                       
-                      // Cycle through colors for available buttons
+                      // Same colors for all cities - cycle through 5 colors (always show colors, never grey)
                       const colors = [
                         { border: 'border-[#2A398D]', text: 'text-[#2A398D]', bg: 'bg-white', hoverBg: 'hover:bg-[#2A398D]', hoverText: 'hover:text-white' },
                         { border: 'border-[#E61D25]', text: 'text-[#E61D25]', bg: 'bg-white', hoverBg: 'hover:bg-[#E61D25]', hoverText: 'hover:text-white' },
@@ -56,16 +56,14 @@ export default function CityGuidesPage() {
                           href={available ? url! : '#'}
                           target={available ? '_blank' : undefined}
                           rel={available ? 'noopener noreferrer' : undefined}
-                          className={`inline-flex items-center justify-center px-4 py-2 rounded-full font-semibold text-sm transition-all border-2 ${
-                            available
-                              ? `${colorStyle.border} ${colorStyle.text} ${colorStyle.bg} ${colorStyle.hoverBg} ${colorStyle.hoverText}`
-                              : 'border-[color:var(--color-neutral-100)] bg-[color:var(--color-neutral-100)] text-[color:var(--color-neutral-600)] cursor-not-allowed opacity-60'
+                          className={`group inline-flex items-center justify-center px-5 py-2.5 rounded-full font-semibold text-base transition-all border-2 min-w-[68px] ${colorStyle.border} ${colorStyle.text} ${colorStyle.bg} ${colorStyle.hoverBg} ${
+                            !available ? 'cursor-not-allowed' : ''
                           }`}
                           aria-disabled={!available}
-                          title={available ? `Buy ${city.name} guide (${lang.name})` : `${lang.name} not available`}
+                          title={available ? `Buy ${city.name} guide (${lang.name})` : `${lang.name} coming soon`}
                           onClick={available ? undefined : (e) => e.preventDefault()}
                         >
-                          <span className="text-xs font-bold uppercase">{lang.label}</span>
+                          <span className="text-sm font-bold uppercase group-hover:text-white transition-colors">{lang.label}</span>
                         </Link>
                       );
                     })}
