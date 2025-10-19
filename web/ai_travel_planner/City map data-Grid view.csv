@@ -1,0 +1,20 @@
+﻿city,country,stadium_name,stadium_lat,stadium_long,fan_park_name,fan_park_lat,fan_park_long,airports,airport_latlongs
+Dallas / Arlington,USA,AT&T Stadium,32.7473,-97.0945,Fair Park,32.7795,-96.7604,"DFW,DAL,AFW","32.8998,-97.0403 ; 32.8471,-96.8517 ; 33.0007,-97.3189"
+Kansas City,USA,Arrowhead Stadium,39.0490,-94.4839,Union Station Fan Plaza,39.0840,-94.5859,MCI,"39.2976,-94.7139"
+Houston,USA,NRG Stadium,29.6847,-95.4107,EaDo Fan Festival (East Downtown),29.7485,-95.3517,"IAH,HOU","29.9902,-95.3368 ; 29.6454,-95.2789"
+Atlanta,USA,Mercedes-Benz Stadium,33.7554,-84.4008,Centennial Olympic Park,33.7603,-84.3938,ATL,"33.6407,-84.4277"
+Miami,USA,Hard Rock Stadium,25.9580,-80.2389,Bayfront Park,25.7730,-80.1864,"MIA,FLL,PBI","25.7959,-80.2870 ; 26.0726,-80.1527 ; 26.6832,-80.0956"
+Los Angeles,USA,SoFi Stadium,33.9535,-118.3387,"TBD
+",34.0443,-118.2673,"LAX,BUR,SNA,LGB","33.9416,-118.4085 ; 34.2007,-118.3587 ; 33.6757,-117.8682 ; 33.8180,-118.1445"
+San Francisco Bay Area,USA,Levi’s Stadium,37.4030,-121.9700,Embarcadero Plaza,37.7955,-122.3937,"SFO,SJC,OAK","37.6213,-122.3790 ; 37.3639,-121.9289 ; 37.7126,-122.2197"
+Seattle,USA,Lumen Field,47.5952,-122.3316,Seattle Center,47.6205,-122.3493,"SEA,PAE","47.4502,-122.3088 ; 47.9076,-122.2816"
+Boston,USA,Gillette Stadium,42.0909,-71.2643,TBD,42.3587,-71.0636,"BOS,PVD","42.3656,-71.0096 ; 41.7263,-71.4325"
+New York / New Jersey,USA,MetLife Stadium,40.8136,-74.0745,"Liberty State Park
+",40.7536,-73.9832,"EWR,JFK,LGA","40.6895,-74.1745 ; 40.6413,-73.7781 ; 40.7769,-73.8740"
+Philadelphia,USA,Lincoln Financial Field,39.9008,-75.1675,"Fairmont Park
+",39.9442,-75.1401,"PHL,ACY","39.8744,-75.2424 ; 39.4576,-74.5772"
+Toronto,Canada,BMO Field,43.6332,-79.4180,Nathan Phillips Square,43.6526,-79.3832,"YYZ,YTZ","43.6777,-79.6248 ; 43.6275,-79.3962"
+Vancouver,Canada,BC Place Stadium,49.2767,-123.1119,Jack Poole Plaza,49.2884,-123.1164,YVR,"49.1950,-123.1770"
+Guadalajara,Mexico,Estadio Akron,20.6737,-103.4618,Plaza de la Liberación,20.6762,-103.3476,GDL,"20.5218,-103.3100"
+Monterrey,Mexico,Estadio BBVA,25.6486,-100.2899,Macroplaza,25.6709,-100.3090,MTY,"25.7785,-100.1070"
+Mexico City,Mexico,Estadio Azteca,19.3029,-99.1505,Zócalo / Alameda Central,19.4326,-99.1332,MEX,"19.4361,-99.0719"

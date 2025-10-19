@@ -1,0 +1,183 @@
+{
+  "success": true,
+  "itinerary": {
+    "options": [
+      {
+        "title": "Dallas & Atlanta Explorer (Balanced & Efficient)",
+        "summary": "This option provides a balanced approach to experiencing both host cities, starting in Dallas and concluding in Atlanta, optimizing travel time between major hubs. Focuses on good transit access and vibrant city areas for a well-rounded first-time USA experience.",
+        "flights": {
+          "routing": "LIS → DFW (via a European or East Coast US hub, e.g., MAD/LHR/EWR) | DFW → ATL (direct domestic flight) | ATL → LIS (via an East Coast US or European hub, e.g., JFK/CDG/AMS)",
+          "estimatedCost": "$1,500 - $2,000 per person (roundtrip transatlantic + internal US flight)"
+        },
+        "cities": [
+          {
+            "cityName": "Dallas",
+            "lodgingZones": [
+              {
+                "zoneName": "Downtown Dallas / Arts District",
+                "whyStayHere": "Central location offering a good range of moderate hotels, excellent access to DART light rail (Green Line) for the Fair Park Fan Festival. Lively atmosphere, diverse dining, and cultural attractions.",
+                "estimatedRate": "$180 - $250/night",
+                "transitToStadium": "45-60 min via ride-share (Uber/Lyft) or dedicated World Cup shuttles (to be announced)",
+                "transitToFanFest": "15-20 min via DART Green Line (direct)",
+                "pros": [
+                  "Central, vibrant, excellent dining & nightlife",
+                  "Good DART access to Fan Fest and other Dallas attractions"
+                ],
+                "cons": [
+                  "Stadium (AT&T) is far in Arlington, requiring ride-share/shuttle",
+                  "Can be busy"
+                ]
+              }
+            ],
+            "matchDayLogistics": "From Downtown, take an Uber/Lyft or pre-booked World Cup shuttle to AT&T Stadium in Arlington. Expect surge pricing during peak times. Allocate ample time (1.5-2 hours) for travel and security.",
+            "insiderTips": [
+              "Dallas has fantastic BBQ – don't miss Pecan Lodge in Deep Ellum or Terry Black's BBQ in Bishop Arts District. While DART is great for Dallas proper, AT&T Stadium is in Arlington, which lacks direct public transit. Plan stadium transport well in advance, and factor in potential traffic. Consider a DART day pass for exploring Dallas."
+            ]
+          },
+          {
+            "cityName": "Atlanta",
+            "lodgingZones": [
+              {
+                "zoneName": "Downtown Atlanta",
+                "whyStayHere": "Direct MARTA access to Mercedes-Benz Stadium (Dome/GWCC/Philips Arena/CNN Center Station) and Centennial Olympic Park Fan Festival. Many hotels catering to convention-goers, diverse dining, walkable to major attractions.",
+                "estimatedRate": "$180 - $250/night",
+                "transitToStadium": "5-10 min walk or 1-2 MARTA stops depending on hotel location",
+                "transitToFanFest": "5-10 min walk",
+                "pros": [
+                  "Unbeatable proximity to stadium and fan fest",
+                  "Excellent MARTA connectivity (including to airport)",
+                  "Many attractions within walking distance"
+                ],
+                "cons": [
+                  "Can feel very 'business-like' and less residential charm compared to other neighborhoods",
+                  "Nightlife is more concentrated in Midtown or Old Fourth Ward"
+                ]
+              }
+            ],
+            "matchDayLogistics": "From most Downtown hotels, it's a short walk to Mercedes-Benz Stadium or a quick ride on MARTA to the 'Dome/GWCC/Philips Arena/CNN Center Station' which is directly connected to the stadium.",
+            "insiderTips": [
+              "Atlanta's MARTA system is efficient and directly connects the airport to downtown/midtown. Purchase a Breeze Card upon arrival for easy travel. For BBQ, check out Fox Bros. BBQ (multiple locations) or Fat Matt's Rib Shack for local favorites. Explore the BeltLine for a unique urban trail experience with food and drink stops (accessible from Downtown via Streetcar or ride-share)."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "BBQ & Big City Vistas (Cultural Immersion)",
+        "summary": "This option prioritizes a deeper dive into local culture, especially the renowned BBQ scenes in both cities. It might involve slightly more varied transit but offers a more immersive experience, starting in Atlanta for a distinct Southern welcome.",
+        "flights": {
+          "routing": "LIS → ATL (via a European or East Coast US hub, e.g., DUB/CLT/BOS) | ATL → DFW (direct domestic flight) | DFW → LIS (via an East Coast US or European hub, e.g., NYC/LHR/FRA)",
+          "estimatedCost": "$1,500 - $2,000 per person (roundtrip transatlantic + internal US flight)"
+        },
+        "cities": [
+          {
+            "cityName": "Atlanta",
+            "lodgingZones": [
+              {
+                "zoneName": "Old Fourth Ward / Inman Park",
+                "whyStayHere": "Historic, vibrant neighborhoods with excellent food (including BBQ), close to the popular BeltLine Eastside Trail, and unique shops. Offers a more local, less touristy feel than Downtown.",
+                "estimatedRate": "$160 - $220/night",
+                "transitToStadium": "20-30 min via ride-share or a combination of streetcar/MARTA (connect from Inman Park/Reynoldstown Station)",
+                "transitToFanFest": "20-30 min via ride-share or streetcar/MARTA",
+                "pros": [
+                  "Authentic local experience, fantastic dining and nightlife",
+                  "Walkable to parks and the BeltLine"
+                ],
+                "cons": [
+                  "Not as direct to stadium/fan fest as Downtown/Midtown",
+                  "Fewer large chain hotels, more boutique/local options"
+                ]
+              }
+            ],
+            "matchDayLogistics": "From Old Fourth Ward/Inman Park, a ride-share (Uber/Lyft) is the most convenient option for Mercedes-Benz Stadium. Alternatively, take the Atlanta Streetcar from Krog Street Market/BeltLine to Centennial Olympic Park, then a short walk to the stadium.",
+            "insiderTips": [
+              "This area is excellent for exploring Atlanta's culinary scene beyond typical tourist spots. Check out Sweet Auburn BBQ or Daddy D'z BBQ Joynt for authentic flavors. Walk the Eastside BeltLine for art, people-watching, and access to Ponce City Market (a repurposed Sears building with shops and eateries)."
+            ]
+          },
+          {
+            "cityName": "Dallas",
+            "lodgingZones": [
+              {
+                "zoneName": "Deep Ellum / Lower Greenville",
+                "whyStayHere": "Renowned for live music, vibrant nightlife, unique boutiques, and a plethora of dining options, including some of Dallas's best BBQ. Offers a distinct, energetic character.",
+                "estimatedRate": "$170 - $240/night",
+                "transitToStadium": "40-55 min via ride-share or pre-booked shuttle",
+                "transitToFanFest": "10-15 min walk or short DART Green Line ride (Deep Ellum station)",
+                "pros": [
+                  "Lively atmosphere, prime for nightlife and dining",
+                  "Close to Fan Fest and DART"
+                ],
+                "cons": [
+                  "Can be noisy, fewer traditional large hotels",
+                  "Stadium still requires ride-share/shuttle"
+                ]
+              }
+            ],
+            "matchDayLogistics": "From Deep Ellum, walk to the Deep Ellum DART station and take the Green Line one stop to Fair Park for the fan festival, or take an Uber/Lyft to AT&T Stadium in Arlington. Plan for traffic and surge pricing on match days. For a game day, allocate 1.5-2 hours for travel to the stadium.",
+            "insiderTips": [
+              "Deep Ellum is a historic neighborhood with a rich music scene. Catch a live show after enjoying some Texas BBQ. For a classic Texas BBQ experience, Pecan Lodge is a must-try. Consider exploring the Dallas World Aquarium for a unique experience in Downtown Dallas, a short DART ride away."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Public Transport & Value (Budget-Conscious Focus)",
+        "summary": "This option focuses on maximizing public transport use and finding better value lodging, potentially in slightly less central or more suburban areas, while still providing good access to World Cup activities and keeping costs moderate.",
+        "flights": {
+          "routing": "LIS → DFW (via a European or East Coast US hub, aiming for slightly longer layovers for cost savings) | DFW → ATL (direct domestic flight, potentially a low-cost carrier like Southwest if booking far in advance) | ATL → LIS (via an East Coast US or European hub)",
+          "estimatedCost": "$1,400 - $1,800 per person (roundtrip transatlantic + internal US flight)"
+        },
+        "cities": [
+          {
+            "cityName": "Dallas",
+            "lodgingZones": [
+              {
+                "zoneName": "Las Colinas (Irving)",
+                "whyStayHere": "Located between DFW Airport and Downtown Dallas, offering more affordable hotel options. Has its own DART Orange Line stations, making airport and downtown accessible (with transfers).",
+                "estimatedRate": "$120 - $180/night",
+                "transitToStadium": "35-45 min drive via ride-share. Public transit is very complex and long (DART + bus/multiple transfers).",
+                "transitToFanFest": "45-55 min via DART Orange Line (to Bachman Lake/Forest Ln), transfer to Green Line.",
+                "pros": [
+                  "Most affordable hotel rates, convenient for DFW airport",
+                  "Good DART connectivity to Dallas attractions (with transfer)"
+                ],
+                "cons": [
+                  "Suburban feel, farther from city center action",
+                  "Long transit to Fan Fest and difficult to stadium"
+                ]
+              }
+            ],
+            "matchDayLogistics": "From Las Colinas, the most practical way to AT&T Stadium will be an Uber/Lyft. Car rental for the day could also be an option but navigating parking might be challenging. Plan for 1 hour + travel time due to distance and potential traffic. For Fan Fest, use DART Orange Line to connect to the Green Line for Fair Park.",
+            "insiderTips": [
+              "Utilize the DART Orange Line from Las Colinas for exploring Downtown Dallas, Uptown, and connecting to the Green Line for Fair Park. For BBQ, look for local joints within Irving or venture into Dallas proper. For first-timers, getting a local SIM card with data is highly recommended for navigation and ride-sharing apps."
+            ]
+          },
+          {
+            "cityName": "Atlanta",
+            "lodgingZones": [
+              {
+                "zoneName": "Downtown Atlanta (near a MARTA station)",
+                "whyStayHere": "Excellent value hotels directly on MARTA lines, providing the cheapest and most direct route to the stadium, fan festival, and airport. Many choices from budget-friendly to moderate.",
+                "estimatedRate": "$150 - $220/night",
+                "transitToStadium": "5-10 min walk or 1-2 MARTA stops",
+                "transitToFanFest": "5-10 min walk",
+                "pros": [
+                  "Cheapest and most direct way to access stadium and fan fest",
+                  "Direct MARTA to/from airport",
+                  "Numerous hotel options in various price ranges"
+                ],
+                "cons": [
+                  "Can be very busy, some areas can be quiet at night",
+                  "Less 'local charm' compared to other neighborhoods like Midtown or Old Fourth Ward"
+                ]
+              }
+            ],
+            "matchDayLogistics": "Simply walk from your Downtown hotel to Mercedes-Benz Stadium, or take MARTA to the 'Dome/GWCC/Philips Arena/CNN Center Station' which is integrated with the stadium complex.",
+            "insiderTips": [
+              "Atlanta's MARTA is very efficient. Consider a multi-day pass for convenience. While Downtown is convenient for the World Cup, venture into areas like Midtown, Old Fourth Ward, or West Midtown for diverse dining and nightlife experiences (easily accessible via MARTA or ride-share). For affordable and good BBQ, try Community Q BBQ or a local food truck."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

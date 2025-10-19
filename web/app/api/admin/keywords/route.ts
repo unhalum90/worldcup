@@ -38,7 +38,7 @@ Return ONLY a JSON array of keyword strings, no additional text or formatting.
 Example format: ["keyword 1", "keyword 2", "keyword 3"]`;
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',

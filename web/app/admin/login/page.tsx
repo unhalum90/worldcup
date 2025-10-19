@@ -16,7 +16,7 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError("");
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -27,7 +27,11 @@ export default function AdminLoginPage() {
       return;
     }
 
-    router.push("/admin");
+    console.log("Login successful, user:", data.user?.email);
+    
+    // Wait a moment for session to be set, then redirect
+    await new Promise(resolve => setTimeout(resolve, 500));
+    window.location.href = "/admin";
   }
 
   async function handleGoogleLogin() {
@@ -88,6 +92,20 @@ export default function AdminLoginPage() {
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[color:var(--color-primary)] focus:border-transparent"
               placeholder="••••••••"
             />
+          </div>
+
+          <div className="flex items-center justify-between mb-4">
+            <label className="flex items-center">
+              <input type="checkbox" className="mr-2" />
+              <span className="text-sm text-gray-600">Remember me</span>
+            </label>
+            <button
+              type="button"
+              onClick={() => router.push('/admin/forgot-password')}
+              className="text-sm text-[color:var(--color-primary)] hover:underline"
+            >
+              Forgot password?
+            </button>
           </div>
 
           <button

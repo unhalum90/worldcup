@@ -11,3 +11,10 @@ if (!serviceKey) {
 export const supabaseServer = createClient(url, serviceKey, {
   auth: { persistSession: false },
 });
+
+// Export a function to create a new client instance
+export function createServerClient() {
+  return createClient(url, serviceKey, {
+    auth: { persistSession: false },
+  });
+}

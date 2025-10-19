@@ -75,15 +75,8 @@ CREATE INDEX IF NOT EXISTS idx_keywords_created_at ON keywords(created_at DESC);
 -- ========================================
 -- 3. Update profiles table (add role column if not exists)
 -- ========================================
-DO $$ 
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM information_schema.columns 
-    WHERE table_name = 'profiles' AND column_name = 'role'
-  ) THEN
-    ALTER TABLE profiles ADD COLUMN role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin'));
-  END IF;
-END $$;
+-- Note: profiles table already has 'role' column from migration 003
+-- This section is kept for reference but won't execute since role exists
 
 
 -- ========================================
@@ -106,7 +99,7 @@ CREATE POLICY "Admins have full access to blog posts"
   USING (
     EXISTS (
       SELECT 1 FROM profiles
-      WHERE profiles.id = auth.uid()
+      WHERE profiles.user_id = auth.uid()
       AND profiles.role = 'admin'
     )
   );
@@ -121,7 +114,7 @@ CREATE POLICY "Only admins can access keywords"
   USING (
     EXISTS (
       SELECT 1 FROM profiles
-      WHERE profiles.id = auth.uid()
+      WHERE profiles.user_id = auth.uid()
       AND profiles.role = 'admin'
     )
   );
@@ -181,7 +174,7 @@ CREATE TRIGGER generate_blog_post_slug
 -- Uncomment to insert sample admin user and test post
 /*
 -- Make sure to replace 'your-user-id' with actual user UUID from auth.users
-UPDATE profiles SET role = 'admin' WHERE id = 'your-user-id';
+UPDATE profiles SET role = 'admin' WHERE user_id = 'your-user-id';
 
 INSERT INTO blog_posts (title, slug, status, content_markdown, city, tags, seo_keywords, meta_description, author_id)
 VALUES (
