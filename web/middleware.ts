@@ -1,10 +1,23 @@
 import { NextResponse, NextRequest } from 'next/server';
+import { defaultLocale } from './i18n';
 
-// No-op middleware — avoids runtime issues in production while we iterate.
-// This passes requests through without modifying them. We'll re-enable
-// full i18n middleware after confirming the deployment is serving.
-export function middleware(_req: NextRequest) {
-  return NextResponse.next();
+// Middleware to handle locale from cookies
+export function middleware(req: NextRequest) {
+  // Get locale from cookie
+  const locale = req.cookies.get('NEXT_LOCALE')?.value || defaultLocale;
+  
+  // Clone the request headers
+  const requestHeaders = new Headers(req.headers);
+  
+  // Set the locale header so next-intl can pick it up
+  requestHeaders.set('x-next-intl-locale', locale);
+  
+  // Return response with modified headers
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {
