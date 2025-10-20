@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import TravelPlannerWizard from '@/components/TravelPlannerWizard';
 import ItineraryResults from '@/components/ItineraryResults';
+import DidYouKnowCarousel from '@/components/DidYouKnowCarousel';
 
 export default function PlannerPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -59,14 +60,49 @@ export default function PlannerPage() {
         )}
 
         {isLoading && (
-          <div className="max-w-3xl mx-auto text-center p-12">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-6"></div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">Crafting Your Perfect World Cup Journey...</h2>
-            <p className="text-gray-600">Our AI is analyzing flights, lodging options, and transit logistics for your group</p>
-            <div className="mt-8 space-y-2 text-sm text-gray-500">
-              <p>✓ Checking flight connections...</p>
-              <p>✓ Comparing neighborhood options...</p>
-              <p>✓ Calculating match day logistics...</p>
+          <div className="max-w-5xl mx-auto px-6 space-y-8">
+            {/* Title and Progress */}
+            <div className="text-center space-y-4">
+              <div className="animate-pulse">
+                <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                  🌍 Crafting Your Perfect World Cup Journey...
+                </h2>
+                <p className="text-lg text-gray-600">
+                  Our AI is analyzing your preferences with expert local knowledge
+                </p>
+              </div>
+              
+              {/* Progress bar */}
+              <div className="max-w-md mx-auto">
+                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                  <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full animate-progress"></div>
+                </div>
+                <p className="text-sm text-gray-500 mt-2">⏱️ This usually takes 45-60 seconds</p>
+              </div>
+            </div>
+
+            {/* Did You Know Carousel */}
+            <div className="py-6">
+              <h3 className="text-xl font-semibold text-center text-gray-800 mb-6">
+                While You Wait: World Cup History Quiz
+              </h3>
+              <DidYouKnowCarousel />
+            </div>
+
+            {/* Status messages */}
+            <div className="max-w-md mx-auto space-y-3 text-center">
+              <div className="flex items-center justify-center space-x-2 text-gray-600">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <p className="text-sm">Loading city-specific travel guides...</p>
+              </div>
+              <div className="flex items-center justify-center space-x-2 text-gray-600">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <p className="text-sm">Analyzing flight connections and lodging options...</p>
+              </div>
+              <div className="flex items-center justify-center space-x-2 text-gray-600">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                <p className="text-sm">Calculating match day logistics...</p>
+              </div>
             </div>
           </div>
         )}

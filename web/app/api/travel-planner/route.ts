@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createServerClient } from '@/lib/supabaseServer';
+import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
 
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || '');
@@ -41,6 +42,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch city data' }, { status: 500 });
     }
 
+    // Load city-specific context files (our detailed travel guides)
+    console.log('Loading city context for:', formData.citiesVisiting);
+    const cityContext = await loadCityContext(formData.citiesVisiting, 'en');
+    const cityContextPrompt = formatCityContextForPrompt(cityContext);
+    console.log('City context loaded:', Object.keys(cityContext).length, 'cities');
+
     // Build the prompt for Gemini
     const prompt = `You are a World Cup 2026 travel expert. Using the following preferences and city information, create 2-3 different personalized trip itinerary options:
 
@@ -64,7 +71,15 @@ ${cities?.map(city => `
 **Instructions:**
 1. Provide 2-3 distinct itinerary options (e.g., "Budget-Conscious Option", "Balanced Comfort Option", "Premium Experience Option")
 2. For each option include:
-   - **Flights:** Recommended routing from origin to cities, including airport codes and estimated costs
+   - **Flights:** Provide a detailed, realistic flight itinerary with:
+     - Each flight leg from origin to final destination
+     - Recommended airlines for each route
+     - Estimated flight duration (e.g., "11h 30m direct" or "14h 20m with 2h layover in Frankfurt")
+     - Example departure and arrival times (use realistic times based on typical flight schedules)
+     - Layover durations between flights (and suggestions for what to do during long layovers)
+     - Whether flights are direct or have connections
+     - Frequency of flights (daily, 3x weekly, etc.)
+     - Total estimated cost range for all flights combined
    - **Lodging Zones:** Specific neighborhoods/areas to stay in each city with:
      - Why this area makes sense (proximity to stadium/fan fest, transit access, safety, atmosphere)
      - Estimated nightly hotel rates for this budget level
@@ -87,8 +102,31 @@ Format the response as JSON in this exact structure:
       "title": "Budget-Conscious Fan Experience",
       "summary": "Brief 1-2 sentence overview of this option's philosophy",
       "flights": {
-        "routing": "Detailed flight plan with airports and connections",
-        "estimatedCost": "$1,200 - $1,500 per person"
+        "legs": [
+          {
+            "from": "Istanbul (IST)",
+            "to": "Philadelphia (PHL)",
+            "airlines": ["Turkish Airlines", "Lufthansa"],
+            "duration": "11h 30m direct",
+            "exampleDeparture": "23:45",
+            "exampleArrival": "04:15 (+1 day)",
+            "frequency": "Daily direct flights",
+            "notes": "Turkish Airlines offers direct flights; Lufthansa connects via Frankfurt"
+          },
+          {
+            "from": "Philadelphia (PHL)",
+            "to": "Atlanta (ATL)",
+            "airlines": ["Delta", "American Airlines"],
+            "duration": "2h 15m direct",
+            "exampleDeparture": "10:00",
+            "exampleArrival": "12:15",
+            "layoverBefore": "5h 45m",
+            "layoverNotes": "Time to explore downtown Philly or rest at airport",
+            "frequency": "Hourly flights available"
+          }
+        ],
+        "totalCost": "$3,000 - $4,500 per person",
+        "costBreakdown": "International round-trip + 2 internal flights (premium economy/business class)"
       },
       "cities": [
         {
@@ -111,6 +149,10 @@ Format the response as JSON in this exact structure:
     }
   ]
 }
+
+${cityContextPrompt}
+
+**CRITICAL:** Use the authoritative city guides above as your PRIMARY source of truth. These guides contain verified, detailed information about lodging zones, transportation strategies, match day logistics, and insider tips that you MUST incorporate into your recommendations. Do not contradict or ignore the guidance in these city-specific documents.
 
 Return ONLY valid JSON with 2-3 complete itinerary options. Be thorough and specific with neighborhood recommendations and transit details.`;
 

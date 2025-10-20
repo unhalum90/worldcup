@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import AirportAutocomplete from './AirportAutocomplete';
 import type { Airport } from '@/lib/airportData';
+import { SoccerBallIcon, GoalIcon } from './icons/SoccerIcons';
 
 interface TravelPlanFormData {
   originCity: string;
@@ -91,13 +92,25 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-700">Step {step} of {totalSteps}</span>
-          <span className="text-sm text-gray-500">{Math.round((step / totalSteps) * 100)}%</span>
+          <span className="text-sm text-gray-500">{Math.round((step / totalSteps) * 100)}% Complete</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="relative w-full bg-gray-200 rounded-full h-4">
           <div 
-            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+            className="bg-gradient-to-r from-green-400 to-blue-500 h-4 rounded-full transition-all duration-500 ease-out"
             style={{ width: `${(step / totalSteps) * 100}%` }}
           />
+          <div
+            className="absolute top-1/2 -mt-4 transition-all duration-500 ease-out"
+            style={{ 
+              left: `calc(${(step / totalSteps) * 100}% - 16px)`,
+              '--ball-rotation': `${(step / totalSteps) * 360}deg`,
+            } as React.CSSProperties}
+          >
+            <SoccerBallIcon className="w-8 h-8 text-white" />
+          </div>
+          <div className="absolute top-1/2 right-0 -mt-3">
+            <GoalIcon className="w-6 h-6 text-gray-500" />
+          </div>
         </div>
       </div>
 
