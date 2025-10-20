@@ -106,10 +106,10 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
               '--ball-rotation': `${(step / totalSteps) * 360}deg`,
             } as React.CSSProperties}
           >
-            <SoccerBallIcon className="w-8 h-8 text-white" />
+            <SoccerBallIcon className="w-8 h-8 text-black drop-shadow-md" />
           </div>
-          <div className="absolute top-1/2 right-0 -mt-3">
-            <GoalIcon className="w-6 h-6 text-gray-500" />
+          <div className="absolute top-1/2 right-0 -mt-4">
+            <GoalIcon className="w-8 h-8 text-gray-600" />
           </div>
         </div>
       </div>

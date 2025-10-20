@@ -1,5 +1,7 @@
 'use client';
 
+import { SoccerBallIcon, GoalIcon } from './icons/SoccerIcons';
+
 interface RouteRibbonProps {
   cities: string[];
 }
@@ -16,12 +18,16 @@ export default function RouteRibbon({ cities }: RouteRibbonProps) {
         {cities.map((city, index) => (
           <div key={index} className="flex items-center">
             {/* City Badge */}
-            <div className="bg-white border-2 border-blue-400 rounded-full px-4 py-2 shadow-sm">
+            <div className="bg-white border-2 border-blue-400 rounded-full px-4 py-2 shadow-sm flex items-center gap-2">
+              {index === 0 && (
+                <SoccerBallIcon className="w-5 h-5 text-blue-700" />
+              )}
               <span className="text-sm font-bold text-blue-800">
-                {index === 0 && '🛫 '}
                 {city}
-                {index === cities.length - 1 && ' 🛬'}
               </span>
+              {index === cities.length - 1 && (
+                <GoalIcon className="w-5 h-5 text-blue-700" />
+              )}
             </div>
             
             {/* Arrow between cities */}
