@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { NextIntlClientProvider } from 'next-intl';
@@ -47,6 +48,7 @@ export default async function RootLayout({
             <main>{children}</main>
             <Footer />
             <Analytics />
+            <SpeedInsights />
           </AuthProvider>
         </NextIntlClientProvider>
       </body>
