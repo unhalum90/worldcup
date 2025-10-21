@@ -21,10 +21,10 @@ export default function Header() {
   }, []);
 
   const navLinks = [
+    { href: '/teams', label: 'Teams' },
     { href: '/guides', label: 'Guides' },
     { href: '/forums', label: 'Forums' },
     { href: '/planner', label: 'AI Planner' },
-    { href: '/#timeline', label: 'Roadmap' },
   ];
 
   const isActive = (href: string) => {
