@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function AdminLayout({
@@ -114,7 +115,7 @@ export default function AdminLayout({
             Generate Article
           </a>
 
-          <a
+          <Link
             href="/admin/drafts"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-[color:var(--color-primary)]"
           >
@@ -122,9 +123,9 @@ export default function AdminLayout({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             Drafts & Editor
-          </a>
+          </Link>
 
-          <a
+          <Link
             href="/admin/published"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-[color:var(--color-primary)]"
           >
@@ -133,7 +134,7 @@ export default function AdminLayout({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
             Published Posts
-          </a>
+          </Link>
         </nav>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">

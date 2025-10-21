@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabaseClient';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 
 interface BlogPost {
@@ -105,12 +106,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
         {/* Back Link */}
         <div className="mt-8 text-center">
-          <a
+          <Link
             href="/blog"
             className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
             ← Back to All Articles
-          </a>
+          </Link>
         </div>
       </div>
     </article>
