@@ -41,7 +41,7 @@ export default function HeroSplit() {
                 playsInline
                 controls
                 poster="/globe.svg"
-                className="w-full h-[320px] md:h-[420px] lg:h-[520px] object-cover"
+                className="w-full h-[360px] md:h-[460px] lg:h-[560px] object-cover"
               >
                 <source src="/hero-video.mp4" type="video/mp4" />
                 Your browser doesn&apos;t support video playback.
@@ -54,39 +54,68 @@ export default function HeroSplit() {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-3">
               {t("title")}
             </h1>
-            <p className="text-[color:var(--color-neutral-800)] text-base sm:text-lg mb-6">
+            <p className="text-[color:var(--color-neutral-800)] text-base sm:text-lg mb-2">
               {t("subtitle")}
             </p>
+            <p className="text-[color:var(--color-neutral-600)] text-sm sm:text-base mb-6">
+              Explore host city guides, fan forums, and our AI-powered trip planner.
+            </p>
 
-            {/* CTA Button */}
-            <button
-              onClick={() => setShowModal(true)}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-[color:var(--color-accent-red)] hover:brightness-110 transition-all shadow-lg hover:shadow-xl"
-            >
-              {t("cta")}
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              <button
+                onClick={() => setShowModal(true)}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-[color:var(--color-accent-red)] hover:brightness-110 transition-all shadow-lg hover:shadow-xl"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </button>
+                {t("cta")}
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+              
+              <button
+                onClick={() => {
+                  document.getElementById('features-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-[color:var(--color-primary)] bg-white border-2 border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-white transition-all shadow-md hover:shadow-lg"
+              >
+                Explore Features
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+            </div>
 
             {/* Secondary Links */}
             <div className="mt-4 flex flex-wrap items-center gap-4">
-              <Link
-                href="/blog"
+              <a
+                href="https://wc26fanzone.beehiiv.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center text-sm font-medium underline underline-offset-4 text-[color:var(--color-primary)]"
               >
-                {t("viewBlog")}
-              </Link>
+                Newsletter
+              </a>
 
               {/* Social Proof */}
               <div className="flex items-center gap-2 text-[color:var(--color-neutral-800)] text-sm">

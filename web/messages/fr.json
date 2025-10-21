@@ -1,173 +1,258 @@
 {
   "nav": {
     "home": "Accueil",
-    "blog": "Blog",
-    "privacy": "Confidentialité"
+    "blog": "Newsletter",
+    "privacy": "Confidentialité",
+    "guides": "Guides",
+    "forums": "Forums",
+    "planner": "Planificateur",
+    "roadmap": "Feuille de route"
   },
   "hero": {
-    "title": "Planifiez votre voyage à la Coupe du Monde 2026 et connectez-vous avec les fans",
-    "subtitle": "Guides de villes, rencontres entre fans et conseils jour de match — faits par et pour les fans.",
-    "emailPlaceholder": "Votre e-mail",
+    "title": "Planifiez votre voyage pour la Coupe du Monde 2026",
+    "subtitle": "Guides de villes, forums de fans et planificateur de voyage IA",
+    "subline": "Explorez les guides des villes hôtes, les forums de fans et notre planificateur de voyage alimenté par l'IA.",
+    "emailPlaceholder": "Votre email",
     "interestLabel": "Je suis...",
     "interest": {
       "home": "Je regarde depuis chez moi",
       "hope": "J'espère obtenir des billets",
-      "going": "J'y vais — tenez‑moi informé"
+      "going": "J'y vais — tenez-moi au courant"
     },
-    "consent": "J’accepte la Politique de confidentialité",
-    "cta": "Rejoindre la liste d’attente",
-    "viewBlog": "Explorer le blog"
+    "consent": "J'accepte la Politique de Confidentialité",
+    "cta": "Rejoindre la liste d'attente",
+    "viewBlog": "Explorer la newsletter",
+    "exploreFeatures": "Explorer les fonctionnalités ↓"
   },
   "features": {
-    "title": "Ce que vous obtenez",
+    "title": "Ce que vous obtiendrez",
+    "showcase": {
+      "guides": {
+        "title": "Guides de Voyage des Villes",
+        "desc": "Guides complets pour les 16 villes hôtes avec infos sur les stades, transport et conseils locaux.",
+        "cta": "Voir les Guides"
+      },
+      "forums": {
+        "title": "Forums des Villes",
+        "desc": "Connectez-vous avec les fans, partagez des conseils et organisez des rencontres.",
+        "cta": "Rejoindre les Forums"
+      },
+      "planner": {
+        "title": "Planificateur de Voyage IA",
+        "desc": "Itinéraires personnalisés, hébergement et optimisation de trajet.",
+        "cta": "Commencer"
+      }
+    },
     "items": [
       {
         "title": "Rencontres communautaires",
-        "desc": "Trouvez et organisez des rencontres de fans dans chaque ville hôte."
+        "desc": "Trouvez et organisez des rassemblements de fans."
       },
       {
-        "title": "Guides de villes orientés fans",
-        "desc": "Meilleurs spots près des stades, transports et plus."
+        "title": "Guides de ville",
+        "desc": "Meilleurs spots près des stades et conseils."
       },
       {
-        "title": "Planification jour de match",
-        "desc": "Les infos clés en un coup d'œil pour chaque lieu."
+        "title": "Planification matchs",
+        "desc": "Infos clés pour chaque lieu."
       }
     ]
   },
-  "landing": {
-    "social": {
-      "headline": "Trusted by fan communities",
-      "subhead": "across 2026 host cities worldwide.",
-      "badges": ["Supporters clubs", "Local guides", "City volunteers", "Fan creators"]
+  "demo": {
+    "title": "Regarder la Démo",
+    "duration": "45 secondes",
+    "launching": "Lancement le 5 décembre 2025",
+    "stayTuned": "Restez à l'écoute pour notre plateforme complète."
+  },
+  "timeline": {
+    "title": "Route vers la Coupe du Monde",
+    "subtitle": "Survolez pour explorer les dates clés de la vente de billets au match final",
+    "swipeHint": "← Balayez pour explorer toutes les étapes →",
+    "legend": {
+      "past": "Passé",
+      "upcoming": "À venir",
+      "tournament": "Tournoi",
+      "highlight": "Important"
     },
-    "chunks": {
-      "title": "What you'll get next",
-      "cta": "Get early access",
-      "items": [
-        {
-          "title": "Community meetups",
-          "desc": "Find and host gatherings with fans in every host city.",
-          "bullets": [
-            "Map and list views",
-            "RSVPs with capacity badges",
-            "Verified organizer badges"
-          ]
-        },
-        {
-          "title": "Fan‑centric city guides",
-          "desc": "Stadium‑adjacent picks, neighborhoods, transit tips and public viewing spots.",
-          "bullets": [
-            "Near‑stadium food and bars",
-            "Neighborhoods and safety notes",
-            "Transit and airport tips"
-          ]
-        },
-        {
-          "title": "Matchday planning",
-          "desc": "Timezone‑aware schedule with filters and stadium info.",
-          "bullets": [
-            "Filter by team, city, stadium",
-            "Kickoff times in your timezone",
-            "Add to calendar links"
-          ]
-        },
-        {
-          "title": "Trip builder",
-          "desc": "Pick cities and matches—get suggested meetups and activities.",
-          "bullets": [
-            "Conflict detection across dates",
-            "Budget rough‑cut and areas to stay",
-            "Export to Google/Apple Calendar"
-          ]
-        },
-        {
-          "title": "Live community pulse",
-          "desc": "Realtime RSVP counts and trending meetups during the tournament.",
-          "bullets": [
-            "Live updates as events fill",
-            "Organizer check‑in tools",
-            "Report/flag for safety"
-          ]
-        }
-      ]
-    },
-    "gallery": {
-      "title": "A peek at what’s coming",
-      "desc": "Screens from the upcoming Cities, Matches, Meetups and Trip Builder.",
-      "caption": "Work‑in‑progress designs—subject to change.",
-      "imageAlt": "App mockup preview"
-    },
-    "blogTeaser": {
-      "title": "Travel tips and community updates",
-      "desc": "We’re building in public. Read the latest posts as features ship.",
-      "cta": "Read the blog"
-    },
-    "roadmap": {
-      "title": "Our roadmap",
-      "desc": "A simple view of what’s shipping now, next and later.",
-      "groups": [
-        {
-          "label": "Now",
-          "items": [
-            "Landing page and blog",
-            "Email waitlist capture",
-            "Design system and color tokens"
-          ]
-        },
-        {
-          "label": "Next",
-          "items": [
-            "Matches explorer with filters",
-            "City guides starter content",
-            "Meetups listing and RSVP (MVP)"
-          ]
-        },
-        {
-          "label": "Later",
-          "items": [
-            "Trip builder with shareable itinerary",
-            "Realtime community pulse",
-            "Organizer tools and safety features"
-          ]
-        }
-      ]
-    },
-    "faq": {
-      "title": "Frequently asked questions",
-      "items": [
-        {
-          "q": "Is the app live yet?",
-          "a": "We’re pre‑launch and gathering a waitlist. You’ll get early access as features roll out."
-        },
-        {
-          "q": "Will meetups be moderated?",
-          "a": "Yes. Organizers are verified and events go through checks with community reporting."
-        },
-        {
-          "q": "Which cities are covered?",
-          "a": "All 2026 host cities at launch, with guides prioritized by demand."
-        },
-        {
-          "q": "How will my data be used?",
-          "a": "Email is only used for product updates and invites. No spam, no selling."
-        },
-        {
-          "q": "Can I contribute guides?",
-          "a": "Yes—fan contributors and local experts can submit tips and updates."
-        }
-      ]
+    "events": {
+      "visaLottery": {
+        "date": "1 oct. 2025",
+        "title": "Billets Loterie Visa",
+        "desc": "Premier tour de billets pour les gagnants de la loterie visa",
+        "details": "Les gagnants de la loterie visa peuvent acheter des billets exclusivement pendant cette phase. Disponibilité limitée."
+      },
+      "generalSales": {
+        "date": "Nov. 2025",
+        "title": "Ventes Générales de Billets",
+        "desc": "Ouverture de la phase de billets premier arrivé, premier servi",
+        "details": "Ouvert à tous les fans du monde entier. Billets disponibles pour les 104 matchs dans les 16 villes hôtes."
+      },
+      "finalDraw": {
+        "date": "5 déc. 2025",
+        "title": "Tirage Final",
+        "desc": "Cérémonie de tirage de la phase de groupes",
+        "details": "48 équipes seront tirées dans 16 groupes de 3. Regardez en direct pour voir les matchs de votre équipe!"
+      },
+      "lastMinute": {
+        "date": "Fév. 2026",
+        "title": "Ventes de Dernière Minute",
+        "desc": "Phase finale d'attribution de billets",
+        "details": "Dernière chance d'obtenir des billets avant le tournoi. Forte demande et disponibilité limitée attendues."
+      },
+      "openingMatch": {
+        "date": "11 juin 2026",
+        "title": "Match d'Ouverture",
+        "desc": "Coup d'envoi à l'Estadio Azteca, Mexico",
+        "details": "Cérémonie d'ouverture historique au légendaire stade Azteca. Premier match du format élargi à 48 équipes."
+      },
+      "groupStage": {
+        "date": "11-27 juin 2026",
+        "title": "Phase de Groupes",
+        "desc": "48 équipes s'affrontent dans 16 groupes",
+        "details": "Les 2 meilleures équipes de chaque groupe avancent. 80 matchs dans les 16 villes hôtes aux États-Unis, Canada et Mexique."
+      },
+      "round32": {
+        "date": "28 juin-3 juil. 2026",
+        "title": "Tour de 32",
+        "desc": "Début de la phase à élimination",
+        "details": "L'élimination simple commence. 32 équipes entrent, 16 avanceront. Aucune marge d'erreur."
+      },
+      "round16": {
+        "date": "4-7 juil. 2026",
+        "title": "Huitièmes de Finale",
+        "desc": "Les 16 meilleures équipes avancent",
+        "details": "Les équipes d'élite se battent pour les places en quarts de finale. Chaque match est un classique potentiel."
+      },
+      "quarterFinals": {
+        "date": "9-11 juil. 2026",
+        "title": "Quarts de Finale",
+        "desc": "Les 8 dernières équipes s'affrontent",
+        "details": "Quatre matchs déterminent les demi-finalistes. Les légendes se créent à ce tour."
+      },
+      "semiFinals": {
+        "date": "14-15 juil. 2026",
+        "title": "Demi-Finales",
+        "desc": "Route vers la finale",
+        "details": "Deux matchs déterminent qui jouera pour la Coupe du Monde. Drame garanti."
+      },
+      "thirdPlace": {
+        "date": "18 juil. 2026",
+        "title": "Troisième Place",
+        "desc": "Bataille pour le bronze",
+        "details": "Match de consolation pour les perdants des demi-finales. Fierté et médailles de bronze en jeu."
+      },
+      "final": {
+        "date": "19 juil. 2026",
+        "title": "Finale",
+        "desc": "Couronnement du champion du monde",
+        "details": "Le plus grand match du football. Lieu à déterminer. Une équipe soulèvera le trophée et entrera dans l'histoire."
+      }
     }
   },
-  "blog": {
-    "title": "Analyses pour les voyages CM 2026 et la communauté des fans",
-    "empty": "Aucun article pour le moment. Revenez bientôt."
+  "guides": {
+    "title": "Explorer les Guides des Villes Hôtes 2026",
+    "subtitle": "Guides complets pour les 16 villes hôtes.",
+    "freeDownload": "TÉLÉCHARGEMENT GRATUIT",
+    "cityCount": "16 villes hôtes",
+    "downloadCTA": "Télécharger",
+    "waitlistCTA": "Rejoindre"
   },
-  "privacy": {
-    "title": "Politique de confidentialité",
-    "content": "Ceci est une page de politique de confidentialité provisoire."
+  "forums": {
+    "title": "Forums des Villes Hôtes",
+    "subtitle": "Connectez-vous avec les fans dans les 16 villes hôtes.",
+    "trending": "Discussions Tendance",
+    "cityForums": "Forums des Villes",
+    "joinDiscussion": "Rejoindre",
+    "createPost": "Créer un Post",
+    "replies": "réponses",
+    "views": "vues"
+  },
+  "contact": {
+    "title": "Nous Contacter",
+    "subtitle": "Des questions? Nous aimerions avoir de vos nouvelles!",
+    "general": {
+      "title": "Demandes Générales",
+      "desc": "Questions sur la plateforme"
+    },
+    "support": {
+      "title": "Support Technique",
+      "desc": "Aide avec votre compte"
+    },
+    "partnerships": {
+      "title": "Partenariats",
+      "desc": "Opportunités commerciales"
+    },
+    "media": {
+      "title": "Demandes Médias",
+      "desc": "Presse et journalistes"
+    },
+    "form": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "subject": "Sujet",
+      "message": "Message",
+      "submit": "Envoyer"
+    }
+  },
+  "terms": {
+    "title": "Conditions d'Utilisation",
+    "lastUpdated": "Dernière mise à jour:"
   },
   "footer": {
-    "rights": "Tous droits réservés."
+    "rights": "Tous droits réservés.",
+    "description": "Votre ressource pour la Coupe du Monde 2026.",
+    "disclaimer": "Non affilié à la FIFA",
+    "features": "Fonctionnalités",
+    "legal": "Juridique",
+    "cityGuides": "Guides",
+    "fanForums": "Forums",
+    "aiPlanner": "Planificateur",
+    "newsletter": "Newsletter",
+    "privacyPolicy": "Confidentialité",
+    "terms": "Conditions",
+    "contact": "Contact",
+    "languages": "Disponible en plusieurs langues:"
+  },
+  "blog": {
+    "title": "Perspectives pour la Coupe du Monde 2026",
+    "empty": "Aucun article."
+  },
+  "privacy": {
+    "title": "Politique de Confidentialité",
+    "content": "Politique de confidentialité."
+  },
+  "featureShowcase": {
+    "title": "Trois Façons de Planifier Votre Voyage pour la Coupe du Monde",
+    "subtitle": "Tout ce dont vous avez besoin pour rendre votre voyage à la Coupe du Monde 2026 inoubliable",
+    "cityGuides": {
+      "icon": "📚",
+      "title": "Guides de Voyage des Villes",
+      "description": "16 PDF détaillés créés pour chaque ville hôte — logistique, transport, hébergement, sécurité et expériences de fans.",
+      "cta": "Télécharger Dallas Gratuitement"
+    },
+    "forums": {
+      "icon": "💬",
+      "title": "Forums des Villes",
+      "description": "Rejoignez des discussions de style Reddit pour chaque ville hôte — trouvez des rencontres, partagez des conseils de voyage et obtenez des conseils de fans locaux.",
+      "cta": "Visiter les Forums"
+    },
+    "aiPlanner": {
+      "icon": "🤖",
+      "title": "Planificateur de Voyage IA",
+      "description": "Entrez vos villes, budget et taille de groupe — obtenez un itinéraire personnalisé, des suggestions d'hébergement et un plan quotidien.",
+      "cta": "Essayer le Planificateur IA"
+    }
+  },
+  "demoSection": {
+    "title": "Voir Comment Ça Marche",
+    "subtitle": "Regardez comment notre plateforme vous aide à planifier l'expérience parfaite de la Coupe du Monde 2026",
+    "watchDemo": "Regarder la Démo",
+    "demoDescription": "Voyez notre planificateur IA en action, explorez les guides de villes et découvrez comment les fans se connectent via les forums.",
+    "duration": "45 secondes",
+    "callout": "Rejoignez la liste d'attente pour un accès anticipé",
+    "launchDate": "Lancement le 5 décembre 2025",
+    "videoError": "Votre navigateur ne supporte pas la lecture vidéo.",
+    "playButton": "Lire la vidéo de démonstration"
   }
 }
