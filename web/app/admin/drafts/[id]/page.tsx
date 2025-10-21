@@ -82,9 +82,9 @@ export default function DraftEditorPage() {
 
       if (error) throw error;
       alert('Saved successfully!');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error saving post:', error);
-      alert('Failed to save: ' + error.message);
+      alert('Failed to save: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setSaving(false);
     }
@@ -109,9 +109,9 @@ export default function DraftEditorPage() {
       
       alert('Published successfully!');
       router.push('/admin/drafts');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error publishing post:', error);
-      alert('Failed to publish: ' + error.message);
+      alert('Failed to publish: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setSaving(false);
     }

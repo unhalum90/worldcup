@@ -6,10 +6,17 @@ import { useAuth } from '@/lib/AuthContext';
 import AuthModal from '@/components/AuthModal';
 import { useEffect, useState } from 'react';
 
+interface City {
+  id: string;
+  name: string;
+  slug: string;
+  country: string;
+}
+
 export default function ForumsIndex() {
   const { user, loading } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [cities, setCities] = useState<any[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   // Show auth modal if user is not logged in
@@ -129,9 +136,9 @@ export default function ForumsIndex() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {cities?.map((c: any) => {
+            {cities?.map((c) => {
               const palette = ['#3CAC3B', '#2A398D', '#E61D25', '#D1D4D1', '#474A4A'];
-              const idx = Math.abs(Array.from(String(c.slug)).reduce((a: number, ch: string) => a + ch.charCodeAt(0), 0)) % palette.length;
+              const idx = Math.abs(Array.from(String(c.slug)).reduce((a, ch) => a + ch.charCodeAt(0), 0)) % palette.length;
               const accent = palette[idx];
               
               return (
@@ -180,7 +187,7 @@ export default function ForumsIndex() {
 
         {/* Bottom CTA */}
         <div className="mt-12 text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
-          <h2 className="text-3xl font-bold mb-3">Can't Find Your Topic?</h2>
+          <h2 className="text-3xl font-bold mb-3">Can&apos;t Find Your Topic?</h2>
           <p className="text-lg mb-6 opacity-90">Start a new discussion and connect with thousands of fans</p>
           <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-all hover:scale-105 shadow-lg">
             Create New Post

@@ -35,8 +35,11 @@ export default function CTASignup({ onSuccess }: CTASignupProps) {
         setInterest('home');
         setConsent(false);
         // analytics event (optional)
-        if (typeof window !== 'undefined' && (window as any).gtag) {
-          try { (window as any).gtag('event', 'subscribe', { method: 'hero' }); } catch {}
+        if (typeof window !== 'undefined' && 'gtag' in window) {
+          try { 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (window as any).gtag('event', 'subscribe', { method: 'hero' }); 
+          } catch {}
         }
         if (onSuccess) onSuccess();
       })

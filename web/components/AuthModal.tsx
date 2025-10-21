@@ -52,8 +52,8 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
           window.location.href = redirectTo;
         }
       }
-    } catch (err: any) {
-      setError(err.message || 'An error occurred');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@supabase/supabase-js';
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -9,7 +10,6 @@ if (!url || !anon) {
 
 // Ensure a single Supabase client across HMR / fast refresh
 declare global {
-	// eslint-disable-next-line no-var
 	var __supabase_client__: any | undefined;
 }
 
