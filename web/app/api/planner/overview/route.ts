@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
 ${formData.personalContext ? `- Notes: ${formData.personalContext}` : ''}
 
 **Cities to Visit:**
-${cities?.map(city => `- ${city.name}, ${city.country} (${city.stadium_name}, Airport: ${city.airport_code})`).join('\n')}
+${cities?.map((city: any) => `- ${city.name}, ${city.country} (${city.stadium_name}, Airport: ${city.airport_code})`).join('\n')}
 
 **Task:**
 Generate a strategic trip overview with:
