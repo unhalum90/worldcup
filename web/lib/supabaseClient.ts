@@ -5,7 +5,9 @@ const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 if (!url || !anon) {
-  console.warn('Missing Supabase environment variables');
+  console.error('❌ Missing Supabase environment variables!');
+  console.error('Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your .env.local file');
+  console.error('See documentation: https://supabase.com/docs/guides/getting-started/quickstarts/nextjs');
 }
 
 // Ensure a single Supabase client across HMR / fast refresh

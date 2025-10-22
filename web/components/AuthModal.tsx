@@ -53,7 +53,22 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      let errorMessage = 'An error occurred';
+      
+      if (err instanceof Error) {
+        errorMessage = err.message;
+        
+        // Provide helpful context for common errors
+        if (errorMessage.includes('fetch')) {
+          errorMessage = 'Unable to connect to authentication service. Please check your internet connection or try again later.';
+        } else if (errorMessage.includes('Invalid login credentials')) {
+          errorMessage = 'Invalid email or password. Please try again.';
+        } else if (errorMessage.includes('User already registered')) {
+          errorMessage = 'This email is already registered. Try signing in instead.';
+        }
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
