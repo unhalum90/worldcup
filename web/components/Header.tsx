@@ -69,12 +69,24 @@ export default function Header() {
             
             <LanguageSwitcher />
             
-            <Link
-              href="/"
+            <button
+              onClick={() => {
+                if (pathname === '/') {
+                  // On homepage, scroll to hero and trigger modal
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  setTimeout(() => {
+                    const heroButton = document.querySelector('button[class*="bg-[color:var(--color-accent-red)]"]') as HTMLButtonElement;
+                    heroButton?.click();
+                  }, 300);
+                } else {
+                  // On other pages, go to homepage
+                  window.location.href = '/#join';
+                }
+              }}
               className="px-4 py-2 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-sm shadow-md"
             >
               Join Waitlist
-            </Link>
+            </button>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -125,13 +137,23 @@ export default function Header() {
                 <LanguageSwitcher />
               </div>
               
-              <Link
-                href="/"
-                onClick={() => setIsMenuOpen(false)}
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  if (pathname === '/') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setTimeout(() => {
+                      const heroButton = document.querySelector('button[class*="bg-[color:var(--color-accent-red)]"]') as HTMLButtonElement;
+                      heroButton?.click();
+                    }, 300);
+                  } else {
+                    window.location.href = '/#join';
+                  }
+                }}
                 className="px-4 py-3 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-center shadow-md"
               >
                 Join Waitlist
-              </Link>
+              </button>
             </nav>
           </div>
         )}
@@ -140,15 +162,25 @@ export default function Header() {
       {/* Sticky CTA Button on Scroll */}
       {isScrolled && (
         <div className="hidden md:block fixed bottom-8 right-8 z-50">
-          <Link
-            href="/"
+          <button
+            onClick={() => {
+              if (pathname === '/') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => {
+                  const heroButton = document.querySelector('button[class*="bg-[color:var(--color-accent-red)]"]') as HTMLButtonElement;
+                  heroButton?.click();
+                }, 300);
+              } else {
+                window.location.href = '/#join';
+              }
+            }}
             className="px-6 py-3 rounded-full bg-[color:var(--color-accent-red)] text-white font-bold hover:brightness-110 transition-all shadow-2xl hover:shadow-3xl flex items-center gap-2 animate-bounce-subtle"
           >
             Join Waitlist
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </Link>
+          </button>
         </div>
       )}
     </>

@@ -22,9 +22,9 @@ export default function Home() {
     <>
       <HeroSplit />
       <FeatureShowcase />
-      <QualifiedTeamsSection />
       <DemoSection />
       <WorldCupTimeline />
+      <QualifiedTeamsSection />
     </>
   );
 }
