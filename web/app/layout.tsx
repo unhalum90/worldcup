@@ -10,6 +10,8 @@ import { getMessages } from 'next-intl/server';
 import { AuthProvider } from '@/lib/AuthContext';
 import LanguageModal from '@/components/LanguageModal';
 import { WebVitals } from '@/components/WebVitals';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,11 +48,13 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
+            <GoogleAnalytics />
             <WebVitals />
             <LanguageModal />
             <Header />
             <main>{children}</main>
             <Footer />
+            <ScrollToTop />
             <Analytics />
             <SpeedInsights />
           </AuthProvider>
