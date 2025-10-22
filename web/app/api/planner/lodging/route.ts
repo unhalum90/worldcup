@@ -1,22 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { createServerClient } from '@/lib/supabaseServer';
-import { supabase as clientSupabase } from '@/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
+import { cookies } from 'next/headers';
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || '');
 
 export async function POST(request: NextRequest) {
   try {
-    // 1. Verify authentication
-    const { data: { user }, error: authError } = await clientSupabase.auth.getUser();
+    // 1. Create Supabase client with cookies for auth
+    const cookieStore = await cookies();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+    
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        storage: {
+          getItem: async (key: string) => {
+            const cookie = cookieStore.get(key);
+            return cookie?.value ?? null;
+          },
+          setItem: async () => {},
+          removeItem: async () => {},
+        },
+      },
+    });
+
+    // 2. Verify authentication
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      console.error('Auth error:', authError);
+      return NextResponse.json({ error: 'Unauthorized - Please sign in' }, { status: 401 });
     }
 
-    // 2. Get latest trip context
-    const supabase = createServerClient();
+    // 3. Get latest trip context
     const { data: session, error: sessionError } = await supabase
       .from('trip_sessions')
       .select('trip_context, id')

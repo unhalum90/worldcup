@@ -1,21 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabaseServer';
-import { supabase as clientSupabase } from '@/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
+import { cookies } from 'next/headers';
+
+async function getAuthenticatedSupabase() {
+  const cookieStore = await cookies();
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  
+  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      storage: {
+        getItem: async (key: string) => {
+          const cookie = cookieStore.get(key);
+          return cookie?.value ?? null;
+        },
+        setItem: async () => {},
+        removeItem: async () => {},
+      },
+    },
+  });
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  
+  return { supabase, user, authError };
+}
 
 export async function GET(request: NextRequest) {
   try {
-    // 1. Verify authentication
-    const { data: { user }, error: authError } = await clientSupabase.auth.getUser();
+    // 1. Authenticate
+    const { supabase, user, authError } = await getAuthenticatedSupabase();
     
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      console.error('Auth error:', authError);
+      return NextResponse.json({ error: 'Unauthorized - Please sign in' }, { status: 401 });
     }
 
     // 2. Get session_id from query params (optional)
     const { searchParams } = new URL(request.url);
     const sessionId = searchParams.get('session_id');
-
-    const supabase = createServerClient();
 
     // 3. Fetch trip session
     let query = supabase
@@ -61,11 +83,12 @@ export async function GET(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    // 1. Verify authentication
-    const { data: { user }, error: authError } = await clientSupabase.auth.getUser();
+    // 1. Authenticate
+    const { supabase, user, authError } = await getAuthenticatedSupabase();
     
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      console.error('Auth error:', authError);
+      return NextResponse.json({ error: 'Unauthorized - Please sign in' }, { status: 401 });
     }
 
     // 2. Get session_id from query params
@@ -75,8 +98,6 @@ export async function DELETE(request: NextRequest) {
     if (!sessionId) {
       return NextResponse.json({ error: 'session_id required' }, { status: 400 });
     }
-
-    const supabase = createServerClient();
 
     // 3. Delete session (RLS ensures user can only delete their own)
     const { error: deleteError } = await supabase
@@ -104,3 +125,4 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
+
