@@ -24,7 +24,7 @@ export default function Header() {
     { href: '/teams', label: 'Teams' },
     { href: '/guides', label: 'Guides' },
     { href: '/forums', label: 'Forums' },
-    { href: '/planner', label: 'AI Planner' },
+    { href: '/planner', label: 'Travel Planner' },
   ];
 
   const isActive = (href: string) => {

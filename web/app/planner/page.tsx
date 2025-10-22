@@ -3,6 +3,18 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import AuthModal from '@/components/AuthModal';
+import Link from 'next/link';
+
+interface Phase {
+  id: number;
+  emoji: string;
+  title: string;
+  description: string;
+  status: 'live' | 'coming-soon' | 'may-2026';
+  href: string;
+  color: string;
+  features: string[];
+}
 
 export default function PlannerPage() {
   const { user, loading } = useAuth();
@@ -27,8 +39,71 @@ export default function PlannerPage() {
     );
   }
 
+  const phases: Phase[] = [
+    {
+      id: 1,
+      emoji: '🗺️',
+      title: 'Trip Builder',
+      description: 'Map your route and see where your team plays — connect cities, matches, and dates into one simple plan.',
+      status: 'live',
+      href: '/planner/trip-builder',
+      color: 'from-blue-500 to-blue-600',
+      features: [
+        'AI-assisted route suggestions',
+        'Match schedule integration',
+        'Distance & time estimates',
+        'Exportable itinerary (PDF)'
+      ]
+    },
+    {
+      id: 2,
+      emoji: '✈️',
+      title: 'Getting There',
+      description: 'Find the fastest and most affordable ways to hop between World Cup cities — flight suggestions, routes, and smart timing insights.',
+      status: 'coming-soon',
+      href: '/planner/flights',
+      color: 'from-purple-500 to-purple-600',
+      features: [
+        'Skyscanner integration',
+        'Hub airport suggestions',
+        'Flexible fare recommendations',
+        'Multi-city route optimization'
+      ]
+    },
+    {
+      id: 3,
+      emoji: '🏨',
+      title: 'Staying There',
+      description: 'Hand-picked hotels, hostels, and neighborhoods — all near stadiums and fan celebrations.',
+      status: 'coming-soon',
+      href: '/planner/lodging',
+      color: 'from-green-500 to-green-600',
+      features: [
+        'Booking.com deep links',
+        'Stadium radius filters',
+        'Fan Zone recommended areas',
+        'Save favorite stays'
+      ]
+    },
+    {
+      id: 4,
+      emoji: '🎉',
+      title: 'While You\'re There',
+      description: 'From fan fests to public transport, discover everything you need once you\'ve arrived.',
+      status: 'may-2026',
+      href: '#',
+      color: 'from-orange-500 to-red-600',
+      features: [
+        'Fan fest locations & schedules',
+        'Local transport guides',
+        'Safety & cultural tips',
+        'Watch party listings'
+      ]
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       {/* Auth Modal */}
       <AuthModal 
         isOpen={showAuthModal} 
@@ -36,58 +111,174 @@ export default function PlannerPage() {
         redirectTo="/planner"
       />
       
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">World Cup 2026 Travel Planner</h1>
-          <p className="text-gray-600">AI-powered itineraries for the greatest show on earth ⚽</p>
+      {/* Hero Section */}
+      <section className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+          <div className="mb-6">
+            <span className="text-6xl mb-4 inline-block">⚽</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Plan Every Step of Your World Cup Journey
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            From booking your first flight to finding fan fests on match day — we've got you covered, city by city.
+          </p>
+          <button
+            onClick={() => {
+              document.getElementById('phases-grid')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          >
+            Start Planning
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <p className="text-sm text-gray-500 mt-4">
+            Powered by smart AI — so your trip plans itself ✨
+          </p>
         </div>
-      </header>
+      </section>
 
-      {/* Main Content */}
-      <main className="py-12">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-            <div className="text-6xl mb-4">🤖⚽🗺️</div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              AI Travel Planner
-            </h2>
-            <p className="text-xl text-gray-600 mb-6">
-              Get personalized World Cup 2026 itineraries powered by AI
-            </p>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-left max-w-2xl mx-auto">
-              <h3 className="font-semibold text-lg text-blue-900 mb-3">Coming Soon:</h3>
-              <ul className="space-y-2 text-blue-800">
-                <li className="flex items-start">
-                  <span className="mr-2">✓</span>
-                  <span>AI-powered itinerary generation based on your preferences</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">✓</span>
-                  <span>Match schedules integrated with accommodation recommendations</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">✓</span>
-                  <span>Budget optimization and cost breakdowns</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">✓</span>
-                  <span>Local experiences and dining suggestions</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">✓</span>
-                  <span>Transportation options between host cities</span>
-                </li>
-              </ul>
-            </div>
-            <p className="text-gray-500 mt-8">
-              Full AI Travel Planner will be available in the next update.
-              <br />
-              <span className="text-sm">Merge the <code className="bg-gray-100 px-2 py-1 rounded">ai-travel-planner</code> branch for complete functionality.</span>
-            </p>
+      {/* Intro Text */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-lg text-gray-700 leading-relaxed">
+            The <span className="font-semibold text-blue-600">Fan Zone Travel Planner</span> brings everything together — your matches, flights, stays, and on-the-ground experiences — into one easy place to explore. Whether you're following your team across borders or soaking up one host city's atmosphere, this is your home base for travel planning.
+          </p>
+        </div>
+      </section>
+
+      {/* Four-Phase Grid */}
+      <section id="phases-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          {phases.map((phase) => (
+            <PhaseCard key={phase.id} phase={phase} />
+          ))}
+        </div>
+      </section>
+
+      {/* Footer CTA */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-center text-white shadow-2xl">
+          <h2 className="text-3xl font-bold mb-4">
+            Wherever your team takes you — we've got your trip covered
+          </h2>
+          <p className="text-xl mb-8 opacity-90">
+            Get updates, new features, and fresh travel insights straight to your inbox.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://wc26fanzone.beehiiv.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 transition-all shadow-lg"
+            >
+              Subscribe to Fan Zone Insider
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </a>
+            <Link
+              href="/guides"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/20 backdrop-blur-sm text-white font-bold rounded-lg hover:bg-white/30 transition-all border-2 border-white/50"
+            >
+              Browse City Guides
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </Link>
           </div>
         </div>
-      </main>
+      </section>
+    </div>
+  );
+}
+
+function PhaseCard({ phase }: { phase: Phase }) {
+  const isLive = phase.status === 'live';
+  const isMay2026 = phase.status === 'may-2026';
+  
+  const cardContent = (
+    <>
+      {/* Status Badge */}
+      {!isLive && (
+        <div className="absolute top-4 right-4 z-10">
+          <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold ${
+            isMay2026 
+              ? 'bg-orange-100 text-orange-700' 
+              : 'bg-yellow-100 text-yellow-700'
+          }`}>
+            {isMay2026 ? '📅 May 2026' : '🚧 Coming Soon'}
+          </span>
+        </div>
+      )}
+
+      {/* Gradient Header */}
+      <div className={`bg-gradient-to-r ${phase.color} p-8 text-white relative overflow-hidden`}>
+        <div className="absolute top-0 right-0 text-9xl opacity-10 transform translate-x-8 -translate-y-4">
+          {phase.emoji}
+        </div>
+        <div className="relative z-10">
+          <div className="text-5xl mb-4">{phase.emoji}</div>
+          <h3 className="text-2xl font-bold mb-2">{phase.title}</h3>
+          <p className="text-white/90 text-sm">{phase.description}</p>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-6">
+        <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+          <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          Features:
+        </h4>
+        <ul className="space-y-2 mb-6">
+          {phase.features.map((feature, idx) => (
+            <li key={idx} className="flex items-start text-gray-600 text-sm">
+              <svg className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              {feature}
+            </li>
+          ))}
+        </ul>
+
+        {/* CTA Button */}
+        {isLive ? (
+          <div className="flex items-center justify-between text-blue-600 font-semibold group-hover:text-blue-700">
+            <span>Open Trip Builder</span>
+            <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </div>
+        ) : isMay2026 ? (
+          <button className="w-full bg-gray-100 text-gray-600 font-semibold py-3 rounded-lg cursor-not-allowed">
+            Launches May 2026
+          </button>
+        ) : (
+          <button className="w-full bg-gray-100 text-gray-600 font-semibold py-3 rounded-lg cursor-not-allowed">
+            In Development
+          </button>
+        )}
+      </div>
+    </>
+  );
+
+  const cardClassName = `group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden ${isLive ? 'cursor-pointer hover:-translate-y-1' : 'cursor-default'}`;
+
+  if (isLive) {
+    return (
+      <Link href={phase.href} className={cardClassName}>
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={cardClassName}>
+      {cardContent}
     </div>
   );
 }
