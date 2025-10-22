@@ -1,6 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+// Ensure URL always uses HTTPS
+let url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+if (url && url.startsWith('http://')) {
+  console.warn('⚠️ Supabase URL was http://, converting to https://');
+  url = url.replace('http://', 'https://');
+}
+
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
 
 if (!serviceKey) {
