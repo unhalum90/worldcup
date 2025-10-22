@@ -1,199 +1,146 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/AuthContext';
-import AuthModal from '@/components/AuthModal';
+import { useState } from 'react';
 import Link from 'next/link';
+import TravelPlannerWizard from '@/components/TravelPlannerWizard';
+import ItineraryResults from '@/components/ItineraryResults';
+import DidYouKnowCarousel from '@/components/DidYouKnowCarousel';
 
-export default function TripBuilderPage() {
-  const { user, loading } = useAuth();
-  const [showAuthModal, setShowAuthModal] = useState(false);
+export default function PlannerPage() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [itinerary, setItinerary] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!loading && !user) {
-      setShowAuthModal(true);
+  const handleFormSubmit = async (formData: any) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/travel-planner', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate itinerary');
+      }
+
+      const data = await response.json();
+      setItinerary(data.itinerary);
+    } catch (err) {
+      console.error('Error generating itinerary:', err);
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-  }, [user, loading]);
+  };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  const handleEmailCapture = () => {
+    // TODO: Implement email capture modal
+    alert('Email capture coming soon! For now, screenshot your itinerary.');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      <AuthModal 
-        isOpen={showAuthModal} 
-        onClose={() => setShowAuthModal(false)}
-        redirectTo="/planner/trip-builder"
-      />
-      
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center gap-4 mb-2">
-            <Link 
-              href="/planner" 
-              className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-sm font-medium"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to Travel Planner
-            </Link>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-4xl">🗺️</span>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Trip Builder</h1>
-              <p className="text-gray-600">Plan your route and match schedule</p>
-            </div>
-          </div>
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <h1 className="text-2xl font-bold text-gray-900">World Cup 2026 Travel Planner</h1>
+          <p className="text-gray-600">AI-powered itineraries for the greatest show on earth ⚽</p>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="py-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* AI Planner Card */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-            <div className="text-center mb-8">
-              <div className="text-6xl mb-4">🤖✨</div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                AI-Powered Trip Planning
-              </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Get personalized World Cup 2026 itineraries powered by AI — matches, cities, and experiences tailored just for you.
-              </p>
-            </div>
+        {!itinerary && !isLoading && (
+          <TravelPlannerWizard onSubmit={handleFormSubmit} isLoading={isLoading} />
+        )}
 
-            {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <FeatureItem 
-                icon="🎯"
-                title="Team-Based Routes"
-                description="Follow your team's journey with AI-suggested travel routes"
-              />
-              <FeatureItem 
-                icon="📍"
-                title="Multi-City Planning"
-                description="Distance and time estimates between all 16 host cities"
-              />
-              <FeatureItem 
-                icon="⚽"
-                title="Match Integration"
-                description="See upcoming matches and add them to your itinerary"
-              />
-              <FeatureItem 
-                icon="📄"
-                title="Export & Share"
-                description="Download your plan as PDF or share with friends"
-              />
-            </div>
-
-            {/* Status Message */}
-            <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
-              <div className="flex items-start gap-4">
-                <div className="text-4xl">💡</div>
-                <div>
-                  <h3 className="font-bold text-blue-900 text-lg mb-2">
-                    Full AI Trip Builder Available Soon
-                  </h3>
-                  <p className="text-blue-800 mb-4">
-                    The complete AI-powered trip builder with interactive map, match scheduler, and itinerary generation is ready on the <code className="bg-blue-100 px-2 py-1 rounded font-mono text-sm">ai-travel-planner</code> branch.
-                  </p>
-                  <ul className="space-y-2 text-blue-700 text-sm">
-                    <li className="flex items-center gap-2">
-                      <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span>Interactive city map with route visualization</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span>AI chat interface for itinerary customization</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span>Budget tracking and cost optimization</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span>Accommodation and dining recommendations</span>
-                    </li>
-                  </ul>
+        {isLoading && (
+          <div className="max-w-5xl mx-auto px-6 space-y-8">
+            {/* Title and Progress */}
+            <div className="text-center space-y-4">
+              <div className="animate-pulse">
+                <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                  🌍 Crafting Your Perfect World Cup Journey...
+                </h2>
+                <p className="text-lg text-gray-600">
+                  Our AI is analyzing your preferences with expert local knowledge
+                </p>
+              </div>
+              
+              {/* Progress bar */}
+              <div className="max-w-md mx-auto">
+                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                  <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full animate-progress"></div>
                 </div>
+                <p className="text-sm text-gray-500 mt-2">⏱️ This usually takes 45-60 seconds</p>
+              </div>
+            </div>
+
+            {/* Did You Know Carousel */}
+            <div className="py-6">
+              <h3 className="text-xl font-semibold text-center text-gray-800 mb-6">
+                While You Wait: World Cup History Quiz
+              </h3>
+              <DidYouKnowCarousel />
+            </div>
+
+            {/* Status messages */}
+            <div className="max-w-md mx-auto space-y-3 text-center">
+              <div className="flex items-center justify-center space-x-2 text-gray-600">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <p className="text-sm">Loading city-specific travel guides...</p>
+              </div>
+              <div className="flex items-center justify-center space-x-2 text-gray-600">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <p className="text-sm">Analyzing flight connections and lodging options...</p>
+              </div>
+              <div className="flex items-center justify-center space-x-2 text-gray-600">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                <p className="text-sm">Calculating match day logistics...</p>
               </div>
             </div>
           </div>
+        )}
 
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link
-              href="/teams"
-              className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 group"
-            >
-              <div className="text-4xl mb-3">🏆</div>
-              <h3 className="font-bold text-lg mb-2 group-hover:text-blue-600 transition-colors">
-                Browse Teams
-              </h3>
-              <p className="text-gray-600 text-sm">
-                See all 28 qualified teams and their match schedules
-              </p>
-            </Link>
-
-            <Link
-              href="/guides"
-              className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 group"
-            >
-              <div className="text-4xl mb-3">🏙️</div>
-              <h3 className="font-bold text-lg mb-2 group-hover:text-blue-600 transition-colors">
-                City Guides
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Explore all 16 host cities across USA, Canada, and Mexico
-              </p>
-            </Link>
-
-            <Link
-              href="/forums"
-              className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 group"
-            >
-              <div className="text-4xl mb-3">💬</div>
-              <h3 className="font-bold text-lg mb-2 group-hover:text-blue-600 transition-colors">
-                Join Forums
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Connect with fans and get local tips from each city
-              </p>
-            </Link>
+        {error && (
+          <div className="max-w-3xl mx-auto p-6">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+              <h2 className="text-xl font-bold text-red-900 mb-2">Oops! Something went wrong</h2>
+              <p className="text-red-700 mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
-  );
-}
+        )}
 
-function FeatureItem({ icon, title, description }: { icon: string; title: string; description: string }) {
-  return (
-    <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 border border-gray-100">
-      <div className="text-3xl flex-shrink-0">{icon}</div>
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
-        <p className="text-gray-600 text-sm">{description}</p>
-      </div>
+        {itinerary && !isLoading && (
+          <ItineraryResults itinerary={itinerary} onEmailCapture={handleEmailCapture} />
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 mt-12">
+        <div className="max-w-7xl mx-auto px-6 py-6 text-center text-sm text-gray-600">
+          <p>Planning your World Cup 2026 adventure? We've got you covered.</p>
+          <p className="mt-2">
+            <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">← Back to Home</Link>
+            {' | '}
+            <Link href="/guides" className="text-blue-600 hover:text-blue-700 font-medium">City Guides</Link>
+            {' | '}
+            <Link href="/forums" className="text-blue-600 hover:text-blue-700 font-medium">Fan Forums</Link>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

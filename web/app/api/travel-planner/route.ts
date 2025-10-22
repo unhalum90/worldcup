@@ -79,9 +79,8 @@ ${cities?.map(city => `
      - Layover durations between flights (and suggestions for what to do during long layovers)
      - Whether flights are direct or have connections
      - Frequency of flights (daily, 3x weekly, etc.)
-     - **Total estimated cost:** Use REALISTIC economy class prices (basic economy for domestic flights, regular economy for international). Prices should reflect typical ticket costs with 1 checked bag and 1 carry-on included. Budget options = economy/basic economy. Moderate options = economy with seat selection. Premium options = premium economy or business class. Check current market rates for June-July 2026 travel.
+     - Total estimated cost range for all flights combined
    - **Lodging Zones:** Specific neighborhoods/areas to stay in each city with:
-     - **Number of nights:** Calculate based on the travel dates provided (${formData.startDate} to ${formData.endDate}). If staying in one city the whole time, use the full date range. If visiting multiple cities, divide the nights logically based on match schedules and travel time.
      - Why this area makes sense (proximity to stadium/fan fest, transit access, safety, atmosphere)
      - Estimated nightly hotel rates for this budget level
      - Transit times to stadium and fan festival
@@ -126,13 +125,12 @@ Format the response as JSON in this exact structure:
             "frequency": "Hourly flights available"
           }
         ],
-        "totalCost": "$1,200 - $1,800 per person",
-        "costBreakdown": "Round-trip economy class with 1 checked bag included"
+        "totalCost": "$3,000 - $4,500 per person",
+        "costBreakdown": "International round-trip + 2 internal flights (premium economy/business class)"
       },
       "cities": [
         {
           "cityName": "Dallas",
-          "nights": 3,
           "lodgingZones": [
             {
               "zoneName": "Irving",
