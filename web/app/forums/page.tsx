@@ -1,30 +1,45 @@
+'use client';
+
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
-import { Metadata } from 'next';
+import { useAuth } from '@/lib/AuthContext';
+import AuthModal from '@/components/AuthModal';
+import { useEffect, useState } from 'react';
 
-export const metadata: Metadata = {
-  title: 'Host City Forums | WC26 Fan Zone',
-  description: 'Connect with World Cup 2026 fans across all 16 host cities. Share tips, organize meetups, and join discussions about the biggest tournament in football.',
-  keywords: ['World Cup forums', 'fan community', 'host cities', '2026 FIFA', 'football fans'],
-};
+interface City {
+  id: string;
+  name: string;
+  slug: string;
+  country: string;
+}
 
-export const revalidate = 0;
+export default function ForumsIndex() {
+  const { user, loading } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [cities, setCities] = useState<City[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-export default async function ForumsIndex() {
-  // Fetch list of cities for forums
-  const { data: cities, error } = await supabase.from('cities').select('id,name,slug,country').order('name');
+  // Show auth modal if user is not logged in
+  useEffect(() => {
+    if (!loading && !user) {
+      setShowAuthModal(true);
+    }
+  }, [user, loading]);
 
-  if (error) {
-    return (
-      <div className="container py-12">
-        <h1 className="text-3xl font-bold mb-6">Host City Forums</h1>
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-700">Error loading cities. Please run the database setup first.</p>
-          <p className="text-red-600 text-sm mt-2">Error: {error.message}</p>
-        </div>
-      </div>
-    );
-  }
+  // Fetch cities data
+  useEffect(() => {
+    async function fetchCities() {
+      const { data, error } = await supabase.from('cities').select('id,name,slug,country').order('name');
+      if (error) {
+        setError(error.message);
+      } else {
+        setCities(data || []);
+      }
+    }
+    if (user) {
+      fetchCities();
+    }
+  }, [user]);
 
   const getCityFlag = (country: string) => {
     switch (country) {
@@ -41,8 +56,41 @@ export default async function ForumsIndex() {
     { title: 'Group Stage Match Predictions', replies: 213, views: 5672 },
   ];
 
+  // Show loading spinner while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if cities failed to load
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <div className="container py-12">
+          <h1 className="text-3xl font-bold mb-6">Host City Forums</h1>
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-red-700">Error loading cities. Please run the database setup first.</p>
+            <p className="text-red-600 text-sm mt-2">Error: {error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)}
+        redirectTo="/forums"
+      />
       <div className="container py-12">
         {/* Hero Section */}
         <div className="mb-12 text-center">
@@ -88,9 +136,9 @@ export default async function ForumsIndex() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {cities?.map((c: any) => {
+            {cities?.map((c) => {
               const palette = ['#3CAC3B', '#2A398D', '#E61D25', '#D1D4D1', '#474A4A'];
-              const idx = Math.abs(Array.from(String(c.slug)).reduce((a: number, ch: string) => a + ch.charCodeAt(0), 0)) % palette.length;
+              const idx = Math.abs(Array.from(String(c.slug)).reduce((a, ch) => a + ch.charCodeAt(0), 0)) % palette.length;
               const accent = palette[idx];
               
               return (
@@ -139,7 +187,7 @@ export default async function ForumsIndex() {
 
         {/* Bottom CTA */}
         <div className="mt-12 text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
-          <h2 className="text-3xl font-bold mb-3">Can't Find Your Topic?</h2>
+          <h2 className="text-3xl font-bold mb-3">Can&apos;t Find Your Topic?</h2>
           <p className="text-lg mb-6 opacity-90">Start a new discussion and connect with thousands of fans</p>
           <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-all hover:scale-105 shadow-lg">
             Create New Post

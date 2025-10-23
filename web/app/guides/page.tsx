@@ -1,32 +1,15 @@
+'use client';
+
 import Link from 'next/link';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: '2026 World Cup Host City Guides | WC26 Fan Zone',
-  description: 'Complete travel guides for all 16 FIFA World Cup 2026 host cities across USA, Canada, and Mexico. Stadium info, local tips, and fan essentials.',
-  keywords: ['World Cup 2026', 'host cities', 'travel guides', 'FIFA', 'USA', 'Canada', 'Mexico', 'stadiums'],
-};
-
-const HOST_CITIES = [
-  { name: 'Atlanta', country: 'USA', stadium: 'Mercedes-Benz Stadium' },
-  { name: 'Boston', country: 'USA', stadium: 'Gillette Stadium' },
-  { name: 'Dallas', country: 'USA', stadium: 'AT&T Stadium' },
-  { name: 'Houston', country: 'USA', stadium: 'NRG Stadium' },
-  { name: 'Kansas City', country: 'USA', stadium: 'Arrowhead Stadium' },
-  { name: 'Los Angeles', country: 'USA', stadium: 'SoFi Stadium' },
-  { name: 'Miami', country: 'USA', stadium: 'Hard Rock Stadium' },
-  { name: 'New York', country: 'USA', stadium: 'MetLife Stadium' },
-  { name: 'Philadelphia', country: 'USA', stadium: 'Lincoln Financial Field' },
-  { name: 'San Francisco', country: 'USA', stadium: "Levi's Stadium" },
-  { name: 'Seattle', country: 'USA', stadium: 'Lumen Field' },
-  { name: 'Toronto', country: 'Canada', stadium: 'BMO Field' },
-  { name: 'Vancouver', country: 'Canada', stadium: 'BC Place' },
-  { name: 'Guadalajara', country: 'Mexico', stadium: 'Estadio Akron' },
-  { name: 'Mexico City', country: 'Mexico', stadium: 'Estadio Azteca' },
-  { name: 'Monterrey', country: 'Mexico', stadium: 'Estadio BBVA' },
-];
+import { cityGuides, getCityGuidesByCountry } from '@/lib/cityGuidesData';
+import { useState } from 'react';
 
 export default function GuidesPage() {
+  const [countryFilter, setCountryFilter] = useState<'ALL' | 'USA' | 'CAN' | 'MEX'>('ALL');
+
+  const filteredCities = countryFilter === 'ALL' 
+    ? cityGuides 
+    : getCityGuidesByCountry(countryFilter);
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
@@ -61,10 +44,28 @@ export default function GuidesPage() {
 
       {/* City Grid */}
       <section className="container pb-16 sm:pb-24">
+        {/* Country Filter */}
+        <div className="flex justify-center gap-3 mb-8">
+          {(['ALL', 'USA', 'CAN', 'MEX'] as const).map((country) => (
+            <button
+              key={country}
+              onClick={() => setCountryFilter(country)}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                countryFilter === country
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border-2 border-gray-200'
+              }`}
+            >
+              {country === 'ALL' ? 'All Cities' : country === 'USA' ? 'United States' : country === 'CAN' ? 'Canada' : 'Mexico'}
+            </button>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {HOST_CITIES.map((city, index) => (
-            <div
+          {filteredCities.map((city, index) => (
+            <Link
               key={index}
+              href={`/guides/${city.slug}`}
               className="group relative overflow-hidden rounded-2xl bg-white border-2 border-gray-200 hover:border-blue-500 hover:shadow-xl transition-all duration-300"
             >
               {/* Placeholder Image */}
@@ -74,6 +75,18 @@ export default function GuidesPage() {
                   🏟️
                 </div>
                 
+                {/* Status Badge */}
+                {city.isAvailable && (
+                  <div className="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                    FREE DOWNLOAD
+                  </div>
+                )}
+                {!city.isAvailable && (
+                  <div className="absolute top-3 right-3 bg-yellow-500 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold">
+                    COMING SOON
+                  </div>
+                )}
+
                 {/* City Name Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
                   <div>
@@ -93,23 +106,14 @@ export default function GuidesPage() {
                   {city.stadium}
                 </p>
 
-                <Link
-                  href={city.name === 'Dallas' ? '/cityguides' : '#'}
-                  className={`inline-flex items-center gap-2 text-sm font-semibold ${
-                    city.name === 'Dallas' 
-                      ? 'text-blue-600 hover:text-blue-700' 
-                      : 'text-gray-400 cursor-not-allowed'
-                  } group-hover:gap-3 transition-all`}
-                >
-                  {city.name === 'Dallas' ? 'Download Free Guide' : 'Coming Soon'}
-                  {city.name === 'Dallas' && (
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )}
-                </Link>
+                <div className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 group-hover:gap-3 group-hover:text-blue-700 transition-all">
+                  {city.isAvailable ? 'View Guide' : 'Learn More'}
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

@@ -2,11 +2,16 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import LanguageModal from "@/components/LanguageModal";
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getLocale } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
+import { AuthProvider } from '@/lib/AuthContext';
+import LanguageModal from '@/components/LanguageModal';
+import { WebVitals } from '@/components/WebVitals';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,23 +40,24 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const messages = await getMessages();
-  const locale = await getLocale();
-  
-  // RTL support for Arabic
-  const dir = locale === 'ar' ? 'rtl' : 'ltr';
   
   return (
-    <html lang={locale} dir={dir} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
       >
         <NextIntlClientProvider messages={messages}>
-          <LanguageModal />
-          <Header />
-          <main>{children}</main>
-          <Footer />
-          <Analytics />
+          <AuthProvider>
+            <GoogleAnalytics />
+            <WebVitals />
+            <LanguageModal />
+            <Header />
+            <main>{children}</main>
+            <Footer />
+            <ScrollToTop />
+            <Analytics />
+            <SpeedInsights />
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

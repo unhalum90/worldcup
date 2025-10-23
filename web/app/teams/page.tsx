@@ -3,8 +3,23 @@ import Link from 'next/link';
 import { teams, getQualifiedTeams, getProvisionalTeams } from '@/lib/teamsData';
 
 export const metadata: Metadata = {
-  title: 'Qualified Teams - FIFA World Cup 2026',
-  description: 'View all 28 qualified teams for the 2026 FIFA World Cup in North America. Follow your favorite national team.',
+  title: 'Qualified Teams - FIFA World Cup 2026 | WC26 Fan Zone',
+  description: 'View all 28 qualified teams for the 2026 FIFA World Cup in North America. Follow your favorite national team, view fixtures, and get travel tips for each team\'s matches.',
+  keywords: ['World Cup 2026', 'qualified teams', 'FIFA', 'national teams', 'soccer', 'football'],
+  alternates: {
+    canonical: 'https://worldcup26fanzone.com/teams',
+  },
+  openGraph: {
+    title: 'Qualified Teams - FIFA World Cup 2026',
+    description: 'View all 28 qualified teams for the 2026 FIFA World Cup',
+    url: 'https://worldcup26fanzone.com/teams',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Qualified Teams - FIFA World Cup 2026',
+    description: 'View all 28 qualified teams for the 2026 FIFA World Cup',
+  },
 };
 
 export default function TeamsPage() {

@@ -37,8 +37,63 @@ export default async function TeamPage({ params }: Props) {
     notFound();
   }
 
+  // Schema.org structured data for SEO
+  const teamSchema = {
+    "@context": "https://schema.org",
+    "@type": "SportsTeam",
+    "name": team.name,
+    "sport": "Soccer",
+    "memberOf": {
+      "@type": "SportsOrganization",
+      "name": team.confederation
+    },
+    "description": `Follow ${team.name}'s journey to the 2026 FIFA World Cup in Canada, Mexico, and the United States.`,
+    "url": `https://worldcup26.app/teams/${team.slug}`,
+    ...(team.coach && {
+      "coach": {
+        "@type": "Person",
+        "name": team.coach
+      }
+    }),
+    ...(team.starPlayers && team.starPlayers.length > 0 && {
+      "athlete": team.starPlayers.map(player => ({
+        "@type": "Person",
+        "name": typeof player === 'object' ? player.name : player,
+        ...(typeof player === 'object' && player.position && { "jobTitle": player.position })
+      }))
+    })
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Schema.org JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(teamSchema) }}
+      />
+      {/* Sticky Navigation Bar */}
+      <div className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-3">
+            <Link 
+              href="/teams" 
+              className="flex items-center gap-2 text-gray-700 hover:text-gray-900 font-medium transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span className="hidden sm:inline">Back to All Teams</span>
+              <span className="sm:hidden">Teams</span>
+            </Link>
+            
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{team.flagEmoji}</span>
+              <span className="font-bold text-gray-900 text-sm sm:text-base">{team.name}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <div 
         className="relative text-white py-24 overflow-hidden"
@@ -99,9 +154,49 @@ export default async function TeamPage({ params }: Props) {
           </div>
 
           {/* CTA Button */}
-          <button className="bg-white text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
-            Get notified when {team.name}'s match cities are announced →
-          </button>
+          <div className="flex flex-wrap items-center gap-4">
+            <button className="bg-white text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
+              Get notified when {team.name}'s match cities are announced →
+            </button>
+            
+            {/* Social Share Buttons */}
+            <div className="flex items-center gap-2 ml-auto">
+              <span className="text-white/80 text-sm hidden sm:inline">Share:</span>
+              <a
+                href={`https://twitter.com/intent/tweet?text=Follow ${encodeURIComponent(team.name)} to the 2026 World Cup!&url=${encodeURIComponent(`https://worldcup26.app/teams/${team.slug}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2 rounded-lg transition-colors"
+                title="Share on X (Twitter)"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+              <a
+                href={`https://www.threads.net/intent/post?text=Follow ${encodeURIComponent(team.name)} to the 2026 World Cup! https://worldcup26.app/teams/${team.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2 rounded-lg transition-colors"
+                title="Share on Threads"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.781 3.631 2.695 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142l-.126.742a12.954 12.954 0 0 0-2.84-.133c-1.235.07-2.177.423-2.802.995-.582.533-.9 1.23-.858 1.962.048.879.49 1.619 1.24 2.086.652.406 1.52.608 2.442.568 1.301-.056 2.29-.544 2.943-1.452.563-.783.9-1.743 1.003-2.856-.775-.312-1.65-.473-2.6-.473-.938 0-1.8.184-2.567.547l-.365-1.424c.844-.401 1.806-.605 2.932-.605 1.44 0 2.704.41 3.762 1.216.616.469 1.096 1.045 1.427 1.713.696 1.404.755 3.883-1.229 5.86-1.702 1.699-3.813 2.498-6.84 2.525z"/>
+                </svg>
+              </a>
+              <a
+                href={`https://www.reddit.com/submit?url=${encodeURIComponent(`https://worldcup26.app/teams/${team.slug}`)}&title=Follow ${encodeURIComponent(team.name)} to the 2026 World Cup!`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm p-2 rounded-lg transition-colors"
+                title="Share on Reddit"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -263,14 +358,14 @@ export default async function TeamPage({ params }: Props) {
               Greatest World Cup Moments
             </h2>
             
-            <div className="space-y-6">
+            <div className="space-y-8">
               {team.greatestMoments.map((moment, index) => (
                 <div key={index} className="border-l-4 pl-6 py-2" style={{ borderColor: team.primaryColor }}>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     {index + 1}. {moment.title}
                   </h3>
-                  <p className="text-gray-700 mb-2">{moment.description}</p>
-                  <div className="flex items-center gap-4 text-sm">
+                  <p className="text-gray-700 mb-3">{moment.description}</p>
+                  <div className="flex items-center gap-4 text-sm mb-4">
                     {moment.year && (
                       <span className="text-gray-500 font-semibold">
                         {moment.year}
@@ -281,12 +376,35 @@ export default async function TeamPage({ params }: Props) {
                         {moment.tournament}
                       </span>
                     )}
-                    {moment.video_search_query && (
-                      <span className="text-xs text-gray-400 italic">
-                        🎥 Search: "{moment.video_search_query}"
-                      </span>
-                    )}
                   </div>
+                  
+                  {/* Video Embed Placeholder */}
+                  {moment.video_search_query && (
+                    <div className="mt-4 bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
+                      <div className="flex items-center justify-center gap-3 mb-3">
+                        <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <span className="text-gray-600 font-semibold">Video Highlight</span>
+                      </div>
+                      <p className="text-sm text-gray-500 text-center mb-2">
+                        Search YouTube: <span className="font-mono italic">"{moment.video_search_query}"</span>
+                      </p>
+                      <a
+                        href={`https://www.youtube.com/results?search_query=${encodeURIComponent(moment.video_search_query)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-center mt-3"
+                      >
+                        <span className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm font-semibold">
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                          </svg>
+                          Watch on YouTube
+                        </span>
+                      </a>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

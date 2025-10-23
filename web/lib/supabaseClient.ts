@@ -1,11 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@supabase/supabase-js';
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const anon = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+if (!url || !anon) {
+  console.error('❌ Missing Supabase environment variables!');
+  console.error('Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your .env.local file');
+  console.error('See documentation: https://supabase.com/docs/guides/getting-started/quickstarts/nextjs');
+}
 
 // Ensure a single Supabase client across HMR / fast refresh
 declare global {
-	// eslint-disable-next-line no-var
 	var __supabase_client__: any | undefined;
 }
 
