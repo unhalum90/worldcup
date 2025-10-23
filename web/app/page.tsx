@@ -2,6 +2,7 @@ import HeroSplit from "@/components/HeroSplit";
 import FeatureShowcase from "@/components/landing/FeatureShowcase";
 import DemoSection from "@/components/landing/DemoSection";
 import WorldCupTimeline from "@/components/landing/WorldCupTimeline";
+import QualifiedTeamsSection from "@/components/landing/QualifiedTeamsSection";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function Home() {
     <>
       <HeroSplit />
       <FeatureShowcase />
+      <QualifiedTeamsSection />
       <DemoSection />
       <WorldCupTimeline />
     </>
