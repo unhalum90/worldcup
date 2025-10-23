@@ -9,6 +9,7 @@ import DidYouKnowCarousel from '@/components/DidYouKnowCarousel';
 export default function PlannerPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
+  const [lastForm, setLastForm] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleFormSubmit = async (formData: any) => {
@@ -29,8 +30,9 @@ export default function PlannerPage() {
         throw new Error(errorData.error || 'Failed to generate itinerary');
       }
 
-      const data = await response.json();
-      setItinerary(data.itinerary);
+  const data = await response.json();
+  setLastForm(formData);
+  setItinerary(data.itinerary);
     } catch (err) {
       console.error('Error generating itinerary:', err);
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
@@ -124,7 +126,7 @@ export default function PlannerPage() {
         )}
 
         {itinerary && !isLoading && (
-          <ItineraryResults itinerary={itinerary} onEmailCapture={handleEmailCapture} />
+          <ItineraryResults itinerary={itinerary} tripInput={lastForm} onEmailCapture={handleEmailCapture} />
         )}
       </main>
 

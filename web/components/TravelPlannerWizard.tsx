@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AirportAutocomplete from './AirportAutocomplete';
 import type { Airport } from '@/lib/airportData';
 import { SoccerBallIcon, GoalIcon } from './icons/SoccerIcons';
+import MatchPicker from './MatchPicker';
 
 interface TravelPlanFormData {
   originCity: string;
@@ -18,6 +19,16 @@ interface TravelPlanFormData {
   startDate: string;
   endDate: string;
   personalContext: string;
+  // V2 additions
+  hasMatchTickets: boolean;
+  matchDates?: string[];
+  ticketCities?: string[];
+  tripFocus: Array<'fanfest' | 'local_culture' | 'stadium_experience' | 'nightlife' | 'unsure'>;
+  surpriseMe?: boolean;
+  comfortPreference?: 'budget_friendly' | 'balanced' | 'luxury_focus';
+  nightlifePreference?: 'quiet' | 'social' | 'party';
+  foodPreference?: 'local_flavors' | 'international' | 'mix';
+  climatePreference?: 'avoid_heat' | 'open_to_hot' | 'prefer_warm';
 }
 
 const WORLD_CUP_CITIES = [
@@ -46,6 +57,8 @@ interface TravelPlannerWizardProps {
 
 export default function TravelPlannerWizard({ onSubmit, isLoading = false }: TravelPlannerWizardProps) {
   const [step, setStep] = useState(1);
+  const [availableMatches, setAvailableMatches] = useState<Record<string, Array<{date:string;displayDate:string;match:string;stadium:string}>> | null>(null);
+  const [matchesError, setMatchesError] = useState<string | null>(null);
   const [formData, setFormData] = useState<TravelPlanFormData>({
     originCity: '',
     groupSize: 2,
@@ -57,25 +70,93 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
     budgetLevel: 'moderate',
     startDate: '',
     endDate: '',
-    personalContext: ''
+    personalContext: '',
+    hasMatchTickets: false,
+    matchDates: [],
+    ticketCities: [],
+    tripFocus: [],
+    surpriseMe: false,
+    comfortPreference: undefined,
+    nightlifePreference: undefined,
+    foodPreference: undefined,
+    climatePreference: undefined,
   });
 
-  const totalSteps = 7;
+  // Compute effective total steps based on flow (tickets steps are skipped when no tickets)
+  const totalSteps = formData.hasMatchTickets ? 12 : 10;
 
   const updateFormData = (updates: Partial<TravelPlanFormData>) => {
     setFormData(prev => ({ ...prev, ...updates }));
   };
 
   const nextStep = () => {
-    if (step < totalSteps) setStep(step + 1);
+    if (step >= totalSteps) return;
+    let next = step + 1;
+    // Skip ticket-specific steps if user has no tickets
+    if (!formData.hasMatchTickets && (next === 8 || next === 9)) {
+      next = 10;
+    }
+    setStep(next);
   };
 
   const prevStep = () => {
-    if (step > 1) setStep(step - 1);
+    if (step <= 1) return;
+    let prev = step - 1;
+    // Skip ticket-specific steps if user has no tickets
+    if (!formData.hasMatchTickets && (prev === 9 || prev === 8)) {
+      prev = 7; // back to the hasMatchTickets question
+    }
+    setStep(prev);
   };
 
   const handleSubmit = () => {
     onSubmit(formData);
+  };
+  // Load matches when tickets are enabled and inputs change
+  useEffect(() => {
+    const shouldFetch = formData.hasMatchTickets && ((formData.ticketCities?.length || 0) > 0);
+    if (!shouldFetch) {
+      setAvailableMatches(null);
+      return;
+    }
+    const startDate = formData.startDate || '2026-06-11';
+    const endDate = formData.endDate || '2026-07-19';
+    const cities = formData.ticketCities && formData.ticketCities.length > 0 ? formData.ticketCities : formData.citiesVisiting;
+    (async () => {
+      try {
+        setMatchesError(null);
+        const res = await fetch('/api/matches', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cities, startDate, endDate, group: true })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Failed to load matches');
+        setAvailableMatches(data.grouped || {});
+      } catch (e: any) {
+        setAvailableMatches(null);
+        setMatchesError(e?.message || 'Failed to load matches');
+      }
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.hasMatchTickets, JSON.stringify(formData.ticketCities), formData.startDate, formData.endDate]);
+
+  // If the user turns off tickets while on a ticket-only step, jump forward to the next applicable step
+  useEffect(() => {
+    if (!formData.hasMatchTickets && (step === 8 || step === 9)) {
+      setStep(10);
+    }
+  }, [formData.hasMatchTickets]);
+
+  const toggleArrayValue = <T,>(arr: T[] | undefined, value: T): T[] => {
+    const list = arr ? [...arr] : [];
+    const i = list.indexOf(value);
+    if (i >= 0) {
+      list.splice(i, 1);
+    } else {
+      list.push(value);
+    }
+    return list;
   };
 
   const toggleCity = (city: string) => {
@@ -430,23 +511,245 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
         </div>
       )}
 
-      {/* Step 7: Personal Context & Review */}
+      {/* Step 7: Match Tickets Yes/No */}
       {step === 7 && (
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold text-gray-900">Any special requests or context?</h2>
-          <p className="text-gray-600">Tell us anything else that would help us personalize your itinerary.</p>
-          
-          <textarea
-            value={formData.personalContext}
-            onChange={(e) => updateFormData({ personalContext: e.target.value })}
-            placeholder="e.g., Following England team, celebrating anniversary, first time in USA, prefer staying near beaches, vegetarian dietary needs..."
-            rows={5}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+          <h2 className="text-3xl font-bold text-gray-900">Do you already have match tickets?</h2>
+          <p className="text-gray-600">If yes, we’ll align your plan to those cities and dates.</p>
+          <div className="flex items-center p-4 border rounded-lg bg-white">
+            <input
+              type="checkbox"
+              id="hasMatchTickets"
+              checked={formData.hasMatchTickets}
+              onChange={(e) => updateFormData({ hasMatchTickets: e.target.checked })}
+              className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <label htmlFor="hasMatchTickets" className="ml-3 text-sm text-gray-800">Yes — I already have tickets</label>
+          </div>
+          {!formData.hasMatchTickets && (
+            <p className="text-sm text-gray-500">You can still pick matches later. We’ll optimize based on your cities and dates.</p>
+          )}
+        </div>
+      )}
 
-          {/* Summary */}
+      {/* Step 8: Ticket Cities (only if has tickets) */}
+      {step === 8 && formData.hasMatchTickets && (
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-900">Which cities are your tickets in?</h2>
+          <p className="text-gray-600">Select all host cities where you have match tickets.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-72 overflow-auto p-2 border rounded-md bg-white">
+            {WORLD_CUP_CITIES.map(city => (
+              <label key={city} className="flex items-center text-sm p-2 rounded hover:bg-gray-50 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formData.ticketCities?.includes(city) || false}
+                  onChange={() => updateFormData({ ticketCities: toggleArrayValue(formData.ticketCities, city) })}
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mr-2"
+                />
+                <span>{city}</span>
+              </label>
+            ))}
+          </div>
+          {(!formData.ticketCities || formData.ticketCities.length === 0) && (
+            <p className="text-sm text-yellow-800 bg-yellow-50 border border-yellow-200 rounded p-3">Select at least one ticket city to continue</p>
+          )}
+        </div>
+      )}
+
+      {/* Step 9: Select exact matches (only if has tickets) */}
+      {step === 9 && formData.hasMatchTickets && (
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-900">Select your exact matches</h2>
+          <p className="text-gray-600">Click a match to add its date. You can also type dates manually.</p>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Match Dates (optional)</label>
+            <input
+              type="text"
+              placeholder="YYYY-MM-DD, YYYY-MM-DD"
+              value={(formData.matchDates || []).join(', ')}
+              onChange={(e) => updateFormData({ matchDates: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+            <p className="text-xs text-gray-500 mt-1">Example: 2026-06-14, 2026-06-18</p>
+          </div>
+          <div className="border rounded-md p-3 bg-gray-50">
+            {matchesError && (
+              <p className="text-sm text-red-600">{matchesError}</p>
+            )}
+            {!matchesError && (!availableMatches || Object.keys(availableMatches).length === 0) && (
+              <p className="text-sm text-gray-700">No matches found for the selected cities between {formData.startDate || '2026-06-11'} and {formData.endDate || '2026-07-19'}.</p>
+            )}
+            {!matchesError && availableMatches && Object.keys(availableMatches).length > 0 && (
+              <div className="space-y-3 max-h-64 overflow-auto">
+                {Object.keys(availableMatches).map(city => (
+                  <div key={city} className="bg-white rounded border p-2">
+                    <p className="text-sm font-semibold text-gray-800 mb-1">{city}</p>
+                    <ul className="space-y-1">
+                      {availableMatches[city].map((m, idx) => (
+                        <li key={idx}>
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => {
+                              const newDates = new Set([...(formData.matchDates || [])]);
+                              newDates.add(m.date);
+                              updateFormData({ matchDates: Array.from(newDates) });
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                const newDates = new Set([...(formData.matchDates || [])]);
+                                newDates.add(m.date);
+                                updateFormData({ matchDates: Array.from(newDates) });
+                              }
+                            }}
+                            className="w-full text-left text-sm px-3 py-2 rounded hover:bg-blue-50 border border-gray-200 cursor-pointer"
+                          >
+                            <span className="font-medium text-gray-900">{m.displayDate}</span>
+                            <span className="text-gray-600"> — {m.match}</span>
+                            <span className="text-gray-500"> @ {m.stadium}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
+            {formData.matchDates && formData.matchDates.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {formData.matchDates.map(d => (
+                  <span key={d} className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                    {d}
+                    <button onClick={() => updateFormData({ matchDates: (formData.matchDates || []).filter(x => x !== d) })} className="ml-1 text-blue-700 hover:text-blue-900">×</button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Step 10: Trip Focus */}
+      {step === 10 && (
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-900">What’s your trip focus?</h2>
+          <p className="text-gray-600">Choose any that fit. We’ll tailor recommendations accordingly.</p>
+          <div className="space-y-3 p-4 border rounded-lg bg-white">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {[
+                { key: 'fanfest', label: 'Fan Fests & Atmosphere' },
+                { key: 'local_culture', label: 'Local Culture & Food' },
+                { key: 'stadium_experience', label: 'Stadium Experience' },
+                { key: 'nightlife', label: 'Nightlife' },
+                { key: 'unsure', label: 'Not sure yet' },
+              ].map(item => (
+                <label key={item.key} className={`flex items-center p-3 rounded-md border cursor-pointer ${formData.tripFocus.includes(item.key as any) ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                  <input
+                    type="checkbox"
+                    checked={formData.tripFocus.includes(item.key as any)}
+                    onChange={() => updateFormData({ tripFocus: toggleArrayValue(formData.tripFocus, item.key as any) })}
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mr-2"
+                  />
+                  <span className="text-sm text-gray-800">{item.label}</span>
+                </label>
+              ))}
+            </div>
+            <div className="flex items-center mt-2">
+              <input
+                type="checkbox"
+                id="surpriseMe"
+                checked={formData.surpriseMe || false}
+                onChange={(e) => updateFormData({ surpriseMe: e.target.checked })}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="surpriseMe" className="ml-2 text-sm text-gray-700">I’m open to a creative twist (Surprise Me)</label>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Step 11: Preferences */}
+      {step === 11 && (
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-900">Any preferences to consider?</h2>
+          <p className="text-gray-600">We’ll weave these into lodging, transit, and activities.</p>
+          <div className="space-y-3 p-4 border rounded-lg bg-white">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Comfort</label>
+                <select
+                  value={formData.comfortPreference || ''}
+                  onChange={(e) => updateFormData({ comfortPreference: (e.target.value || undefined) as any })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">No preference</option>
+                  <option value="budget_friendly">Budget-friendly</option>
+                  <option value="balanced">Balanced</option>
+                  <option value="luxury_focus">Luxury focus</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nightlife</label>
+                <select
+                  value={formData.nightlifePreference || ''}
+                  onChange={(e) => updateFormData({ nightlifePreference: (e.target.value || undefined) as any })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">No preference</option>
+                  <option value="quiet">Quiet</option>
+                  <option value="social">Social</option>
+                  <option value="party">Party</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Food</label>
+                <select
+                  value={formData.foodPreference || ''}
+                  onChange={(e) => updateFormData({ foodPreference: (e.target.value || undefined) as any })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">No preference</option>
+                  <option value="local_flavors">Local flavors</option>
+                  <option value="international">International</option>
+                  <option value="mix">Mix</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Climate</label>
+                <select
+                  value={formData.climatePreference || ''}
+                  onChange={(e) => updateFormData({ climatePreference: (e.target.value || undefined) as any })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">No preference</option>
+                  <option value="avoid_heat">Avoid heat</option>
+                  <option value="open_to_hot">Open to hot</option>
+                  <option value="prefer_warm">Prefer warm</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Step 12: Anything else & Review */}
+      {step === 12 && (
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-900">Anything else we should know?</h2>
+          <p className="text-gray-600">Optional context helps us personalize your plan.</p>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Notes (optional)</label>
+            <textarea
+              value={formData.personalContext}
+              onChange={(e) => updateFormData({ personalContext: e.target.value })}
+              placeholder="e.g., Following England, celebrating anniversary, vegetarian, prefer beaches, first time in USA..."
+              rows={5}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
           <div className="p-6 bg-gray-50 rounded-lg border border-gray-200 space-y-3">
-            <h3 className="font-semibold text-lg">Your Trip Summary</h3>
+            <h3 className="font-semibold text-lg">Quick Review</h3>
             <div className="space-y-2 text-sm">
               <p><strong>From:</strong> {formData.originCity || 'Not specified'}</p>
               <p><strong>Group:</strong> {formData.groupSize} adults{formData.children > 0 ? `, ${formData.children} children` : ''}{formData.seniors > 0 ? `, ${formData.seniors} seniors` : ''}</p>
@@ -455,6 +758,12 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
               <p><strong>Budget:</strong> {formData.budgetLevel}</p>
               {formData.startDate && formData.endDate && (
                 <p><strong>Dates:</strong> {formData.startDate} to {formData.endDate}</p>
+              )}
+              {formData.hasMatchTickets && (
+                <p><strong>Tickets:</strong> {formData.ticketCities?.join(', ') || 'Cities not set'}{formData.matchDates && formData.matchDates.length ? ` on ${formData.matchDates.join(', ')}` : ''}</p>
+              )}
+              {formData.tripFocus.length > 0 && (
+                <p><strong>Focus:</strong> {formData.tripFocus.join(', ')}{formData.surpriseMe ? ' (Surprise Me)' : ''}</p>
               )}
             </div>
           </div>
@@ -476,7 +785,8 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
             onClick={nextStep}
             disabled={
               (step === 1 && !formData.originCity) ||
-              (step === 3 && formData.citiesVisiting.length === 0)
+              (step === 3 && formData.citiesVisiting.length === 0) ||
+              (step === 8 && formData.hasMatchTickets && ((formData.ticketCities?.length || 0) === 0))
             }
             className="px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
