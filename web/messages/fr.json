@@ -255,4 +255,11 @@
     "videoError": "Votre navigateur ne supporte pas la lecture vidéo.",
     "playButton": "Lire la vidéo de démonstration"
   }
+  ,
+  "qualifiedTeams": {
+    "title": "Équipes qualifiées",
+    "subtitle": "{count} équipes ont officiellement obtenu leur place à la Coupe du Monde 2026",
+    "counts": "{count} équipes qualifiées",
+    "viewAll": "Voir les {count} équipes"
+  }
 }

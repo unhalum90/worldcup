@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import AuthModal from '@/components/AuthModal';
 import Link from 'next/link';
-import VideoModal from '@/components/VideoModal';
 
 interface Phase {
   id: number;
@@ -20,7 +19,7 @@ interface Phase {
 export default function PlannerPage() {
   const { user, loading } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
+  // Preview video removed in favor of live demo page (/trip_builder_demo)
 
   // Show auth modal if user is not logged in
   useEffect(() => {
@@ -62,7 +61,7 @@ export default function PlannerPage() {
       id: 1,
       emoji: '🗺️',
       title: 'Trip Builder',
-      description: 'Map your route and see where your team plays — connect cities, matches, and dates into one simple plan.',
+  description: 'Choose the nearest airport, the host cities you plan to visit along with other personalized information and we will craft sample itineraries',
       status: 'live',
       href: '/planner/trip-builder',
       color: 'from-blue-500 to-blue-600',
@@ -128,24 +127,11 @@ export default function PlannerPage() {
         onClose={() => setShowAuthModal(false)}
         redirectTo="/planner"
       />
-  <VideoModal
-    open={showPreview}
-    onClose={() => setShowPreview(false)}
-    title="Planner Preview"
-    // Prefer MP4/M4V, with MOV as a fallback
-    sources={[
-      { src: '/videos/travel_planner_updated.mp4', type: 'video/mp4' },
-      { src: '/videos/travel_planner_preview.m4v', type: 'video/mp4' },
-      { src: '/videos/travelplanner_preview.mov', type: 'video/quicktime' }
-    ]}
-  />
+  {/* Preview video removed; use the demo page instead */}
       
       {/* Hero Section */}
       <section className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <div className="mb-6">
-            <span className="text-6xl mb-4 inline-block">⚽</span>
-          </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
             Plan Every Step of Your World Cup Journey
           </h1>
@@ -184,7 +170,7 @@ export default function PlannerPage() {
       <section id="phases-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {phases.map((phase) => (
-            <PhaseCard key={phase.id} phase={phase} onPreview={() => setShowPreview(true)} />
+            <PhaseCard key={phase.id} phase={phase} />
           ))}
         </div>
       </section>
@@ -224,7 +210,7 @@ export default function PlannerPage() {
   );
 }
 
-function PhaseCard({ phase, onPreview }: { phase: Phase; onPreview?: () => void }) {
+function PhaseCard({ phase }: { phase: Phase }) {
   const isLive = phase.status === 'live';
   const isMay2026 = phase.status === 'may-2026';
   const isTripBuilder = phase.title === 'Trip Builder';
@@ -287,12 +273,13 @@ function PhaseCard({ phase, onPreview }: { phase: Phase; onPreview?: () => void 
               >
                 Open Trip Builder
               </Link>
-              <button
-                onClick={(e) => { e.stopPropagation(); e.preventDefault(); onPreview?.(); }}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+              <Link
+                href="/trip_builder_demo"
+                onClick={(e) => { e.stopPropagation(); }}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors !text-white"
               >
-                Preview the Planner
-              </button>
+                Demo Planner
+              </Link>
             </div>
           </div>
         ) : (

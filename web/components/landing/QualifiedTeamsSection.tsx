@@ -1,10 +1,13 @@
+
 'use client';
 
 import Link from 'next/link';
 import { getQualifiedTeams } from '@/lib/teamsData';
+import { useTranslations } from 'next-intl';
 
 export default function QualifiedTeamsSection() {
   const qualifiedTeams = getQualifiedTeams();
+  const t = useTranslations('qualifiedTeams');
   
   // Show a selection of teams (first 12 qualified)
   const featuredTeams = qualifiedTeams.slice(0, 12);
@@ -15,14 +18,14 @@ export default function QualifiedTeamsSection() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-            🏆 Qualified Teams
+            🏆 {t('title')}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-            {qualifiedTeams.length} teams have officially booked their place at the 2026 World Cup
+            {t('subtitle', { count: qualifiedTeams.length })}
           </p>
           <div className="flex justify-center">
             <div className="bg-green-100 text-green-800 px-8 py-3 rounded-full font-bold text-lg">
-              {qualifiedTeams.length} Qualified Teams
+              {t('counts', { count: qualifiedTeams.length })}
             </div>
           </div>
         </div>
@@ -55,7 +58,7 @@ export default function QualifiedTeamsSection() {
             href="/teams"
             className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200"
           >
-            View All {qualifiedTeams.length} Teams
+            {t('viewAll', { count: qualifiedTeams.length })}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>

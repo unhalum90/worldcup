@@ -203,6 +203,12 @@
     "videoError": "Your browser doesn't support video playback.",
     "playButton": "Play demo video"
   },
+  "qualifiedTeams": {
+    "title": "Qualified Teams",
+    "subtitle": "{count} teams have officially booked their place at the 2026 World Cup",
+    "counts": "{count} Qualified Teams",
+    "viewAll": "View All {count} Teams"
+  },
   "timeline": {
     "title": "Road to the World Cup",
     "subtitle": "Hover to explore key dates from ticket sales to the final match",

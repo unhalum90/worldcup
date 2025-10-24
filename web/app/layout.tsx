@@ -44,6 +44,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const messages = await getMessages();
+  // Feature flag: hide first-visit language selection modal unless explicitly enabled
+  const showLanguageModal = process.env.NEXT_PUBLIC_ENABLE_LANGUAGE_MODAL === 'true';
   
   return (
     <html lang="en" suppressHydrationWarning>
@@ -56,7 +58,7 @@ export default async function RootLayout({
           <AuthProvider>
             <GoogleAnalytics />
             <WebVitals />
-            <LanguageModal />
+            {showLanguageModal && <LanguageModal />}
             <Header />
             <main>{children}</main>
             <SubscribeModal />

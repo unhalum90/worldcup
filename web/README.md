@@ -34,3 +34,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Trip Builder Demo
+
+- Public demo route: `/trip_builder_demo`
+- Data source: `data/trip_builder_demo.json`
+- Purpose: Share a stable, printable view of a generated itinerary (no auth required, no PDF page-break issues).
+- To update the demo, edit the JSON file and redeploy. The page also shows the raw JSON at the bottom for quick copy/share.
+
+## Language selection modal
+
+- By default, the first-visit language selection modal is disabled to avoid prompting while localization is partial.
+- To enable it, set an environment variable before build/runtime:
+	- `NEXT_PUBLIC_ENABLE_LANGUAGE_MODAL=true`
+- When enabled, the modal will appear on first visit if the `wc26-language-selected` cookie is not present, and will set both `wc26-language-selected` and `NEXT_LOCALE` cookies upon selection.

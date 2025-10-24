@@ -1,0 +1,109 @@
+{
+  "tripSummary": {
+    "origin": "Boston",
+    "dates": { "start": "2026-06-12", "end": "2026-06-20" },
+    "travelers": { "adults": 2, "children": 0, "seniors": 0 },
+    "durationDays": 9,
+    "totalNights": 8
+  },
+  "options": [
+    {
+      "title": "Balanced Fan Journey: Boston + NYC",
+      "summary": "A smooth 8-night circuit with Boston kickoff, a Gillette match, then fast rail to NYC for fan fests and museums.",
+      "trip": {
+        "cityOrder": ["Boston", "New York City"],
+        "nightsPerCity": { "Boston": 4, "New York City": 4 },
+        "interCityMoves": [
+          { "day": "Day 5", "from": "Boston", "to": "New York City", "mode": "train", "estDuration": "3h 45m" }
+        ]
+      },
+      "availableMatches": [
+        { "city": "Boston", "date": "2026-06-14", "match": "Group Stage", "stadium": "Gillette Stadium" }
+      ],
+      "flights": {
+        "legs": [
+          {
+            "from": "Boston (BOS)",
+            "to": "Boston (BOS)",
+            "airlines": ["JetBlue"],
+            "duration": "—",
+            "notes": "Inbound assumed from origin; replace with your actual flight plan.",
+            "frequency": "daily"
+          },
+          {
+            "from": "Boston (BOS)",
+            "to": "New York (NYP)",
+            "airlines": ["Amtrak Acela"],
+            "duration": "3h 45m direct",
+            "exampleDeparture": "10:30",
+            "exampleArrival": "14:15",
+            "frequency": "hourly"
+          },
+          {
+            "from": "New York (JFK)",
+            "to": "Home City",
+            "airlines": ["Delta", "American"],
+            "duration": "6h 15m direct",
+            "exampleDeparture": "13:00",
+            "exampleArrival": "19:15",
+            "frequency": "daily"
+          }
+        ],
+        "costNote": "Use live flight tools for pricing — ranges intentionally omitted here."
+      },
+      "cities": [
+        {
+          "cityName": "Boston",
+          "lodgingZones": [
+            {
+              "zoneName": "Back Bay / Copley",
+              "whyStayHere": "Central, walkable, direct commuter rail options toward Foxborough on match days.",
+              "estimatedRate": "$280–$420/night",
+              "transitToStadium": "Commuter Rail from South Station + shuttle, ~60–75 min",
+              "transitToFanFest": "MBTA Green Line to Boston Common, 10–15 min",
+              "pros": ["Restaurants & parks", "Transit access", "Safe & walkable"],
+              "cons": ["Higher rates in June", "Event congestion"]
+            },
+            {
+              "zoneName": "Seaport",
+              "whyStayHere": "Waterfront vibe, new hotels, easy access to South Station.",
+              "estimatedRate": "$300–$480/night",
+              "transitToStadium": "Commuter Rail + shuttle, ~60–75 min",
+              "transitToFanFest": "Walk or Silver Line, 10–20 min",
+              "pros": ["Modern hotels", "Dining & nightlife"],
+              "cons": ["Premium pricing"]
+            }
+          ],
+          "matchDayLogistics": "Plan South Station to Foxboro line; arrive 2 hours early. Stadium shuttles coordinate with train times.",
+          "insiderTips": ["MBTA weekend schedules vary", "Book match-day trains early", "Layer for evening temps"]
+        },
+        {
+          "cityName": "New York City",
+          "lodgingZones": [
+            {
+              "zoneName": "Midtown / Times Sq",
+              "whyStayHere": "Central for first-time visitors; direct subways to most attractions.",
+              "estimatedRate": "$260–$420/night",
+              "transitToStadium": "Rail to MetLife on event days, ~35–50 min",
+              "transitToFanFest": "Multiple subway lines, 10–20 min",
+              "pros": ["Transit hub", "Iconic sights"],
+              "cons": ["Crowded", "Tourist pricing"]
+            },
+            {
+              "zoneName": "Lower Manhattan",
+              "whyStayHere": "Great food + neighborhoods; quick PATH/NJ Transit options.",
+              "estimatedRate": "$240–$380/night",
+              "transitToStadium": "NJ Transit from Penn or PATH connect, ~40–60 min",
+              "transitToFanFest": "Subway, 10–25 min",
+              "pros": ["Neighborhood feel", "Dining"],
+              "cons": ["Longer ride to some sights"]
+            }
+          ],
+          "matchDayLogistics": "Check event-day rail schedules to MetLife; leave 60–90 minutes before kickoff.",
+          "insiderTips": ["Buy MetroCard/OMNY ahead", "Expect surge pricing", "Walkable if you cluster activities"]
+        }
+      ],
+      "notes": "Nightly rates reflect June–July 2026 peaks; totals intentionally omitted."
+    }
+  ]
+}
