@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import AuthModal from '@/components/AuthModal';
 import Link from 'next/link';
+import VideoModal from '@/components/VideoModal';
 
 interface Phase {
   id: number;
@@ -127,7 +128,13 @@ export default function PlannerPage() {
         onClose={() => setShowAuthModal(false)}
         redirectTo="/planner"
       />
-  <PreviewModal open={showPreview} onClose={() => setShowPreview(false)} />
+  <VideoModal
+    open={showPreview}
+    onClose={() => setShowPreview(false)}
+    title="Planner Preview"
+    // Place the file at public/videos/travelplanner_preview.mov so it is web-accessible
+    src="/videos/travelplanner_preview.mov"
+  />
       
       {/* Hero Section */}
       <section className="bg-white border-b border-gray-200">
@@ -345,45 +352,4 @@ function PhaseCard({ phase, onPreview }: { phase: Phase; onPreview?: () => void 
   );
 }
 
-// Simple inline modal for "Preview the Planner"
-function PreviewModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden">
-        <div className="p-6 border-b flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🧭</span>
-            <h3 className="text-xl font-bold">Planner Preview</h3>
-          </div>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">✕</button>
-        </div>
-        <div className="p-6">
-          <p className="text-gray-600 mb-4">Here’s a quick look at what an itinerary will feel like:</p>
-          <div className="space-y-3">
-            <div className="p-4 rounded-lg border bg-gray-50">
-              <div className="text-sm text-gray-500">Day 1 • Thu Jun 11</div>
-              <div className="font-semibold">Arrive in Boston</div>
-              <div className="text-sm text-gray-600">Check in near Back Bay • Evening at Fan Fest</div>
-            </div>
-            <div className="p-4 rounded-lg border bg-gray-50">
-              <div className="text-sm text-gray-500">Day 2 • Fri Jun 12</div>
-              <div className="font-semibold">Matchday • Gillette Stadium</div>
-              <div className="text-sm text-gray-600">Trains from South Station • Gates open 2 hours before kickoff</div>
-            </div>
-            <div className="p-4 rounded-lg border bg-gray-50">
-              <div className="text-sm text-gray-500">Day 3 • Sat Jun 13</div>
-              <div className="font-semibold">Train to New York City</div>
-              <div className="text-sm text-gray-600">Acela 2150 • 3h 30m • Afternoon in Midtown</div>
-            </div>
-          </div>
-          <div className="mt-6 flex justify-end gap-2">
-            <button onClick={onClose} className="px-4 py-2 rounded-lg border bg-white hover:bg-gray-50">Close</button>
-            <Link href="/guides" className="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700">Browse City Guides</Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+// removed inline PreviewModal in favor of reusable VideoModal
