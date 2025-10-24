@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTeamBySlug, teams } from '@/lib/teamsData';
+import MiniCountdown from '@/components/MiniCountdown';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -217,6 +218,12 @@ export default async function TeamPage({ params }: Props) {
                 FIFA will announce final fixtures and host cities on <strong>December 5, 2025</strong>. 
                 Bookmark this page — it will automatically update the moment details are confirmed.
               </p>
+              <div className="mt-3">
+                <MiniCountdown 
+                  target={"2025-12-05T17:00:00Z"}
+                  label="Group Draw"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -577,50 +584,24 @@ export default async function TeamPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Community Section */}
-        <div className="bg-white rounded-xl shadow-md p-8 mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-            <span className="text-4xl mr-3">💬</span>
-            Community
-          </h2>
-          
-          <p className="text-gray-700 mb-6">
-            Discuss {team.name}'s chances, share travel plans, or post photos from past tournaments.
-          </p>
+        {/* Community Section removed per request */}
 
-          <div className="grid md:grid-cols-3 gap-4">
-            <Link
-              href={`/forums/${team.slug}`}
-              className="block p-6 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border-2 border-blue-200"
-            >
-              <div className="text-2xl mb-2">🗨️</div>
-              <h3 className="font-bold text-gray-900 mb-1">Team Forum</h3>
-              <p className="text-sm text-gray-600">Join the discussion</p>
-            </Link>
-            <div className="p-6 bg-gray-50 rounded-lg border-2 border-gray-200 opacity-50">
-              <div className="text-2xl mb-2">📱</div>
-              <h3 className="font-bold text-gray-900 mb-1">Discord</h3>
-              <p className="text-sm text-gray-600">Coming soon</p>
-            </div>
-            <div className="p-6 bg-gray-50 rounded-lg border-2 border-gray-200 opacity-50">
-              <div className="text-2xl mb-2">🌐</div>
-              <h3 className="font-bold text-gray-900 mb-1">Fan Groups</h3>
-              <p className="text-sm text-gray-600">Coming soon</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Waitlist Footer */}
+        {/* Newsletter CTA Footer */}
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-xl shadow-xl p-12 text-center">
           <h2 className="text-3xl font-bold mb-4">
-            Stay Updated
+            Join Fan Zone Insider
           </h2>
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Be the first to know when {team.name}'s fixtures and host cities are confirmed. 
-            Join the waitlist for exclusive updates and early access to travel guides.
+            Our free weekly newsletter for World Cup 2026 fans. Get city updates, travel tips, and early access to new guides as they launch.
           </p>
-          <button className="bg-white text-gray-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-            👉 Join the {team.name} 2026 Fan List
+          <button
+            onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
+            className="inline-flex items-center gap-2 bg-[color:var(--color-accent-red)] text-white px-8 py-4 rounded-lg font-bold text-lg hover:brightness-110 transition-colors shadow-lg"
+          >
+            Subscribe Free
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
           </button>
         </div>
       </div>

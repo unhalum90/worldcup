@@ -50,11 +50,7 @@ export default function ForumsIndex() {
     }
   }
 
-  const trendingTopics = [
-    { title: 'Best Fan Zones and Watch Parties', replies: 127, views: 3401 },
-    { title: 'Travel Tips: Getting Between Cities', replies: 89, views: 2156 },
-    { title: 'Group Stage Match Predictions', replies: 213, views: 5672 },
-  ];
+  // Trending topics section temporarily disabled per request
 
   // Show loading spinner while checking auth
   if (loading) {
@@ -98,35 +94,11 @@ export default function ForumsIndex() {
             Host City Forums
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Connect with fellow fans in all 16 host cities. Share tips, organize meetups, and build the ultimate World Cup 2026 community.
+            We’re opening fan discussions for each host city. Jump in early and help build the 2026 fan community from the ground up.
           </p>
         </div>
 
-        {/* Trending Topics Section */}
-        <div className="mb-12 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">🔥</span>
-            <h2 className="text-2xl font-bold">Trending Discussions</h2>
-          </div>
-          <div className="space-y-3">
-            {trendingTopics.map((topic, idx) => (
-              <div 
-                key={idx}
-                className="flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 hover:shadow-md transition-all cursor-pointer border border-transparent hover:border-blue-200"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">💬</span>
-                  <span className="font-semibold text-gray-800">{topic.title}</span>
-                </div>
-                <div className="flex items-center gap-4 text-sm text-gray-600">
-                  <span>{topic.replies} replies</span>
-                  <span className="hidden sm:inline">{topic.views.toLocaleString()} views</span>
-                  <span className="text-blue-600">→</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Trending Topics Section removed temporarily per request */}
 
         {/* City Forums Grid */}
         <div className="mb-8">

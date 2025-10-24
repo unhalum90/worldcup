@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import CTASignup from "@/components/forms/CTASignup";
+// Removed in favor of direct Beehiiv subscribe CTA
 
 /**
  * Split hero layout with video on one side and content on the other.
@@ -61,13 +61,13 @@ export default function HeroSplit() {
               Explore host city guides, fan forums, and our AI-powered trip planner.
             </p>
 
-            {/* CTA Button */}
+            {/* CTA Button (Newsletter-driven) */}
             <div className="mb-6">
               <button
-                onClick={() => setShowModal(true)}
+                onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-[color:var(--color-accent-red)] hover:brightness-110 transition-all shadow-lg hover:shadow-xl"
               >
-                {t("cta")}
+                Subscribe Free
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -86,14 +86,12 @@ export default function HeroSplit() {
 
             {/* Secondary Links */}
             <div className="mt-4 flex flex-wrap items-center gap-4">
-              <a
-                href="https://wc26fanzone.beehiiv.com/"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
                 className="inline-flex items-center text-sm font-medium underline underline-offset-4 text-[color:var(--color-primary)]"
               >
                 Newsletter
-              </a>
+              </button>
 
               {/* Social Proof */}
               <div className="flex items-center gap-2 text-[color:var(--color-neutral-800)] text-sm">
@@ -114,34 +112,7 @@ export default function HeroSplit() {
         </div>
       </section>
 
-      {/* Modal */}
-      {showModal && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between rounded-t-2xl">
-              <h2 className="text-xl font-bold text-gray-900">Join the waitlist</h2>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-                aria-label="Close modal"
-              >
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="p-6">
-              <CTASignup onSuccess={() => setShowModal(false)} />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Modal removed; using Beehiiv subscribe link */}
     </>
   );
 }

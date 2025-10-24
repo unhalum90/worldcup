@@ -7,6 +7,7 @@ export interface Thread {
   created_at?: string;
   body_md?: string;
   topic?: string;
+  pinned?: boolean; // optional: shown when available
 }
 
 export interface Post {

@@ -62,15 +62,7 @@ export default function QualifiedTeamsSection() {
           </Link>
         </div>
 
-        {/* Info Banner */}
-        <div className="mt-12 bg-blue-900 text-white rounded-xl p-8 text-center">
-          <h3 className="text-2xl font-bold mb-3">
-            📅 Group Draw: December 5, 2025
-          </h3>
-          <p className="text-blue-100">
-            Follow your favorite team's journey to North America and get notified when fixtures are announced
-          </p>
-        </div>
+        {/* Info Banner removed per request */}
       </div>
     </section>
   );

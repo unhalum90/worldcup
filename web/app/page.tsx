@@ -4,6 +4,7 @@ import FeatureShowcase from "@/components/landing/FeatureShowcase";
 import DemoSection from "@/components/landing/DemoSection";
 import WorldCupTimeline from "@/components/landing/WorldCupTimeline";
 import QualifiedTeamsSection from "@/components/landing/QualifiedTeamsSection";
+import SectionDivider from "@/components/SectionDivider";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -51,10 +52,24 @@ export default function Home() {
       <div className="flex justify-center py-6">
         <CountdownTimer />
       </div>
-      <FeatureShowcase />
-      <DemoSection />
-      <WorldCupTimeline />
-      <QualifiedTeamsSection />
+      {/* Alternating backgrounds with subtle dividers for better rhythm */}
+      <section className="bg-white">
+        <FeatureShowcase />
+      </section>
+      <SectionDivider />
+      <section className="bg-gray-50">
+        <DemoSection />
+      </section>
+      <SectionDivider />
+      <section className="bg-white">
+        <WorldCupTimeline />
+      </section>
+      <SectionDivider />
+      <section className="bg-gray-50">
+        <QualifiedTeamsSection />
+      </section>
+      {/* One more divider to separate the last section from the footer */}
+      <SectionDivider className="mt-8" />
     </>
   );
 }

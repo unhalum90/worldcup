@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { getCityMapPath } from '@/lib/cityMaps';
 import RouteRibbon from './RouteRibbon';
+import { useAuth } from '@/lib/AuthContext';
 
 interface FlightLeg {
   from: string;
@@ -69,6 +70,7 @@ interface ItineraryResultsProps {
 
 export default function ItineraryResults({ itinerary, tripInput, onEmailCapture }: ItineraryResultsProps) {
   const [expandedIndex, setExpandedIndex] = React.useState<number | null>(null);
+  const { user } = useAuth();
   // No budget math or totals shown; display cost notes only per latest spec.
 
   // Derive trip summary from provided form input (if available)
@@ -187,6 +189,14 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-8">
+      {/* Branded header for share/print */}
+      <div className="flex items-center justify-between text-sm text-gray-500 print:text-gray-700">
+        <div className="flex items-center gap-2">
+          <span className="text-lg">⚽</span>
+          <span className="font-semibold text-gray-700">WC26 Fan Zone</span>
+        </div>
+        <a href="https://wc26fanzone.com" className="hover:underline" target="_blank" rel="noopener noreferrer">wc26fanzone.com</a>
+      </div>
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-gray-900">Your World Cup 2026 Itinerary Options</h1>
         <p className="text-lg text-gray-600">We've created {itinerary.options.length} personalized trip plans for you</p>
@@ -210,7 +220,7 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
             )}
             {tripInput.citiesVisiting && tripInput.citiesVisiting.length > 0 && (
               <span>
-                <strong>Cities:</strong> {tripInput.citiesVisiting.join(' → ')}
+                <strong>Cities:</strong> {tripInput.citiesVisiting.length} {tripInput.citiesVisiting.length === 1 ? 'City' : 'Cities'} — {tripInput.citiesVisiting.join(' → ')}
               </span>
             )}
           </div>
@@ -439,8 +449,25 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
                     🌍 <strong>Coming May 2026:</strong> Our Host City Travel Planners will launch with all World Cup events, Fan Fests, and transport guides — making it even easier to explore each city.
                   </p>
                 </div>
-                <div className="mt-6">
-                  <button onClick={() => window.print()} className="px-5 py-2 rounded-lg bg-gray-900 text-white hover:bg-black print:hidden">Print PDF</button>
+                <div className="mt-6 flex flex-col sm:flex-row gap-3 print:hidden">
+                  <button onClick={() => window.print()} className="px-5 py-2 rounded-lg bg-gray-900 text-white hover:bg-black">Print PDF</button>
+                  <button
+                    onClick={() => {
+                      if (!user) {
+                        window.dispatchEvent(new Event('fz:open-auth'));
+                        return;
+                      }
+                      try {
+                        localStorage.setItem('fz_saved_itinerary', JSON.stringify({ when: Date.now(), optionIndex: expandedIndex }));
+                        alert('Itinerary saved to your profile (placeholder).');
+                      } catch {
+                        alert('Save is coming soon — accounts will sync itineraries.');
+                      }
+                    }}
+                    className="px-5 py-2 rounded-lg border font-semibold hover:bg-gray-50"
+                  >
+                    Save Itinerary (beta)
+                  </button>
                 </div>
               </div>
             )}
@@ -449,6 +476,19 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
       )}
 
       {/* Email capture section intentionally removed per request */}
+
+      {/* CTA footer */}
+      <div className="mt-6 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 flex flex-col sm:flex-row items-center justify-between gap-3 print:hidden">
+        <div className="text-center sm:text-left">
+          <p className="font-semibold">📩 Subscribe to Fan Zone Weekly for city updates and travel alerts.</p>
+        </div>
+        <button
+          onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
+          className="px-5 py-2 rounded-lg bg-white text-blue-700 font-bold hover:bg-gray-100"
+        >
+          Subscribe Free
+        </button>
+      </div>
 
       {/* Start Over */}
       <div className="text-center print:hidden">
@@ -474,6 +514,8 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
           button, .print\:hidden { display: none !important; }
           /* Ensure comfortable margins */
           @page { margin: 16mm; }
+          /* Sticky brand header/footer for print */
+          .print\:brand-header { display: block !important; }
         }
       `}</style>
     </div>

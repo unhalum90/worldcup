@@ -76,7 +76,7 @@ export default function ThreadsListClient({ cityId, citySlug }: Props) {
     setLoading(true);
     let query = supabase
       .from('threads')
-      .select('id, title, author_id, score, created_at')
+      .select('*')
       .eq('city_id', resolvedCityId)
       .limit(50);
 
@@ -109,7 +109,13 @@ export default function ThreadsListClient({ cityId, citySlug }: Props) {
     }
 
     const { data } = await query;
-    setThreads(data || []);
+    const items = (data || []) as any[];
+    // Pinned-first ordering (no DB dependency on a pinned column; safe if absent)
+    const pinned = items.filter((t) => t.pinned === true);
+    const others = items.filter((t) => !t.pinned);
+    // Maintain current sort within each group (server applied), so just merge
+    const ordered = [...pinned, ...others];
+    setThreads(ordered);
     setLoading(false);
   }
 
@@ -121,7 +127,7 @@ export default function ThreadsListClient({ cityId, citySlug }: Props) {
       setLoading(true);
       const { data } = await supabase
         .from('threads')
-        .select('id, title, author_id, score, created_at')
+        .select('*')
         .eq('city_id', resolvedCityId)
         .limit(50);
       if (!mounted) return;

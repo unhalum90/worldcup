@@ -39,7 +39,7 @@ export const cities: City[] = [
     name: "Dallas",
     flag: "/flags/us.svg",
     products: {
-      en: "https://gumroad.com/l/dallas-en",
+      en: "https://fanzonenetwork.lemonsqueezy.com/buy/cbd81218-8b0e-4162-b273-fcec2840e785",
     },
   },
   {

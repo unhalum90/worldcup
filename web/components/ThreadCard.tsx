@@ -88,7 +88,7 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
 
   return (
     <div
-      className="py-2 cursor-pointer my-1"
+      className="py-2 cursor-pointer my-1 ml-1.5 pl-3"
       style={{ backgroundColor: cardBg, borderLeft: `4px solid ${accent}` }}
       onClick={() => router.push(`/forums/${thread.city_slug}/threads/${thread.id}`)}
       role="button"
@@ -97,7 +97,10 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
     >
       <div className="flex items-start justify-between">
         <div className="flex-1 pr-3">
-          <h3 className="text-sm font-semibold" style={{ color: '#0f172a' }}>{thread.title}</h3>
+          <h3 className="text-sm font-semibold flex items-center gap-2" style={{ color: '#0f172a' }}>
+            {(thread as any).pinned ? <span title="Pinned" aria-label="Pinned">📌</span> : null}
+            {thread.title}
+          </h3>
           <div className="text-xs mt-1" style={{ color: '#0f172a' }}>
             by {thread.author_handle} • {thread.created_at ? timeAgo(thread.created_at) : ''}
           </div>
