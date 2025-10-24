@@ -2,15 +2,19 @@
 
 import { useEffect, useRef } from 'react';
 
+type VideoSource = { src: string; type?: string };
+
 type Props = {
   open: boolean;
   onClose: () => void;
-  src: string; // e.g. '/videos/travelplanner_preview.mov'
+  // Either provide a single src or multiple sources for better browser compatibility
+  src?: string; // e.g. '/videos/travelplanner_preview.mov'
+  sources?: VideoSource[]; // e.g. [{src:'/videos/foo.mp4', type:'video/mp4'}]
   title?: string;
   poster?: string;
 };
 
-export default function VideoModal({ open, onClose, src, title = 'Preview', poster }: Props) {
+export default function VideoModal({ open, onClose, src, sources, title = 'Preview', poster }: Props) {
   const ref = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -50,7 +54,6 @@ export default function VideoModal({ open, onClose, src, title = 'Preview', post
         <div className="bg-black">
           <video
             ref={ref}
-            src={src}
             poster={poster}
             className="w-full h-auto max-h-[75vh]"
             controls
@@ -58,11 +61,16 @@ export default function VideoModal({ open, onClose, src, title = 'Preview', post
             muted
             preload="metadata"
             onError={() => {
-              // Show a friendly message overlay if the file can't be loaded
-              console.error('Video failed to load:', src);
+              console.error('Video failed to load', { src, sources });
             }}
           >
-            {/* If you add an MP4 later, <source> tags can improve compatibility */}
+            {sources && sources.length > 0 ? (
+              sources.map((s, idx) => (
+                <source key={idx} src={s.src} type={s.type} />
+              ))
+            ) : src ? (
+              <source src={src} />
+            ) : null}
             Your browser does not support the video tag.
           </video>
         </div>

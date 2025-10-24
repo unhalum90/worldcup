@@ -132,8 +132,11 @@ export default function PlannerPage() {
     open={showPreview}
     onClose={() => setShowPreview(false)}
     title="Planner Preview"
-    // Place the file at public/videos/travelplanner_preview.mov so it is web-accessible
-    src="/videos/travelplanner_preview.mov"
+    // Prefer MP4/M4V, with MOV as a fallback
+    sources={[
+      { src: '/videos/travel_planner_preview.m4v', type: 'video/mp4' },
+      { src: '/videos/travelplanner_preview.mov', type: 'video/quicktime' }
+    ]}
   />
       
       {/* Hero Section */}
