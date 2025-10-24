@@ -134,6 +134,7 @@ export default function PlannerPage() {
     title="Planner Preview"
     // Prefer MP4/M4V, with MOV as a fallback
     sources={[
+      { src: '/videos/travel_planner_updated.mp4', type: 'video/mp4' },
       { src: '/videos/travel_planner_preview.m4v', type: 'video/mp4' },
       { src: '/videos/travelplanner_preview.mov', type: 'video/quicktime' }
     ]}
