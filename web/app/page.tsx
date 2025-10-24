@@ -1,4 +1,5 @@
 import HeroSplit from "@/components/HeroSplit";
+import CountdownTimer from "@/components/CountdownTimer";
 import FeatureShowcase from "@/components/landing/FeatureShowcase";
 import DemoSection from "@/components/landing/DemoSection";
 import WorldCupTimeline from "@/components/landing/WorldCupTimeline";
@@ -47,6 +48,9 @@ export default function Home() {
   return (
     <>
       <HeroSplit />
+      <div className="flex justify-center py-6">
+        <CountdownTimer />
+      </div>
       <FeatureShowcase />
       <DemoSection />
       <WorldCupTimeline />

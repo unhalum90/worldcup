@@ -1,8 +1,9 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { defaultLocale } from './i18n';
+import { createServerClient } from '@supabase/ssr';
 
 // Middleware to handle locale from cookies
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   // Get locale from cookie
   const locale = req.cookies.get('NEXT_LOCALE')?.value || defaultLocale;
   
@@ -11,13 +12,37 @@ export function middleware(req: NextRequest) {
   
   // Set the locale header so next-intl can pick it up
   requestHeaders.set('x-next-intl-locale', locale);
-  
-  // Return response with modified headers
-  return NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
+
+  // Prepare response so we can set cookies (for Supabase session refresh)
+  const res = NextResponse.next({
+    request: { headers: requestHeaders },
   });
+
+  // Refresh Supabase session cookies on each request (non-blocking)
+  try {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return req.cookies.get(name)?.value;
+          },
+          set(name: string, value: string, options: any) {
+            res.cookies.set({ name, value, ...options });
+          },
+          remove(name: string, options: any) {
+            res.cookies.set({ name, value: '', ...options });
+          },
+        },
+      }
+    );
+    await supabase.auth.getUser();
+  } catch {
+    // ignore refresh errors in middleware; page-level code can still handle
+  }
+
+  return res;
 }
 
 export const config = {

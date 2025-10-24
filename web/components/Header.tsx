@@ -5,12 +5,16 @@ import { useState, useEffect } from "react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/lib/AuthContext";
+import AuthModal from "@/components/AuthModal";
 
 export default function Header() {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, loading, signOut } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,25 +72,52 @@ export default function Header() {
             </a>
             
             <LanguageSwitcher />
-            
-            <button
-              onClick={() => {
-                if (pathname === '/') {
-                  // On homepage, scroll to hero and trigger modal
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                  setTimeout(() => {
-                    const heroButton = document.querySelector('button[class*="bg-[color:var(--color-accent-red)]"]') as HTMLButtonElement;
-                    heroButton?.click();
-                  }, 300);
-                } else {
-                  // On other pages, go to homepage
-                  window.location.href = '/#join';
-                }
-              }}
-              className="px-4 py-2 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-sm shadow-md"
-            >
-              Join Waitlist
-            </button>
+
+            {/* Auth area (desktop) */}
+            {!loading && !user && (
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowAuth(true)}
+                  className="px-3 py-2 rounded-lg border text-sm hover:bg-gray-50"
+                >
+                  Sign in
+                </button>
+                <button
+                  onClick={() => {
+                    if (pathname === '/') {
+                      // On homepage, scroll to hero and trigger modal
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      setTimeout(() => {
+                        const heroButton = document.querySelector('button[class*="bg-[color:var(--color-accent-red)]"]') as HTMLButtonElement;
+                        heroButton?.click();
+                      }, 300);
+                    } else {
+                      // On other pages, go to homepage anchor
+                      window.location.href = '/#join';
+                    }
+                  }}
+                  className="px-4 py-2 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-sm shadow-md"
+                >
+                  Join Waitlist
+                </button>
+              </div>
+            )}
+
+            {!loading && user && (
+              <div className="flex items-center gap-3">
+                <Link href="/account" className="flex items-center gap-2 group">
+                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-700">
+                    {user.email?.charAt(0).toUpperCase() || 'U'}
+                  </div>
+                  <span className="text-sm text-gray-800 group-hover:underline">
+                    {user.email?.split('@')[0] || 'Account'}
+                  </span>
+                </Link>
+                <button onClick={signOut} className="px-3 py-2 rounded-lg border text-sm hover:bg-gray-50">
+                  Sign out
+                </button>
+              </div>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -136,24 +167,54 @@ export default function Header() {
               <div className="py-2 px-3">
                 <LanguageSwitcher />
               </div>
-              
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  if (pathname === '/') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    setTimeout(() => {
-                      const heroButton = document.querySelector('button[class*="bg-[color:var(--color-accent-red)]"]') as HTMLButtonElement;
-                      heroButton?.click();
-                    }, 300);
-                  } else {
-                    window.location.href = '/#join';
-                  }
-                }}
-                className="px-4 py-3 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-center shadow-md"
-              >
-                Join Waitlist
-              </button>
+
+              {/* Auth area (mobile) */}
+              {!loading && !user && (
+                <>
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      setShowAuth(true);
+                    }}
+                    className="px-4 py-3 rounded-lg border text-[color:var(--color-neutral-800)] font-semibold hover:bg-gray-50 text-center"
+                  >
+                    Sign in
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      if (pathname === '/') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        setTimeout(() => {
+                          const heroButton = document.querySelector('button[class*="bg-[color:var(--color-accent-red)]"]') as HTMLButtonElement;
+                          heroButton?.click();
+                        }, 300);
+                      } else {
+                        window.location.href = '/#join';
+                      }
+                    }}
+                    className="px-4 py-3 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-center shadow-md"
+                  >
+                    Join Waitlist
+                  </button>
+                </>
+              )}
+
+              {!loading && user && (
+                <div className="flex items-center justify-between gap-3">
+                  <Link href="/account" onClick={() => setIsMenuOpen(false)} className="flex-1 flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-gray-50">
+                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-700">
+                      {user.email?.charAt(0).toUpperCase() || 'U'}
+                    </div>
+                    <span className="text-sm text-gray-800">
+                      {user.email || 'Account'}
+                    </span>
+                  </Link>
+                  <button onClick={() => { setIsMenuOpen(false); signOut(); }} className="px-4 py-2 rounded-lg border text-sm hover:bg-gray-50">
+                    Sign out
+                  </button>
+                </div>
+              )}
             </nav>
           </div>
         )}
@@ -182,6 +243,9 @@ export default function Header() {
             </svg>
           </button>
         </div>
+      )}
+      {showAuth && (
+        <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} redirectTo="/account" />
       )}
     </>
   );
