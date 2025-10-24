@@ -2,6 +2,17 @@ import { NextResponse, NextRequest } from 'next/server';
 import { defaultLocale } from './i18n';
 import { createServerClient } from '@supabase/ssr';
 
+function normalizeToHttps(u: string): string {
+  if (!u) return '';
+  try {
+    const parsed = new URL(u);
+    if (parsed.protocol !== 'https:') parsed.protocol = 'https:';
+    return parsed.toString().replace(/\/$/, '');
+  } catch {
+    return u.replace(/^http:\/\//i, 'https://');
+  }
+}
+
 // Middleware to handle locale from cookies
 export async function middleware(req: NextRequest) {
   // Get locale from cookie
@@ -22,7 +33,7 @@ export async function middleware(req: NextRequest) {
   let user: any = null;
   try {
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {

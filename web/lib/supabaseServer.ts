@@ -1,6 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+function normalizeToHttps(u: string): string {
+  if (!u) return '';
+  try {
+    const parsed = new URL(u);
+    if (parsed.protocol !== 'https:') parsed.protocol = 'https:';
+    return parsed.toString().replace(/\/$/, '');
+  } catch {
+    return u.replace(/^http:\/\//i, 'https://');
+  }
+}
+
+const url = normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || '');
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
 
 if (!serviceKey) {

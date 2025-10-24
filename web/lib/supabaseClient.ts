@@ -3,7 +3,20 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const SupaSSR: any = require('@supabase/ssr');
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+// Normalize to HTTPS to avoid mixed-content errors in production
+function normalizeToHttps(u: string): string {
+	if (!u) return '';
+	try {
+		const parsed = new URL(u);
+		if (parsed.protocol !== 'https:') parsed.protocol = 'https:';
+		// Ensure trailing slash removed for consistency
+		return parsed.toString().replace(/\/$/, '');
+	} catch {
+		return u.replace(/^http:\/\//i, 'https://');
+	}
+}
+
+const url = normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || '');
 const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 if (!url || !anon) {

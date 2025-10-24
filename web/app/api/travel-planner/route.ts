@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createServerClient } from '@/lib/supabaseServer';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
+
+function normalizeToHttps(u: string): string {
+  if (!u) return '';
+  try {
+    const parsed = new URL(u);
+    if (parsed.protocol !== 'https:') parsed.protocol = 'https:';
+    return parsed.toString().replace(/\/$/, '');
+  } catch {
+    return u.replace(/^http:\/\//i, 'https://');
+  }
+}
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
 import { filterMatches, groupByCity } from '@/lib/matchSchedule';
 
@@ -43,7 +54,7 @@ export async function POST(request: NextRequest) {
   // Require authentication for premium planner API
   try {
     const supabase = createSSRClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {
