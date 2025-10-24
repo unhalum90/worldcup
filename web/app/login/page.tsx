@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import AuthModal from "@/components/AuthModal";
 import { useAuth } from "@/lib/AuthContext";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const { user, loading } = useAuth();
   const [open, setOpen] = useState(true);
+  const searchParams = useSearchParams();
+  const redirectTarget = searchParams.get('redirect') || '/account';
 
   useEffect(() => {
     if (!loading && user) {
@@ -35,7 +38,7 @@ export default function LoginPage() {
         </div>
       )}
 
-      {open && <AuthModal isOpen={open} onClose={() => setOpen(false)} redirectTo="/account" />}
+      {open && <AuthModal isOpen={open} onClose={() => setOpen(false)} redirectTo={redirectTarget} />}
     </div>
   );
 }

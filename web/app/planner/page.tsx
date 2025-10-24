@@ -40,6 +40,22 @@ export default function PlannerPage() {
     );
   }
 
+  // Hard gate: if not authenticated, show a locked screen (middleware will also redirect on initial navigation)
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center p-6">
+        <AuthModal 
+          isOpen={true}
+          onClose={() => { /* keep modal open on premium pages when unauthenticated */ }}
+          redirectTo="/planner"
+        />
+        <div className="absolute bottom-8 text-center text-sm text-gray-600">
+          <p>This section is for members. Please sign in to continue.</p>
+        </div>
+      </div>
+    );
+  }
+
   const phases: Phase[] = [
     {
       id: 1,

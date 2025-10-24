@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createServerClient } from '@/lib/supabaseServer';
+import { createServerClient as createSSRClient } from '@supabase/ssr';
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
 import { filterMatches, groupByCity } from '@/lib/matchSchedule';
 
@@ -39,6 +40,29 @@ interface TravelPlanRequestV2 {
 
 export async function POST(request: NextRequest) {
   try {
+  // Require authentication for premium planner API
+  try {
+    const supabase = createSSRClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return request.cookies.get(name)?.value;
+          },
+          set() {},
+          remove() {},
+        },
+      }
+    );
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const formData: TravelPlanRequestV2 = await request.json();
 
     // Fetch city data from database

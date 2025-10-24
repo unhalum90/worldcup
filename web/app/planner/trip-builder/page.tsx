@@ -5,8 +5,11 @@ import Link from 'next/link';
 import TravelPlannerWizard from '@/components/TravelPlannerWizard';
 import ItineraryResults from '@/components/ItineraryResults';
 import DidYouKnowCarousel from '@/components/DidYouKnowCarousel';
+import { useAuth } from '@/lib/AuthContext';
+import AuthModal from '@/components/AuthModal';
 
 export default function PlannerPage() {
+  const { user, loading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
   const [lastForm, setLastForm] = useState<any>(null);
@@ -45,6 +48,30 @@ export default function PlannerPage() {
     // TODO: Implement email capture modal
     alert('Email capture coming soon! For now, screenshot your itinerary.');
   };
+
+  // Loading state while validating auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Hard gate for premium page
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center p-6">
+        <AuthModal isOpen={true} onClose={() => {}} redirectTo="/planner/trip-builder" />
+        <div className="absolute bottom-8 text-center text-sm text-gray-600">
+          <p>This section is for members. Please sign in to continue.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">

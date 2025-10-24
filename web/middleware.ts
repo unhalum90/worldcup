@@ -18,7 +18,8 @@ export async function middleware(req: NextRequest) {
     request: { headers: requestHeaders },
   });
 
-  // Refresh Supabase session cookies on each request (non-blocking)
+  // Supabase client bound to request/response cookies
+  let user: any = null;
   try {
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -37,9 +38,19 @@ export async function middleware(req: NextRequest) {
         },
       }
     );
-    await supabase.auth.getUser();
+    const { data } = await supabase.auth.getUser();
+    user = data.user ?? null;
   } catch {
     // ignore refresh errors in middleware; page-level code can still handle
+  }
+
+  // Premium gating: require auth for planner routes
+  const pathname = req.nextUrl.pathname;
+  const requiresAuth = pathname.startsWith('/planner');
+  if (requiresAuth && !user) {
+    const url = new URL('/login', req.url);
+    url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+    return NextResponse.redirect(url);
   }
 
   return res;
