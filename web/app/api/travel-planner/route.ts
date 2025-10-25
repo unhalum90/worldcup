@@ -13,8 +13,136 @@ function normalizeToHttps(u: string): string {
     return u.replace(/^http:\/\//i, 'https://');
   }
 }
+
+function normalizeProfileAirport(home?: UserProfile['home_airport'] | null) {
+  if (!home?.code) return undefined;
+  return {
+    code: home.code,
+    name: home.name || home.code,
+    city: home.city || '',
+    country: home.country || '',
+  };
+}
+
+function mergeProfileDefaults(form: TravelPlanRequestV2, profile?: UserProfile | null): TravelPlanRequestV2 {
+  const merged: TravelPlanRequestV2 = {
+    ...form,
+    citiesVisiting: [...form.citiesVisiting],
+    tripFocus: Array.isArray(form.tripFocus) ? [...form.tripFocus] : [],
+    matchDates: form.matchDates ? [...form.matchDates] : [],
+    ticketCities: form.ticketCities ? [...form.ticketCities] : [],
+  };
+
+  if (!profile) {
+    return merged;
+  }
+
+  const profileAirport = normalizeProfileAirport(profile.home_airport);
+  if (!merged.originAirport && profileAirport) {
+    merged.originAirport = profileAirport;
+  }
+  if (!merged.originCity) {
+    merged.originCity = profile.home_city || profileAirport?.city || merged.originCity;
+  }
+
+  if (typeof profile.group_size === 'number' && profile.group_size > 0) {
+    merged.groupSize = profile.group_size;
+  }
+  const kids = (profile.children_0_5 ?? 0) + (profile.children_6_18 ?? 0);
+  merged.children = kids > 0 ? kids : (profile.children ?? merged.children);
+  if (typeof profile.seniors === 'number') {
+    merged.seniors = profile.seniors;
+  }
+  if (typeof profile.mobility_issues === 'boolean') {
+    merged.mobilityIssues = merged.mobilityIssues || profile.mobility_issues;
+  }
+  if (profile.preferred_transport) {
+    merged.transportMode = profile.preferred_transport as TravelPlanRequestV2['transportMode'];
+  }
+  if (profile.budget_level) {
+    merged.budgetLevel = profile.budget_level as TravelPlanRequestV2['budgetLevel'];
+  }
+  if ((!merged.tripFocus || merged.tripFocus.length === 0) && Array.isArray(profile.travel_focus) && profile.travel_focus.length) {
+    merged.tripFocus = profile.travel_focus as TravelPlanRequestV2['tripFocus'];
+  }
+  if (!merged.foodPreference && profile.food_preference) {
+    merged.foodPreference = profile.food_preference as NonNullable<TravelPlanRequestV2['foodPreference']>;
+  }
+  if (!merged.nightlifePreference && profile.nightlife_preference) {
+    merged.nightlifePreference = profile.nightlife_preference as NonNullable<TravelPlanRequestV2['nightlifePreference']>;
+  }
+  if (!merged.climatePreference && profile.climate_preference) {
+    merged.climatePreference = profile.climate_preference as NonNullable<TravelPlanRequestV2['climatePreference']>;
+  }
+
+  const ticketCity = profile.ticket_match?.city?.trim();
+  const ticketDate = profile.ticket_match?.date?.trim();
+  if (ticketCity && (!merged.ticketCities || merged.ticketCities.length === 0)) {
+    merged.ticketCities = [ticketCity];
+  }
+  if (ticketDate && (!merged.matchDates || merged.matchDates.length === 0)) {
+    merged.matchDates = [ticketDate];
+  }
+  if (ticketCity && (!merged.citiesVisiting || merged.citiesVisiting.length === 0)) {
+    merged.citiesVisiting = [ticketCity];
+  }
+  if (profile.has_tickets) {
+    merged.hasMatchTickets = true;
+  }
+  if (!merged.startDate && ticketDate) {
+    merged.startDate = ticketDate;
+  }
+  if (!merged.endDate && ticketDate) {
+    merged.endDate = ticketDate;
+  }
+
+  return merged;
+}
+
+function buildProfileSummary(profile: UserProfile | null, merged: TravelPlanRequestV2) {
+  if (!profile) return '';
+  const lines: string[] = [];
+  if (profile.home_airport?.code || profile.home_city) {
+    lines.push(`- Home Base: ${profile.home_city || profile.home_airport?.city || merged.originCity || 'unspecified'} (${profile.home_airport?.code || 'IATA TBD'})`);
+  }
+  const kids05 = profile.children_0_5 ?? 0;
+  const kids618 = profile.children_6_18 ?? 0;
+  if (kids05 > 0 || kids618 > 0) {
+    lines.push(`- Kids traveling: ${kids05} aged 0-5 and ${kids618} aged 6-18 — surface family-friendly lodging, calmer nightlife, and flexible transit.`);
+  }
+  if ((profile.seniors ?? 0) > 0) {
+    lines.push(`- Seniors in group: ${profile.seniors} — include rest-friendly pacing and limited stair climbs.`);
+  }
+  if (profile.mobility_issues) {
+    lines.push('- Mobility considerations: Yes — highlight accessible transit, elevators, and reduced walking routes.');
+  }
+  if (profile.budget_level) {
+    lines.push(`- Baseline budget level: ${profile.budget_level}.`);
+  }
+  if (profile.preferred_transport) {
+    lines.push(`- Preferred transport: ${profile.preferred_transport}.`);
+  }
+  if (profile.food_preference) {
+    lines.push(`- Dining focus: ${profile.food_preference}.`);
+  }
+  if (profile.nightlife_preference) {
+    lines.push(`- Nightlife vibe: ${profile.nightlife_preference}.`);
+  }
+  if (profile.climate_preference) {
+    lines.push(`- Climate tolerance: ${profile.climate_preference}.`);
+  }
+  if (profile.has_tickets && profile.ticket_match) {
+    const matchLabel = profile.ticket_match.match || 'Match';
+    const matchCity = profile.ticket_match.city || 'host city';
+    const matchDate = profile.ticket_match.date || merged.startDate || merged.endDate || 'date TBD';
+    lines.push(`- Ticket commitment: ${matchLabel} in ${matchCity} on ${matchDate} — align the itinerary around this matchday.`);
+  }
+  if (!lines.length) return '';
+  return `\nTraveler Profile Signals:\n${lines.join('\n')}\n`;
+}
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
 import { filterMatches, groupByCity } from '@/lib/matchSchedule';
+import type { UserProfile } from '@/lib/profile/types';
 
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || '');
@@ -46,42 +174,57 @@ interface TravelPlanRequestV2 {
   comfortPreference?: 'budget_friendly' | 'balanced' | 'luxury_focus';
   nightlifePreference?: 'quiet' | 'social' | 'party';
   foodPreference?: 'local_flavors' | 'international' | 'mix';
-  climatePreference?: 'avoid_heat' | 'open_to_hot' | 'prefer_warm';
+  climatePreference?: 'all' | 'prefer_northerly' | 'comfortable';
 }
 
 export async function POST(request: NextRequest) {
   try {
-  // Require authentication for premium planner API
-  try {
-    const supabase = createSSRClient(
-      normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value;
+    // Require authentication for premium planner API
+    let userId: string | null = null;
+    try {
+      const supabaseAuth = createSSRClient(
+        normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          cookies: {
+            get(name: string) {
+              return request.cookies.get(name)?.value;
+            },
+            set() {},
+            remove() {},
           },
-          set() {},
-          remove() {},
-        },
+        }
+      );
+      const { data } = await supabaseAuth.auth.getUser();
+      if (!data.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
-    );
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
+      userId = data.user.id;
+    } catch (e) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-  } catch (e) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
 
-  const formData: TravelPlanRequestV2 = await request.json();
-
-    // Fetch city data from database
+    const formData: TravelPlanRequestV2 = await request.json();
     const supabase = createServerClient();
+    let profile: UserProfile | null = null;
+    try {
+      if (userId) {
+        const { data: profileRow } = await supabase
+          .from('user_profile')
+          .select('*')
+          .eq('user_id', userId)
+          .maybeSingle();
+        profile = (profileRow || null) as UserProfile | null;
+      }
+    } catch (profileError) {
+      console.warn('Failed to load user_profile row', profileError);
+    }
+    const mergedForm = mergeProfileDefaults(formData, profile);
+
     const { data: cities, error } = await supabase
       .from('cities')
       .select('name, stadium_name, stadium_lat, stadium_long, fan_fest_location, fan_fest_lat, fan_fest_long, airport_code, country')
-      .in('name', formData.citiesVisiting);
+      .in('name', mergedForm.citiesVisiting);
 
     if (error) {
       console.error('Database error:', error);
@@ -92,8 +235,8 @@ export async function POST(request: NextRequest) {
     const USE_CITY_CONTEXT = process.env.PLANNER_USE_CITY_CONTEXT === 'true';
     let cityContextPrompt = '';
     if (USE_CITY_CONTEXT) {
-      console.log('Loading city context for:', formData.citiesVisiting);
-      const cityContext = await loadCityContext(formData.citiesVisiting, 'en');
+      console.log('Loading city context for:', mergedForm.citiesVisiting);
+      const cityContext = await loadCityContext(mergedForm.citiesVisiting, 'en');
       cityContextPrompt = formatCityContextForPrompt(cityContext);
       console.log('City context loaded:', Object.keys(cityContext).length, 'cities');
     } else {
@@ -103,36 +246,39 @@ export async function POST(request: NextRequest) {
     // Build a filtered match schedule for the user's cities and dates
     const knownMatches = groupByCity(
       filterMatches({
-        cities: formData.citiesVisiting,
-        startDate: formData.startDate,
-        endDate: formData.endDate
+        cities: mergedForm.citiesVisiting,
+        startDate: mergedForm.startDate,
+        endDate: mergedForm.endDate
       })
     );
 
+    const profileSummary = buildProfileSummary(profile, mergedForm);
+
     // Build the prompt for Gemini
-  const prompt = `You are a senior World Cup 2026 travel planner. Using the traveler inputs and the “Cities & Stadiums” list, produce 2–3 distinct, realistic itinerary options that COVER ALL REQUIRED TRAVEL: origin → first city, inter-city moves, and last city → origin. Reflect the EXACT dates and ALL cities provided. If multiple cities are listed, you MUST include the movement between them (flight/train/car) consistent with Transport Mode.
-\nCRITICAL: Every input city in [${formData.citiesVisiting.join(', ')}] must appear in trip.cityOrder for each option. Do not omit any input city. Do not add cities that aren't requested (except for necessary layover hubs, which must NOT be listed in cityOrder).
+    const prompt = `You are a senior World Cup 2026 travel planner. Using the traveler inputs and the “Cities & Stadiums” list, produce 2–3 distinct, realistic itinerary options that COVER ALL REQUIRED TRAVEL: origin → first city, inter-city moves, and last city → origin. Reflect the EXACT dates and ALL cities provided. If multiple cities are listed, you MUST include the movement between them (flight/train/car) consistent with Transport Mode.
+\nCRITICAL: Every input city in [${mergedForm.citiesVisiting.join(', ')}] must appear in trip.cityOrder for each option. Do not omit any input city. Do not add cities that aren't requested (except for necessary layover hubs, which must NOT be listed in cityOrder).
 
 Traveler Details:
-- Origin: ${formData.originCity}${formData.originAirport ? ` (${formData.originAirport.code} - ${formData.originAirport.name})` : ''}
-- Group Size: ${formData.groupSize} adults${formData.children > 0 ? `, ${formData.children} children (ages 0-12)` : ''}${formData.seniors > 0 ? `, ${formData.seniors} seniors (65+)` : ''}
-- Mobility Considerations: ${formData.mobilityIssues ? 'Yes - group has mobility limitations' : 'No special mobility needs'}
-- Transport Mode: ${formData.transportMode}
-- Budget Level: ${formData.budgetLevel}
-- Travel Dates: ${formData.startDate} to ${formData.endDate}
-${formData.personalContext ? `- Special Context: ${formData.personalContext}` : ''}
+- Origin: ${mergedForm.originCity}${mergedForm.originAirport ? ` (${mergedForm.originAirport.code} - ${mergedForm.originAirport.name})` : ''}
+- Group Size: ${mergedForm.groupSize} adults${mergedForm.children > 0 ? `, ${mergedForm.children} children (ages 0-12)` : ''}${mergedForm.seniors > 0 ? `, ${mergedForm.seniors} seniors (65+)` : ''}
+- Mobility Considerations: ${mergedForm.mobilityIssues ? 'Yes - group has mobility limitations' : 'No special mobility needs'}
+- Transport Mode: ${mergedForm.transportMode}
+- Budget Level: ${mergedForm.budgetLevel}
+- Travel Dates: ${mergedForm.startDate} to ${mergedForm.endDate}
+${mergedForm.personalContext ? `- Special Context: ${mergedForm.personalContext}` : ''}
 
 Match Context:
-- Has Match Tickets: ${formData.hasMatchTickets ? 'Yes' : 'No'}
-${formData.matchDates && formData.matchDates.length ? `- Match Dates: ${formData.matchDates.join(', ')}` : ''}
-${formData.ticketCities && formData.ticketCities.length ? `- Ticket Cities: ${formData.ticketCities.join(', ')}` : ''}
+- Has Match Tickets: ${mergedForm.hasMatchTickets ? 'Yes' : 'No'}
+${mergedForm.matchDates && mergedForm.matchDates.length ? `- Match Dates: ${mergedForm.matchDates.join(', ')}` : ''}
+${mergedForm.ticketCities && mergedForm.ticketCities.length ? `- Ticket Cities: ${mergedForm.ticketCities.join(', ')}` : ''}
 
 Trip Focus & Preferences:
-- Focus: ${Array.isArray(formData.tripFocus) && formData.tripFocus.length ? formData.tripFocus.join(', ') : 'unspecified'}${formData.surpriseMe ? ' (SurpriseMe enabled)' : ''}
-${formData.comfortPreference ? `- Comfort: ${formData.comfortPreference}` : ''}
-${formData.nightlifePreference ? `- Nightlife: ${formData.nightlifePreference}` : ''}
-${formData.foodPreference ? `- Food: ${formData.foodPreference}` : ''}
-${formData.climatePreference ? `- Climate: ${formData.climatePreference}` : ''}
+- Focus: ${Array.isArray(mergedForm.tripFocus) && mergedForm.tripFocus.length ? mergedForm.tripFocus.join(', ') : 'unspecified'}${mergedForm.surpriseMe ? ' (SurpriseMe enabled)' : ''}
+${mergedForm.comfortPreference ? `- Comfort: ${mergedForm.comfortPreference}` : ''}
+${mergedForm.nightlifePreference ? `- Nightlife: ${mergedForm.nightlifePreference}` : ''}
+${mergedForm.foodPreference ? `- Food: ${mergedForm.foodPreference}` : ''}
+${mergedForm.climatePreference ? `- Climate: ${mergedForm.climatePreference}` : ''}
+${profileSummary}
 
 Cities & Stadiums:
 ${cities?.map(city => `
@@ -219,9 +365,9 @@ Follow this exact schema:
 
 {
   "tripSummary": {
-    "origin": "${formData.originCity}",
-    "dates": { "start": "${formData.startDate}", "end": "${formData.endDate}" },
-    "travelers": { "adults": ${formData.groupSize}, "children": ${formData.children}, "seniors": ${formData.seniors} },
+    "origin": "${mergedForm.originCity}",
+    "dates": { "start": "${mergedForm.startDate}", "end": "${mergedForm.endDate}" },
+    "travelers": { "adults": ${mergedForm.groupSize}, "children": ${mergedForm.children}, "seniors": ${mergedForm.seniors} },
     "durationDays": <int>,
     "totalNights": <int>
   },
@@ -242,7 +388,7 @@ Follow this exact schema:
       "flights": {
         "legs": [
           {
-            "from": "${formData.originCity}${formData.originAirport ? ` (${formData.originAirport.code})` : ''}",
+            "from": "${mergedForm.originCity}${mergedForm.originAirport ? ` (${mergedForm.originAirport.code})` : ''}",
             "to": "Dallas (DFW)",
             "airlines": ["Japan Airlines","American Airlines"],
             "duration": "11h 30m direct",
@@ -262,7 +408,7 @@ Follow this exact schema:
           },
           {
             "from": "Kansas City (MCI)",
-            "to": "${formData.originCity}${formData.originAirport ? ` (${formData.originAirport.code})` : ''}",
+            "to": "${mergedForm.originCity}${mergedForm.originAirport ? ` (${mergedForm.originAirport.code})` : ''}",
             "airlines": ["American Airlines","United"],
             "duration": "16h with 2h layover in DFW",
             "exampleDeparture": "12:00",
@@ -351,16 +497,13 @@ Follow this exact schema:
   }
 }
 
----
-
-### 7️⃣ ACCURACY & VALIDATION
 - Every input city must appear in cityOrder for each option.
 - The option summary should naturally reflect the cities covered.
 - Include all required travel legs (outbound, inter-city, return).
 - Sum of nightsPerCity = totalNights.
 - Must reflect June–July 2026 context.
 - Return only valid JSON.
-\nBefore finalizing JSON, self-check: for each option, ensure trip.cityOrder contains ALL of [${formData.citiesVisiting.join(', ')}]. If any are missing, revise that option to include the missing city with realistic nights and inter-city moves. Do not invent non-requested destinations.
+\nBefore finalizing JSON, self-check: for each option, ensure trip.cityOrder contains ALL of [${mergedForm.citiesVisiting.join(', ')}]. If any are missing, revise that option to include the missing city with realistic nights and inter-city moves. Do not invent non-requested destinations.
 
 ${USE_CITY_CONTEXT ? cityContextPrompt : ''}
 
@@ -390,17 +533,28 @@ ${USE_CITY_CONTEXT ? '**CRITICAL:** Use the authoritative city guides above as p
     const { error: saveError } = await supabase
       .from('travel_plans')
       .insert({
-        origin_city: formData.originCity,
-        group_size: formData.groupSize,
-        children: formData.children,
-        seniors: formData.seniors,
-        mobility_issues: formData.mobilityIssues,
-        transport_mode: formData.transportMode,
-        budget_level: formData.budgetLevel,
-        cities_visiting: formData.citiesVisiting,
-        start_date: formData.startDate || null,
-        end_date: formData.endDate || null,
-        itinerary: itinerary
+        origin_city: mergedForm.originCity || mergedForm.originAirport?.city || null,
+        origin_airport: mergedForm.originAirport || null,
+        group_size: mergedForm.groupSize,
+        children: mergedForm.children,
+        seniors: mergedForm.seniors,
+        mobility_issues: mergedForm.mobilityIssues,
+        transport_mode: mergedForm.transportMode,
+        budget_level: mergedForm.budgetLevel,
+        trip_focus: mergedForm.tripFocus ?? [],
+        cities_visiting: mergedForm.citiesVisiting,
+        has_match_tickets: mergedForm.hasMatchTickets,
+        match_dates: mergedForm.matchDates ?? [],
+        ticket_cities: mergedForm.ticketCities ?? [],
+        personal_context: mergedForm.personalContext || null,
+        surprise_me: mergedForm.surpriseMe ?? false,
+        food_preference: mergedForm.foodPreference || null,
+        nightlife_preference: mergedForm.nightlifePreference || null,
+        climate_preference: mergedForm.climatePreference || null,
+        start_date: mergedForm.startDate || null,
+        end_date: mergedForm.endDate || null,
+        itinerary,
+        user_id: userId,
       });
 
     if (saveError) {

@@ -261,5 +261,86 @@
     "subtitle": "{count} équipes ont officiellement obtenu leur place à la Coupe du Monde 2026",
     "counts": "{count} équipes qualifiées",
     "viewAll": "Voir les {count} équipes"
+  },
+  "onboarding": {
+    "titleDefault": "Bienvenue ! Personnalisons votre expérience",
+    "titleMembership": "Merci d'être devenu membre !",
+    "subtitle": "Complétez ces quelques étapes une seule fois. Nous les réutiliserons dans tous les planificateurs.",
+    "progress": "Étape {step} sur 3",
+    "steps": {
+      "basics": {
+        "title": "Étape 1 — Infos voyageurs",
+        "homeAirportLabel": "Aéroport de départ",
+        "homeAirportHelp": "Nous l'utiliserons par défaut pour les vols. Vous pourrez le modifier à tout moment.",
+        "homeAirportPlaceholder": "Recherchez une ville ou un code aéroport (ex. CDG, LHR, BOS)",
+        "adults": "Adultes",
+        "children05": "Enfants 0-5 ans",
+        "children618": "Enfants 6-18 ans",
+        "seniors": "Seniors",
+        "mobility": "Quelqu'un a des limitations de mobilité",
+        "ticketsToggle": "Nous avons déjà des billets de match",
+        "ticketQuestion": "Quel match ?",
+        "ticketPlaceholder": "Choisissez un match…"
+      },
+      "style": {
+        "title": "Étape 2 — Style de voyage",
+        "description": "Cela nous aide à recommander les bons hébergements, repas et rythmes.",
+        "budget": "Niveau de budget",
+        "budgetOptions": {
+          "budget": "Économe",
+          "moderate": "Modéré",
+          "premium": "Premium"
+        },
+        "food": "Préférence culinaire",
+        "nightlife": "Préférence pour la vie nocturne",
+        "climate": "Préférence climatique",
+        "foodOptions": {
+          "local_flavors": "Saveurs locales",
+          "international": "International",
+          "mix": "Mixte"
+        },
+        "nightlifeOptions": {
+          "quiet": "Calme",
+          "social": "Sociale",
+          "party": "Fête"
+        },
+        "climateOptions": {
+          "all": "Ouvert à tous les climats",
+          "prefer_northerly": "Préfère les villes plus au nord",
+          "comfortable": "Préfère les climats doux"
+        }
+      },
+      "interests": {
+        "title": "Étape 3 — Centres d'intérêt",
+        "description": "Choisissez tout ce qui vous correspond. Nous adapterons les recommandations.",
+        "focusOptions": {
+          "fanfest": "Fan Fests & ambiance",
+          "local_culture": "Culture locale & gastronomie",
+          "stadium_experience": "Expérience au stade",
+          "nightlife": "Vie nocturne"
+        },
+        "transport": "Mode de transport préféré",
+        "transportOptions": {
+          "public": "Transports publics",
+          "car": "Voiture / location",
+          "mixed": "Mixte"
+        },
+        "favoriteTeam": "Équipe favorite (facultatif)",
+        "favoriteTeamPlaceholder": "ex. Angleterre"
+      }
+    },
+    "done": {
+      "title": "Tout est prêt !",
+      "subtitle": "Nous personnaliserons tous les planificateurs à partir de votre profil. Vous pourrez le modifier à tout moment.",
+      "ctaContinue": "Continuer",
+      "ctaTripBuilder": "Ouvrir le Trip Builder",
+      "ctaEdit": "Modifier le profil"
+    },
+    "buttons": {
+      "next": "Suivant",
+      "back": "Retour",
+      "finish": "Terminer",
+      "saving": "Enregistrement…"
+    }
   }
 }

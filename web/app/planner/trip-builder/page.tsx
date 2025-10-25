@@ -2,18 +2,24 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import TravelPlannerWizard from '@/components/TravelPlannerWizard';
 import ItineraryResults from '@/components/ItineraryResults';
 import DidYouKnowCarousel from '@/components/DidYouKnowCarousel';
 import { useAuth } from '@/lib/AuthContext';
 import AuthModal from '@/components/AuthModal';
+import { useProfile } from '@/lib/profile/api';
+import ProfileReview from '@/components/trip-planner/ProfileReview';
+import TripIntentForm from '@/components/trip-planner/TripIntentForm';
+import { useRouter } from 'next/navigation';
 
 export default function PlannerPage() {
   const { user, loading } = useAuth();
+  const router = useRouter();
+  const { profile, loading: profileLoading, error: profileError } = useProfile({ enabled: !!user });
   const [isLoading, setIsLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
   const [lastForm, setLastForm] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [mode, setMode] = useState<'review' | 'trip'>('review');
 
   const handleFormSubmit = async (formData: any) => {
     setIsLoading(true);
@@ -85,8 +91,48 @@ export default function PlannerPage() {
 
       {/* Main Content */}
       <main className="py-12">
-        {!itinerary && !isLoading && (
-          <TravelPlannerWizard onSubmit={handleFormSubmit} isLoading={isLoading} />
+        {profileError && (
+          <div className="max-w-3xl mx-auto px-6 mb-6">
+            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
+              We couldn’t load your saved travel profile. Please refresh to retry or reopen onboarding to capture it again.
+            </div>
+          </div>
+        )}
+        {!itinerary && !isLoading && !profileLoading && !profile && (
+          <div className="max-w-3xl mx-auto px-6 py-12 text-center space-y-3">
+            <p className="text-lg font-semibold text-gray-900">Let’s capture your travel profile first</p>
+            <p className="text-sm text-gray-600">
+              We need your onboarding details before building itineraries. Head to onboarding to fill it out, then come back here.
+            </p>
+            <button
+              onClick={() => router.push('/onboarding?redirect=/planner/trip-builder')}
+              className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700"
+            >
+              Complete onboarding
+            </button>
+          </div>
+        )}
+
+        {!itinerary && !isLoading && profileLoading && (
+          <div className="max-w-3xl mx-auto px-6 py-12 text-center text-sm text-gray-600">
+            Loading your travel profile…
+          </div>
+        )}
+
+        {!itinerary && !isLoading && profile && mode === 'review' && (
+          <div className="max-w-4xl mx-auto px-6">
+            <ProfileReview
+              profile={profile}
+              onConfirm={() => setMode('trip')}
+              onEdit={() => router.push('/account/profile?redirect=/planner/trip-builder')}
+            />
+          </div>
+        )}
+
+        {!itinerary && !isLoading && profile && mode === 'trip' && (
+          <div className="max-w-4xl mx-auto px-6">
+            <TripIntentForm profile={profile} onSubmit={handleFormSubmit} isLoading={isLoading} onBack={() => setMode('review')} />
+          </div>
         )}
 
         {isLoading && (

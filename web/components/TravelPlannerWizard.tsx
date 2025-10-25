@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import AirportAutocomplete from './AirportAutocomplete';
 import type { Airport } from '@/lib/airportData';
+import type { UserProfile } from '@/lib/profile/types';
 import { SoccerBallIcon, GoalIcon } from './icons/SoccerIcons';
 import MatchPicker from './MatchPicker';
 
@@ -28,10 +29,10 @@ interface TravelPlanFormData {
   comfortPreference?: 'budget_friendly' | 'balanced' | 'luxury_focus';
   nightlifePreference?: 'quiet' | 'social' | 'party';
   foodPreference?: 'local_flavors' | 'international' | 'mix';
-  climatePreference?: 'avoid_heat' | 'open_to_hot' | 'prefer_warm';
+  climatePreference?: 'all' | 'prefer_northerly' | 'comfortable';
 }
 
-const WORLD_CUP_CITIES = [
+export const WORLD_CUP_CITIES = [
   'Dallas',
   'Kansas City',
   'Houston',
@@ -53,9 +54,11 @@ const WORLD_CUP_CITIES = [
 interface TravelPlannerWizardProps {
   onSubmit: (data: TravelPlanFormData) => void;
   isLoading?: boolean;
+  profile?: UserProfile | null;
+  profileLoading?: boolean;
 }
 
-export default function TravelPlannerWizard({ onSubmit, isLoading = false }: TravelPlannerWizardProps) {
+export default function TravelPlannerWizard({ onSubmit, isLoading = false, profile, profileLoading = false }: TravelPlannerWizardProps) {
   const [step, setStep] = useState(1);
   const [availableMatches, setAvailableMatches] = useState<Record<string, Array<{date:string;displayDate:string;match:string;stadium:string}>> | null>(null);
   const [matchesError, setMatchesError] = useState<string | null>(null);
@@ -81,11 +84,14 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
     foodPreference: undefined,
     climatePreference: undefined,
   });
+  const [prefillApplied, setPrefillApplied] = useState(false);
+  const [hasUserEdited, setHasUserEdited] = useState(false);
 
   // Compute effective total steps based on flow (tickets steps are skipped when no tickets)
   const totalSteps = formData.hasMatchTickets ? 12 : 10;
 
   const updateFormData = (updates: Partial<TravelPlanFormData>) => {
+    setHasUserEdited(true);
     setFormData(prev => ({ ...prev, ...updates }));
   };
 
@@ -112,6 +118,12 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
   const handleSubmit = () => {
     onSubmit(formData);
   };
+
+  useEffect(() => {
+    if (!profile || prefillApplied || hasUserEdited) return;
+    setFormData((prev) => applyProfileDefaults(prev, profile));
+    setPrefillApplied(true);
+  }, [profile, prefillApplied, hasUserEdited]);
   // Load matches when tickets are enabled and inputs change
   useEffect(() => {
     const shouldFetch = formData.hasMatchTickets && ((formData.ticketCities?.length || 0) > 0);
@@ -169,6 +181,20 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
 
   return (
     <div className="max-w-3xl mx-auto p-6">
+      {profileLoading && !profile && (
+        <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+          Loading your saved travel profile…
+        </div>
+      )}
+      {profile && (
+        <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+          We prefilled your details from onboarding. Need to change them?{' '}
+          <a href="/account/profile" className="font-medium text-blue-900 underline underline-offset-4">
+            Edit your travel profile
+          </a>
+          .
+        </div>
+      )}
       {/* Progress Bar */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
@@ -723,9 +749,9 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">No preference</option>
-                  <option value="avoid_heat">Avoid heat</option>
-                  <option value="open_to_hot">Open to hot</option>
-                  <option value="prefer_warm">Prefer warm</option>
+                  <option value="all">Open to any climate</option>
+                  <option value="prefer_northerly">Prefer cooler / northerly hosts</option>
+                  <option value="comfortable">Prefer comfortable climates (mild temps)</option>
                 </select>
               </div>
             </div>
@@ -804,4 +830,132 @@ export default function TravelPlannerWizard({ onSubmit, isLoading = false }: Tra
       </div>
     </div>
   );
+}
+
+function mapProfileAirport(home?: UserProfile['home_airport'] | null): Airport | null {
+  if (!home?.code) return null;
+  return {
+    code: home.code,
+    name: home.name || home.code,
+    city: home.city || '',
+    country: home.country || '',
+  };
+}
+
+function formatAirportLabel(airport: Airport) {
+  const city = airport.city || airport.name || airport.code;
+  const name = airport.name || airport.code;
+  return `${city} (${airport.code}) - ${name}`;
+}
+
+function deriveChildrenFromProfile(profile: UserProfile): number {
+  const buckets = (profile.children_0_5 ?? 0) + (profile.children_6_18 ?? 0);
+  if (buckets > 0) return buckets;
+  return profile.children ?? 0;
+}
+
+function applyProfileDefaults(prev: TravelPlanFormData, profile: UserProfile): TravelPlanFormData {
+  let changed = false;
+  const next: TravelPlanFormData = { ...prev };
+  const airport = mapProfileAirport(profile.home_airport);
+
+  if (airport) {
+    if (!prev.originAirport) {
+      next.originAirport = airport;
+      changed = true;
+    }
+    if (!prev.originCity) {
+      next.originCity = formatAirportLabel(airport);
+      changed = true;
+    }
+  } else if (!prev.originCity && profile.home_city) {
+    next.originCity = profile.home_city;
+    changed = true;
+  }
+
+  if (typeof profile.group_size === 'number' && profile.group_size > 0 && profile.group_size !== prev.groupSize) {
+    next.groupSize = profile.group_size;
+    changed = true;
+  }
+
+  const kids = deriveChildrenFromProfile(profile);
+  if (kids > 0 && kids !== prev.children) {
+    next.children = kids;
+    changed = true;
+  }
+
+  if (typeof profile.seniors === 'number' && profile.seniors !== prev.seniors) {
+    next.seniors = profile.seniors;
+    changed = true;
+  }
+
+  if (typeof profile.mobility_issues === 'boolean' && profile.mobility_issues !== prev.mobilityIssues) {
+    next.mobilityIssues = profile.mobility_issues;
+    changed = true;
+  }
+
+  if (profile.preferred_transport && profile.preferred_transport !== prev.transportMode) {
+    next.transportMode = profile.preferred_transport as TravelPlanFormData['transportMode'];
+    changed = true;
+  }
+
+  if (profile.budget_level && profile.budget_level !== prev.budgetLevel) {
+    next.budgetLevel = profile.budget_level as TravelPlanFormData['budgetLevel'];
+    changed = true;
+  }
+
+  if ((!prev.tripFocus || prev.tripFocus.length === 0) && Array.isArray(profile.travel_focus) && profile.travel_focus.length) {
+    next.tripFocus = profile.travel_focus as TravelPlanFormData['tripFocus'];
+    changed = true;
+  }
+
+  if (!prev.foodPreference && profile.food_preference) {
+    next.foodPreference = profile.food_preference as NonNullable<TravelPlanFormData['foodPreference']>;
+    changed = true;
+  }
+
+  if (!prev.nightlifePreference && profile.nightlife_preference) {
+    next.nightlifePreference = profile.nightlife_preference as NonNullable<TravelPlanFormData['nightlifePreference']>;
+    changed = true;
+  }
+
+  if (!prev.climatePreference && profile.climate_preference) {
+    next.climatePreference = profile.climate_preference as NonNullable<TravelPlanFormData['climatePreference']>;
+    changed = true;
+  }
+
+  const ticketCity = profile.ticket_match?.city?.trim();
+  const ticketDate = profile.ticket_match?.date?.trim();
+
+  if (profile.has_tickets) {
+    if (!prev.hasMatchTickets) {
+      next.hasMatchTickets = true;
+      changed = true;
+    }
+    if ((!prev.ticketCities || prev.ticketCities.length === 0) && ticketCity) {
+      next.ticketCities = [ticketCity];
+      changed = true;
+    }
+    if ((!prev.matchDates || prev.matchDates.length === 0) && ticketDate) {
+      next.matchDates = [ticketDate];
+      changed = true;
+    }
+  }
+
+  if ((!prev.citiesVisiting || prev.citiesVisiting.length === 0) && ticketCity) {
+    next.citiesVisiting = [ticketCity];
+    changed = true;
+  }
+
+  if (!prev.startDate && ticketDate) {
+    next.startDate = ticketDate;
+    changed = true;
+  }
+
+  if (!prev.endDate && ticketDate) {
+    next.endDate = ticketDate;
+    changed = true;
+  }
+
+  return changed ? next : prev;
 }

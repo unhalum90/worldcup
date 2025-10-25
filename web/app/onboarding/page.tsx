@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import AirportAutocomplete from '@/components/AirportAutocomplete';
+import { trackEvent } from '@/components/GoogleAnalytics';
+import { useTranslations } from 'next-intl';
 import type { Airport } from '@/lib/airportData';
 import { loadMatchScheduleSync, type MatchItem } from '@/lib/matchSchedule';
 
@@ -13,8 +15,10 @@ export default function OnboardingPage() {
   const [step, setStep] = useState<Step>(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations('onboarding');
 
   // Form state
+  const [homeAirportInput, setHomeAirportInput] = useState('');
   const [homeAirport, setHomeAirport] = useState<Airport | undefined>(undefined);
   const [groupSize, setGroupSize] = useState(2);
   const [children05, setChildren05] = useState(0);
@@ -33,6 +37,12 @@ export default function OnboardingPage() {
   const [hasTickets, setHasTickets] = useState(false);
   const [ticketMatch, setTicketMatch] = useState<MatchItem | null>(null);
   const matches = useMemo(() => loadMatchScheduleSync(), []);
+  const focusChoices = [
+    { key: 'fanfest', label: t('steps.interests.focusOptions.fanfest') },
+    { key: 'local_culture', label: t('steps.interests.focusOptions.local_culture') },
+    { key: 'stadium_experience', label: t('steps.interests.focusOptions.stadium_experience') },
+    { key: 'nightlife', label: t('steps.interests.focusOptions.nightlife') },
+  ] as const;
 
   function toggleFocus(k: 'fanfest'|'local_culture'|'stadium_experience'|'nightlife') {
     setFocus((prev) => prev.includes(k) ? prev.filter(x => x !== k) : [...prev, k]);
@@ -53,6 +63,7 @@ export default function OnboardingPage() {
     const f = (search?.get('from') || '').toLowerCase();
     return f === 'membership' || f === 'subscribe' || f === 'checkout';
   }, [search]);
+  const heading = fromMembership ? t('titleMembership') : t('titleDefault');
 
   async function submitProfile() {
     setLoading(true);
@@ -97,6 +108,16 @@ export default function OnboardingPage() {
       try {
         await fetch(`/api/onboarding/complete${redirectTarget ? `?redirect=${encodeURIComponent(redirectTarget)}` : ''}`, { method: 'POST' });
       } catch {}
+      trackEvent('onboarding_completed', {
+        source: fromMembership ? 'membership' : 'organic',
+        budget_level: budgetLevel,
+        preferred_transport: transport,
+        climate_preference: climate,
+        has_children_0_5: children05 > 0,
+        has_children_6_18: children618 > 0,
+        has_tickets: hasTickets,
+        group_size: groupSize,
+      });
       setStep(4);
     } catch (e: any) {
       setError(e.message || 'Failed to save');
@@ -109,72 +130,75 @@ export default function OnboardingPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-bold mb-2">{fromMembership ? 'Thanks for becoming a member!' : 'Welcome! Let’s personalize your experience'}</h1>
-      <p className="text-sm text-gray-500 mb-6">Complete these quick steps once. We’ll use them across all planners.</p>
+      <h1 className="text-3xl font-bold mb-2">{heading}</h1>
+      <p className="text-sm text-gray-500 mb-6">{t('subtitle')}</p>
 
       {/* Progress */}
       <div className="mb-6">
         <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
           <div className="h-2 bg-blue-500" style={{ width: `${(step-1)/3*100}%` }} />
         </div>
-        <div className="text-xs text-gray-400 mt-1">Step {Math.min(step,3)} of 3</div>
+        <div className="text-xs text-gray-400 mt-1">{t('progress', { step: Math.min(step, 3) })}</div>
       </div>
 
       {step === 1 && (
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold">Step 1 — Traveler Basics</h2>
+          <h2 className="text-xl font-semibold">{t('steps.basics.title')}</h2>
           <div>
-            <label className="block text-sm mb-2">Home Airport</label>
+            <label className="block text-sm mb-2">{t('steps.basics.homeAirportLabel')}</label>
             <AirportAutocomplete
-              value={homeAirport ? `${homeAirport.city} (${homeAirport.code}) - ${homeAirport.name}` : ''}
-              onChange={(_v, ap) => setHomeAirport(ap)}
-              placeholder="Search city or airport code (e.g., CDG, LHR, BOS)"
+              value={homeAirportInput}
+              onChange={(value, ap) => {
+                setHomeAirportInput(value);
+                setHomeAirport(ap);
+              }}
+              placeholder={t('steps.basics.homeAirportPlaceholder')}
               autoFocus
             />
-            <p className="text-xs text-gray-500 mt-1">We’ll default to this for flights. You can change it any time.</p>
+            <p className="text-xs text-gray-500 mt-1">{t('steps.basics.homeAirportHelp')}</p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm mb-2">Adults</label>
+              <label className="block text-sm mb-2">{t('steps.basics.adults')}</label>
               <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={1} value={groupSize}
                 onChange={(e) => setGroupSize(Math.max(1, parseInt(e.target.value || '1', 10)))} />
             </div>
             <div>
-              <label className="block text-sm mb-2">Children 0–5</label>
+              <label className="block text-sm mb-2">{t('steps.basics.children05')}</label>
               <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children05}
                 onChange={(e) => setChildren05(Math.max(0, parseInt(e.target.value || '0', 10)))} />
             </div>
             <div>
-              <label className="block text-sm mb-2">Seniors</label>
+              <label className="block text-sm mb-2">{t('steps.basics.seniors')}</label>
               <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={seniors}
                 onChange={(e) => setSeniors(Math.max(0, parseInt(e.target.value || '0', 10)))} />
             </div>
             <div>
-              <label className="block text-sm mb-2">Children 6–18</label>
+              <label className="block text-sm mb-2">{t('steps.basics.children618')}</label>
               <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children618}
                 onChange={(e) => setChildren618(Math.max(0, parseInt(e.target.value || '0', 10)))} />
             </div>
             <div className="flex items-center gap-2">
               <input id="mobility" type="checkbox" checked={mobility} onChange={(e) => setMobility(e.target.checked)} />
-              <label htmlFor="mobility" className="text-sm">Someone has mobility limitations</label>
+              <label htmlFor="mobility" className="text-sm">{t('steps.basics.mobility')}</label>
             </div>
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <input id="tickets" type="checkbox" checked={hasTickets} onChange={(e) => setHasTickets(e.target.checked)} />
-              <label htmlFor="tickets" className="text-sm">We already have match tickets</label>
+              <label htmlFor="tickets" className="text-sm">{t('steps.basics.ticketsToggle')}</label>
             </div>
             {hasTickets && (
               <div>
-                <label className="block text-sm mb-2">Which match?</label>
+                <label className="block text-sm mb-2">{t('steps.basics.ticketQuestion')}</label>
                 <select className="w-full rounded border px-3 py-2 bg-white text-black" value={ticketMatch ? `${ticketMatch.date}|${ticketMatch.city}|${ticketMatch.match}` : ''}
                   onChange={(e) => {
                     const v = e.target.value;
                     const found = matches.find(m => `${m.date}|${m.city}|${m.match}` === v) || null;
                     setTicketMatch(found);
                   }}>
-                  <option value="">Select a match…</option>
+                  <option value="">{t('steps.basics.ticketPlaceholder')}</option>
                   {matches.map((m) => (
                     <option key={`${m.date}-${m.city}-${m.match}`} value={`${m.date}|${m.city}|${m.match}`}>
                       {m.date} — {m.city} — {m.match} ({m.stadium})
@@ -185,7 +209,7 @@ export default function OnboardingPage() {
             )}
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 rounded border" onClick={() => setStep(2)} disabled={disabledNext1}>Next</button>
+            <button className="px-4 py-2 rounded border" onClick={() => setStep(2)} disabled={disabledNext1}>{t('buttons.next')}</button>
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
@@ -193,58 +217,55 @@ export default function OnboardingPage() {
 
       {step === 2 && (
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold">Step 2 — Travel Style</h2>
+          <h2 className="text-xl font-semibold">{t('steps.style.title')}</h2>
+          <p className="text-sm text-gray-500">{t('steps.style.description')}</p>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm mb-2">Budget Level</label>
+              <label className="block text-sm mb-2">{t('steps.style.budget')}</label>
               <select className="w-full rounded border px-3 py-2 bg-white text-black" value={budgetLevel} onChange={(e) => setBudgetLevel(e.target.value as any)}>
-                <option value="budget">Budget</option>
-                <option value="moderate">Moderate</option>
-                <option value="premium">Premium</option>
+                <option value="budget">{t('steps.style.budgetOptions.budget')}</option>
+                <option value="moderate">{t('steps.style.budgetOptions.moderate')}</option>
+                <option value="premium">{t('steps.style.budgetOptions.premium')}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm mb-2">Food Preference</label>
+              <label className="block text-sm mb-2">{t('steps.style.food')}</label>
               <select className="w-full rounded border px-3 py-2 bg-white text-black" value={food} onChange={(e) => setFood(e.target.value as any)}>
-                <option value="local_flavors">Local flavors</option>
-                <option value="international">International</option>
-                <option value="mix">Mix</option>
+                <option value="local_flavors">{t('steps.style.foodOptions.local_flavors')}</option>
+                <option value="international">{t('steps.style.foodOptions.international')}</option>
+                <option value="mix">{t('steps.style.foodOptions.mix')}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm mb-2">Nightlife Preference</label>
+              <label className="block text-sm mb-2">{t('steps.style.nightlife')}</label>
               <select className="w-full rounded border px-3 py-2 bg-white text-black" value={nightlife} onChange={(e) => setNightlife(e.target.value as any)}>
-                <option value="quiet">Quiet</option>
-                <option value="social">Social</option>
-                <option value="party">Party</option>
+                <option value="quiet">{t('steps.style.nightlifeOptions.quiet')}</option>
+                <option value="social">{t('steps.style.nightlifeOptions.social')}</option>
+                <option value="party">{t('steps.style.nightlifeOptions.party')}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm mb-2">Climate Preference</label>
+              <label className="block text-sm mb-2">{t('steps.style.climate')}</label>
               <select className="w-full rounded border px-3 py-2 bg-white text-black" value={climate} onChange={(e) => setClimate(e.target.value as any)}>
-                <option value="all">Open to all climates</option>
-                <option value="prefer_northerly">Prefer northerly</option>
-                <option value="comfortable">Comfortable climates</option>
+                <option value="all">{t('steps.style.climateOptions.all')}</option>
+                <option value="prefer_northerly">{t('steps.style.climateOptions.prefer_northerly')}</option>
+                <option value="comfortable">{t('steps.style.climateOptions.comfortable')}</option>
               </select>
             </div>
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 rounded border" onClick={() => setStep(1)}>Back</button>
-            <button className="px-4 py-2 rounded border" onClick={() => setStep(3)}>Next</button>
+            <button className="px-4 py-2 rounded border" onClick={() => setStep(1)}>{t('buttons.back')}</button>
+            <button className="px-4 py-2 rounded border" onClick={() => setStep(3)}>{t('buttons.next')}</button>
           </div>
         </div>
       )}
 
       {step === 3 && (
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold">Step 3 — Interests</h2>
+          <h2 className="text-xl font-semibold">{t('steps.interests.title')}</h2>
+          <p className="text-sm text-gray-500">{t('steps.interests.description')}</p>
           <div className="grid sm:grid-cols-2 gap-2">
-            {[
-              { key: 'fanfest', label: 'Fan Fests & Atmosphere' },
-              { key: 'local_culture', label: 'Local Culture & Food' },
-              { key: 'stadium_experience', label: 'Stadium Experience' },
-              { key: 'nightlife', label: 'Nightlife' },
-            ].map((it) => (
+            {focusChoices.map((it) => (
               <label key={it.key} className={`flex items-center gap-2 p-3 rounded border cursor-pointer ${focus.includes(it.key as any) ? 'border-blue-500 bg-blue-50' : ''}`}>
                 <input type="checkbox" checked={focus.includes(it.key as any)} onChange={() => toggleFocus(it.key as any)} />
                 <span className="text-sm">{it.label}</span>
@@ -252,21 +273,21 @@ export default function OnboardingPage() {
             ))}
           </div>
           <div>
-            <label className="block text-sm mb-2">Preferred Transport</label>
+            <label className="block text-sm mb-2">{t('steps.interests.transport')}</label>
             <select className="w-full rounded border px-3 py-2 bg-white text-black" value={transport} onChange={(e) => setTransport(e.target.value as any)}>
-              <option value="public">Public Transit</option>
-              <option value="car">Car / Rental</option>
-              <option value="mixed">Mixed</option>
+              <option value="public">{t('steps.interests.transportOptions.public')}</option>
+              <option value="car">{t('steps.interests.transportOptions.car')}</option>
+              <option value="mixed">{t('steps.interests.transportOptions.mixed')}</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm mb-2">Favorite Team (optional)</label>
-            <input className="w-full rounded border px-3 py-2 bg-white text-black" value={favoriteTeam} onChange={(e) => setFavoriteTeam(e.target.value)} placeholder="e.g., England" />
+            <label className="block text-sm mb-2">{t('steps.interests.favoriteTeam')}</label>
+            <input className="w-full rounded border px-3 py-2 bg-white text-black" value={favoriteTeam} onChange={(e) => setFavoriteTeam(e.target.value)} placeholder={t('steps.interests.favoriteTeamPlaceholder')} />
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 rounded border" onClick={() => setStep(2)}>Back</button>
+            <button className="px-4 py-2 rounded border" onClick={() => setStep(2)}>{t('buttons.back')}</button>
             <button className="px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-50" onClick={submitProfile} disabled={loading}>
-              {loading ? 'Saving…' : 'Finish'}
+              {loading ? t('buttons.saving') : t('buttons.finish')}
             </button>
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -275,13 +296,13 @@ export default function OnboardingPage() {
 
       {step === 4 && (
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">You’re all set!</h2>
-          <p className="text-sm text-gray-400">We’ll personalize all planners using your profile. You can edit this anytime.</p>
+          <h2 className="text-xl font-semibold">{t('done.title')}</h2>
+          <p className="text-sm text-gray-400">{t('done.subtitle')}</p>
           <div className="flex gap-3">
             <a href={redirectTarget || '/planner'} className="px-4 py-2 rounded bg-blue-600 text-white">
-              {redirectTarget ? 'Continue' : 'Open Trip Builder'}
+              {redirectTarget ? t('done.ctaContinue') : t('done.ctaTripBuilder')}
             </a>
-            <a href="/account/profile" className="px-4 py-2 rounded border">Edit Profile</a>
+            <a href="/account/profile" className="px-4 py-2 rounded border">{t('done.ctaEdit')}</a>
           </div>
         </div>
       )}

@@ -31,6 +31,7 @@ export default function ProfilePage() {
   const [message, setMessage] = useState<string | null>(null);
 
   // form state
+  const [homeAirportInput, setHomeAirportInput] = useState('');
   const [homeAirport, setHomeAirport] = useState<Airport | undefined>(undefined);
   const [groupSize, setGroupSize] = useState(1);
   const [children05, setChildren05] = useState(0);
@@ -72,12 +73,17 @@ export default function ProfilePage() {
         const p = j.profile || {} as Profile;
         if (!active) return;
         if (p.home_airport?.code) {
-          setHomeAirport({
+          const ap = {
             code: p.home_airport.code,
             name: p.home_airport.name || '',
             city: p.home_airport.city || '',
             country: p.home_airport.country || '',
-          } as Airport);
+          } as Airport;
+          setHomeAirport(ap);
+          setHomeAirportInput(`${ap.city} (${ap.code}) - ${ap.name}`);
+        } else {
+          setHomeAirportInput('');
+          setHomeAirport(undefined);
         }
         setGroupSize(p.group_size ?? 1);
         setChildren05(p.children_0_5 ?? 0);
@@ -168,8 +174,11 @@ export default function ProfilePage() {
             <div>
               <label className="block text-sm mb-2">Home Airport</label>
               <AirportAutocomplete
-                value={homeAirport ? `${homeAirport.city} (${homeAirport.code}) - ${homeAirport.name}` : ''}
-                onChange={(_v, ap) => setHomeAirport(ap)}
+                value={homeAirportInput}
+                onChange={(value, ap) => {
+                  setHomeAirportInput(value);
+                  setHomeAirport(ap);
+                }}
                 placeholder="Search city or airport code (e.g., CDG, LHR, BOS)"
               />
               <p className="text-xs text-gray-500 mt-1">We’ll default to this for flights. You can change it anytime.</p>

@@ -66,6 +66,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 	- Set `NEXT_PUBLIC_ENABLE_ONBOARDING_GATE=true` to gently require onboarding for active members without a profile.
 	- Behavior (middleware): if user is authenticated, is an active member, lacks a `user_profile` row, and isn’t already on `/onboarding`, they’re redirected to `/onboarding?from=membership&redirect=<original>`.
 	- Active membership is detected via `web/lib/membership.ts`. If the `subscriptions` table doesn’t exist yet, the check safely returns false (no gating).
+- Analytics:
+	- When Google Analytics is enabled, completing onboarding fires an `onboarding_completed` event with non-PII metadata (budget level, preferred transport, climate preference, kids/tickets presence).
 
-- Planner defaults (coming next):
-	- Planners will read `home_airport` as the default origin and use preferences to bias results. If the profile is missing, they fall back gracefully.
+- Planner defaults:
+	- Trip Builder now auto-prefills the wizard and merges the saved profile server-side so `/api/travel-planner` always sees origin, family makeup, tickets, and style preferences (form inputs still override).
+	- Verified profile owners see a “Review your travel profile” summary on `/planner/trip-builder`; once confirmed, they only enter trip-specific details (dates, cities, optional extra context). “Make changes” opens `/account/profile` to edit the source of truth.
+	- `web/lib/profile/api.ts` exposes `useProfile`, `fetchProfile`, and `saveProfile` helpers for other planners.
+	- Flight & lodging planners will plug into the same helpers next sprint; when the feature flag is off they continue to fall back gracefully.

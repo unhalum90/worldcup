@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getCityMapPath } from '@/lib/cityMaps';
 import RouteRibbon from './RouteRibbon';
 import { useAuth } from '@/lib/AuthContext';
@@ -327,10 +328,7 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
                     </div>
                   ))}
                   {itinerary.options[expandedIndex].flights.costNote ? (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <p className="text-sm text-blue-800 font-medium">Pricing Note</p>
-                      <p className="text-blue-900 mt-1">{itinerary.options[expandedIndex].flights.costNote}</p>
-                    </div>
+                    <FlightPlannerCTA message={itinerary.options[expandedIndex].flights.costNote} />
                   ) : (
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                       <div className="flex items-center justify-between">
@@ -351,7 +349,7 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
                 <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                   <p className="text-gray-700">{itinerary.options[expandedIndex].flights.routing}</p>
                   {itinerary.options[expandedIndex].flights.costNote ? (
-                    <p className="text-sm text-blue-800">{itinerary.options[expandedIndex].flights.costNote}</p>
+                    <FlightPlannerCTA message={itinerary.options[expandedIndex].flights.costNote} />
                   ) : (
                     <p className="text-lg font-semibold text-blue-600">{itinerary.options[expandedIndex].flights.estimatedCost || itinerary.options[expandedIndex].flights.totalCost}</p>
                   )}
@@ -518,6 +516,25 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
           .print\:brand-header { display: block !important; }
         }
       `}</style>
+    </div>
+  );
+}
+
+function FlightPlannerCTA({ message }: { message?: string }) {
+  return (
+    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p className="text-sm text-blue-800 font-medium">Need live fares?</p>
+        <p className="text-blue-900 mt-1">
+          {message || 'Jump into the Flight Planner to compare real routes, schedules, and current prices for these legs.'}
+        </p>
+      </div>
+      <Link
+        href="/ai/flights"
+        className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700 transition-colors"
+      >
+        Open Flight Planner
+      </Link>
     </div>
   );
 }
