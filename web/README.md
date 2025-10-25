@@ -48,3 +48,24 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - To enable it, set an environment variable before build/runtime:
 	- `NEXT_PUBLIC_ENABLE_LANGUAGE_MODAL=true`
 - When enabled, the modal will appear on first visit if the `wc26-language-selected` cookie is not present, and will set both `wc26-language-selected` and `NEXT_LOCALE` cookies upon selection.
+
+## Onboarding and Travel Profile
+
+- Routes:
+	- `/onboarding` — 3-step wizard to collect profile once (requires auth). Supports membership handoff.
+	- `/account/profile` — edit your profile anytime.
+	- `/api/profile` — GET/PUT the profile for the current user (SSR auth). Validates `home_airport` IATA codes against our dataset.
+	- `/api/onboarding/complete` — POST to set a 30-day `wc26-onboarded` cookie (used for gentle gating and UX flows).
+
+- Membership-aware handoff:
+	- After checkout, redirect new members to `/onboarding?from=membership&redirect=/planner/trip-builder`.
+	- The wizard will save the profile, set the cookie, and the final CTA will continue to the `redirect` path.
+	- The `redirect` param only accepts same-origin relative paths and ignores `/api/*` for safety.
+
+- Optional gating (off by default):
+	- Set `NEXT_PUBLIC_ENABLE_ONBOARDING_GATE=true` to gently require onboarding for active members without a profile.
+	- Behavior (middleware): if user is authenticated, is an active member, lacks a `user_profile` row, and isn’t already on `/onboarding`, they’re redirected to `/onboarding?from=membership&redirect=<original>`.
+	- Active membership is detected via `web/lib/membership.ts`. If the `subscriptions` table doesn’t exist yet, the check safely returns false (no gating).
+
+- Planner defaults (coming next):
+	- Planners will read `home_airport` as the default origin and use preferences to bias results. If the profile is missing, they fall back gracefully.

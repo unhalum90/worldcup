@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { defaultLocale } from './i18n';
 import { createServerClient } from '@supabase/ssr';
+import { isActiveMember } from './lib/membership';
 
 function normalizeToHttps(u: string): string {
   if (!u) return '';
@@ -31,8 +32,9 @@ export async function middleware(req: NextRequest) {
 
   // Supabase client bound to request/response cookies
   let user: any = null;
+  let supabase: any = null;
   try {
-    const supabase = createServerClient(
+    supabase = createServerClient(
       normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
@@ -62,6 +64,35 @@ export async function middleware(req: NextRequest) {
     const url = new URL('/login', req.url);
     url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
     return NextResponse.redirect(url);
+  }
+
+  // Optional onboarding gate (disabled by default). When enabled, if a user is an active member
+  // but has not completed onboarding/profile, gently route them to onboarding and then back.
+  const gateEnabled = process.env.NEXT_PUBLIC_ENABLE_ONBOARDING_GATE === 'true';
+  if (gateEnabled && user && supabase) {
+    const cookieOnboarded = req.cookies.get('wc26-onboarded')?.value === 'true';
+    const inOnboarding = pathname.startsWith('/onboarding');
+    const isLogin = pathname.startsWith('/login');
+    if (!cookieOnboarded && !inOnboarding && !isLogin) {
+      try {
+        const active = await isActiveMember(supabase, user.id);
+        if (active) {
+          const { data: prof } = await supabase
+            .from('user_profile')
+            .select('user_id')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          if (!prof) {
+            const url = new URL('/onboarding', req.url);
+            url.searchParams.set('from', 'membership');
+            url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+            return NextResponse.redirect(url);
+          }
+        }
+      } catch {
+        // If membership table or profile table missing, do nothing.
+      }
+    }
   }
 
   return res;
