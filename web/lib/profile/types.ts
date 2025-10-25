@@ -1,10 +1,9 @@
 import type { Airport } from '@/lib/airportData';
 
 export type BudgetLevel = 'budget' | 'moderate' | 'premium';
-export type ComfortPreference = 'budget_friendly' | 'balanced' | 'luxury_focus';
 export type FoodPreference = 'local_flavors' | 'international' | 'mix';
 export type NightlifePreference = 'quiet' | 'social' | 'party';
-export type ClimatePreference = 'avoid_heat' | 'open_to_hot' | 'prefer_warm';
+export type ClimatePreference = 'all' | 'prefer_northerly' | 'comfortable';
 export type PreferredTransport = 'public' | 'car' | 'mixed';
 export type TravelFocus = 'fanfest' | 'local_culture' | 'stadium_experience' | 'nightlife';
 
@@ -16,11 +15,12 @@ export interface UserProfile {
   home_city?: string | null;
   home_airport: HomeAirport | null;
   group_size?: number;
-  children?: number;
+  children?: number; // legacy aggregate (server may compute)
+  children_0_5?: number;
+  children_6_18?: number;
   seniors?: number;
   mobility_issues?: boolean;
   budget_level?: BudgetLevel | null;
-  comfort_preference?: ComfortPreference | null;
   food_preference?: FoodPreference | null;
   nightlife_preference?: NightlifePreference | null;
   climate_preference?: ClimatePreference | null;
@@ -29,6 +29,14 @@ export interface UserProfile {
   languages?: string[] | null;
   currency?: string | null;
   favorite_team?: string | null;
+  has_tickets?: boolean | null;
+  ticket_match?: {
+    country: string;
+    city: string;
+    stadium: string;
+    date: string; // ISO 2026-06-14
+    match: string;
+  } | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -56,7 +64,7 @@ export function validateProfileInput(body: any): { ok: true; value: Partial<User
     };
   }
 
-  const ints = ['group_size', 'children', 'seniors'] as const;
+  const ints = ['group_size', 'children', 'children_0_5', 'children_6_18', 'seniors'] as const;
   for (const k of ints) {
     if (body[k] !== undefined) {
       const n = Number(body[k]);
@@ -69,10 +77,9 @@ export function validateProfileInput(body: any): { ok: true; value: Partial<User
 
   const enums: [keyof UserProfile, string[]][] = [
     ['budget_level', ['budget', 'moderate', 'premium']],
-    ['comfort_preference', ['budget_friendly', 'balanced', 'luxury_focus']],
     ['food_preference', ['local_flavors', 'international', 'mix']],
     ['nightlife_preference', ['quiet', 'social', 'party']],
-    ['climate_preference', ['avoid_heat', 'open_to_hot', 'prefer_warm']],
+    ['climate_preference', ['all', 'prefer_northerly', 'comfortable']],
     ['preferred_transport', ['public', 'car', 'mixed']],
   ];
   for (const [k, allowed] of enums) {
@@ -93,6 +100,20 @@ export function validateProfileInput(body: any): { ok: true; value: Partial<User
   if (Array.isArray(body.languages)) out.languages = body.languages.map(String);
   if (body.currency !== undefined) out.currency = String(body.currency || '');
   if (body.favorite_team !== undefined) out.favorite_team = String(body.favorite_team || '');
+
+  if (body.has_tickets !== undefined) out.has_tickets = Boolean(body.has_tickets);
+  if (body.ticket_match && typeof body.ticket_match === 'object') {
+    const m = body.ticket_match;
+    const country = String(m.country || '').slice(0, 56);
+    const city = String(m.city || '').slice(0, 56);
+    const stadium = String(m.stadium || '').slice(0, 120);
+    const date = String(m.date || '');
+    const match = String(m.match || '').slice(0, 80);
+    if (!date || !/^(?:2026)-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])$/.test(date)) {
+      return { ok: false, error: 'ticket_match.date must be ISO YYYY-MM-DD in 2026' };
+    }
+    out.ticket_match = { country, city, stadium, date, match } as any;
+  }
 
   return { ok: true, value: out };
 }

@@ -3,21 +3,25 @@
 import { useEffect, useMemo, useState } from 'react';
 import AirportAutocomplete from '@/components/AirportAutocomplete';
 import type { Airport } from '@/lib/airportData';
+import { loadMatchScheduleSync, type MatchItem } from '@/lib/matchSchedule';
 
 type Profile = {
   home_airport?: { code: string; name?: string; city?: string; country?: string } | null;
   group_size?: number | null;
-  children?: number | null;
+  children?: number | null; // legacy
+  children_0_5?: number | null;
+  children_6_18?: number | null;
   seniors?: number | null;
   mobility_issues?: boolean | null;
   budget_level?: 'budget'|'moderate'|'premium' | null;
-  comfort_preference?: 'budget_friendly'|'balanced'|'luxury_focus' | null;
   food_preference?: 'local_flavors'|'international'|'mix' | null;
   nightlife_preference?: 'quiet'|'social'|'party' | null;
-  climate_preference?: 'avoid_heat'|'open_to_hot'|'prefer_warm' | null;
+  climate_preference?: 'all'|'prefer_northerly'|'comfortable' | null;
   travel_focus?: Array<'fanfest'|'local_culture'|'stadium_experience'|'nightlife'> | null;
   preferred_transport?: 'public'|'car'|'mixed' | null;
   favorite_team?: string | null;
+  has_tickets?: boolean | null;
+  ticket_match?: { country: string; city: string; stadium: string; date: string; match: string } | null;
 }
 
 export default function ProfilePage() {
@@ -29,19 +33,22 @@ export default function ProfilePage() {
   // form state
   const [homeAirport, setHomeAirport] = useState<Airport | undefined>(undefined);
   const [groupSize, setGroupSize] = useState(1);
-  const [children, setChildren] = useState(0);
+  const [children05, setChildren05] = useState(0);
+  const [children618, setChildren618] = useState(0);
   const [seniors, setSeniors] = useState(0);
   const [mobility, setMobility] = useState(false);
 
   const [budgetLevel, setBudgetLevel] = useState<'budget'|'moderate'|'premium'>('moderate');
-  const [comfort, setComfort] = useState<'budget_friendly'|'balanced'|'luxury_focus'>('balanced');
   const [food, setFood] = useState<'local_flavors'|'international'|'mix'>('mix');
   const [nightlife, setNightlife] = useState<'quiet'|'social'|'party'>('social');
-  const [climate, setClimate] = useState<'avoid_heat'|'open_to_hot'|'prefer_warm'>('open_to_hot');
+  const [climate, setClimate] = useState<'all'|'prefer_northerly'|'comfortable'>('all');
 
   const [focus, setFocus] = useState<Array<'fanfest'|'local_culture'|'stadium_experience'|'nightlife'>>([]);
   const [transport, setTransport] = useState<'public'|'car'|'mixed'>('mixed');
   const [favoriteTeam, setFavoriteTeam] = useState('');
+  const [hasTickets, setHasTickets] = useState(false);
+  const [ticketMatch, setTicketMatch] = useState<MatchItem | null>(null);
+  const matches = loadMatchScheduleSync();
 
   function toggleFocus(k: 'fanfest'|'local_culture'|'stadium_experience'|'nightlife') {
     setFocus((prev) => prev.includes(k) ? prev.filter(x => x !== k) : [...prev, k]);
@@ -55,7 +62,7 @@ export default function ProfilePage() {
       try {
         const res = await fetch('/api/profile', { cache: 'no-store' });
         if (res.status === 401) throw new Error('Please sign in to view your profile.');
-        if (res.status === 404) {
+        if (res.status === 404 || res.status === 204) {
           // No profile yet; leave defaults
           if (!active) return;
           setLoading(false);
@@ -73,17 +80,21 @@ export default function ProfilePage() {
           } as Airport);
         }
         setGroupSize(p.group_size ?? 1);
-        setChildren(p.children ?? 0);
+        setChildren05(p.children_0_5 ?? 0);
+        setChildren618(p.children_6_18 ?? 0);
         setSeniors(p.seniors ?? 0);
         setMobility(!!p.mobility_issues);
         setBudgetLevel((p.budget_level as any) || 'moderate');
-        setComfort((p.comfort_preference as any) || 'balanced');
         setFood((p.food_preference as any) || 'mix');
         setNightlife((p.nightlife_preference as any) || 'social');
-        setClimate((p.climate_preference as any) || 'open_to_hot');
+        setClimate((p.climate_preference as any) || 'all');
         setFocus((p.travel_focus as any) || []);
         setTransport((p.preferred_transport as any) || 'mixed');
         setFavoriteTeam(p.favorite_team || '');
+        setHasTickets(!!p.has_tickets);
+        if (p.ticket_match) {
+          setTicketMatch(p.ticket_match as any);
+        }
       } catch (e: any) {
         setError(e.message || 'Failed to load profile');
       } finally {
@@ -106,17 +117,25 @@ export default function ProfilePage() {
           country: homeAirport.country,
         } : undefined,
         group_size: groupSize,
-        children,
+        children_0_5: children05,
+        children_6_18: children618,
         seniors,
         mobility_issues: mobility,
         budget_level: budgetLevel,
-        comfort_preference: comfort,
         food_preference: food,
         nightlife_preference: nightlife,
         climate_preference: climate,
         travel_focus: focus,
         preferred_transport: transport,
         favorite_team: favoriteTeam || undefined,
+        has_tickets: hasTickets,
+        ticket_match: hasTickets && ticketMatch ? {
+          country: ticketMatch.country,
+          city: ticketMatch.city,
+          stadium: ticketMatch.stadium,
+          date: ticketMatch.date,
+          match: ticketMatch.match,
+        } : undefined,
       };
       const res = await fetch('/api/profile', {
         method: 'PUT',
@@ -162,19 +181,49 @@ export default function ProfilePage() {
                   onChange={(e) => setGroupSize(Math.max(1, parseInt(e.target.value || '1', 10)))} />
               </div>
               <div>
-                <label className="block text-sm mb-2">Children</label>
-                <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children}
-                  onChange={(e) => setChildren(Math.max(0, parseInt(e.target.value || '0', 10)))} />
+                <label className="block text-sm mb-2">Children 0–5</label>
+                <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children05}
+                  onChange={(e) => setChildren05(Math.max(0, parseInt(e.target.value || '0', 10)))} />
               </div>
               <div>
                 <label className="block text-sm mb-2">Seniors</label>
                 <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={seniors}
                   onChange={(e) => setSeniors(Math.max(0, parseInt(e.target.value || '0', 10)))} />
               </div>
+              <div>
+                <label className="block text-sm mb-2">Children 6–18</label>
+                <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children618}
+                  onChange={(e) => setChildren618(Math.max(0, parseInt(e.target.value || '0', 10)))} />
+              </div>
               <div className="flex items-center gap-2">
                 <input id="mobility" type="checkbox" checked={mobility} onChange={(e) => setMobility(e.target.checked)} />
                 <label htmlFor="mobility" className="text-sm">Someone has mobility limitations</label>
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <input id="tickets" type="checkbox" checked={hasTickets} onChange={(e) => setHasTickets(e.target.checked)} />
+                <label htmlFor="tickets" className="text-sm">We already have match tickets</label>
+              </div>
+              {hasTickets && (
+                <div>
+                  <label className="block text-sm mb-2">Which match?</label>
+                  <select className="w-full rounded border px-3 py-2 bg-white text-black" value={ticketMatch ? `${ticketMatch.date}|${ticketMatch.city}|${ticketMatch.match}` : ''}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      const found = matches.find(m => `${m.date}|${m.city}|${m.match}` === v) || null;
+                      setTicketMatch(found);
+                    }}>
+                    <option value="">Select a match…</option>
+                    {matches.map((m) => (
+                      <option key={`${m.date}-${m.city}-${m.match}`} value={`${m.date}|${m.city}|${m.match}`}>
+                        {m.date} — {m.city} — {m.match} ({m.stadium})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
           </section>
 
@@ -187,14 +236,6 @@ export default function ProfilePage() {
                   <option value="budget">Budget</option>
                   <option value="moderate">Moderate</option>
                   <option value="premium">Premium</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm mb-2">Comfort Preference</label>
-                <select className="w-full rounded border px-3 py-2 bg-white text-black" value={comfort} onChange={(e) => setComfort(e.target.value as any)}>
-                  <option value="budget_friendly">Budget friendly</option>
-                  <option value="balanced">Balanced</option>
-                  <option value="luxury_focus">Luxury focus</option>
                 </select>
               </div>
               <div>
@@ -216,9 +257,9 @@ export default function ProfilePage() {
               <div>
                 <label className="block text-sm mb-2">Climate Preference</label>
                 <select className="w-full rounded border px-3 py-2 bg-white text-black" value={climate} onChange={(e) => setClimate(e.target.value as any)}>
-                  <option value="avoid_heat">Avoid heat</option>
-                  <option value="open_to_hot">Open to hot</option>
-                  <option value="prefer_warm">Prefer warm</option>
+                  <option value="all">Open to all climates</option>
+                  <option value="prefer_northerly">Prefer northerly</option>
+                  <option value="comfortable">Comfortable climates</option>
                 </select>
               </div>
             </div>

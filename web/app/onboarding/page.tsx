@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import AirportAutocomplete from '@/components/AirportAutocomplete';
 import type { Airport } from '@/lib/airportData';
+import { loadMatchScheduleSync, type MatchItem } from '@/lib/matchSchedule';
 
 type Step = 1 | 2 | 3 | 4; // 4=done screen
 
@@ -16,19 +17,22 @@ export default function OnboardingPage() {
   // Form state
   const [homeAirport, setHomeAirport] = useState<Airport | undefined>(undefined);
   const [groupSize, setGroupSize] = useState(2);
-  const [children, setChildren] = useState(0);
+  const [children05, setChildren05] = useState(0);
+  const [children618, setChildren618] = useState(0);
   const [seniors, setSeniors] = useState(0);
   const [mobility, setMobility] = useState(false);
 
   const [budgetLevel, setBudgetLevel] = useState<'budget'|'moderate'|'premium'>('moderate');
-  const [comfort, setComfort] = useState<'budget_friendly'|'balanced'|'luxury_focus'>('balanced');
   const [food, setFood] = useState<'local_flavors'|'international'|'mix'>('mix');
   const [nightlife, setNightlife] = useState<'quiet'|'social'|'party'>('social');
-  const [climate, setClimate] = useState<'avoid_heat'|'open_to_hot'|'prefer_warm'>('open_to_hot');
+  const [climate, setClimate] = useState<'all'|'prefer_northerly'|'comfortable'>('all');
 
   const [focus, setFocus] = useState<Array<'fanfest'|'local_culture'|'stadium_experience'|'nightlife'>>([]);
   const [transport, setTransport] = useState<'public'|'car'|'mixed'>('mixed');
   const [favoriteTeam, setFavoriteTeam] = useState('');
+  const [hasTickets, setHasTickets] = useState(false);
+  const [ticketMatch, setTicketMatch] = useState<MatchItem | null>(null);
+  const matches = useMemo(() => loadMatchScheduleSync(), []);
 
   function toggleFocus(k: 'fanfest'|'local_culture'|'stadium_experience'|'nightlife') {
     setFocus((prev) => prev.includes(k) ? prev.filter(x => x !== k) : [...prev, k]);
@@ -62,17 +66,25 @@ export default function OnboardingPage() {
           country: homeAirport.country,
         } : undefined,
         group_size: groupSize,
-        children,
+        children_0_5: children05,
+        children_6_18: children618,
         seniors,
         mobility_issues: mobility,
         budget_level: budgetLevel,
-        comfort_preference: comfort,
         food_preference: food,
         nightlife_preference: nightlife,
         climate_preference: climate,
         travel_focus: focus,
         preferred_transport: transport,
         favorite_team: favoriteTeam || undefined,
+        has_tickets: hasTickets,
+        ticket_match: hasTickets && ticketMatch ? {
+          country: ticketMatch.country,
+          city: ticketMatch.city,
+          stadium: ticketMatch.stadium,
+          date: ticketMatch.date,
+          match: ticketMatch.match,
+        } : undefined,
       };
       const res = await fetch('/api/profile', {
         method: 'PUT',
@@ -128,19 +140,49 @@ export default function OnboardingPage() {
                 onChange={(e) => setGroupSize(Math.max(1, parseInt(e.target.value || '1', 10)))} />
             </div>
             <div>
-              <label className="block text-sm mb-2">Children</label>
-              <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children}
-                onChange={(e) => setChildren(Math.max(0, parseInt(e.target.value || '0', 10)))} />
+              <label className="block text-sm mb-2">Children 0–5</label>
+              <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children05}
+                onChange={(e) => setChildren05(Math.max(0, parseInt(e.target.value || '0', 10)))} />
             </div>
             <div>
               <label className="block text-sm mb-2">Seniors</label>
               <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={seniors}
                 onChange={(e) => setSeniors(Math.max(0, parseInt(e.target.value || '0', 10)))} />
             </div>
+            <div>
+              <label className="block text-sm mb-2">Children 6–18</label>
+              <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children618}
+                onChange={(e) => setChildren618(Math.max(0, parseInt(e.target.value || '0', 10)))} />
+            </div>
             <div className="flex items-center gap-2">
               <input id="mobility" type="checkbox" checked={mobility} onChange={(e) => setMobility(e.target.checked)} />
               <label htmlFor="mobility" className="text-sm">Someone has mobility limitations</label>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <input id="tickets" type="checkbox" checked={hasTickets} onChange={(e) => setHasTickets(e.target.checked)} />
+              <label htmlFor="tickets" className="text-sm">We already have match tickets</label>
+            </div>
+            {hasTickets && (
+              <div>
+                <label className="block text-sm mb-2">Which match?</label>
+                <select className="w-full rounded border px-3 py-2 bg-white text-black" value={ticketMatch ? `${ticketMatch.date}|${ticketMatch.city}|${ticketMatch.match}` : ''}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    const found = matches.find(m => `${m.date}|${m.city}|${m.match}` === v) || null;
+                    setTicketMatch(found);
+                  }}>
+                  <option value="">Select a match…</option>
+                  {matches.map((m) => (
+                    <option key={`${m.date}-${m.city}-${m.match}`} value={`${m.date}|${m.city}|${m.match}`}>
+                      {m.date} — {m.city} — {m.match} ({m.stadium})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
           <div className="flex gap-2">
             <button className="px-4 py-2 rounded border" onClick={() => setStep(2)} disabled={disabledNext1}>Next</button>
@@ -162,14 +204,6 @@ export default function OnboardingPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm mb-2">Comfort Preference</label>
-              <select className="w-full rounded border px-3 py-2 bg-white text-black" value={comfort} onChange={(e) => setComfort(e.target.value as any)}>
-                <option value="budget_friendly">Budget friendly</option>
-                <option value="balanced">Balanced</option>
-                <option value="luxury_focus">Luxury focus</option>
-              </select>
-            </div>
-            <div>
               <label className="block text-sm mb-2">Food Preference</label>
               <select className="w-full rounded border px-3 py-2 bg-white text-black" value={food} onChange={(e) => setFood(e.target.value as any)}>
                 <option value="local_flavors">Local flavors</option>
@@ -188,9 +222,9 @@ export default function OnboardingPage() {
             <div>
               <label className="block text-sm mb-2">Climate Preference</label>
               <select className="w-full rounded border px-3 py-2 bg-white text-black" value={climate} onChange={(e) => setClimate(e.target.value as any)}>
-                <option value="avoid_heat">Avoid heat</option>
-                <option value="open_to_hot">Open to hot</option>
-                <option value="prefer_warm">Prefer warm</option>
+                <option value="all">Open to all climates</option>
+                <option value="prefer_northerly">Prefer northerly</option>
+                <option value="comfortable">Comfortable climates</option>
               </select>
             </div>
           </div>

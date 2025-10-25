@@ -35,7 +35,7 @@ export async function PUT(req: NextRequest) {
     const parsed = validateProfileInput(body);
     if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 422 });
 
-    const patch: any = parsed.value;
+  const patch: any = parsed.value;
 
     // If a home_airport was provided, ensure it matches our dataset for code correctness.
     if (patch.home_airport?.code) {
@@ -48,6 +48,13 @@ export async function PUT(req: NextRequest) {
           country: known.country,
         };
       }
+    }
+
+    // Legacy aggregate: maintain `children` if buckets provided
+    if (patch.children_0_5 !== undefined || patch.children_6_18 !== undefined) {
+      const c1 = Number(patch.children_0_5 ?? 0);
+      const c2 = Number(patch.children_6_18 ?? 0);
+      patch.children = Math.max(0, (isFinite(c1) ? c1 : 0) + (isFinite(c2) ? c2 : 0));
     }
 
     // Upsert by user_id unique constraint
