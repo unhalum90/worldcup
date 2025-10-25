@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import AirportAutocomplete from '@/components/AirportAutocomplete';
 import type { Airport } from '@/lib/airportData';
 
 type Step = 1 | 2 | 3 | 4; // 4=done screen
 
 export default function OnboardingPage() {
+  const search = useSearchParams();
   const [step, setStep] = useState<Step>(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +33,22 @@ export default function OnboardingPage() {
   function toggleFocus(k: 'fanfest'|'local_culture'|'stadium_experience'|'nightlife') {
     setFocus((prev) => prev.includes(k) ? prev.filter(x => x !== k) : [...prev, k]);
   }
+
+  const redirectTarget = useMemo(() => {
+    const raw = search?.get('redirect') || '';
+    // Sanitize: allow only same-origin relative paths
+    if (!raw) return null;
+    if (raw.startsWith('//')) return null;
+    if (!raw.startsWith('/')) return null;
+    // Avoid API/internal routes by default
+    if (raw.startsWith('/api')) return null;
+    return raw;
+  }, [search]);
+
+  const fromMembership = useMemo(() => {
+    const f = (search?.get('from') || '').toLowerCase();
+    return f === 'membership' || f === 'subscribe' || f === 'checkout';
+  }, [search]);
 
   async function submitProfile() {
     setLoading(true);
@@ -63,6 +81,10 @@ export default function OnboardingPage() {
       });
       const j = res.status === 204 ? null : await res.json();
       if (!res.ok) throw new Error(j?.error || 'Failed to save profile');
+      // Mark onboarding complete (sets cookie)
+      try {
+        await fetch(`/api/onboarding/complete${redirectTarget ? `?redirect=${encodeURIComponent(redirectTarget)}` : ''}`, { method: 'POST' });
+      } catch {}
       setStep(4);
     } catch (e: any) {
       setError(e.message || 'Failed to save');
@@ -75,7 +97,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-bold mb-2">Welcome! Let’s personalize your experience</h1>
+      <h1 className="text-3xl font-bold mb-2">{fromMembership ? 'Thanks for becoming a member!' : 'Welcome! Let’s personalize your experience'}</h1>
       <p className="text-sm text-gray-500 mb-6">Complete these quick steps once. We’ll use them across all planners.</p>
 
       {/* Progress */}
@@ -222,7 +244,9 @@ export default function OnboardingPage() {
           <h2 className="text-xl font-semibold">You’re all set!</h2>
           <p className="text-sm text-gray-400">We’ll personalize all planners using your profile. You can edit this anytime.</p>
           <div className="flex gap-3">
-            <a href="/planner" className="px-4 py-2 rounded bg-blue-600 text-white">Open Trip Builder</a>
+            <a href={redirectTarget || '/planner'} className="px-4 py-2 rounded bg-blue-600 text-white">
+              {redirectTarget ? 'Continue' : 'Open Trip Builder'}
+            </a>
             <a href="/account/profile" className="px-4 py-2 rounded border">Edit Profile</a>
           </div>
         </div>
