@@ -5,8 +5,8 @@
     "privacy": "Privacy"
   },
   "hero": {
-    "title": "Plan your 2026 World Cup trip and connect with fans",
-    "subtitle": "City guides, meetups, and matchday tips—built by and for fans.",
+    "title": "Your smarter way to experience the 2026 World Cup",
+    "subtitle": "Explore every host city, plan your route, and get personalized travel insights powered by AI.",
     "emailPlaceholder": "Your email",
     "interestLabel": "I'm a...",
     "interest": {
@@ -171,7 +171,7 @@
     "rights": "All rights reserved."
   },
   "featureShowcase": {
-    "title": "Three Ways to Plan Your World Cup Journey",
+    "title": "Two Ways to Plan Your World Cup Journey",
     "subtitle": "Everything you need to make your 2026 World Cup trip unforgettable",
     "cityGuides": {
       "icon": "📚",
@@ -196,7 +196,7 @@
     "title": "See How It Works",
     "subtitle": "Watch how our platform helps you plan the perfect World Cup 2026 experience",
     "watchDemo": "Watch the Demo",
-    "demoDescription": "See our AI planner in action, explore city guides, and discover how fans are connecting through forums.",
+    "demoDescription": "See our AI planner in action, explore city guides, and get personalized travel insights.",
     "duration": "45 seconds",
     "callout": "Join the waitlist for early access",
     "launchDate": "Launching December 5, 2025",

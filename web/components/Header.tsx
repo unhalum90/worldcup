@@ -7,14 +7,18 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import AuthModal from "@/components/AuthModal";
+import { useTeamNavbarTheme } from "@/hooks/useTeamNavbarTheme";
 
 export default function Header() {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user, loading, signOut } = useAuth();
+  const { user, loading, signOut, profile } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
+  
+  // Add team theming
+  const { flag } = useTeamNavbarTheme(profile?.favorite_team || undefined);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,7 +31,6 @@ export default function Header() {
   const navLinks = [
     { href: '/teams', label: 'Teams' },
     { href: '/guides', label: 'Guides' },
-    { href: '/forums', label: 'Forums' },
     { href: '/planner', label: 'Travel Planner' },
   ];
 
@@ -38,9 +41,29 @@ export default function Header() {
 
   return (
     <>
-      <header className={`sticky top-0 z-40 bg-white border-b border-[color:var(--color-neutral-100)] transition-shadow ${isScrolled ? 'shadow-md' : ''}`}>
+      <header 
+        className={`sticky top-0 z-40 transition-all ${isScrolled ? 'shadow-lg' : 'shadow-sm'} backdrop-blur-sm`}
+        style={{
+          backgroundColor: "var(--nav-bg, #FFFFFF)",
+          color: "var(--nav-text, #111827)",
+          borderBottomColor: "var(--nav-border, var(--color-neutral-100))",
+          boxShadow: profile?.favorite_team ? "0 2px 8px rgba(0,0,0,0.1)" : "none"
+        }}
+      >
         <div className="container flex items-center justify-between py-3 gap-4">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg text-[color:var(--color-primary)] hover:opacity-80 transition-opacity">
+          <Link href="/" className="flex items-center gap-2 font-bold text-lg hover:opacity-90 transition-opacity"
+                style={{ 
+                  color: "var(--nav-text, #111827)",
+                  textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                }}>
+            {flag && (
+              <img 
+                src={flag} 
+                alt={`${profile?.favorite_team} flag`} 
+                className="h-5 w-7 rounded-sm shadow-md object-cover border border-white/20" 
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            )}
             <span className="text-2xl">⚽</span>
             <span className="hidden sm:inline">WC26 Fan Zone</span>
             <span className="sm:hidden">WC26</span>
@@ -52,11 +75,16 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-[color:var(--color-primary)] ${
+                className={`text-sm font-bold transition-colors ${
                   isActive(link.href)
-                    ? 'text-[color:var(--color-primary)] border-b-2 border-[color:var(--color-primary)]'
-                    : 'text-[color:var(--color-neutral-800)]'
+                    ? 'border-b-2 opacity-100'
+                    : 'opacity-100 hover:opacity-90'
                 }`}
+                style={{
+                  color: "var(--nav-text, #111827)",
+                  borderBottomColor: isActive(link.href) ? "var(--nav-text, #111827)" : "transparent",
+                  textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                }}
               >
                 {link.label}
               </Link>
@@ -66,7 +94,11 @@ export default function Header() {
               href="https://wc26fanzone.beehiiv.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium hover:underline underline-offset-4 text-[color:var(--color-neutral-800)]"
+              className="text-sm font-bold hover:underline underline-offset-4 opacity-100 hover:opacity-90 transition-opacity"
+              style={{ 
+                color: "var(--nav-text, #111827)",
+                textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+              }}
             >
               Newsletter
             </a>
@@ -78,7 +110,13 @@ export default function Header() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowAuth(true)}
-                  className="px-3 py-2 rounded-lg border text-sm hover:bg-gray-50"
+                  className="px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm"
+                  style={{ 
+                    color: "var(--nav-text, #111827)",
+                    borderColor: "var(--nav-text, #111827)",
+                    backgroundColor: "rgba(255,255,255,0.15)",
+                    textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                  }}
                 >
                   Sign in
                 </button>
@@ -93,15 +131,30 @@ export default function Header() {
 
             {!loading && user && (
               <div className="flex items-center gap-3">
-                <Link href="/account" className="flex items-center gap-2 group">
-                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-700">
+                <Link href="/account" className="flex items-center gap-2 group opacity-100 hover:opacity-90 transition-opacity">
+                  <div className="w-8 h-8 rounded-full bg-white/25 border border-white/30 flex items-center justify-center text-sm font-bold shadow-sm"
+                       style={{ 
+                         color: "var(--nav-text, #111827)",
+                         textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                       }}>
                     {user.email?.charAt(0).toUpperCase() || 'U'}
                   </div>
-                  <span className="text-sm text-gray-800 group-hover:underline">
+                  <span className="text-sm font-bold group-hover:underline"
+                        style={{ 
+                          color: "var(--nav-text, #111827)",
+                          textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                        }}>
                     {user.email?.split('@')[0] || 'Account'}
                   </span>
                 </Link>
-                <button onClick={signOut} className="px-3 py-2 rounded-lg border text-sm hover:bg-gray-50">
+                <button onClick={signOut} 
+                        className="px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm"
+                        style={{ 
+                          color: "var(--nav-text, #111827)",
+                          borderColor: "var(--nav-text, #111827)",
+                          backgroundColor: "rgba(255,255,255,0.15)",
+                          textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                        }}>
                   Sign out
                 </button>
               </div>
@@ -111,7 +164,8 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-[color:var(--color-neutral-800)] hover:bg-gray-100 rounded-lg transition-colors"
+            className="md:hidden p-2 hover:opacity-80 rounded-lg transition-opacity"
+            style={{ color: "var(--nav-text, #111827)" }}
             aria-label="Toggle menu"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -126,18 +180,26 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-[color:var(--color-neutral-100)] bg-white">
+          <div 
+            className="md:hidden border-t"
+            style={{
+              backgroundColor: "var(--nav-bg, #FFFFFF)",
+              borderTopColor: "var(--nav-border, var(--color-neutral-100))"
+            }}
+          >
             <nav className="container py-4 flex flex-col gap-3">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`text-sm font-medium py-2 px-3 rounded-lg transition-colors ${
-                    isActive(link.href)
-                      ? 'bg-blue-50 text-[color:var(--color-primary)]'
-                      : 'text-[color:var(--color-neutral-800)] hover:bg-gray-50'
+                  className={`text-sm font-medium py-2 px-3 rounded-lg transition-colors hover:opacity-80 ${
+                    isActive(link.href) ? 'opacity-90' : 'opacity-75'
                   }`}
+                  style={{ 
+                    color: "var(--nav-text, #111827)",
+                    backgroundColor: isActive(link.href) ? "rgba(255,255,255,0.1)" : "transparent"
+                  }}
                 >
                   {link.label}
                 </Link>
@@ -145,7 +207,8 @@ export default function Header() {
               
               <button
                 onClick={() => { setIsMenuOpen(false); window.dispatchEvent(new Event('fz:open-subscribe')); }}
-                className="text-sm font-medium py-2 px-3 rounded-lg text-[color:var(--color-neutral-800)] hover:bg-gray-50 text-left"
+                className="text-sm font-medium py-2 px-3 rounded-lg hover:opacity-80 text-left transition-opacity"
+                style={{ color: "var(--nav-text, #111827)" }}
               >
                 Newsletter
               </button>
@@ -162,7 +225,11 @@ export default function Header() {
                       setIsMenuOpen(false);
                       setShowAuth(true);
                     }}
-                    className="px-4 py-3 rounded-lg border text-[color:var(--color-neutral-800)] font-semibold hover:bg-gray-50 text-center"
+                    className="px-4 py-3 rounded-lg border font-semibold hover:opacity-80 text-center transition-opacity"
+                    style={{ 
+                      color: "var(--nav-text, #111827)",
+                      borderColor: "var(--nav-text, #111827)"
+                    }}
                   >
                     Sign in
                   </button>
@@ -177,15 +244,21 @@ export default function Header() {
 
               {!loading && user && (
                 <div className="flex items-center justify-between gap-3">
-                  <Link href="/account" onClick={() => setIsMenuOpen(false)} className="flex-1 flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-gray-50">
-                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-700">
+                  <Link href="/account" onClick={() => setIsMenuOpen(false)} className="flex-1 flex items-center gap-2 py-2 px-3 rounded-lg hover:opacity-80 transition-opacity">
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-semibold"
+                         style={{ color: "var(--nav-text, #111827)" }}>
                       {user.email?.charAt(0).toUpperCase() || 'U'}
                     </div>
-                    <span className="text-sm text-gray-800">
+                    <span className="text-sm" style={{ color: "var(--nav-text, #111827)" }}>
                       {user.email || 'Account'}
                     </span>
                   </Link>
-                  <button onClick={() => { setIsMenuOpen(false); signOut(); }} className="px-4 py-2 rounded-lg border text-sm hover:bg-gray-50">
+                  <button onClick={() => { setIsMenuOpen(false); signOut(); }} 
+                          className="px-4 py-2 rounded-lg border text-sm hover:opacity-80 transition-opacity"
+                          style={{ 
+                            color: "var(--nav-text, #111827)",
+                            borderColor: "var(--nav-text, #111827)"
+                          }}>
                     Sign out
                   </button>
                 </div>

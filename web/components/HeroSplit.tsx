@@ -58,7 +58,7 @@ export default function HeroSplit() {
               {t("subtitle")}
             </p>
             <p className="text-[color:var(--color-neutral-600)] text-sm sm:text-base mb-6">
-              Explore host city guides, fan forums, and our AI-powered trip planner.
+              City guides, travel tools, and real matchday advice—made for fans on the move.
             </p>
 
             {/* CTA Button (Newsletter-driven) */}

@@ -16,14 +16,6 @@ export default function FeatureShowcase() {
       gradient: 'from-blue-500 to-blue-600',
     },
     {
-      icon: t('forums.icon'),
-      title: t('forums.title'),
-      description: t('forums.description'),
-      cta: t('forums.cta'),
-      href: '/forums',
-      gradient: 'from-green-500 to-green-600',
-    },
-    {
       icon: t('aiPlanner.icon'),
       title: t('aiPlanner.title'),
       description: t('aiPlanner.description'),
@@ -44,7 +36,7 @@ export default function FeatureShowcase() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
         {features.map((feature) => (
           <div
             key={feature.title}
