@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { locales, Locale } from "@/i18n";
+import { locales, activeLocales, Locale } from "@/i18n";
 
 /**
  * LanguageSwitcher sets NEXT_LOCALE cookie and reloads.
@@ -24,6 +24,13 @@ export default function LanguageSwitcher() {
     window.location.reload();
   }
 
+  // Language labels
+  const languageLabels: Record<string, string> = {
+    en: "English",
+    es: "Español",
+    pt: "Português"
+  };
+
   return (
     <label className="inline-flex items-center gap-2 text-sm">
       <span className="sr-only">Language</span>
@@ -33,9 +40,9 @@ export default function LanguageSwitcher() {
         className="border border-[color:var(--color-neutral-100)] rounded-md px-2 py-1 bg-white text-[color:var(--color-neutral-800)]"
         aria-label="Language"
       >
-        {locales.map((lc) => (
+        {activeLocales.map((lc) => (
           <option key={lc} value={lc}>
-            {lc.toUpperCase()}
+            {languageLabels[lc] || lc.toUpperCase()}
           </option>
         ))}
       </select>
