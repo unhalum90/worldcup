@@ -75,4 +75,5 @@ export interface LodgingPlannerPlan {
 export interface LodgingPlannerRequestBody {
   selection: StoredSelection;
   preferences: LodgingPlannerPreferences;
+  locale?: string;
 }

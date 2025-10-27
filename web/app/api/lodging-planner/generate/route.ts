@@ -105,7 +105,6 @@ export async function POST(req: NextRequest) {
       zoneReport,
       cityContextPrompt,
       isSpanish,
-      cityContextPrompt,
     });
 
     let plan: LodgingPlannerPlan | null = null;

@@ -175,6 +175,7 @@ interface TravelPlanRequestV2 {
   nightlifePreference?: 'quiet' | 'social' | 'party';
   foodPreference?: 'local_flavors' | 'international' | 'mix';
   climatePreference?: 'all' | 'prefer_northerly' | 'comfortable';
+  locale?: string;
 }
 
 export async function POST(request: NextRequest) {
