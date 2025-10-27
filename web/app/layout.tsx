@@ -14,7 +14,6 @@ import { getMessages } from 'next-intl/server';
 import { AuthProvider } from '@/lib/AuthContext';
 import LanguageModal from '@/components/LanguageModal';
 import { WebVitals } from '@/components/WebVitals';
-import GoogleAnalytics from '@/components/GoogleAnalytics';
 import ScrollToTop from '@/components/ScrollToTop';
 
 const geistSans = Geist({
@@ -56,7 +55,6 @@ export default async function RootLayout({
         <Script src="https://subscribe-forms.beehiiv.com/attribution.js" strategy="lazyOnload" />
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
-            <GoogleAnalytics />
             <WebVitals />
             {showLanguageModal && <LanguageModal />}
             <Header />
