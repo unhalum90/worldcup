@@ -13,39 +13,70 @@ export default function GuidesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
-      <section className="container py-16 sm:py-24">
+      <section className="container py-10 sm:py-14">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Explore 2026 Host City Guides
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-lg sm:text-xl text-gray-600 mb-6">
             Comprehensive travel guides for all 16 World Cup 2026 host cities — logistics, transport, lodging, safety, and fan experiences.
           </p>
           
           {/* Dallas CTA */}
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4 p-6 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-xl">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-xl">
             <div className="text-left">
               <p className="text-sm font-medium opacity-90 mb-1">FREE DOWNLOAD</p>
               <p className="text-2xl font-bold">Dallas Travel Guide</p>
             </div>
-            <Link
-              href="/cityguides"
+            <a
+              href="https://fanzonenetwork.lemonsqueezy.com/buy/cbd81218-8b0e-4162-b273-fcec2840e785"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-md"
             >
               Download Now
-            </Link>
+            </a>
           </div>
 
-          <p className="text-gray-500 text-sm mt-6 max-w-2xl mx-auto">
+          <p className="text-gray-500 text-sm mt-4 max-w-2xl mx-auto">
             Most fans travel to 3–4 cities. Get your complete bundle after the Official Draw on December 5, 2025.
           </p>
         </div>
       </section>
 
+      {/* What's Inside Each Guide */}
+      <section className="py-6 bg-gray-50">
+        <div className="container">
+          <h2 className="text-center text-2xl font-bold mb-4">What’s Inside Each Guide</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div className="bg-white rounded-xl p-4 border border-gray-200">
+              <div className="text-2xl">🗺️</div>
+              <h3 className="font-semibold mt-2">Neighborhood Zones</h3>
+              <p className="text-sm text-gray-600">Best areas to stay for convenience and price.</p>
+            </div>
+            <div className="bg-white rounded-xl p-4 border border-gray-200">
+              <div className="text-2xl">🚇</div>
+              <h3 className="font-semibold mt-2">Transport Tips</h3>
+              <p className="text-sm text-gray-600">Metro, Uber, and stadium connections simplified.</p>
+            </div>
+            <div className="bg-white rounded-xl p-4 border border-gray-200">
+              <div className="text-2xl">🍻</div>
+              <h3 className="font-semibold mt-2">Fan Hotspots</h3>
+              <p className="text-sm text-gray-600">Top bars and meetups for match days.</p>
+            </div>
+            <div className="bg-white rounded-xl p-4 border border-gray-200">
+              <div className="text-2xl">💡</div>
+              <h3 className="font-semibold mt-2">Local Insights</h3>
+              <p className="text-sm text-gray-600">Safety, customs, and must-do experiences.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* City Grid */}
-      <section className="container pb-16 sm:pb-24">
+      <section className="container pt-4 pb-16 sm:pb-20">
         {/* Country Filter */}
-        <div className="flex justify-center gap-3 mb-8">
+        <div className="flex justify-center gap-3 mb-4">
           {(['ALL', 'USA', 'CAN', 'MEX'] as const).map((country) => (
             <button
               key={country}
@@ -122,20 +153,20 @@ export default function GuidesPage() {
       <section className="container pb-16 sm:pb-24">
         <div className="max-w-3xl mx-auto p-8 rounded-2xl bg-gradient-to-r from-purple-500 to-blue-500 text-white text-center shadow-2xl">
           <h2 className="text-3xl font-bold mb-4">
-            Get Notified When All Guides Launch
+            Join Fan Zone Insider
           </h2>
           <p className="text-white/90 mb-6">
-            Join our waitlist to receive all 16 city guides plus exclusive planning tools after the Official Draw.
+            Our free weekly newsletter for World Cup 2026 fans. Get city updates, travel tips, and early access to new guides as they launch.
           </p>
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white text-purple-600 rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
+          <button
+            onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[color:var(--color-accent-red)] text-white rounded-lg font-bold hover:brightness-110 transition-colors shadow-lg"
           >
-            Join Waitlist
+            Subscribe Free
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </Link>
+          </button>
         </div>
       </section>
     </div>

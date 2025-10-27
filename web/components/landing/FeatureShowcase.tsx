@@ -12,16 +12,8 @@ export default function FeatureShowcase() {
       title: t('cityGuides.title'),
       description: t('cityGuides.description'),
       cta: t('cityGuides.cta'),
-      href: '/cityguides',
+      href: 'https://fanzonenetwork.lemonsqueezy.com/buy/cbd81218-8b0e-4162-b273-fcec2840e785',
       gradient: 'from-blue-500 to-blue-600',
-    },
-    {
-      icon: t('forums.icon'),
-      title: t('forums.title'),
-      description: t('forums.description'),
-      cta: t('forums.cta'),
-      href: '/forums',
-      gradient: 'from-green-500 to-green-600',
     },
     {
       icon: t('aiPlanner.icon'),
@@ -44,52 +36,65 @@ export default function FeatureShowcase() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-        {features.map((feature, index) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
+        {features.map((feature) => (
           <div
-            key={index}
+            key={feature.title}
             className="group relative bg-white rounded-2xl border-2 border-gray-200 overflow-hidden hover:border-transparent hover:shadow-2xl transition-all duration-300"
           >
-            {/* Gradient Background */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-            
-            {/* Content */}
-            <div className="relative p-8 flex flex-col h-full">
-              {/* Icon */}
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                {feature.icon}
-              </div>
+            {/* Gradient Header */}
+            <div className={`bg-gradient-to-r ${feature.gradient} p-6 text-white`}>
+              <div className="text-4xl mb-2">{feature.icon}</div>
+              <h3 className="text-xl font-semibold mb-1">{feature.title}</h3>
+              <p className="text-white/90 text-sm">{feature.description}</p>
+            </div>
 
-              {/* Title */}
-              <h3 className="text-2xl font-bold mb-3 text-gray-900">
-                {feature.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-gray-600 mb-6 flex-grow leading-relaxed">
-                {feature.description}
-              </p>
-
+            {/* Body */}
+            <div className="p-6">
               {/* CTA Button */}
-              <Link
-                href={feature.href}
-                className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r ${feature.gradient} hover:brightness-110 transition-all shadow-md hover:shadow-lg group-hover:scale-105`}
-              >
-                {feature.cta}
-                <svg
-                  className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+              {feature.href.startsWith('http') ? (
+                <a
+                  href={feature.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r ${feature.gradient} hover:brightness-110 transition-all shadow-md hover:shadow-lg group-hover:scale-105`}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </Link>
+                  {feature.cta}
+                  <svg
+                    className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </a>
+              ) : (
+                <Link
+                  href={feature.href}
+                  className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r ${feature.gradient} hover:brightness-110 transition-all shadow-md hover:shadow-lg group-hover:scale-105`}
+                >
+                  {feature.cta}
+                  <svg
+                    className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </Link>
+              )}
             </div>
           </div>
         ))}

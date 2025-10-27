@@ -151,8 +151,48 @@
   },
   "guides": {
     "title": "Explorar Guías de Ciudades Anfitrionas 2026",
-    "subtitle": "Guías completas para las 16 ciudades anfitrionas.",
+    "subtitle": "Guías de viaje completas para las 16 ciudades anfitrionas de la Copa del Mundo 2026 — logística, transporte, alojamiento, seguridad y experiencias de aficionados.",
     "freeDownload": "DESCARGA GRATUITA",
+    "downloadNow": "Descargar Ahora",
+    "bundleNote": "La mayoría de los aficionados viajan a 3-4 ciudades. Obtén tu paquete completo después del Sorteo Oficial el 5 de diciembre de 2025.",
+    "whatsInside": "Qué Hay Dentro de Cada Guía",
+    "features": {
+      "neighborhoods": {
+        "title": "Zonas de Vecindarios",
+        "desc": "Mejores áreas para hospedarse por conveniencia y precio."
+      },
+      "transport": {
+        "title": "Consejos de Transporte",
+        "desc": "Metro, Uber y conexiones al estadio simplificadas."
+      },
+      "fanHotspots": {
+        "title": "Puntos de Encuentro",
+        "desc": "Mejores bares y reuniones para días de partido."
+      },
+      "insights": {
+        "title": "Conocimientos Locales",
+        "desc": "Seguridad, costumbres y experiencias imperdibles."
+      }
+    },
+    "filters": {
+      "allCities": "Todas las Ciudades",
+      "usa": "Estados Unidos",
+      "canada": "Canadá",
+      "mexico": "México"
+    },
+    "badges": {
+      "freeDownload": "DESCARGA GRATUITA",
+      "comingSoon": "PRÓXIMAMENTE"
+    },
+    "cta": {
+      "viewGuide": "Ver Guía",
+      "learnMore": "Más Información"
+    },
+    "newsletter": {
+      "title": "Únete a Fan Zone Insider",
+      "desc": "Nuestro newsletter semanal gratuito para aficionados de la Copa del Mundo 2026. Recibe actualizaciones de ciudades, consejos de viaje y acceso anticipado a nuevas guías cuando se lancen.",
+      "subscribe": "Suscribirse Gratis"
+    },
     "cityCount": "16 ciudades anfitrionas",
     "downloadCTA": "Descargar",
     "waitlistCTA": "Unirse"
@@ -254,5 +294,369 @@
     "launchDate": "Lanzamiento el 5 de diciembre de 2025",
     "videoError": "Tu navegador no soporta la reproducción de video.",
     "playButton": "Reproducir video de demostración"
+  },
+  "landing": {
+    "social": {
+      "headline": "Confiado por comunidades de aficionados",
+      "subhead": "en las ciudades anfitrionas del 2026 en todo el mundo.",
+      "badges": ["Clubes de aficionados", "Guías locales", "Voluntarios de la ciudad", "Creadores de contenido"]
+    },
+    "chunks": {
+      "title": "Lo que obtendrás a continuación",
+      "cta": "Obtener acceso anticipado",
+      "items": [
+        {
+          "title": "Encuentros comunitarios",
+          "desc": "Encuentra y organiza reuniones con aficionados en cada ciudad anfitriona.",
+          "bullets": [
+            "Vistas de mapa y lista",
+            "Confirmaciones con insignias de capacidad",
+            "Insignias de organizador verificado"
+          ]
+        },
+        {
+          "title": "Guías de ciudad centradas en aficionados",
+          "desc": "Selecciones cerca del estadio, vecindarios, consejos de transporte y lugares para ver en público.",
+          "bullets": [
+            "Comida y bares cerca del estadio",
+            "Vecindarios y notas de seguridad",
+            "Consejos de transporte y aeropuerto"
+          ]
+        },
+        {
+          "title": "Planificación del día del partido",
+          "desc": "Calendario con filtros consciente de la zona horaria e información del estadio.",
+          "bullets": [
+            "Filtrar por equipo, ciudad, estadio",
+            "Horarios de inicio en tu zona horaria",
+            "Enlaces para agregar al calendario"
+          ]
+        },
+        {
+          "title": "Creador de viajes",
+          "desc": "Elige ciudades y partidos — obtén reuniones y actividades sugeridas.",
+          "bullets": [
+            "Detección de conflictos entre fechas",
+            "Presupuesto aproximado y áreas para hospedarse",
+            "Exportar a Google/Apple Calendar"
+          ]
+        },
+        {
+          "title": "Pulso de la comunidad en vivo",
+          "desc": "Conteos de confirmación en tiempo real y reuniones en tendencia durante el torneo.",
+          "bullets": [
+            "Actualizaciones en vivo a medida que se llenan eventos",
+            "Herramientas de registro para organizadores",
+            "Reportar/marcar por seguridad"
+          ]
+        }
+      ]
+    },
+    "gallery": {
+      "title": "Un vistazo a lo que viene",
+      "desc": "Pantallas de las próximas Ciudades, Partidos, Reuniones y Creador de Viajes.",
+      "caption": "Diseños en progreso — sujeto a cambios.",
+      "imageAlt": "Vista previa de la maqueta de la aplicación"
+    },
+    "blogTeaser": {
+      "title": "Consejos de viaje y actualizaciones de la comunidad",
+      "desc": "Estamos construyendo en público. Lee las últimas publicaciones a medida que se lanzan las funciones.",
+      "cta": "Leer el newsletter"
+    },
+    "roadmap": {
+      "title": "Nuestra hoja de ruta",
+      "desc": "Una vista simple de lo que se está lanzando ahora, próximamente y más adelante.",
+      "groups": [
+        {
+          "label": "Ahora",
+          "items": [
+            "Página de inicio y blog",
+            "Captura de lista de espera por correo electrónico",
+            "Sistema de diseño y tokens de color"
+          ]
+        },
+        {
+          "label": "Próximamente",
+          "items": [
+            "Explorador de partidos con filtros",
+            "Contenido inicial de guías de ciudades",
+            "Lista de reuniones y confirmación (MVP)"
+          ]
+        },
+        {
+          "label": "Más adelante",
+          "items": [
+            "Creador de viajes con itinerario compartible",
+            "Pulso de la comunidad en tiempo real",
+            "Herramientas de organizador y funciones de seguridad"
+          ]
+        }
+      ]
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "items": [
+        {
+          "q": "¿Ya está disponible la aplicación?",
+          "a": "Estamos en prelanzamiento y reuniendo una lista de espera. Obtendrás acceso anticipado a medida que se lancen las funciones."
+        },
+        {
+          "q": "¿Las reuniones serán moderadas?",
+          "a": "Sí. Los organizadores están verificados y los eventos pasan por controles con informes de la comunidad."
+        },
+        {
+          "q": "¿Qué ciudades están cubiertas?",
+          "a": "Todas las ciudades anfitrionas del 2026 en el lanzamiento, con guías priorizadas por demanda."
+        },
+        {
+          "q": "¿Cómo se utilizarán mis datos?",
+          "a": "El correo electrónico solo se utiliza para actualizaciones de productos e invitaciones. Sin spam, sin vender."
+        },
+        {
+          "q": "¿Puedo contribuir con guías?",
+          "a": "Sí — los contribuyentes aficionados y expertos locales pueden enviar consejos y actualizaciones."
+        }
+      ]
+    }
+  },
+  "qualifiedTeams": {
+    "title": "Equipos Clasificados",
+    "subtitle": "{count} equipos han reservado oficialmente su lugar en la Copa del Mundo 2026",
+    "counts": "{count} Equipos Clasificados",
+    "viewAll": "Ver Todos los {count} Equipos"
+  },
+  "flightPlanner": {
+    "title": "Planificador de Vuelos Copa del Mundo 2026",
+    "subtitle": "Importamos tu itinerario del Trip Builder. Revisa las etapas, ajusta tus preferencias de vuelo y crearemos opciones Inteligentes, Económicas y Rápidas con orientación en tiempo real.",
+    "steps": {
+      "tripBuilt": "✓ Viaje Creado",
+      "flights": "Paso 2: Vuelos",
+      "lodging": "Paso 3: Alojamiento"
+    },
+    "loading": "Cargando tu selección del Trip Builder…",
+    "noSelection": {
+      "title": "Primero elige un itinerario",
+      "desc": "El Planificador de Vuelos funciona mejor con un itinerario guardado. Vuelve al Trip Builder, expande el plan que prefieras y toca \"Continuar al Planificador de Vuelos\".",
+      "cta": "Volver al Trip Builder"
+    },
+    "selectedItinerary": {
+      "label": "Itinerario seleccionado",
+      "switchButton": "Cambiar itinerario",
+      "route": "Ruta",
+      "dates": "Fechas",
+      "travelers": "Viajeros",
+      "adults": "adultos",
+      "children": "niños",
+      "seniors": "personas mayores",
+      "flightOutline": "Esquema de vuelos del Trip Builder"
+    },
+    "preferences": {
+      "title": "Preferencias de vuelo",
+      "cabin": {
+        "label": "Clase de cabina",
+        "economy": "Económica",
+        "premiumEconomy": "Económica Premium",
+        "business": "Business"
+      },
+      "travelers": "Viajeros",
+      "maxConnections": {
+        "label": "Conexiones máximas",
+        "nonstop": "Solo directo",
+        "oneStop": "Hasta 1 parada",
+        "twoStops": "Hasta 2 paradas"
+      },
+      "allowOvernight": "Acepto vuelos nocturnos"
+    },
+    "generate": {
+      "button": "Generar plan de vuelos",
+      "loading": "Planificando vuelos…",
+      "note": "Compararemos opciones Inteligentes, Económicas y Rápidas basadas en tu itinerario."
+    },
+    "skipSection": {
+      "title": "¿Quieres omitir la planificación de vuelos por ahora?",
+      "desc": "Puedes continuar con la planificación de alojamiento y volver a los vuelos más tarde.",
+      "cta": "Continuar al Planificador de Alojamiento"
+    },
+    "results": {
+      "ready": "Plan de vuelos listo",
+      "title": "Coincidencias Inteligentes, Económicas y Rápidas",
+      "generated": "Generado:"
+    },
+    "options": {
+      "smartest": "Opción Más Inteligente",
+      "budget": "Opción Económica",
+      "fastest": "Opción Más Rápida",
+      "seeDetails": "Ver detalles"
+    },
+    "flightDetails": {
+      "title": "Detalles del Vuelo",
+      "airlines": "Aerolíneas",
+      "price": "Precio Estimado",
+      "example": "Vuelo de Ejemplo",
+      "layover": "Escala",
+      "bookingTips": "Consejos de Reserva",
+      "whyWorks": "Por qué funciona",
+      "connection": "Conexión típica:"
+    },
+    "tips": {
+      "groundTitle": "Consejos de transporte terrestre para días de partido",
+      "remindersTitle": "Recordatorios de preparación de viaje"
+    },
+    "nextSteps": {
+      "title": "¿Listo para el siguiente paso?",
+      "desc": "¡Tienes tus opciones de vuelo! Ahora encontremos el alojamiento perfecto cerca de tus partidos y exploremos opciones gastronómicas.",
+      "lodgingCta": "Paso 3: Encontrar Alojamiento",
+      "tripBuilderCta": "Volver al Trip Builder",
+      "lodgingNote": "Planificador de alojamiento - encuentra el alojamiento que mejor se adapte a tus necesidades y presupuesto."
+    }
+  },
+  "lodgingPlanner": {
+    "title": "Planificador de Alojamiento Copa del Mundo 2026",
+    "subtitle": "Importamos tu itinerario del Trip Builder. Ajusta tu presupuesto por noche, opciones familiares y prioridades de zona—luego mapearemos los vecindarios mejor adaptados, tiempos de traslado y orientación de reserva.",
+    "stepLabel": "Paso 2 de 3",
+    "loading": "Cargando tu selección del Trip Builder…",
+    "noSelection": {
+      "label": "Planificador de Alojamiento",
+      "title": "Primero tomemos tu itinerario",
+      "desc": "El Planificador de Alojamiento extrae tu opción seleccionada del Trip Builder para conocer tu orden de ciudades, fechas y número de viajeros. Sigue los pasos rápidos a continuación para capturarlo y luego regresa aquí.",
+      "steps": {
+        "step1": "Abre el Trip Builder e inicia sesión si es necesario.",
+        "step2": "Expande el itinerario que deseas conservar.",
+        "step3": "Toca \"Explorar Zonas de Alojamiento\" para guardar los detalles y regresar aquí."
+      },
+      "cta": "Abrir Trip Builder",
+      "reloadButton": "Ya guardé mi selección"
+    },
+    "selectedItinerary": {
+      "label": "Itinerario seleccionado",
+      "switchButton": "Cambiar itinerario",
+      "cities": "Ciudades",
+      "dates": "Fechas",
+      "travelers": "Viajeros"
+    },
+    "preferences": {
+      "label": "Controles de preferencias",
+      "title": "Ajustar el Planificador de Alojamiento",
+      "autoSave": "Los cambios se guardan automáticamente localmente para que puedas ajustar y volver a ejecutar al instante.",
+      "nightlyBudget": "Objetivo de presupuesto por noche",
+      "nightsToCover": "Noches a cubrir",
+      "toggles": {
+        "carRental": {
+          "label": "Rentar un auto",
+          "desc": "Desbloquear zonas de Zapopan + aeropuerto"
+        },
+        "multipleMatches": {
+          "label": "Múltiples partidos",
+          "desc": "Priorizar saltos entre estadios"
+        },
+        "family": {
+          "label": "Viaje familiar",
+          "desc": "Noches tranquilas + suites"
+        }
+      },
+      "weights": {
+        "stadiumProximity": {
+          "label": "Proximidad al estadio",
+          "hint": "Prioridad de traslado",
+          "low": "Viaje largo ok",
+          "high": "Necesito trayecto rápido"
+        },
+        "localCulture": {
+          "label": "Cultura local",
+          "hint": "Ambiente del vecindario",
+          "low": "Moderno/pulido",
+          "high": "Histórico inmersivo"
+        },
+        "walkability": {
+          "label": "Caminabilidad",
+          "hint": "Tránsito vs. pasear",
+          "low": "Viajes cortos bien",
+          "high": "Prefiero días a pie"
+        },
+        "nightlife": {
+          "label": "Vida nocturna y gastronomía",
+          "hint": "Energía nocturna",
+          "low": "Noches tranquilas",
+          "high": "Noches animadas"
+        },
+        "budgetSensitivity": {
+          "label": "Sensibilidad al presupuesto",
+          "hint": "Flexibilidad en tarifa nocturna",
+          "low": "Flexible",
+          "high": "Mantener bajo objetivo"
+        }
+      }
+    },
+    "generate": {
+      "button": "Generar plan de alojamiento",
+      "loading": "Puntuando zonas…",
+      "note": "Mezclamos el contexto del Trip Builder + archivos RAG de la ciudad para que Gemini pueda puntuar cada zona."
+    },
+    "emptyState": {
+      "title": "Listo cuando tú lo estés",
+      "desc": "Establece tu presupuesto por noche + deslizadores, luego toca \"Generar plan de alojamiento\". Mostraremos las mejores zonas, rangos de costos, tiempos de traslado y un resumen imprimible."
+    },
+    "results": {
+      "ready": "Plan de alojamiento listo",
+      "generated": "Generado:",
+      "summary": "Resumen de alojamiento",
+      "cityZones": "zonas de {city}",
+      "showMore": "Mostrar {count} zonas adicionales",
+      "showLess": "Mostrar menos",
+      "matchScore": "Puntuación de coincidencia",
+      "costBand": "Rango de costo",
+      "commute": "Traslado",
+      "highlights": "Aspectos destacados",
+      "bookingGuidance": "Orientación de reserva",
+      "bestFor": "Mejor para",
+      "topPick": "Mejor opción"
+    },
+    "map": {
+      "preview": "Vista previa del mapa de zonas",
+      "title": "Mapa de calor Fase 1",
+      "comingSoon": "La superposición de Leaflet se lanza con la Fase C",
+      "expand": "Tocar para expandir (mapa Fase C)",
+      "commuteTbd": "Traslado por determinar"
+    },
+    "nextSteps": {
+      "title": "¡Tu plan de alojamiento está completo!",
+      "desc": "Revisaste las zonas puntuadas para cada ciudad. Ahora puedes volver al Trip Builder para un plan completo o exportar este resumen de alojamiento.",
+      "tripBuilderCta": "Ver Plan Completo del Viaje",
+      "flightCta": "Continuar al Planificador de Vuelos"
+    }
+  },
+  "tripBuilder": {
+    "title": "Planificador de Viajes Copa del Mundo 2026",
+    "subtitle": "Itinerarios potenciados por IA para el mejor espectáculo del mundo ⚽",
+    "loading": "Cargando...",
+    "signInRequired": "Esta sección es para miembros. Por favor inicia sesión para continuar.",
+    "profileError": "No pudimos cargar tu perfil de viaje guardado. Actualiza para reintentar o vuelve a abrir la incorporación para capturarlo nuevamente.",
+    "noProfile": {
+      "title": "Primero capturemos tu perfil de viaje",
+      "desc": "Necesitamos tus detalles de incorporación antes de construir itinerarios. Ve a la incorporación para completarlo y luego regresa aquí.",
+      "cta": "Completar incorporación"
+    },
+    "loadingProfile": "Cargando tu perfil de viaje…",
+    "generating": {
+      "title": "🌍 Creando Tu Viaje Perfecto a la Copa del Mundo...",
+      "subtitle": "Nuestra IA está analizando tus preferencias con conocimiento experto local",
+      "duration": "⏱️ Esto generalmente toma 45-60 segundos",
+      "quizTitle": "Mientras Esperas: Quiz de Historia de la Copa del Mundo",
+      "status": {
+        "guides": "Cargando guías de viaje específicas de la ciudad...",
+        "flights": "Analizando conexiones de vuelos y opciones de alojamiento...",
+        "logistics": "Calculando logística del día del partido..."
+      }
+    },
+    "error": {
+      "title": "¡Ups! Algo salió mal",
+      "retry": "Intentar de Nuevo"
+    },
+    "footer": {
+      "tagline": "¿Planificando tu aventura de la Copa del Mundo 2026? Te tenemos cubierto.",
+      "backHome": "← Volver al Inicio",
+      "cityGuides": "Guías de Ciudades",
+      "forums": "Foros de Aficionados"
+    }
   }
 }

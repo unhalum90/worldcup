@@ -1,12 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Ensure URL always uses HTTPS
-let url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-if (url && url.startsWith('http://')) {
-  console.warn('⚠️ Supabase URL was http://, converting to https://');
-  url = url.replace('http://', 'https://');
+function normalizeToHttps(u: string): string {
+  if (!u) return '';
+  try {
+    const parsed = new URL(u);
+    if (parsed.protocol !== 'https:') parsed.protocol = 'https:';
+    return parsed.toString().replace(/\/$/, '');
+  } catch {
+    return u.replace(/^http:\/\//i, 'https://');
+  }
 }
 
+const url = normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || '');
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
 
 if (!serviceKey) {

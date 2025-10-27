@@ -11,23 +11,32 @@ interface DidYouKnowCarouselProps {
 export default function DidYouKnowCarousel({ intervalMs = 6000 }: DidYouKnowCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [missing, setMissing] = useState<boolean[]>([]);
+  // Track per-item file extension so we can fall back from PNG -> SVG automatically
+  const [ext, setExt] = useState<Array<'png' | 'svg'>>([]);
 
-  // Array of fact image filenames - update this when you add your PNG files
+  // Array of fact image basenames; we will try .png first then .svg for each
   const facts = [
-    'fact_01.png',
-    'fact_02.png',
-    'fact_03.png',
-    'fact_04.png',
-    'fact_05.png',
-    'fact_06.png',
-    'fact_07.png',
-    'fact_08.png',
-    'fact_09.png',
-    'fact_10.png',
+    'fact_01',
+    'fact_02',
+    'fact_03',
+    'fact_04',
+    'fact_05',
+    'fact_06',
+    'fact_07',
+    'fact_08',
+    'fact_09',
+    'fact_10',
     // Add more as you create them
   ];
 
   const totalFacts = facts.length;
+  // Initialize missing flags once
+  useEffect(() => {
+    setMissing(new Array(totalFacts).fill(false));
+    setExt(new Array(totalFacts).fill('png'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Auto-rotate through facts
   useEffect(() => {
@@ -72,13 +81,38 @@ export default function DidYouKnowCarousel({ intervalMs = 6000 }: DidYouKnowCaro
             isTransitioning ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          <Image
-            src={`/did_you_know/${facts[currentIndex]}`}
-            alt={`World Cup History Fact ${currentIndex + 1}`}
-            fill
-            className="object-contain p-8"
-            priority={currentIndex === 0}
-          />
+          {missing[currentIndex] ? (
+            <div className="absolute inset-0 flex items-center justify-center text-gray-500">
+              <span className="text-sm">Fact image unavailable</span>
+            </div>
+          ) : (
+            <Image
+              src={`/did_you_know/${facts[currentIndex]}.${ext[currentIndex] || 'png'}`}
+              alt={`World Cup History Fact ${currentIndex + 1}`}
+              fill
+              className="object-contain p-8"
+              priority={currentIndex === 0}
+              unoptimized={(ext[currentIndex] || 'png') === 'svg'}
+              onError={() => {
+                // If PNG failed, try SVG once before declaring missing
+                setExt((prev) => {
+                  const next = prev.slice();
+                  if ((next[currentIndex] || 'png') === 'png') {
+                    next[currentIndex] = 'svg';
+                  }
+                  return next;
+                });
+                setMissing((prev) => {
+                  const next = prev.slice();
+                  // Mark missing only if we've already tried svg
+                  if ((ext[currentIndex] || 'png') === 'svg') {
+                    next[currentIndex] = true;
+                  }
+                  return next;
+                });
+              }}
+            />
+          )}
         </div>
 
         {/* Navigation arrows */}

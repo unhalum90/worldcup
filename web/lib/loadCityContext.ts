@@ -34,11 +34,22 @@ export const CITY_NAME_MAP: Record<string, string> = {
  * @param language - Language code (en, fr, es). Defaults to 'en'
  * @returns Object with city names as keys and their markdown content as values
  */
+const CONTEXT_ROOT = path.join(process.cwd(), 'ai_travel_planner', 'context');
+
+const normalizeForMatch = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+const getLanguageDir = (language: 'en' | 'fr' | 'es') => path.join(CONTEXT_ROOT, language);
+
+export type LodgingMarkdownDoc = {
+  fileName: string;
+  content: string;
+};
+
 export async function loadCityContext(
   cityNames: string[],
   language: 'en' | 'fr' | 'es' = 'en'
 ): Promise<Record<string, string>> {
-  const contextPath = path.join(process.cwd(), 'ai_travel_planner', 'context', language);
+  const contextPath = getLanguageDir(language);
   const cityContext: Record<string, string> = {};
 
   console.log('Loading city context for:', cityNames);
@@ -79,6 +90,50 @@ export async function loadCityContext(
   }
 
   return cityContext;
+}
+
+/**
+ * Loads all lodging-specific markdown docs for a given city.
+ * Filenames follow the convention "<city> Lodging ... .md".
+ */
+export function loadCityLodgingMarkdown(
+  cityName: string,
+  language: 'en' | 'fr' | 'es' = 'en'
+): LodgingMarkdownDoc[] {
+  const dir = getLanguageDir(language);
+  if (!fs.existsSync(dir)) {
+    console.warn(`Lodging context directory missing: ${dir}`);
+    return [];
+  }
+
+  const normalizedCity = normalizeForMatch(cityName);
+  if (!normalizedCity) {
+    return [];
+  }
+
+  const docs: LodgingMarkdownDoc[] = [];
+  const entries = fs.readdirSync(dir);
+  for (const fileName of entries) {
+    const lower = fileName.toLowerCase();
+    if (!lower.endsWith('.md') || !lower.includes('lodging')) continue;
+
+    const normalizedFile = normalizeForMatch(fileName);
+    if (!normalizedFile.startsWith(normalizedCity)) continue;
+
+    const filePath = path.join(dir, fileName);
+    try {
+      const content = fs.readFileSync(filePath, 'utf-8');
+      docs.push({ fileName, content });
+    } catch (err) {
+      console.error(`Failed to read lodging file ${filePath}`, err);
+    }
+  }
+
+  if (docs.length === 0) {
+    console.warn(`No lodging markdown docs found for ${cityName}`);
+  }
+
+  return docs;
 }
 
 /**

@@ -23,6 +23,10 @@ export default function AirportAutocomplete({
   const [manualEntryMode, setManualEntryMode] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

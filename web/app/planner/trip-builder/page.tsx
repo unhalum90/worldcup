@@ -2,24 +2,37 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import TravelPlannerWizard from '@/components/TravelPlannerWizard';
 import ItineraryResults from '@/components/ItineraryResults';
 import DidYouKnowCarousel from '@/components/DidYouKnowCarousel';
+import { useAuth } from '@/lib/AuthContext';
+import AuthModal from '@/components/AuthModal';
+import { useProfile } from '@/lib/profile/api';
+import ProfileReview from '@/components/trip-planner/ProfileReview';
+import TripIntentForm from '@/components/trip-planner/TripIntentForm';
+import { useRouter } from 'next/navigation';
+import { usePlannerTheme } from '@/hooks/usePlannerTheme';
 
 export default function PlannerPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const { profile, loading: profileLoading, error: profileError } = useProfile({ enabled: !!user });
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingStep, setLoadingStep] = useState<'overview' | 'flights' | 'lodging' | 'complete'>('overview');
   const [itinerary, setItinerary] = useState<any>(null);
+  const [lastForm, setLastForm] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [mode, setMode] = useState<'review' | 'trip'>('review');
+  
+  // Apply trip builder theme
+  usePlannerTheme('trip');
+  
+  const themeBackground = { background: 'linear-gradient(135deg, color-mix(in srgb, var(--planner-primary) 12%, #ffffff) 0%, color-mix(in srgb, var(--planner-secondary) 10%, #ffffff) 100%)' };
 
   const handleFormSubmit = async (formData: any) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      // Step 1: Generate trip overview
-      setLoadingStep('overview');
-      const overviewResponse = await fetch('/api/planner/overview', {
+      const response = await fetch('/api/travel-planner', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,67 +40,14 @@ export default function PlannerPage() {
         body: JSON.stringify(formData),
       });
 
-      if (!overviewResponse.ok) {
-        const errorData = await overviewResponse.json();
-        throw new Error(errorData.error || 'Failed to generate trip overview');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate itinerary');
       }
 
-      const overviewData = await overviewResponse.json();
-      const sessionId = overviewData.session_id;
-
-      // Step 2: Generate flight recommendations
-      setLoadingStep('flights');
-      const flightsResponse = await fetch('/api/planner/flights', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!flightsResponse.ok) {
-        const errorData = await flightsResponse.json();
-        throw new Error(errorData.error || 'Failed to generate flight recommendations');
-      }
-
-      const flightsData = await flightsResponse.json();
-
-      // Step 3: Generate lodging recommendations
-      setLoadingStep('lodging');
-      const lodgingResponse = await fetch('/api/planner/lodging', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!lodgingResponse.ok) {
-        const errorData = await lodgingResponse.json();
-        throw new Error(errorData.error || 'Failed to generate lodging recommendations');
-      }
-
-      const lodgingData = await lodgingResponse.json();
-
-      // Step 4: Fetch complete session
-      setLoadingStep('complete');
-      const sessionResponse = await fetch(`/api/planner/session?session_id=${sessionId}`);
-
-      if (!sessionResponse.ok) {
-        const errorData = await sessionResponse.json();
-        throw new Error(errorData.error || 'Failed to retrieve complete trip plan');
-      }
-
-      const sessionData = await sessionResponse.json();
-
-      // Format data for display
-      const completeItinerary = {
-        overview: overviewData.overview,
-        flights: flightsData.flights,
-        lodging: lodgingData.lodging,
-        session_id: sessionId,
-        trip_context: sessionData.session.trip_context,
-      };
-
-      setItinerary(completeItinerary);
+  const data = await response.json();
+  setLastForm(formData);
+  setItinerary(data.itinerary);
     } catch (err) {
       console.error('Error generating itinerary:', err);
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
@@ -101,8 +61,32 @@ export default function PlannerPage() {
     alert('Email capture coming soon! For now, screenshot your itinerary.');
   };
 
+  // Loading state while validating auth
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={themeBackground}>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Hard gate for premium page
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6" style={themeBackground}>
+        <AuthModal isOpen={true} onClose={() => {}} redirectTo="/planner/trip-builder" />
+        <div className="absolute bottom-8 text-center text-sm text-gray-600">
+          <p>This section is for members. Please sign in to continue.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen" style={themeBackground}>
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -113,8 +97,48 @@ export default function PlannerPage() {
 
       {/* Main Content */}
       <main className="py-12">
-        {!itinerary && !isLoading && (
-          <TravelPlannerWizard onSubmit={handleFormSubmit} isLoading={isLoading} />
+        {profileError && (
+          <div className="max-w-3xl mx-auto px-6 mb-6">
+            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
+              We couldn’t load your saved travel profile. Please refresh to retry or reopen onboarding to capture it again.
+            </div>
+          </div>
+        )}
+        {!itinerary && !isLoading && !profileLoading && !profile && (
+          <div className="max-w-3xl mx-auto px-6 py-12 text-center space-y-3">
+            <p className="text-lg font-semibold text-gray-900">Let’s capture your travel profile first</p>
+            <p className="text-sm text-gray-600">
+              We need your onboarding details before building itineraries. Head to onboarding to fill it out, then come back here.
+            </p>
+            <button
+              onClick={() => router.push('/onboarding?redirect=/planner/trip-builder')}
+              className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700"
+            >
+              Complete onboarding
+            </button>
+          </div>
+        )}
+
+        {!itinerary && !isLoading && profileLoading && (
+          <div className="max-w-3xl mx-auto px-6 py-12 text-center text-sm text-gray-600">
+            Loading your travel profile…
+          </div>
+        )}
+
+        {!itinerary && !isLoading && profile && mode === 'review' && (
+          <div className="max-w-4xl mx-auto px-6">
+            <ProfileReview
+              profile={profile}
+              onConfirm={() => setMode('trip')}
+              onEdit={() => router.push('/account/profile?redirect=/planner/trip-builder')}
+            />
+          </div>
+        )}
+
+        {!itinerary && !isLoading && profile && mode === 'trip' && (
+          <div className="max-w-4xl mx-auto px-6">
+            <TripIntentForm profile={profile} onSubmit={handleFormSubmit} isLoading={isLoading} onBack={() => setMode('review')} />
+          </div>
         )}
 
         {isLoading && (
@@ -126,29 +150,16 @@ export default function PlannerPage() {
                   🌍 Crafting Your Perfect World Cup Journey...
                 </h2>
                 <p className="text-lg text-gray-600">
-                  {loadingStep === 'overview' && 'Creating your trip overview...'}
-                  {loadingStep === 'flights' && 'Finding the best flight routes...'}
-                  {loadingStep === 'lodging' && 'Analyzing lodging options in each city...'}
-                  {loadingStep === 'complete' && 'Finalizing your personalized plan...'}
+                  Our AI is analyzing your preferences with expert local knowledge
                 </p>
               </div>
               
               {/* Progress bar */}
               <div className="max-w-md mx-auto">
                 <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                  <div 
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-500"
-                    style={{
-                      width: loadingStep === 'overview' ? '25%' 
-                        : loadingStep === 'flights' ? '50%'
-                        : loadingStep === 'lodging' ? '75%'
-                        : '100%'
-                    }}
-                  ></div>
+                  <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full animate-progress"></div>
                 </div>
-                <p className="text-sm text-gray-500 mt-2">
-                  Step {loadingStep === 'overview' ? '1' : loadingStep === 'flights' ? '2' : loadingStep === 'lodging' ? '3' : '4'} of 4
-                </p>
+                <p className="text-sm text-gray-500 mt-2">⏱️ This usually takes 45-60 seconds</p>
               </div>
             </div>
 
@@ -160,69 +171,19 @@ export default function PlannerPage() {
               <DidYouKnowCarousel />
             </div>
 
-            {/* Status messages with step indicators */}
+            {/* Status messages */}
             <div className="max-w-md mx-auto space-y-3 text-center">
-              <div className={`flex items-center justify-center space-x-2 ${
-                loadingStep === 'overview' ? 'text-blue-600 font-medium' : 
-                ['flights', 'lodging', 'complete'].includes(loadingStep) ? 'text-green-600' : 'text-gray-400'
-              }`}>
-                {['flights', 'lodging', 'complete'].includes(loadingStep) ? (
-                  <div className="w-5 h-5 flex items-center justify-center">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                    </svg>
-                  </div>
-                ) : (
-                  <div className="w-2 h-2 bg-current rounded-full animate-pulse"></div>
-                )}
-                <p className="text-sm">1. Analyzing trip overview and route</p>
+              <div className="flex items-center justify-center space-x-2 text-gray-600">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <p className="text-sm">Loading city-specific travel guides...</p>
               </div>
-              
-              <div className={`flex items-center justify-center space-x-2 ${
-                loadingStep === 'flights' ? 'text-blue-600 font-medium' : 
-                ['lodging', 'complete'].includes(loadingStep) ? 'text-green-600' : 'text-gray-400'
-              }`}>
-                {['lodging', 'complete'].includes(loadingStep) ? (
-                  <div className="w-5 h-5 flex items-center justify-center">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                    </svg>
-                  </div>
-                ) : loadingStep === 'flights' ? (
-                  <div className="w-2 h-2 bg-current rounded-full animate-pulse"></div>
-                ) : (
-                  <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-                )}
-                <p className="text-sm">2. Finding optimal flight routes</p>
+              <div className="flex items-center justify-center space-x-2 text-gray-600">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <p className="text-sm">Analyzing flight connections and lodging options...</p>
               </div>
-              
-              <div className={`flex items-center justify-center space-x-2 ${
-                loadingStep === 'lodging' ? 'text-blue-600 font-medium' : 
-                loadingStep === 'complete' ? 'text-green-600' : 'text-gray-400'
-              }`}>
-                {loadingStep === 'complete' ? (
-                  <div className="w-5 h-5 flex items-center justify-center">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                    </svg>
-                  </div>
-                ) : loadingStep === 'lodging' ? (
-                  <div className="w-2 h-2 bg-current rounded-full animate-pulse"></div>
-                ) : (
-                  <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-                )}
-                <p className="text-sm">3. Recommending lodging zones with city guides</p>
-              </div>
-              
-              <div className={`flex items-center justify-center space-x-2 ${
-                loadingStep === 'complete' ? 'text-blue-600 font-medium' : 'text-gray-400'
-              }`}>
-                {loadingStep === 'complete' ? (
-                  <div className="w-2 h-2 bg-current rounded-full animate-pulse"></div>
-                ) : (
-                  <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-                )}
-                <p className="text-sm">4. Finalizing your personalized itinerary</p>
+              <div className="flex items-center justify-center space-x-2 text-gray-600">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                <p className="text-sm">Calculating match day logistics...</p>
               </div>
             </div>
           </div>
@@ -244,7 +205,7 @@ export default function PlannerPage() {
         )}
 
         {itinerary && !isLoading && (
-          <ItineraryResults itinerary={itinerary} onEmailCapture={handleEmailCapture} />
+          <ItineraryResults itinerary={itinerary} tripInput={lastForm} onEmailCapture={handleEmailCapture} />
         )}
       </main>
 

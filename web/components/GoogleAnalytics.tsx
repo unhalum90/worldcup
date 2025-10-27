@@ -3,10 +3,12 @@
 import Script from 'next/script';
 
 export default function GoogleAnalytics() {
+  // Hard-disable GA unless explicitly enabled via env flag
+  const enabled = process.env.NEXT_PUBLIC_ENABLE_GA === 'true';
   const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
-  if (!measurementId) {
-    console.warn('Google Analytics: GA_MEASUREMENT_ID not found');
+  if (!enabled || !measurementId) {
+    // Silently do nothing when GA is disabled or missing config
     return null;
   }
 

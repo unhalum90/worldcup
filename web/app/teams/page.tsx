@@ -143,23 +143,7 @@ export default function TeamsPage() {
         </div>
       </div>
 
-      {/* Info Banner */}
-      <div className="bg-blue-900 text-white py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">
-            📅 Group Draw: December 5, 2025
-          </h3>
-          <p className="text-blue-100 mb-6">
-            FIFA will announce final fixtures and host cities on December 5, 2025. All team pages will automatically update with match schedules and locations.
-          </p>
-          <Link
-            href="/planner"
-            className="inline-block bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
-          >
-            Plan Your World Cup Trip →
-          </Link>
-        </div>
-      </div>
+      {/* Removed informational banner about group draw per request */}
     </div>
   );
 }

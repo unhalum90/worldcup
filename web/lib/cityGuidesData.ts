@@ -37,7 +37,7 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 32.7473, lng: -97.0945 },
     description: 'Experience World Cup 2026 in the heart of Texas at the iconic AT&T Stadium. Home to the Dallas Cowboys, this state-of-the-art venue features a massive retractable roof and one of the world\'s largest video boards.',
     isAvailable: true,
-    downloadUrl: '/cityguides', // Links to existing Dallas guide
+  downloadUrl: 'https://fanzonenetwork.lemonsqueezy.com/buy/cbd81218-8b0e-4162-b273-fcec2840e785',
     highlights: [
       'World\'s largest HD video board',
       'Retractable roof stadium',

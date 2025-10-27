@@ -5,8 +5,8 @@
     "privacy": "Privacy"
   },
   "hero": {
-    "title": "Plan your 2026 World Cup trip and connect with fans",
-    "subtitle": "City guides, meetups, and matchday tips—built by and for fans.",
+    "title": "Your smarter way to experience the 2026 World Cup",
+    "subtitle": "Explore every host city, plan your route, and get personalized travel insights powered by AI.",
     "emailPlaceholder": "Your email",
     "interestLabel": "I'm a...",
     "interest": {
@@ -171,7 +171,7 @@
     "rights": "All rights reserved."
   },
   "featureShowcase": {
-    "title": "Three Ways to Plan Your World Cup Journey",
+    "title": "Two Ways to Plan Your World Cup Journey",
     "subtitle": "Everything you need to make your 2026 World Cup trip unforgettable",
     "cityGuides": {
       "icon": "📚",
@@ -196,12 +196,18 @@
     "title": "See How It Works",
     "subtitle": "Watch how our platform helps you plan the perfect World Cup 2026 experience",
     "watchDemo": "Watch the Demo",
-    "demoDescription": "See our AI planner in action, explore city guides, and discover how fans are connecting through forums.",
+    "demoDescription": "See our AI planner in action, explore city guides, and get personalized travel insights.",
     "duration": "45 seconds",
     "callout": "Join the waitlist for early access",
     "launchDate": "Launching December 5, 2025",
     "videoError": "Your browser doesn't support video playback.",
     "playButton": "Play demo video"
+  },
+  "qualifiedTeams": {
+    "title": "Qualified Teams",
+    "subtitle": "{count} teams have officially booked their place at the 2026 World Cup",
+    "counts": "{count} Qualified Teams",
+    "viewAll": "View All {count} Teams"
   },
   "timeline": {
     "title": "Road to the World Cup",
@@ -286,6 +292,87 @@
         "desc": "World Cup champions crowned",
         "details": "The biggest match in football. Location TBA. One team will lift the trophy and make history."
       }
+    }
+  },
+  "onboarding": {
+    "titleDefault": "Welcome! Let's personalize your experience",
+    "titleMembership": "Thanks for becoming a member!",
+    "subtitle": "Complete these quick steps once. We'll use them across all planners.",
+    "progress": "Step {step} of 3",
+    "steps": {
+      "basics": {
+        "title": "Step 1 — Traveler Basics",
+        "homeAirportLabel": "Home Airport",
+        "homeAirportHelp": "We'll default to this for flights. You can change it any time.",
+        "homeAirportPlaceholder": "Search city or airport code (e.g., CDG, LHR, BOS)",
+        "adults": "Adults",
+        "children05": "Children 0–5",
+        "children618": "Children 6–18",
+        "seniors": "Seniors",
+        "mobility": "Someone has mobility limitations",
+        "ticketsToggle": "We already have match tickets",
+        "ticketQuestion": "Which match?",
+        "ticketPlaceholder": "Select a match…"
+      },
+      "style": {
+        "title": "Step 2 — Travel Style",
+        "description": "This helps us recommend the right lodging, food, and pacing.",
+        "budget": "Budget Level",
+        "budgetOptions": {
+          "budget": "Budget",
+          "moderate": "Moderate",
+          "premium": "Premium"
+        },
+        "food": "Food Preference",
+        "nightlife": "Nightlife Preference",
+        "climate": "Climate Preference",
+        "foodOptions": {
+          "local_flavors": "Local flavors",
+          "international": "International",
+          "mix": "Mix"
+        },
+        "nightlifeOptions": {
+          "quiet": "Quiet",
+          "social": "Social",
+          "party": "Party"
+        },
+        "climateOptions": {
+          "all": "Open to all climates",
+          "prefer_northerly": "Prefer northerly hosts",
+          "comfortable": "Comfortable climates"
+        }
+      },
+      "interests": {
+        "title": "Step 3 — Interests",
+        "description": "Choose any that fit. We'll tailor recommendations accordingly.",
+        "focusOptions": {
+          "fanfest": "Fan Fests & Atmosphere",
+          "local_culture": "Local Culture & Food",
+          "stadium_experience": "Stadium Experience",
+          "nightlife": "Nightlife"
+        },
+        "transport": "Preferred Transport",
+        "transportOptions": {
+          "public": "Public Transit",
+          "car": "Car / Rental",
+          "mixed": "Mixed"
+        },
+        "favoriteTeam": "Favorite Team (optional)",
+        "favoriteTeamPlaceholder": "e.g., England"
+      }
+    },
+    "done": {
+      "title": "You're all set!",
+      "subtitle": "We'll personalize all planners using your profile. You can edit this anytime.",
+      "ctaContinue": "Continue",
+      "ctaTripBuilder": "Open Trip Builder",
+      "ctaEdit": "Edit Profile"
+    },
+    "buttons": {
+      "next": "Next",
+      "back": "Back",
+      "finish": "Finish",
+      "saving": "Saving…"
     }
   }
 }

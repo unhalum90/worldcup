@@ -10,7 +10,7 @@ export default function CityGuidesPage() {
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl sm:text-4xl font-bold mb-4">City Guides — PDF store</h1>
         <p className="text-[color:var(--color-neutral-700)] mb-8">
-          Select a city on the left and click a language to purchase and download the city PDF guide on Gumroad.
+          These aren’t your average Google-search summaries. Every guide combines months of fan feedback, local scouting, and World Cup-specific research—so you can plan your trip like someone who actually lives there.
         </p>
 
         <div className="bg-white rounded-[var(--radius-md)] shadow-sm border border-[color:var(--color-neutral-100)] overflow-hidden">
