@@ -14,7 +14,7 @@ export default async function AccountPage() {
   if (!user) redirect('/login')
 
   const { data: profile } = await supabase
-    .from('profiles')
+    .from('user_profile')
     .select('*')
     .eq('user_id', user.id)
     .maybeSingle()

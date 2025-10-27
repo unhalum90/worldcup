@@ -79,11 +79,11 @@ export default function Header() {
                   isActive(link.href)
                     ? 'border-b-2 opacity-100'
                     : 'opacity-100 hover:opacity-90'
-                }`}
+                } ${!profile?.favorite_team ? '!text-gray-900' : ''}`}
                 style={{
-                  color: "var(--nav-text, #111827)",
-                  borderBottomColor: isActive(link.href) ? "var(--nav-text, #111827)" : "transparent",
-                  textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                  color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827 !important",
+                  borderBottomColor: isActive(link.href) ? (profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827") : "transparent",
+                  textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none !important"
                 }}
               >
                 {link.label}
@@ -94,10 +94,10 @@ export default function Header() {
               href="https://wc26fanzone.beehiiv.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-bold hover:underline underline-offset-4 opacity-100 hover:opacity-90 transition-opacity"
+              className={`text-sm font-bold hover:underline underline-offset-4 opacity-100 hover:opacity-90 transition-opacity ${!profile?.favorite_team ? '!text-gray-900' : ''}`}
               style={{ 
-                color: "var(--nav-text, #111827)",
-                textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827 !important",
+                textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none !important"
               }}
             >
               Newsletter
@@ -110,11 +110,11 @@ export default function Header() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowAuth(true)}
-                  className="px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm"
+                  className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${!profile?.favorite_team ? 'text-gray-900 border-gray-900 bg-white/80' : ''}`}
                   style={{ 
-                    color: "var(--nav-text, #111827)",
-                    borderColor: "var(--nav-text, #111827)",
-                    backgroundColor: "rgba(255,255,255,0.15)",
+                    color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                    borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                    backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)",
                     textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
                   }}
                 >
@@ -132,27 +132,29 @@ export default function Header() {
             {!loading && user && (
               <div className="flex items-center gap-3">
                 <Link href="/account" className="flex items-center gap-2 group opacity-100 hover:opacity-90 transition-opacity">
-                  <div className="w-8 h-8 rounded-full bg-white/25 border border-white/30 flex items-center justify-center text-sm font-bold shadow-sm"
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-sm ${!profile?.favorite_team ? 'bg-gray-200 border-gray-300 text-gray-900' : 'bg-white/25 border-white/30'}`}
                        style={{ 
-                         color: "var(--nav-text, #111827)",
+                         color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                         backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.25)" : "rgb(229 231 235)",
+                         borderColor: profile?.favorite_team ? "rgba(255,255,255,0.3)" : "rgb(209 213 219)",
                          textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
                        }}>
                     {user.email?.charAt(0).toUpperCase() || 'U'}
                   </div>
-                  <span className="text-sm font-bold group-hover:underline"
+                  <span className={`text-sm font-bold group-hover:underline ${!profile?.favorite_team ? 'text-gray-900' : ''}`}
                         style={{ 
-                          color: "var(--nav-text, #111827)",
+                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
                           textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
                         }}>
                     {user.email?.split('@')[0] || 'Account'}
                   </span>
                 </Link>
                 <button onClick={signOut} 
-                        className="px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm"
+                        className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${!profile?.favorite_team ? 'text-gray-900 border-gray-900 bg-white/80' : ''}`}
                         style={{ 
-                          color: "var(--nav-text, #111827)",
-                          borderColor: "var(--nav-text, #111827)",
-                          backgroundColor: "rgba(255,255,255,0.15)",
+                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                          borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                          backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)",
                           textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
                         }}>
                   Sign out
@@ -164,8 +166,8 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 hover:opacity-80 rounded-lg transition-opacity"
-            style={{ color: "var(--nav-text, #111827)" }}
+            className={`md:hidden p-2 hover:opacity-80 rounded-lg transition-opacity ${!profile?.favorite_team ? 'text-gray-900' : ''}`}
+            style={{ color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827" }}
             aria-label="Toggle menu"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -195,10 +197,10 @@ export default function Header() {
                   onClick={() => setIsMenuOpen(false)}
                   className={`text-sm font-medium py-2 px-3 rounded-lg transition-colors hover:opacity-80 ${
                     isActive(link.href) ? 'opacity-90' : 'opacity-75'
-                  }`}
+                  } ${!profile?.favorite_team ? 'text-gray-900' : ''}`}
                   style={{ 
-                    color: "var(--nav-text, #111827)",
-                    backgroundColor: isActive(link.href) ? "rgba(255,255,255,0.1)" : "transparent"
+                    color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                    backgroundColor: isActive(link.href) ? (profile?.favorite_team ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)") : "transparent"
                   }}
                 >
                   {link.label}
@@ -207,8 +209,8 @@ export default function Header() {
               
               <button
                 onClick={() => { setIsMenuOpen(false); window.dispatchEvent(new Event('fz:open-subscribe')); }}
-                className="text-sm font-medium py-2 px-3 rounded-lg hover:opacity-80 text-left transition-opacity"
-                style={{ color: "var(--nav-text, #111827)" }}
+                className={`text-sm font-medium py-2 px-3 rounded-lg hover:opacity-80 text-left transition-opacity ${!profile?.favorite_team ? 'text-gray-900' : ''}`}
+                style={{ color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827" }}
               >
                 Newsletter
               </button>
@@ -225,10 +227,10 @@ export default function Header() {
                       setIsMenuOpen(false);
                       setShowAuth(true);
                     }}
-                    className="px-4 py-3 rounded-lg border font-semibold hover:opacity-80 text-center transition-opacity"
+                    className={`px-4 py-3 rounded-lg border font-semibold hover:opacity-80 text-center transition-opacity ${!profile?.favorite_team ? 'text-gray-900 border-gray-900' : ''}`}
                     style={{ 
-                      color: "var(--nav-text, #111827)",
-                      borderColor: "var(--nav-text, #111827)"
+                      color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                      borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827"
                     }}
                   >
                     Sign in
@@ -245,19 +247,23 @@ export default function Header() {
               {!loading && user && (
                 <div className="flex items-center justify-between gap-3">
                   <Link href="/account" onClick={() => setIsMenuOpen(false)} className="flex-1 flex items-center gap-2 py-2 px-3 rounded-lg hover:opacity-80 transition-opacity">
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-semibold"
-                         style={{ color: "var(--nav-text, #111827)" }}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${!profile?.favorite_team ? 'bg-gray-200 text-gray-900' : 'bg-white/20'}`}
+                         style={{ 
+                           color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                           backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.2)" : "rgb(229 231 235)"
+                         }}>
                       {user.email?.charAt(0).toUpperCase() || 'U'}
                     </div>
-                    <span className="text-sm" style={{ color: "var(--nav-text, #111827)" }}>
+                    <span className={`text-sm ${!profile?.favorite_team ? 'text-gray-900' : ''}`} 
+                          style={{ color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827" }}>
                       {user.email || 'Account'}
                     </span>
                   </Link>
                   <button onClick={() => { setIsMenuOpen(false); signOut(); }} 
-                          className="px-4 py-2 rounded-lg border text-sm hover:opacity-80 transition-opacity"
+                          className={`px-4 py-2 rounded-lg border text-sm hover:opacity-80 transition-opacity ${!profile?.favorite_team ? 'text-gray-900 border-gray-900' : ''}`}
                           style={{ 
-                            color: "var(--nav-text, #111827)",
-                            borderColor: "var(--nav-text, #111827)"
+                            color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                            borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827"
                           }}>
                     Sign out
                   </button>

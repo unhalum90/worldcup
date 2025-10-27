@@ -75,13 +75,12 @@ export default function PlannerPage() {
     {
       id: 2,
       emoji: '✈️',
-      title: 'Getting There',
+      title: 'Flight Planner',
       description: 'Find the fastest and most affordable ways to hop between World Cup cities — flight suggestions, routes, and smart timing insights.',
-      status: 'coming-soon',
-      href: '/planner/flights',
-      color: 'from-purple-500 to-purple-600',
+      status: 'live',
+      href: '/flight-planner',
+      color: 'from-[#0EA5E9] to-[#0369A1]',
       features: [
-        'Skyscanner integration',
         'Hub airport suggestions',
         'Flexible fare recommendations',
         'Multi-city route optimization'
@@ -90,13 +89,12 @@ export default function PlannerPage() {
     {
       id: 3,
       emoji: '🏨',
-      title: 'Staying There',
+      title: 'Lodging Planner',
       description: 'Hand-picked hotels, hostels, and neighborhoods — all near stadiums and fan celebrations.',
-      status: 'coming-soon',
-      href: '/planner/lodging',
-      color: 'from-green-500 to-green-600',
+      status: 'live',
+      href: '/lodging-planner',
+      color: 'from-[#F87171] to-[#DC2626]',
       features: [
-        'Booking.com deep links',
         'Stadium radius filters',
         'Fan Zone recommended areas',
         'Save favorite stays'
@@ -308,7 +306,10 @@ function PhaseCard({ phase }: { phase: Phase }) {
         {/* CTA Button for non-Trip Builder cards */}
         {!isTripBuilder && isLive ? (
           <div className="flex items-center justify-between text-blue-600 font-semibold group-hover:text-blue-700">
-            <span>{isTripBuilder ? 'Open Trip Builder' : 'Open'}</span>
+            <span>
+              {phase.title === 'Flight Planner' ? 'Open Flight Planner' : 
+               phase.title === 'Lodging Planner' ? 'Open Lodging Planner' : 'Open'}
+            </span>
             <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
