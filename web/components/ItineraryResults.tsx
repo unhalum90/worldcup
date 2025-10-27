@@ -6,70 +6,19 @@ import Link from 'next/link';
 import { getCityMapPath } from '@/lib/cityMaps';
 import RouteRibbon from './RouteRibbon';
 import { useAuth } from '@/lib/AuthContext';
-
-interface FlightLeg {
-  from: string;
-  to: string;
-  airlines: string[];
-  duration: string;
-  exampleDeparture?: string;
-  exampleArrival?: string;
-  frequency?: string;
-  notes?: string;
-  layoverBefore?: string;
-  layoverNotes?: string;
-}
-
-interface ItineraryOption {
-  title: string;
-  summary: string;
-  trip?: {
-    cityOrder: string[];
-    nightsPerCity: Record<string, number>;
-    interCityMoves?: Array<{ day?: string; from: string; to: string; mode: string; estDuration?: string }>;
-  };
-  availableMatches?: Array<{ city: string; date: string; match?: string; stadium?: string }>;
-  flights: {
-    legs?: FlightLeg[];
-    routing?: string; // Legacy support
-    totalCost?: string;
-    estimatedCost?: string; // Legacy support
-    costBreakdown?: string;
-    costNote?: string;
-  };
-  cities: Array<{
-    cityName: string;
-    lodgingZones: Array<{
-      zoneName: string;
-      whyStayHere: string;
-      estimatedRate: string;
-      transitToStadium: string;
-      transitToFanFest: string;
-      pros: string[];
-      cons: string[];
-    }>;
-    matchDayLogistics: string;
-    insiderTips: string[];
-  }>;
-}
+import type { ItineraryOption, TripInput } from '@/types/trip';
 
 interface ItineraryResultsProps {
   itinerary: {
     options: ItineraryOption[];
   };
-  tripInput?: {
-    originCity?: string;
-    groupSize?: number;
-    children?: number;
-    seniors?: number;
-    startDate?: string;
-    endDate?: string;
-    citiesVisiting?: string[];
-  };
+  tripInput?: TripInput;
   onEmailCapture?: () => void;
 }
 
-export default function ItineraryResults({ itinerary, tripInput, onEmailCapture }: ItineraryResultsProps) {
+const SELECTED_TRIP_STORAGE_KEY = 'fz_selected_trip_option';
+
+export default function ItineraryResults({ itinerary, tripInput, onEmailCapture: _onEmailCapture }: ItineraryResultsProps) {
   const [expandedIndex, setExpandedIndex] = React.useState<number | null>(null);
   const { user } = useAuth();
   // No budget math or totals shown; display cost notes only per latest spec.
@@ -188,6 +137,31 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
     return compressed;
   };
 
+  const handlePlanNavigation = React.useCallback(
+    (destination: string) => {
+      if (expandedIndex === null) {
+        alert('Select an itinerary to continue.');
+        return;
+      }
+      try {
+        const payload = {
+          optionIndex: expandedIndex,
+          option: itinerary.options[expandedIndex],
+          tripInput,
+          savedAt: Date.now(),
+        };
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem(SELECTED_TRIP_STORAGE_KEY, JSON.stringify(payload));
+          window.location.href = destination;
+        }
+      } catch (err) {
+        console.error('Failed to stash itinerary for planner navigation', err);
+        alert('Unable to continue right now. Please try again.');
+      }
+    },
+    [expandedIndex, itinerary.options, tripInput]
+  );
+
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-8">
       {/* Branded header for share/print */}
@@ -231,7 +205,6 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {itinerary.options.map((option, index) => {
-          const flightCostText = option.flights.costNote || option.flights.totalCost || option.flights.estimatedCost || '—';
           return (
             <div
               key={index}
@@ -448,6 +421,18 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture 
                   </p>
                 </div>
                 <div className="mt-6 flex flex-col sm:flex-row gap-3 print:hidden">
+                  <button
+                    onClick={() => handlePlanNavigation('/lodging-planner?from=trip-builder')}
+                    className="px-5 py-2 rounded-lg bg-rose-600 text-white font-semibold hover:bg-rose-700"
+                  >
+                    Explore Lodging Zones
+                  </button>
+                  <button
+                    onClick={() => handlePlanNavigation('/flight-planner?from=trip-builder')}
+                    className="px-5 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700"
+                  >
+                    Continue to Flight Planner
+                  </button>
                   <button onClick={() => window.print()} className="px-5 py-2 rounded-lg bg-gray-900 text-white hover:bg-black">Print PDF</button>
                   <button
                     onClick={() => {

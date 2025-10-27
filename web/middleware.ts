@@ -66,31 +66,36 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Optional onboarding gate (disabled by default). When enabled, if a user is an active member
+  // Optional onboarding gate (disabled by default). When enabled, if a user is authenticated
   // but has not completed onboarding/profile, gently route them to onboarding and then back.
   const gateEnabled = process.env.NEXT_PUBLIC_ENABLE_ONBOARDING_GATE === 'true';
   if (gateEnabled && user && supabase) {
     const cookieOnboarded = req.cookies.get('wc26-onboarded')?.value === 'true';
     const inOnboarding = pathname.startsWith('/onboarding');
     const isLogin = pathname.startsWith('/login');
-    if (!cookieOnboarded && !inOnboarding && !isLogin) {
+    const isApi = pathname.startsWith('/api');
+    const isStaticAsset = pathname.includes('.');
+    
+    // Skip onboarding redirect for API routes, static assets, login, and onboarding itself
+    if (!cookieOnboarded && !inOnboarding && !isLogin && !isApi && !isStaticAsset) {
       try {
-        const active = await isActiveMember(supabase, user.id);
-        if (active) {
-          const { data: prof } = await supabase
-            .from('user_profile')
-            .select('user_id')
-            .eq('user_id', user.id)
-            .maybeSingle();
-          if (!prof) {
-            const url = new URL('/onboarding', req.url);
-            url.searchParams.set('from', 'membership');
-            url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
-            return NextResponse.redirect(url);
-          }
+        // Check if user has completed profile - if not, redirect to onboarding
+        const { data: prof } = await supabase
+          .from('user_profile')
+          .select('user_id')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        if (!prof) {
+          // Check if they're an active member to determine onboarding source
+          const active = await isActiveMember(supabase, user.id);
+          const url = new URL('/onboarding', req.url);
+          url.searchParams.set('from', active ? 'membership' : 'signup');
+          url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+          return NextResponse.redirect(url);
         }
       } catch {
-        // If membership table or profile table missing, do nothing.
+        // If profile table missing, do nothing.
       }
     }
   }

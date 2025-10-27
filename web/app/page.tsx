@@ -48,10 +48,10 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <HeroSplit />
-      <div className="flex justify-center py-6">
+      <div className="flex justify-center pt-6 pb-4">
         <CountdownTimer />
       </div>
+      <HeroSplit />
       {/* Alternating backgrounds with subtle dividers for better rhythm */}
       <section className="bg-white">
         <FeatureShowcase />

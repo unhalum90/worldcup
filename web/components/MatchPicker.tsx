@@ -40,7 +40,7 @@ export default function MatchPicker({ selectedCities, startDate, endDate, select
         if (endDate) params.set('end', endDate);
         const res = await fetch(`/api/matches?${params.toString()}`);
         const json = await res.json();
-        setData(json.matches || {});
+        setData(json.grouped || {});
       } catch (e) {
         setError('Failed to load matches');
       } finally {

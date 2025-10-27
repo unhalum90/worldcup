@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { UserProfile } from '@/lib/profile/types';
 import { WORLD_CUP_CITIES } from '@/components/TravelPlannerWizard';
 import MatchPicker from '@/components/MatchPicker';
+import type { MatchItem } from '@/lib/matchSchedule';
 
 type TravelPlanRequest = {
   originCity: string;
@@ -37,17 +38,36 @@ interface TripIntentFormProps {
 }
 
 export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }: TripIntentFormProps) {
+  const [storedTicketMatches, setStoredTicketMatches] = useState<MatchItem[]>([]);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const raw = window.localStorage.getItem('fz_onboarding_ticket_matches');
+      if (raw) {
+        setStoredTicketMatches(JSON.parse(raw));
+      }
+    } catch {
+      setStoredTicketMatches([]);
+    }
+  }, []);
   const defaultCities = useMemo(() => {
-    const c = profile.ticket_match?.city;
-    return c ? [c] : [];
-  }, [profile.ticket_match?.city]);
+    const set = new Set<string>();
+    if (profile.ticket_match?.city) set.add(profile.ticket_match.city);
+    storedTicketMatches.forEach((m) => set.add(m.city));
+    return Array.from(set);
+  }, [profile.ticket_match?.city, storedTicketMatches]);
 
-  const defaultDates = useMemo(() => (profile.ticket_match?.date ? [profile.ticket_match.date] : []), [profile.ticket_match?.date]);
+  const defaultDates = useMemo(() => {
+    const set = new Set<string>();
+    if (profile.ticket_match?.date) set.add(profile.ticket_match.date);
+    storedTicketMatches.forEach((m) => set.add(m.date));
+    return Array.from(set);
+  }, [profile.ticket_match?.date, storedTicketMatches]);
 
   const [citiesVisiting, setCitiesVisiting] = useState<string[]>(defaultCities);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [hasTickets, setHasTickets] = useState(Boolean(profile.has_tickets));
+  const [hasTickets, setHasTickets] = useState(Boolean(profile.has_tickets) || storedTicketMatches.length > 0);
   const [ticketCities, setTicketCities] = useState<string[]>(defaultCities);
   const [matchDates, setMatchDates] = useState<string[]>(defaultDates);
   const [personalContext, setPersonalContext] = useState('');
@@ -58,6 +78,21 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
     !endDate ||
     citiesVisiting.length === 0 ||
     (hasTickets && ticketCities.length === 0);
+
+  useEffect(() => {
+    if (defaultCities.length && citiesVisiting.length === 0) {
+      setCitiesVisiting(defaultCities);
+    }
+    if (defaultCities.length && ticketCities.length === 0) {
+      setTicketCities(defaultCities);
+    }
+    if (defaultDates.length && matchDates.length === 0) {
+      setMatchDates(defaultDates);
+    }
+    if (storedTicketMatches.length && !hasTickets) {
+      setHasTickets(true);
+    }
+  }, [defaultCities, defaultDates, citiesVisiting.length, ticketCities.length, matchDates.length, storedTicketMatches, hasTickets]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

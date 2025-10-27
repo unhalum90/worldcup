@@ -59,11 +59,7 @@
 
 
 body {
-  background: linear-gradient(135deg, #f0f4ff 0%, #ffeef0 100%);
-  background: linear-gradient(135deg,
-    color-mix(in srgb, var(--primary-color) 18%, #ffffff) 0%,
-    color-mix(in srgb, var(--secondary-color) 20%, #ffffff) 40%,
-    color-mix(in srgb, #3CAC3B 18%, #ffffff) 100%);
+  background: linear-gradient(135deg, #e6f2ff 0%, #f0f7ff 50%, #e8f4f8 100%);
   min-height: 100vh;
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -332,7 +328,36 @@ h1, h2, h3, h4, h5, h6 { color: var(--foreground); }
   text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
 }
 
-.nav-no-shadow {
+.nav-no-shadow,
+.nav-no-shadow * {
   text-shadow: none !important;
   color: #111827 !important;
+}
+
+/* Ensure no shadow on links without team */
+a.nav-no-shadow,
+a.nav-no-shadow:hover,
+a.nav-no-shadow:focus,
+button.nav-no-shadow,
+button.nav-no-shadow:hover,
+button.nav-no-shadow:focus,
+span.nav-no-shadow {
+  text-shadow: none !important;
+  color: #111827 !important;
+}
+
+/* Subtle pulse animation for CTA */
+@keyframes subtle-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 10px 25px -3px rgba(239, 68, 68, 0.1), 0 4px 6px -2px rgba(239, 68, 68, 0.05);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 20px 25px -5px rgba(239, 68, 68, 0.15), 0 10px 10px -5px rgba(239, 68, 68, 0.1);
+  }
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 2s ease-in-out infinite;
 }

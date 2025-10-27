@@ -10,6 +10,7 @@ import { useProfile } from '@/lib/profile/api';
 import ProfileReview from '@/components/trip-planner/ProfileReview';
 import TripIntentForm from '@/components/trip-planner/TripIntentForm';
 import { useRouter } from 'next/navigation';
+import { usePlannerTheme } from '@/hooks/usePlannerTheme';
 
 export default function PlannerPage() {
   const { user, loading } = useAuth();
@@ -20,6 +21,11 @@ export default function PlannerPage() {
   const [lastForm, setLastForm] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<'review' | 'trip'>('review');
+  
+  // Apply trip builder theme
+  usePlannerTheme('trip');
+  
+  const themeBackground = { background: 'linear-gradient(135deg, color-mix(in srgb, var(--planner-primary) 12%, #ffffff) 0%, color-mix(in srgb, var(--planner-secondary) 10%, #ffffff) 100%)' };
 
   const handleFormSubmit = async (formData: any) => {
     setIsLoading(true);
@@ -58,7 +64,7 @@ export default function PlannerPage() {
   // Loading state while validating auth
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={themeBackground}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading...</p>
@@ -70,7 +76,7 @@ export default function PlannerPage() {
   // Hard gate for premium page
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center p-6">
+      <div className="min-h-screen flex items-center justify-center p-6" style={themeBackground}>
         <AuthModal isOpen={true} onClose={() => {}} redirectTo="/planner/trip-builder" />
         <div className="absolute bottom-8 text-center text-sm text-gray-600">
           <p>This section is for members. Please sign in to continue.</p>
@@ -80,7 +86,7 @@ export default function PlannerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen" style={themeBackground}>
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">

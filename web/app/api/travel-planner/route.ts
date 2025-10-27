@@ -474,26 +474,26 @@ Follow this exact schema:
     }
   ],
   "cta": {
-    "title": "Ready to Refine Your Trip?",
-    "description": "Use the World Cup Fan Zone AI Travel Brains to customize your trip and access live pricing.",
+    "title": "Ready to refine your trip?",
+    "description": "Use the World Cup Fan Zone planning suite to customize every leg with live data.",
     "options": [
+      {
+        "name": "🧭 Trip Builder",
+        "text": "Capture your travel profile and compare curated itineraries.",
+        "link": "https://worldcupfanzone.com/planner/trip-builder"
+      },
       {
         "name": "✈️ Flight Planner",
         "text": "See live routes, schedules, and fares for your chosen cities.",
-        "link": "https://worldcupfanzone.com/ai/flights"
+        "link": "https://worldcupfanzone.com/flight-planner"
       },
       {
-        "name": "🏨 Lodging Brain",
-        "text": "Compare real-time hotel and Airbnb prices near stadiums and Fan Fests.",
-        "link": "https://worldcupfanzone.com/ai/lodging"
-      },
-      {
-        "name": "🚗 Transport Brain",
-        "text": "Plan match-day transfers, car rentals, and Fan Fest access for your route.",
-        "link": "https://worldcupfanzone.com/ai/transport"
+        "name": "🏨 Lodging Planner",
+        "text": "Score the best-fit neighborhoods with commute times and budgets.",
+        "link": "https://worldcupfanzone.com/lodging-planner"
       }
     ],
-    "note": "These AI tools use live data to refine costs and availability based on today’s prices."
+    "note": "Each planner layers your saved profile with fresh availability and pricing."
   }
 }
 

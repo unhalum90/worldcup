@@ -7,6 +7,7 @@ import { trackEvent } from '@/components/GoogleAnalytics';
 import { useTranslations } from 'next-intl';
 import type { Airport } from '@/lib/airportData';
 import { loadMatchScheduleSync, type MatchItem } from '@/lib/matchSchedule';
+import { teamColors } from '@/lib/constants/teamColors';
 
 type Step = 1 | 2 | 3 | 4; // 4=done screen
 
@@ -31,20 +32,27 @@ export default function OnboardingPage() {
   const [nightlife, setNightlife] = useState<'quiet'|'social'|'party'>('social');
   const [climate, setClimate] = useState<'all'|'prefer_northerly'|'comfortable'>('all');
 
-  const [focus, setFocus] = useState<Array<'fanfest'|'local_culture'|'stadium_experience'|'nightlife'>>([]);
+  const [focus, setFocus] = useState<Array<'fanfest'|'local_culture'|'stadium_experience'>>([]);
   const [transport, setTransport] = useState<'public'|'car'|'mixed'>('mixed');
   const [favoriteTeam, setFavoriteTeam] = useState('');
   const [hasTickets, setHasTickets] = useState(false);
+  const [ticketEntryMode, setTicketEntryMode] = useState<'single' | 'multi'>('single');
   const [ticketMatch, setTicketMatch] = useState<MatchItem | null>(null);
+  const [multiTicketIds, setMultiTicketIds] = useState<string[]>(['']);
   const matches = useMemo(() => loadMatchScheduleSync(), []);
+  const matchId = (m: MatchItem) => `${m.date}|${m.city}|${m.match}`;
+  const matchMap = useMemo(() => {
+    const map = new Map<string, MatchItem>();
+    matches.forEach((m) => map.set(matchId(m), m));
+    return map;
+  }, [matches]);
   const focusChoices = [
     { key: 'fanfest', label: t('steps.interests.focusOptions.fanfest') },
     { key: 'local_culture', label: t('steps.interests.focusOptions.local_culture') },
     { key: 'stadium_experience', label: t('steps.interests.focusOptions.stadium_experience') },
-    { key: 'nightlife', label: t('steps.interests.focusOptions.nightlife') },
   ] as const;
 
-  function toggleFocus(k: 'fanfest'|'local_culture'|'stadium_experience'|'nightlife') {
+  function toggleFocus(k: 'fanfest'|'local_culture'|'stadium_experience') {
     setFocus((prev) => prev.includes(k) ? prev.filter(x => x !== k) : [...prev, k]);
   }
 
@@ -64,11 +72,26 @@ export default function OnboardingPage() {
     return f === 'membership' || f === 'subscribe' || f === 'checkout';
   }, [search]);
   const heading = fromMembership ? t('titleMembership') : t('titleDefault');
+  const inputClass = 'w-full rounded-2xl border-2 border-white/60 bg-white/80 px-4 py-3 text-gray-900 focus:border-[color:var(--primary-color)] focus:ring-4 focus:ring-[color:var(--primary-color)]/10 outline-none transition';
 
   async function submitProfile() {
     setLoading(true);
     setError(null);
     try {
+      const ticketSelections: MatchItem[] = [];
+      if (hasTickets) {
+        if (ticketEntryMode === 'single' && ticketMatch) {
+          ticketSelections.push(ticketMatch);
+        } else if (ticketEntryMode === 'multi') {
+          multiTicketIds.forEach((id) => {
+            const found = id ? matchMap.get(id) : null;
+            if (found) ticketSelections.push(found);
+          });
+        }
+      }
+
+      const primaryTicket = ticketSelections[0] || ticketMatch || null;
+
       const body: any = {
         home_airport: homeAirport ? {
           code: homeAirport.code,
@@ -89,12 +112,12 @@ export default function OnboardingPage() {
         preferred_transport: transport,
         favorite_team: favoriteTeam || undefined,
         has_tickets: hasTickets,
-        ticket_match: hasTickets && ticketMatch ? {
-          country: ticketMatch.country,
-          city: ticketMatch.city,
-          stadium: ticketMatch.stadium,
-          date: ticketMatch.date,
-          match: ticketMatch.match,
+        ticket_match: hasTickets && primaryTicket ? {
+          country: primaryTicket.country,
+          city: primaryTicket.city,
+          stadium: primaryTicket.stadium,
+          date: primaryTicket.date,
+          match: primaryTicket.match,
         } : undefined,
       };
       const res = await fetch('/api/profile', {
@@ -104,6 +127,15 @@ export default function OnboardingPage() {
       });
       const j = res.status === 204 ? null : await res.json();
       if (!res.ok) throw new Error(j?.error || 'Failed to save profile');
+      // Persist additional match context locally for Trip Builder bridge
+      try {
+        if (ticketSelections.length) {
+          window.localStorage.setItem('fz_onboarding_ticket_matches', JSON.stringify(ticketSelections));
+        } else {
+          window.localStorage.removeItem('fz_onboarding_ticket_matches');
+        }
+      } catch {}
+
       // Mark onboarding complete (sets cookie)
       try {
         await fetch(`/api/onboarding/complete${redirectTarget ? `?redirect=${encodeURIComponent(redirectTarget)}` : ''}`, { method: 'POST' });
@@ -126,26 +158,41 @@ export default function OnboardingPage() {
     }
   }
 
-  const disabledNext1 = !homeAirport;
+  const disabledNext1 = !homeAirport || (hasTickets && (ticketEntryMode === 'single' ? !ticketMatch : multiTicketIds.filter(Boolean).length === 0));
+
+  const progressPct = ((step - 1) / 3) * 100;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-bold mb-2">{heading}</h1>
-      <p className="text-sm text-gray-500 mb-6">{t('subtitle')}</p>
-
-      {/* Progress */}
-      <div className="mb-6">
-        <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-          <div className="h-2 bg-blue-500" style={{ width: `${(step-1)/3*100}%` }} />
+    <div
+      className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.85),_rgba(255,255,255,0.65))]"
+      style={{ backgroundImage: 'linear-gradient(135deg, var(--primary-color) 0%, rgba(255,255,255,0.4) 55%, var(--secondary-color) 120%)' }}
+    >
+      <div className="max-w-4xl mx-auto px-4 py-10 space-y-6">
+        <div className="text-center text-white drop-shadow-sm">
+          <p className="text-xs uppercase tracking-[0.3em] text-white/70">World Cup travel profile</p>
+          <h1 className="text-4xl font-black">{heading}</h1>
+          <p className="text-sm text-white/80 mt-2">{t('subtitle')}</p>
         </div>
-        <div className="text-xs text-gray-400 mt-1">{t('progress', { step: Math.min(step, 3) })}</div>
-      </div>
+
+        <div className="bg-white/85 backdrop-blur rounded-3xl shadow-2xl p-8 space-y-6">
+          {/* Progress */}
+          <div>
+            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-full rounded-full" style={{ width: `${progressPct}%`, background: 'linear-gradient(90deg, var(--primary-color), var(--secondary-color))' }} />
+            </div>
+            <div className="text-xs text-gray-700 mt-1">{t('progress', { step: Math.min(step, 3) })}</div>
+          </div>
 
       {step === 1 && (
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold">{t('steps.basics.title')}</h2>
-          <div>
-            <label className="block text-sm mb-2">{t('steps.basics.homeAirportLabel')}</label>
+          <div className="space-y-1">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-700">Step 1</p>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('steps.basics.title')}</h2>
+            <p className="text-sm text-gray-600">Let's lock in your home base and traveler count so every plan starts with the right context.</p>
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-gray-700">{t('steps.basics.homeAirportLabel')}</label>
             <AirportAutocomplete
               value={homeAirportInput}
               onChange={(value, ap) => {
@@ -155,138 +202,269 @@ export default function OnboardingPage() {
               placeholder={t('steps.basics.homeAirportPlaceholder')}
               autoFocus
             />
-            <p className="text-xs text-gray-500 mt-1">{t('steps.basics.homeAirportHelp')}</p>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm mb-2">{t('steps.basics.adults')}</label>
-              <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={1} value={groupSize}
-                onChange={(e) => setGroupSize(Math.max(1, parseInt(e.target.value || '1', 10)))} />
-            </div>
-            <div>
-              <label className="block text-sm mb-2">{t('steps.basics.children05')}</label>
-              <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children05}
-                onChange={(e) => setChildren05(Math.max(0, parseInt(e.target.value || '0', 10)))} />
-            </div>
-            <div>
-              <label className="block text-sm mb-2">{t('steps.basics.seniors')}</label>
-              <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={seniors}
-                onChange={(e) => setSeniors(Math.max(0, parseInt(e.target.value || '0', 10)))} />
-            </div>
-            <div>
-              <label className="block text-sm mb-2">{t('steps.basics.children618')}</label>
-              <input type="number" className="w-full rounded border px-3 py-2 bg-white text-black" min={0} value={children618}
-                onChange={(e) => setChildren618(Math.max(0, parseInt(e.target.value || '0', 10)))} />
-            </div>
-            <div className="flex items-center gap-2">
-              <input id="mobility" type="checkbox" checked={mobility} onChange={(e) => setMobility(e.target.checked)} />
-              <label htmlFor="mobility" className="text-sm">{t('steps.basics.mobility')}</label>
-            </div>
+            <p className="text-xs text-gray-600">{t('steps.basics.homeAirportHelp')}</p>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <input id="tickets" type="checkbox" checked={hasTickets} onChange={(e) => setHasTickets(e.target.checked)} />
-              <label htmlFor="tickets" className="text-sm">{t('steps.basics.ticketsToggle')}</label>
-            </div>
-            {hasTickets && (
+          <div className="grid md:grid-cols-2 gap-4">
+            <label className="space-y-2 text-sm font-medium text-gray-700">
+              {t('steps.basics.adults')}
+              <input type="number" min={1} value={groupSize} onChange={(e) => setGroupSize(Math.max(1, parseInt(e.target.value || '1', 10)))} className={inputClass} />
+            </label>
+            <label className="space-y-2 text-sm font-medium text-gray-700">
+              {t('steps.basics.children05')}
+              <input type="number" min={0} value={children05} onChange={(e) => setChildren05(Math.max(0, parseInt(e.target.value || '0', 10)))} className={inputClass} />
+            </label>
+            <label className="space-y-2 text-sm font-medium text-gray-700">
+              {t('steps.basics.seniors')}
+              <input type="number" min={0} value={seniors} onChange={(e) => setSeniors(Math.max(0, parseInt(e.target.value || '0', 10)))} className={inputClass} />
+            </label>
+            <label className="space-y-2 text-sm font-medium text-gray-700">
+              {t('steps.basics.children618')}
+              <input type="number" min={0} value={children618} onChange={(e) => setChildren618(Math.max(0, parseInt(e.target.value || '0', 10)))} className={inputClass} />
+            </label>
+          </div>
+
+          <div className="flex items-center gap-3 rounded-2xl border border-white/60 bg-white/70 px-4 py-3">
+            <input
+              id="mobility"
+              type="checkbox"
+              checked={mobility}
+              onChange={(e) => setMobility(e.target.checked)}
+              className="h-5 w-5 rounded border-gray-300 text-[color:var(--primary-color)] focus:ring-[color:var(--primary-color)]"
+            />
+            <label htmlFor="mobility" className="text-sm text-gray-700">{t('steps.basics.mobility')}</label>
+          </div>
+
+          <div className="rounded-3xl border border-white/60 bg-white/70 p-5 space-y-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <label className="block text-sm mb-2">{t('steps.basics.ticketQuestion')}</label>
-                <select className="w-full rounded border px-3 py-2 bg-white text-black" value={ticketMatch ? `${ticketMatch.date}|${ticketMatch.city}|${ticketMatch.match}` : ''}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    const found = matches.find(m => `${m.date}|${m.city}|${m.match}` === v) || null;
-                    setTicketMatch(found);
-                  }}>
-                  <option value="">{t('steps.basics.ticketPlaceholder')}</option>
-                  {matches.map((m) => (
-                    <option key={`${m.date}-${m.city}-${m.match}`} value={`${m.date}|${m.city}|${m.match}`}>
-                      {m.date} — {m.city} — {m.match} ({m.stadium})
-                    </option>
-                  ))}
-                </select>
+                <p className="text-sm font-semibold text-gray-900">Already have match tickets?</p>
+                <p className="text-xs text-gray-600">Tell us where you'll be so we auto-align itineraries.</p>
+              </div>
+              <div className="inline-flex rounded-full bg-gray-100 p-1">
+                <button
+                  type="button"
+                  className={`px-4 py-1 rounded-full text-sm font-semibold ${hasTickets ? 'bg-white shadow text-gray-900' : 'text-gray-600 hover:text-gray-800'}`}
+                  onClick={() => { setHasTickets(true); }}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  className={`px-4 py-1 rounded-full text-sm font-semibold ${!hasTickets ? 'bg-white shadow text-gray-900' : 'text-gray-600 hover:text-gray-800'}`}
+                  onClick={() => { setHasTickets(false); setTicketEntryMode('single'); setTicketMatch(null); setMultiTicketIds(['']); }}
+                >
+                  Not yet
+                </button>
+              </div>
+            </div>
+
+            {hasTickets && (
+              <div className="space-y-4">
+                <div className="flex flex-wrap gap-2 text-sm font-medium text-gray-700">
+                  <span>How many different matches do you already have tickets for?</span>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      className={`px-4 py-1 rounded-full border ${ticketEntryMode === 'single' ? 'bg-[color:var(--primary-color)] text-white border-transparent' : 'border-gray-300 text-gray-700'}`}
+                      onClick={() => setTicketEntryMode('single')}
+                    >
+                      Just one
+                    </button>
+                    <button
+                      type="button"
+                      className={`px-4 py-1 rounded-full border ${ticketEntryMode === 'multi' ? 'bg-[color:var(--primary-color)] text-white border-transparent' : 'border-gray-300 text-gray-700'}`}
+                      onClick={() => setTicketEntryMode('multi')}
+                    >
+                      Multiple cities
+                    </button>
+                  </div>
+                </div>
+
+                {ticketEntryMode === 'single' ? (
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-700">Which match?</label>
+                    <select
+                      className={inputClass}
+                      value={ticketMatch ? matchId(ticketMatch) : ''}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        const found = matchMap.get(v) || null;
+                        setTicketMatch(found);
+                      }}
+                    >
+                      <option value="">Select a match…</option>
+                      {matches.map((m) => (
+                        <option key={matchId(m)} value={matchId(m)}>
+                          {m.date} — {m.city} — {m.match} ({m.stadium})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {multiTicketIds.map((value, idx) => (
+                      <div key={idx} className="flex items-center gap-3">
+                        <select
+                          className={`${inputClass} flex-1`}
+                          value={value}
+                          onChange={(e) => {
+                            const next = [...multiTicketIds];
+                            next[idx] = e.target.value;
+                            setMultiTicketIds(next);
+                          }}
+                        >
+                          <option value="">Select a match…</option>
+                          {matches.map((m) => (
+                            <option key={matchId(m)} value={matchId(m)}>
+                              {m.date} — {m.city} — {m.match}
+                            </option>
+                          ))}
+                        </select>
+                        {multiTicketIds.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => setMultiTicketIds((prev) => prev.filter((_, i) => i !== idx))}
+                            className="text-sm text-red-500"
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => setMultiTicketIds((prev) => [...prev, ''])}
+                      className="text-sm font-semibold text-[color:var(--primary-color)]"
+                      disabled={multiTicketIds.length >= 3}
+                    >
+                      Add another match
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
-          <div className="flex gap-2">
-            <button className="px-4 py-2 rounded border" onClick={() => setStep(2)} disabled={disabledNext1}>{t('buttons.next')}</button>
+
+          <div className="flex flex-col sm:flex-row-reverse justify-between gap-3">
+            <button className={`px-6 py-3 rounded-full font-semibold text-white shadow ${disabledNext1 ? 'bg-gray-400 cursor-not-allowed' : ''}`} style={!disabledNext1 ? { background: 'linear-gradient(90deg, var(--primary-color), var(--secondary-color))' } : {}} onClick={() => !disabledNext1 && setStep(2)} disabled={disabledNext1}>
+              {t('buttons.next')}
+            </button>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
           </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )}
 
       {step === 2 && (
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold">{t('steps.style.title')}</h2>
-          <p className="text-sm text-gray-500">{t('steps.style.description')}</p>
+          <div className="space-y-1">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-700">Step 2</p>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('steps.style.title')}</h2>
+            <p className="text-sm text-gray-600">{t('steps.style.description')}</p>
+          </div>
           <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm mb-2">{t('steps.style.budget')}</label>
-              <select className="w-full rounded border px-3 py-2 bg-white text-black" value={budgetLevel} onChange={(e) => setBudgetLevel(e.target.value as any)}>
+            <label className="space-y-2 text-sm font-medium text-gray-700">
+              {t('steps.style.budget')}
+              <select className={`${inputClass} appearance-none`} value={budgetLevel} onChange={(e) => setBudgetLevel(e.target.value as any)}>
                 <option value="budget">{t('steps.style.budgetOptions.budget')}</option>
                 <option value="moderate">{t('steps.style.budgetOptions.moderate')}</option>
                 <option value="premium">{t('steps.style.budgetOptions.premium')}</option>
               </select>
-            </div>
-            <div>
-              <label className="block text-sm mb-2">{t('steps.style.food')}</label>
-              <select className="w-full rounded border px-3 py-2 bg-white text-black" value={food} onChange={(e) => setFood(e.target.value as any)}>
+            </label>
+            <label className="space-y-2 text-sm font-medium text-gray-700">
+              {t('steps.style.food')}
+              <select className={`${inputClass} appearance-none`} value={food} onChange={(e) => setFood(e.target.value as any)}>
                 <option value="local_flavors">{t('steps.style.foodOptions.local_flavors')}</option>
                 <option value="international">{t('steps.style.foodOptions.international')}</option>
                 <option value="mix">{t('steps.style.foodOptions.mix')}</option>
               </select>
-            </div>
-            <div>
-              <label className="block text-sm mb-2">{t('steps.style.nightlife')}</label>
-              <select className="w-full rounded border px-3 py-2 bg-white text-black" value={nightlife} onChange={(e) => setNightlife(e.target.value as any)}>
+            </label>
+            <label className="space-y-2 text-sm font-medium text-gray-700">
+              {t('steps.style.nightlife')}
+              <select className={`${inputClass} appearance-none`} value={nightlife} onChange={(e) => setNightlife(e.target.value as any)}>
                 <option value="quiet">{t('steps.style.nightlifeOptions.quiet')}</option>
                 <option value="social">{t('steps.style.nightlifeOptions.social')}</option>
                 <option value="party">{t('steps.style.nightlifeOptions.party')}</option>
               </select>
-            </div>
-            <div>
-              <label className="block text-sm mb-2">{t('steps.style.climate')}</label>
-              <select className="w-full rounded border px-3 py-2 bg-white text-black" value={climate} onChange={(e) => setClimate(e.target.value as any)}>
+            </label>
+            <label className="space-y-2 text-sm font-medium text-gray-700">
+              {t('steps.style.climate')}
+              <select className={`${inputClass} appearance-none`} value={climate} onChange={(e) => setClimate(e.target.value as any)}>
                 <option value="all">{t('steps.style.climateOptions.all')}</option>
                 <option value="prefer_northerly">{t('steps.style.climateOptions.prefer_northerly')}</option>
                 <option value="comfortable">{t('steps.style.climateOptions.comfortable')}</option>
               </select>
-            </div>
+            </label>
           </div>
-          <div className="flex gap-2">
-            <button className="px-4 py-2 rounded border" onClick={() => setStep(1)}>{t('buttons.back')}</button>
-            <button className="px-4 py-2 rounded border" onClick={() => setStep(3)}>{t('buttons.next')}</button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button className="px-5 py-3 rounded-full border font-semibold text-gray-700" onClick={() => setStep(1)}>{t('buttons.back')}</button>
+            <button className="px-5 py-3 rounded-full font-semibold text-white" style={{ background: 'linear-gradient(90deg, var(--primary-color), var(--secondary-color))' }} onClick={() => setStep(3)}>
+              {t('buttons.next')}
+            </button>
           </div>
         </div>
       )}
 
       {step === 3 && (
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold">{t('steps.interests.title')}</h2>
-          <p className="text-sm text-gray-500">{t('steps.interests.description')}</p>
-          <div className="grid sm:grid-cols-2 gap-2">
+          <div className="space-y-1">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-700">Step 3</p>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('steps.interests.title')}</h2>
+            <p className="text-sm text-gray-600">{t('steps.interests.description')}</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
             {focusChoices.map((it) => (
-              <label key={it.key} className={`flex items-center gap-2 p-3 rounded border cursor-pointer ${focus.includes(it.key as any) ? 'border-blue-500 bg-blue-50' : ''}`}>
-                <input type="checkbox" checked={focus.includes(it.key as any)} onChange={() => toggleFocus(it.key as any)} />
-                <span className="text-sm">{it.label}</span>
-              </label>
+              <button
+                key={it.key}
+                type="button"
+                onClick={() => toggleFocus(it.key as any)}
+                className={`rounded-2xl border px-4 py-3 text-left transition ${focus.includes(it.key as any) ? 'border-[color:var(--primary-color)] bg-[color:var(--primary-color)]/10 text-[color:var(--primary-color)] font-semibold' : 'border-gray-200 text-gray-700'}`}
+              >
+                {it.label}
+              </button>
             ))}
           </div>
-          <div>
-            <label className="block text-sm mb-2">{t('steps.interests.transport')}</label>
-            <select className="w-full rounded border px-3 py-2 bg-white text-black" value={transport} onChange={(e) => setTransport(e.target.value as any)}>
-              <option value="public">{t('steps.interests.transportOptions.public')}</option>
-              <option value="car">{t('steps.interests.transportOptions.car')}</option>
-              <option value="mixed">{t('steps.interests.transportOptions.mixed')}</option>
-            </select>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">{t('steps.interests.transport')}</label>
+            <div className="grid sm:grid-cols-3 gap-3">
+              {[
+                { key: 'public', title: 'Transit-first', desc: 'Metro, rail, rideshare ok' },
+                { key: 'mixed', title: 'Mixed', desc: 'Use what’s easiest per city' },
+                { key: 'car', title: 'Car / rental', desc: 'Prefer driving yourself' },
+              ].map((opt) => (
+                <button
+                  key={opt.key}
+                  type="button"
+                  onClick={() => setTransport(opt.key as any)}
+                  className={`rounded-2xl border px-4 py-3 text-left transition ${transport === opt.key ? 'border-[color:var(--primary-color)] bg-[color:var(--primary-color)]/10 text-[color:var(--primary-color)] font-semibold' : 'border-gray-200 text-gray-700'}`}
+                >
+                  <span className="block">{opt.title}</span>
+                  <span className="text-xs text-gray-600">{opt.desc}</span>
+                </button>
+              ))}
+            </div>
           </div>
-          <div>
-            <label className="block text-sm mb-2">{t('steps.interests.favoriteTeam')}</label>
-            <input className="w-full rounded border px-3 py-2 bg-white text-black" value={favoriteTeam} onChange={(e) => setFavoriteTeam(e.target.value)} placeholder={t('steps.interests.favoriteTeamPlaceholder')} />
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">{t('steps.interests.favoriteTeam')}</label>
+            <input
+              list="team-favorites"
+              className={inputClass}
+              value={favoriteTeam}
+              onChange={(e) => setFavoriteTeam(e.target.value)}
+              placeholder={t('steps.interests.favoriteTeamPlaceholder')}
+            />
+            <datalist id="team-favorites">
+              {Object.keys(teamColors).map((team) => (
+                <option key={team} value={team} />
+              ))}
+            </datalist>
           </div>
-          <div className="flex gap-2">
-            <button className="px-4 py-2 rounded border" onClick={() => setStep(2)}>{t('buttons.back')}</button>
-            <button className="px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-50" onClick={submitProfile} disabled={loading}>
+
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button className="px-5 py-3 rounded-full border font-semibold text-gray-700" onClick={() => setStep(2)}>{t('buttons.back')}</button>
+            <button className="px-5 py-3 rounded-full font-semibold text-white" style={{ background: 'linear-gradient(90deg, var(--primary-color), var(--secondary-color))' }} onClick={submitProfile} disabled={loading}>
               {loading ? t('buttons.saving') : t('buttons.finish')}
             </button>
           </div>
@@ -295,17 +473,19 @@ export default function OnboardingPage() {
       )}
 
       {step === 4 && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">{t('done.title')}</h2>
-          <p className="text-sm text-gray-400">{t('done.subtitle')}</p>
-          <div className="flex gap-3">
-            <a href={redirectTarget || '/planner'} className="px-4 py-2 rounded bg-blue-600 text-white">
+        <div className="space-y-4 text-center">
+          <h2 className="text-2xl font-semibold text-gray-900">{t('done.title')}</h2>
+          <p className="text-sm text-gray-600">{t('done.subtitle')}</p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href={redirectTarget || '/planner/trip-builder'} className="px-5 py-3 rounded-full bg-[color:var(--primary-color)] text-white font-semibold shadow">
               {redirectTarget ? t('done.ctaContinue') : t('done.ctaTripBuilder')}
             </a>
-            <a href="/account/profile" className="px-4 py-2 rounded border">{t('done.ctaEdit')}</a>
+            <a href="/account/profile" className="px-5 py-3 rounded-full border font-semibold text-gray-700 hover:bg-gray-50">{t('done.ctaEdit')}</a>
           </div>
         </div>
       )}
+        </div>
+      </div>
     </div>
   );
 }
