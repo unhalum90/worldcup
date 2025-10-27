@@ -57,8 +57,20 @@ export async function middleware(req: NextRequest) {
     // ignore refresh errors in middleware; page-level code can still handle
   }
 
-  // Premium gating: require auth for planner routes
   const pathname = req.nextUrl.pathname;
+
+  // 🚧 Bypass middleware during Supabase auth callback or immediate post-login refresh
+  if (pathname.startsWith('/auth/callback')) {
+    return res;
+  }
+
+  // Allow through if Supabase is mid-refresh (avoid redirect loop)
+  const hasAuthCookie = !!req.cookies.get('sb-access-token');
+  if (!user && hasAuthCookie) {
+    return res;
+  }
+
+  // Premium gating: require auth for planner routes
   const requiresAuth = pathname.startsWith('/planner');
   if (requiresAuth && !user) {
     const url = new URL('/login', req.url);
@@ -69,7 +81,7 @@ export async function middleware(req: NextRequest) {
   // Optional onboarding gate (disabled by default). When enabled, if a user is authenticated
   // but has not completed onboarding/profile, gently route them to onboarding and then back.
   const gateEnabled = process.env.NEXT_PUBLIC_ENABLE_ONBOARDING_GATE === 'true';
-  if (gateEnabled && user && supabase) {
+  if (gateEnabled && user?.id && supabase) {
     const cookieOnboarded = req.cookies.get('wc26-onboarded')?.value === 'true';
     const inOnboarding = pathname.startsWith('/onboarding');
     const isLogin = pathname.startsWith('/login');
