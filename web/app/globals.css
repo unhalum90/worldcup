@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #111827;
+  --primary-color: #2A398D;
+  --secondary-color: #E61D25;
   
   /* World Cup 2026 Color Palette */
   --wc-green: #3CAC3B;
@@ -10,43 +12,112 @@
   --wc-red: #E61D25;
   --wc-light-gray: #D1D4D1;
   --wc-dark-gray: #474A4A;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 
   /* Brand palette */
-  --color-primary: #2A398D;        /* Deep Blue */
-  --color-accent-green: #3CAC3B;   /* Green */
-  --color-accent-red: #E61D25;     /* Red */
-  --color-neutral-100: #E5E7EB;    /* Light Gray */
-  --color-neutral-800: #4B5563;    /* Dark Gray */
+  --color-primary: var(--primary-color);
+  --color-accent-green: #3CAC3B;
+  --color-accent-red: var(--secondary-color);
+  --color-neutral-100: #E5E7EB;
+  --color-neutral-800: #4B5563;
 
   /* Radii */
   --radius-lg: 16px;
   --radius-md: 10px;
   --radius-sm: 6px;
+
+  /* Navbar theming variables */
+  --nav-bg: #FFFFFF;
+  --nav-text: #111827;
+  --nav-border: var(--color-neutral-100);
+  
+  /* Planner color system variables */
+  --trip-primary: #2563EB;
+  --trip-secondary: #1D4ED8;
+  --trip-accent: #1E40AF;
+
+  --flight-primary: #0EA5E9;
+  --flight-secondary: #0369A1;
+  --flight-accent: #0284C7;
+
+  --lodging-primary: #F87171;
+  --lodging-secondary: #DC2626;
+  --lodging-accent: #B91C1C;
+
+  /* Dynamic planner theming */
+  --planner-primary: var(--trip-primary);
+  --planner-secondary: var(--trip-secondary);
+  --planner-accent: var(--trip-accent);
+}
+
+/* Tailwind theme variables */
+:root {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 
 body {
-  background: linear-gradient(to bottom, 
-    rgba(42, 57, 141, 0.04) 0%,          /* Light blue at top */
-    rgba(42, 57, 141, 0.08) 20%,         /* Blue tint */
-    rgba(42, 57, 141, 0.12) 40%,         /* Medium blue */
-    rgba(60, 172, 59, 0.12) 60%,         /* Mix to green */
-    rgba(60, 172, 59, 0.16) 80%,         /* Stronger green */
-    rgba(42, 57, 141, 0.20) 100%);       /* Darker blue at bottom */
+  background: linear-gradient(135deg, #f0f4ff 0%, #ffeef0 100%);
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--primary-color) 18%, #ffffff) 0%,
+    color-mix(in srgb, var(--secondary-color) 20%, #ffffff) 40%,
+    color-mix(in srgb, #3CAC3B 18%, #ffffff) 100%);
   min-height: 100vh;
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  transition: background 0.6s ease;
 }
 
 /* RTL helper: flip horizontal flex layouts in RTL locales where applied */
 :where([dir="rtl"] .flip-rtl) { flex-direction: row-reverse; }
+
+/* Smooth transitions for theme changes */
+header, nav {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Planner-specific overrides */
+.planner-trip {
+  --planner-primary: var(--trip-primary);
+  --planner-secondary: var(--trip-secondary);
+  --planner-accent: var(--trip-accent);
+}
+
+.planner-flight {
+  --planner-primary: var(--flight-primary);
+  --planner-secondary: var(--flight-secondary);
+  --planner-accent: var(--flight-accent);
+}
+
+.planner-lodging {
+  --planner-primary: var(--lodging-primary);
+  --planner-secondary: var(--lodging-secondary);
+  --planner-accent: var(--lodging-accent);
+}
+
+/* Utility classes for planner theming */
+.btn-planner-primary {
+  background-color: var(--planner-primary);
+  color: white;
+}
+
+.btn-planner-primary:hover {
+  background-color: var(--planner-secondary);
+}
+
+.border-planner-primary {
+  border-color: var(--planner-primary);
+}
+
+.text-planner-primary {
+  color: var(--planner-primary);
+}
+
+.bg-planner-gradient {
+  background: linear-gradient(135deg, var(--planner-primary), var(--planner-secondary));
+}
 
 /* Section container */
 .container { max-width: 1200px; margin-inline: auto; padding-inline: 1rem; }
@@ -181,4 +252,87 @@ h1, h2, h3, h4, h5, h6 { color: var(--foreground); }
   .print-only {
     display: block !important;
   }
+}
+
+/* Dark Background Text Safety Rules */
+/* Ensure text is always readable on dark backgrounds */
+.bg-slate-900, 
+.bg-slate-800, 
+.bg-gray-900, 
+.bg-gray-800, 
+.bg-blue-900, 
+.bg-blue-800,
+.bg-indigo-900,
+.bg-indigo-800,
+.bg-purple-900,
+.bg-purple-800,
+.bg-black,
+[class*="bg-slate-9"],
+[class*="bg-gray-9"],
+[class*="bg-blue-9"],
+[class*="bg-indigo-9"],
+[class*="bg-purple-9"] {
+  color: white !important;
+}
+
+/* Force all text elements inside dark backgrounds to be white */
+.bg-slate-900 *, 
+.bg-slate-800 *, 
+.bg-gray-900 *, 
+.bg-gray-800 *, 
+.bg-blue-900 *, 
+.bg-blue-800 *,
+.bg-indigo-900 *,
+.bg-indigo-800 *,
+.bg-purple-900 *,
+.bg-purple-800 *,
+.bg-black *,
+[class*="bg-slate-9"] *,
+[class*="bg-gray-9"] *,
+[class*="bg-blue-9"] *,
+[class*="bg-indigo-9"] *,
+[class*="bg-purple-9"] * {
+  color: inherit !important;
+}
+
+/* Specific overrides for common text elements */
+.bg-slate-900 h1, 
+.bg-slate-900 h2, 
+.bg-slate-900 h3, 
+.bg-slate-900 h4, 
+.bg-slate-900 h5, 
+.bg-slate-900 h6,
+.bg-gray-900 h1, 
+.bg-gray-900 h2, 
+.bg-gray-900 h3, 
+.bg-gray-900 h4, 
+.bg-gray-900 h5, 
+.bg-gray-900 h6,
+.bg-blue-900 h1, 
+.bg-blue-900 h2, 
+.bg-blue-900 h3, 
+.bg-blue-900 h4, 
+.bg-blue-900 h5, 
+.bg-blue-900 h6 {
+  color: white !important;
+}
+
+/* Ensure proper contrast for smaller text on dark backgrounds */
+.bg-slate-900 .text-xs,
+.bg-slate-900 .text-sm,
+.bg-gray-900 .text-xs,
+.bg-gray-900 .text-sm,
+.bg-blue-900 .text-xs,
+.bg-blue-900 .text-sm {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Navigation text shadow classes */
+.nav-with-shadow {
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+}
+
+.nav-no-shadow {
+  text-shadow: none !important;
+  color: #111827 !important;
 }

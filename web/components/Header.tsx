@@ -51,10 +51,9 @@ export default function Header() {
         }}
       >
         <div className="container flex items-center justify-between py-3 gap-4">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg hover:opacity-90 transition-opacity"
+          <Link href="/" className={`flex items-center gap-2 font-bold text-lg hover:opacity-90 transition-opacity ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow'}`}
                 style={{ 
-                  color: "var(--nav-text, #111827)",
-                  textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                  color: profile?.favorite_team ? "var(--nav-text, #111827)" : undefined
                 }}>
             {flag && (
               <img 
@@ -79,11 +78,10 @@ export default function Header() {
                   isActive(link.href)
                     ? 'border-b-2 opacity-100'
                     : 'opacity-100 hover:opacity-90'
-                } ${!profile?.favorite_team ? '!text-gray-900' : ''}`}
+                } ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow'}`}
                 style={{
-                  color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827 !important",
-                  borderBottomColor: isActive(link.href) ? (profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827") : "transparent",
-                  textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none !important"
+                  color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
+                  borderBottomColor: isActive(link.href) ? (profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827") : "transparent"
                 }}
               >
                 {link.label}
@@ -94,10 +92,9 @@ export default function Header() {
               href="https://wc26fanzone.beehiiv.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className={`text-sm font-bold hover:underline underline-offset-4 opacity-100 hover:opacity-90 transition-opacity ${!profile?.favorite_team ? '!text-gray-900' : ''}`}
+              className={`text-sm font-bold hover:underline underline-offset-4 opacity-100 hover:opacity-90 transition-opacity ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow'}`}
               style={{ 
-                color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827 !important",
-                textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none !important"
+                color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined
               }}
             >
               Newsletter
@@ -110,12 +107,11 @@ export default function Header() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowAuth(true)}
-                  className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${!profile?.favorite_team ? 'text-gray-900 border-gray-900 bg-white/80' : ''}`}
+                  className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow text-gray-900 border-gray-900 bg-white/80'}`}
                   style={{ 
-                    color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                    color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
                     borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
-                    backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)",
-                    textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                    backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"
                   }}
                 >
                   Sign in
@@ -132,30 +128,27 @@ export default function Header() {
             {!loading && user && (
               <div className="flex items-center gap-3">
                 <Link href="/account" className="flex items-center gap-2 group opacity-100 hover:opacity-90 transition-opacity">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-sm ${!profile?.favorite_team ? 'bg-gray-200 border-gray-300 text-gray-900' : 'bg-white/25 border-white/30'}`}
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-sm ${profile?.favorite_team ? 'bg-white/25 border-white/30 nav-with-shadow' : 'bg-gray-200 border-gray-300 nav-no-shadow'}`}
                        style={{ 
-                         color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                         color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
                          backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.25)" : "rgb(229 231 235)",
-                         borderColor: profile?.favorite_team ? "rgba(255,255,255,0.3)" : "rgb(209 213 219)",
-                         textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                         borderColor: profile?.favorite_team ? "rgba(255,255,255,0.3)" : "rgb(209 213 219)"
                        }}>
                     {user.email?.charAt(0).toUpperCase() || 'U'}
                   </div>
-                  <span className={`text-sm font-bold group-hover:underline ${!profile?.favorite_team ? 'text-gray-900' : ''}`}
+                  <span className={`text-sm font-bold group-hover:underline ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow'}`}
                         style={{ 
-                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
-                          textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined
                         }}>
                     {user.email?.split('@')[0] || 'Account'}
                   </span>
                 </Link>
                 <button onClick={signOut} 
-                        className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${!profile?.favorite_team ? 'text-gray-900 border-gray-900 bg-white/80' : ''}`}
+                        className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow text-gray-900 border-gray-900 bg-white/80'}`}
                         style={{ 
-                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
                           borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
-                          backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)",
-                          textShadow: profile?.favorite_team ? "0 1px 3px rgba(0,0,0,0.5)" : "none"
+                          backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"
                         }}>
                   Sign out
                 </button>
