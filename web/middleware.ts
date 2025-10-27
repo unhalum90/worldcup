@@ -16,6 +16,15 @@ function normalizeToHttps(u: string): string {
 
 // Middleware to handle locale from cookies
 export async function middleware(req: NextRequest) {
+  // 🌐 Force HTTPS and canonical www domain to ensure secure cookies
+  const proto = req.headers.get('x-forwarded-proto');
+  const host = req.headers.get('host');
+  if (proto !== 'https' || host === 'worldcup26fanzone.com') {
+    const url = req.nextUrl.clone();
+    url.protocol = 'https:';
+    url.host = 'www.worldcup26fanzone.com';
+    return NextResponse.redirect(url, 301);
+  }
   // Get locale from cookie
   const locale = req.cookies.get('NEXT_LOCALE')?.value || defaultLocale;
   
