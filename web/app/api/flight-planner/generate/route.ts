@@ -44,6 +44,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing itinerary selection' }, { status: 400 });
     }
 
+    // Detect user's locale
+    const locale = body.locale || req.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+    const isSpanish = locale === 'es';
+
     const adjustments = body.adjustments || {};
     const supabase = createServerClient();
     const { data: profileRow } = await supabase
@@ -60,7 +64,7 @@ export async function POST(req: NextRequest) {
     const cityContext = await loadCityContext(cities);
     const cityContextPrompt = formatCityContextForPrompt(cityContext);
 
-    const prompt = buildPrompt(selection, adjustments, profileRow, cityContextPrompt);
+    const prompt = buildPrompt(selection, adjustments, profileRow, cityContextPrompt, isSpanish);
 
     let responseJson: FlightPlanResponse | null = null;
     if (process.env.GEMINI_API_KEY) {
@@ -90,7 +94,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-function buildPrompt(selection: any, adjustments: any, profile: any, cityContextPrompt: string) {
+function buildPrompt(selection: any, adjustments: any, profile: any, cityContextPrompt: string, isSpanish: boolean = false) {
   const cabin = adjustments.cabin || 'economy';
   const travelers = adjustments.travelers || profile?.group_size || 1;
   const allowOvernight = adjustments.allowOvernight ? 'Yes' : 'Prefer daytime flights';
@@ -98,8 +102,13 @@ function buildPrompt(selection: any, adjustments: any, profile: any, cityContext
   const cityOrder = selection.option.trip?.cityOrder?.join(' → ') || selection.option.cities.map((c: any) => c.cityName).join(' → ');
   const legs = (selection.option.flights?.legs || []).map((leg: any) => `${leg.from} → ${leg.to} (${leg.duration || 'duration TBD'})`).join('\n');
 
+  // Language instruction for AI
+  const languageInstruction = isSpanish 
+    ? '\n\n**IMPORTANTE: Responde en español. Todos los textos descriptivos, consejos, notas, etiquetas y explicaciones deben estar en español. Mantén los códigos de aerolíneas, aeropuertos y números de vuelo en su forma original.**\n\n'
+    : '';
+
   return `
-You are the World Cup 2026 Flight Planner. The traveler selected this itinerary:
+You are the World Cup 2026 Flight Planner.${languageInstruction}The traveler selected this itinerary:
 Title: ${selection.option.title}
 Summary: ${selection.option.summary}
 Cities: ${cityOrder}

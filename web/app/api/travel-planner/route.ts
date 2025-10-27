@@ -205,6 +205,11 @@ export async function POST(request: NextRequest) {
     }
 
     const formData: TravelPlanRequestV2 = await request.json();
+    
+    // Detect user's locale from request headers or formData
+    const locale = formData.locale || request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+    const isSpanish = locale === 'es';
+    
     const supabase = createServerClient();
     let profile: UserProfile | null = null;
     try {
@@ -254,8 +259,13 @@ export async function POST(request: NextRequest) {
 
     const profileSummary = buildProfileSummary(profile, mergedForm);
 
+    // Language instruction for AI
+    const languageInstruction = isSpanish 
+      ? '\n\n**IMPORTANTE: Responde en español. Todos los textos descriptivos, resúmenes, consejos, notas y etiquetas deben estar en español. Mantén los nombres propios de ciudades, estadios y aeropuertos en su forma original.**\n\n'
+      : '';
+
     // Build the prompt for Gemini
-    const prompt = `You are a senior World Cup 2026 travel planner. Using the traveler inputs and the “Cities & Stadiums” list, produce 2–3 distinct, realistic itinerary options that COVER ALL REQUIRED TRAVEL: origin → first city, inter-city moves, and last city → origin. Reflect the EXACT dates and ALL cities provided. If multiple cities are listed, you MUST include the movement between them (flight/train/car) consistent with Transport Mode.
+    const prompt = `You are a senior World Cup 2026 travel planner.${languageInstruction}Using the traveler inputs and the "Cities & Stadiums" list, produce 2–3 distinct, realistic itinerary options that COVER ALL REQUIRED TRAVEL: origin → first city, inter-city moves, and last city → origin. Reflect the EXACT dates and ALL cities provided. If multiple cities are listed, you MUST include the movement between them (flight/train/car) consistent with Transport Mode.
 \nCRITICAL: Every input city in [${mergedForm.citiesVisiting.join(', ')}] must appear in trip.cityOrder for each option. Do not omit any input city. Do not add cities that aren't requested (except for necessary layover hubs, which must NOT be listed in cityOrder).
 
 Traveler Details:

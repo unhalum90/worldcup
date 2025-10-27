@@ -76,6 +76,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing itinerary selection' }, { status: 400 });
     }
 
+    // Detect user's locale
+    const locale = body.locale || req.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+    const isSpanish = locale === 'es';
+
     const focusCity = resolveFocusCity(body.selection);
     if (!focusCity) {
       return NextResponse.json({ error: 'Unable to determine focus city from selection' }, { status: 400 });
@@ -99,6 +103,8 @@ export async function POST(req: NextRequest) {
       preferences: normalizedPreferences,
       profile: profileRow,
       zoneReport,
+      cityContextPrompt,
+      isSpanish,
       cityContextPrompt,
     });
 
@@ -203,8 +209,9 @@ function buildPrompt(params: {
   profile?: UserProfile | null;
   zoneReport: Awaited<ReturnType<typeof loadZoneReports>>;
   cityContextPrompt: string;
+  isSpanish?: boolean;
 }): string {
-  const { city, selection, preferences, profile, zoneReport, cityContextPrompt } = params;
+  const { city, selection, preferences, profile, zoneReport, cityContextPrompt, isSpanish = false } = params;
   const travelerSummary = buildTravelerSummary(selection, profile, preferences);
   const zonePrompt = formatZoneReportForPrompt(zoneReport);
 
@@ -214,7 +221,12 @@ function buildPrompt(params: {
     ? `${selection.tripInput.startDate} → ${selection.tripInput.endDate}`
     : 'Dates TBD';
 
-  return `You are the Lodging Planner for FIFA World Cup 2026. Design a zoning-based lodging plan for ${city}.
+  // Language instruction for AI
+  const languageInstruction = isSpanish 
+    ? '\n\n**IMPORTANTE: Responde en español. Todos los textos descriptivos, consejos, notas, insights, etiquetas y recomendaciones deben estar en español. Mantén los nombres de zonas, calles y lugares en su forma original.**\n\n'
+    : '';
+
+  return `You are the Lodging Planner for FIFA World Cup 2026.${languageInstruction}Design a zoning-based lodging plan for ${city}.
 
 TRIP BUILDER CONTEXT:
 - Selected itinerary title: ${selection.option.title}
