@@ -95,7 +95,6 @@ function transportLabel(pref?: string | null) {
 function formatTravelStyle(profile: UserProfile) {
   const items = [
     budgetLabels[profile.budget_level || ''] || null,
-    comfortLabels[profile.comfort_preference || ''] || null,
     foodLabels[profile.food_preference || ''] || null,
     nightlifeLabels[profile.nightlife_preference || ''] || null,
     climateLabels[profile.climate_preference || ''] || null,
@@ -117,12 +116,6 @@ const budgetLabels: Record<string, string> = {
   budget: 'Budget traveler',
   moderate: 'Moderate budget',
   premium: 'Premium comfort',
-};
-
-const comfortLabels: Record<string, string> = {
-  budget_friendly: 'Comfort: Budget-friendly',
-  balanced: 'Comfort: Balanced',
-  luxury_focus: 'Comfort: Luxury focus',
 };
 
 const foodLabels: Record<string, string> = {

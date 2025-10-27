@@ -32,7 +32,7 @@ export default function OnboardingPage() {
   const [nightlife, setNightlife] = useState<'quiet'|'social'|'party'>('social');
   const [climate, setClimate] = useState<'all'|'prefer_northerly'|'comfortable'>('all');
 
-  const [focus, setFocus] = useState<Array<'fanfest'|'local_culture'|'stadium_experience'>>([]);
+  const [focus, setFocus] = useState<Array<'fanfest'|'stadium_experience'>>([]);
   const [transport, setTransport] = useState<'public'|'car'|'mixed'>('mixed');
   const [favoriteTeam, setFavoriteTeam] = useState('');
   const [hasTickets, setHasTickets] = useState(false);
@@ -48,11 +48,10 @@ export default function OnboardingPage() {
   }, [matches]);
   const focusChoices = [
     { key: 'fanfest', label: t('steps.interests.focusOptions.fanfest') },
-    { key: 'local_culture', label: t('steps.interests.focusOptions.local_culture') },
     { key: 'stadium_experience', label: t('steps.interests.focusOptions.stadium_experience') },
   ] as const;
 
-  function toggleFocus(k: 'fanfest'|'local_culture'|'stadium_experience') {
+  function toggleFocus(k: 'fanfest'|'stadium_experience') {
     setFocus((prev) => prev.includes(k) ? prev.filter(x => x !== k) : [...prev, k]);
   }
 
@@ -168,10 +167,10 @@ export default function OnboardingPage() {
       style={{ backgroundImage: 'linear-gradient(135deg, var(--primary-color) 0%, rgba(255,255,255,0.4) 55%, var(--secondary-color) 120%)' }}
     >
       <div className="max-w-4xl mx-auto px-4 py-10 space-y-6">
-        <div className="text-center text-white drop-shadow-sm">
-          <p className="text-xs uppercase tracking-[0.3em] text-white/70">World Cup travel profile</p>
-          <h1 className="text-4xl font-black">{heading}</h1>
-          <p className="text-sm text-white/80 mt-2">{t('subtitle')}</p>
+        <div className="text-center">
+          <p className="text-xs uppercase tracking-[0.3em] text-gray-700 font-semibold">World Cup travel profile</p>
+          <h1 className="text-4xl font-black text-gray-900">{heading}</h1>
+          <p className="text-sm text-gray-700 mt-2">{t('subtitle')}</p>
         </div>
 
         <div className="bg-white/85 backdrop-blur rounded-3xl shadow-2xl p-8 space-y-6">
@@ -185,10 +184,10 @@ export default function OnboardingPage() {
 
       {step === 1 && (
         <div className="space-y-6">
-          <div className="space-y-1">
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-700">Step 1</p>
-            <h2 className="text-2xl font-semibold text-gray-900">{t('steps.basics.title')}</h2>
-            <p className="text-sm text-gray-600">Let's lock in your home base and traveler count so every plan starts with the right context.</p>
+          <div className="space-y-2">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-700 font-semibold">Step 1</p>
+            <h2 className="text-3xl font-bold text-gray-900">{t('steps.basics.title')}</h2>
+            <p className="text-base text-gray-700 leading-relaxed">Let's lock in your home base and traveler count so every plan starts with the right context.</p>
           </div>
 
           <div className="space-y-3">
@@ -357,10 +356,10 @@ export default function OnboardingPage() {
 
       {step === 2 && (
         <div className="space-y-6">
-          <div className="space-y-1">
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-700">Step 2</p>
-            <h2 className="text-2xl font-semibold text-gray-900">{t('steps.style.title')}</h2>
-            <p className="text-sm text-gray-600">{t('steps.style.description')}</p>
+          <div className="space-y-2">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-700 font-semibold">Step 2</p>
+            <h2 className="text-3xl font-bold text-gray-900">{t('steps.style.title')}</h2>
+            <p className="text-base text-gray-700 leading-relaxed">{t('steps.style.description')}</p>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <label className="space-y-2 text-sm font-medium text-gray-700">
@@ -407,10 +406,10 @@ export default function OnboardingPage() {
 
       {step === 3 && (
         <div className="space-y-6">
-          <div className="space-y-1">
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-700">Step 3</p>
-            <h2 className="text-2xl font-semibold text-gray-900">{t('steps.interests.title')}</h2>
-            <p className="text-sm text-gray-600">{t('steps.interests.description')}</p>
+          <div className="space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-700">Step 3</p>
+            <h2 className="text-3xl font-bold text-gray-900">{t('steps.interests.title')}</h2>
+            <p className="text-base leading-relaxed text-gray-700">{t('steps.interests.description')}</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {focusChoices.map((it) => (

@@ -37,11 +37,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const hydrateProfile = async (userId: string) => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('user_profile')
         .select('*')
         .eq('user_id', userId)
-        .maybeSingle<UserProfile>();
+        .maybeSingle();
       if (error) throw error;
       setProfile(data ?? null);
       applyTheme(data?.favorite_team);

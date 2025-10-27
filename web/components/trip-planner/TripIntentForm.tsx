@@ -317,7 +317,6 @@ function buildPayloadFromProfile(profile: UserProfile): TravelPlanRequest {
     matchDates: profile.ticket_match?.date ? [profile.ticket_match.date] : [],
     tripFocus: profile.travel_focus || [],
     surpriseMe: false,
-    comfortPreference: profile.comfort_preference || null,
     nightlifePreference: profile.nightlife_preference || null,
     foodPreference: profile.food_preference || null,
     climatePreference: profile.climate_preference || null,
