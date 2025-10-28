@@ -51,11 +51,11 @@ export const supabase = typeof window !== 'undefined' ? getClient() : (undefined
 if (typeof window !== 'undefined' && supabase) {
 	console.log('[Client] Supabase client initialized', { url });
 
-	supabase.auth.getSession().then(({ data }) => {
+	supabase.auth.getSession().then(({ data }: any) => {
 		console.log('[Client] session on mount', data?.session?.user);
 	});
 
-	const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+	const { data: listener } = supabase.auth.onAuthStateChange((event: any, session: any) => {
 		console.log('[Client] auth event', event, {
 			user: session?.user?.email,
 			hasSession: !!session,
