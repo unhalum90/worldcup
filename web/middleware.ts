@@ -123,7 +123,7 @@ export async function middleware(req: NextRequest) {
       path: req.nextUrl.pathname,
       hasAuthCookie: !!req.cookies.get('sb-access-token'),
       user: user ? user.email || user.id : null,
-      cookies: Array.from(req.cookies.keys()),
+      cookies: req.cookies.getAll().map(c => c.name),
     })
   );
 
