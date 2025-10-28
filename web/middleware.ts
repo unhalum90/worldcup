@@ -53,6 +53,11 @@ export async function middleware(req: NextRequest) {
     );
     const { data } = await supabase.auth.getUser();
     user = data.user ?? null;
+    console.log('[Middleware] supabase.auth.getUser()', {
+      user: !!data.user,
+      id: data.user?.id,
+      email: data.user?.email,
+    });
   } catch {
     // ignore refresh errors in middleware; page-level code can still handle
   }
@@ -111,6 +116,16 @@ export async function middleware(req: NextRequest) {
       }
     }
   }
+
+  console.log(
+    '[Middleware]',
+    JSON.stringify({
+      path: req.nextUrl.pathname,
+      hasAuthCookie: !!req.cookies.get('sb-access-token'),
+      user: user ? user.email || user.id : null,
+      cookies: Array.from(req.cookies.keys()),
+    })
+  );
 
   return res;
 }
