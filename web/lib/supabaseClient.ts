@@ -41,7 +41,13 @@ function getClient() {
 		return g.__supabase_client__;
 	}
 
-		const client = SupaSSR.createBrowserClient(url, anon);
+	const client = SupaSSR.createBrowserClient(url, anon, {
+		auth: {
+			persistSession: true,
+			autoRefreshToken: true,
+			detectSessionInUrl: true,
+		},
+	});
 	g.__supabase_client__ = client;
 	return client;
 }
