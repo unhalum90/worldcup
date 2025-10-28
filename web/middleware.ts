@@ -43,20 +43,33 @@ export async function middleware(req: NextRequest) {
             return req.cookies.get(name)?.value;
           },
           set(name: string, value: string, options: any) {
-            res.cookies.set({ name, value, ...options });
+            try {
+              res.cookies.set({ name, value, ...options });
+            } catch (e) {
+              console.warn('⚠️ Failed to set cookie in middleware', e);
+            }
           },
           remove(name: string, options: any) {
-            res.cookies.set({ name, value: '', ...options });
+            try {
+              res.cookies.delete({ name, ...options });
+            } catch (e) {
+              console.warn('⚠️ Failed to delete cookie in middleware', e);
+            }
           },
         },
       }
     );
-    const { data } = await supabase.auth.getUser();
-    user = data.user ?? null;
-    console.log('[Middleware] supabase.auth.getUser()', {
-      user: !!data.user,
-      id: data.user?.id,
-      email: data.user?.email,
+
+    // ✅ Retrieve session (includes user and auto-refreshes)
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    user = session?.user ?? null;
+
+    console.log('[Middleware] supabase.auth.getSession()', {
+      hasSession: !!session,
+      id: session?.user?.id,
+      email: session?.user?.email,
     });
   } catch {
     // ignore refresh errors in middleware; page-level code can still handle
