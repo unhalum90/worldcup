@@ -24,7 +24,6 @@ export async function sendMagicLink(email: string, redirectPath?: string) {
     email,
     options: {
       emailRedirectTo: buildAuthCallbackUrl(redirectPath),
-      shouldCreateUser: true,
     },
   });
 
