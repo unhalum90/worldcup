@@ -1,76 +1,57 @@
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+"use client";
 
-export const dynamic = 'force-dynamic';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
 
-export default async function AuthCallback({
-  searchParams,
-}: {
-  searchParams: { code?: string; redirect?: string };
-}) {
-  const code = searchParams.code;
-  const redirectPath = searchParams.redirect || null;
+export default function AuthCallback() {
+  const router = useRouter();
 
-  if (!code) {
-    redirect('/');
-  }
+  useEffect(() => {
+    const handleCallback = async () => {
+      try {
+        // The createBrowserClient has detectSessionInUrl: true
+        // so it automatically handles the PKCE code exchange
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-        set(name: string, value: string, options: any) {
-          try {
-            cookieStore.set({ name, value, ...options });
-          } catch (error) {
-            // Ignore cookie errors during initial render
-          }
-        },
-        remove(name: string, options: any) {
-          try {
-            cookieStore.delete({ name, ...options });
-          } catch (error) {
-            // Ignore cookie errors during initial render
-          }
-        },
-      },
-    }
+        // Check if we have a session now
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
+          console.error('No session after callback');
+          router.replace('/');
+          return;
+        }
+
+        // Check if user has completed onboarding
+        const { data: profile } = await supabase
+          .from('user_profile')
+          .select('user_id, home_airport')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+
+        // Determine destination
+        if (!profile || !profile.home_airport) {
+          router.replace('/onboarding');
+        } else {
+          router.replace('/planner');
+        }
+      } catch (error) {
+        console.error('Auth callback error:', error);
+        router.replace('/');
+      }
+    };
+
+    handleCallback();
+  }, [router]);
+
+  return (
+    <main className="flex h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-white">
+      <div className="text-center space-y-4">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
+        <p className="text-lg font-medium text-gray-700">Signing you in...</p>
+        <p className="text-sm text-gray-500">Please wait a moment</p>
+      </div>
+    </main>
   );
-
-  // Exchange the code for a session
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-
-  if (error) {
-    redirect(`/auth/auth-code-error?error=${encodeURIComponent(error.message || 'Authentication failed')}`);
-  }
-
-  if (!data.session) {
-    redirect('/auth/auth-code-error?error=No%20session%20created');
-  }
-
-  // Check if user has completed onboarding
-  const { data: profile } = await supabase
-    .from('user_profile')
-    .select('user_id, home_airport')
-    .eq('user_id', data.session.user.id)
-    .maybeSingle();
-
-  // Determine destination
-  let destination = '/planner';
-
-  if (!profile || !profile.home_airport) {
-    // New user or incomplete profile -> onboarding
-    destination = '/onboarding';
-  } else if (redirectPath && redirectPath !== '/' && redirectPath !== '/account') {
-    // Use custom redirect path
-    destination = redirectPath;
-  }
-
-  redirect(destination);
 }
