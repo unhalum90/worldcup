@@ -34,7 +34,11 @@ export default function PlannerPage() {
     setStreamProgress({ message: 'Connecting to AI planner...', progress: 0 });
 
     try {
-      const response = await fetch('/api/travel-planner', {
+      // Use parallel processing if enabled
+      const useParallel = process.env.NEXT_PUBLIC_PLANNER_USE_PARALLEL === 'true';
+      const endpoint = useParallel ? '/api/travel-planner/parallel' : '/api/travel-planner';
+      
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
