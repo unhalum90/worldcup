@@ -520,60 +520,136 @@ ${USE_CITY_CONTEXT ? cityContextPrompt : ''}
 
 ${USE_CITY_CONTEXT ? '**CRITICAL:** Use the authoritative city guides above as primary references when relevant. Do not contradict the guides.' : 'Use your own up-to-date knowledge. Prefer realistic airlines, routes, neighborhoods, and costs. Avoid hallucinations; if uncertain, provide typical ranges and clearly label estimates.'}`;
 
-    // Call Gemini API
+    // Call Gemini API with streaming for better UX
     // Use gemini-2.5-flash (fast and cost-effective for this API key)
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-2.5-flash'
+      model: 'gemini-2.5-flash',
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 4096,
+      }
     });
     
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    const text = response.text();
+    // Create streaming response
+    const encoder = new TextEncoder();
+    const stream = new TransformStream();
+    const writer = stream.writable.getWriter();
+    
+    // Start async generation
+    (async () => {
+      try {
+        // Send initial progress
+        await writer.write(encoder.encode(`data: ${JSON.stringify({ 
+          type: 'progress',
+          status: 'analyzing', 
+          message: 'Analyzing your trip requirements...',
+          progress: 5
+        })}\n\n`));
+        
+        // Generate with streaming
+        const result = await model.generateContentStream(prompt);
+        let buffer = '';
+        let progressCounter = 10;
+        
+        for await (const chunk of result.stream) {
+          const chunkText = chunk.text();
+          buffer += chunkText;
+          
+          // Send progress updates based on buffer size
+          progressCounter = Math.min(90, progressCounter + 5);
+          
+          // Determine current phase based on content
+          let message = 'Building your itinerary...';
+          if (buffer.includes('"flights"')) {
+            message = 'Planning flight routes...';
+          } else if (buffer.includes('"lodgingZones"')) {
+            message = 'Finding best lodging zones...';
+          } else if (buffer.includes('"insiderTips"')) {
+            message = 'Adding insider tips...';
+          }
+          
+          await writer.write(encoder.encode(`data: ${JSON.stringify({ 
+            type: 'progress',
+            status: 'generating', 
+            message,
+            progress: progressCounter
+          })}\n\n`));
+        }
+        
+        // Send finalizing message
+        await writer.write(encoder.encode(`data: ${JSON.stringify({ 
+          type: 'progress',
+          status: 'finalizing', 
+          message: 'Finalizing your itinerary...',
+          progress: 95
+        })}\n\n`));
 
-    // Parse JSON from response (strip markdown code blocks if present)
-    let jsonText = text.trim();
-    if (jsonText.startsWith('```json')) {
-      jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
-    } else if (jsonText.startsWith('```')) {
-      jsonText = jsonText.replace(/```\n?/g, '');
-    }
+        // Parse JSON from complete response (strip markdown code blocks if present)
+        let jsonText = buffer.trim();
+        if (jsonText.startsWith('```json')) {
+          jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+        } else if (jsonText.startsWith('```')) {
+          jsonText = jsonText.replace(/```\n?/g, '');
+        }
 
-    const itinerary = JSON.parse(jsonText);
+        const itinerary = JSON.parse(jsonText);
+        
+        // Save to database
+        const { error: saveError } = await supabase
+          .from('travel_plans')
+          .insert({
+            origin_city: mergedForm.originCity || mergedForm.originAirport?.city || null,
+            origin_airport: mergedForm.originAirport || null,
+            group_size: mergedForm.groupSize,
+            children: mergedForm.children,
+            seniors: mergedForm.seniors,
+            mobility_issues: mergedForm.mobilityIssues,
+            transport_mode: mergedForm.transportMode,
+            budget_level: mergedForm.budgetLevel,
+            trip_focus: mergedForm.tripFocus ?? [],
+            cities_visiting: mergedForm.citiesVisiting,
+            has_match_tickets: mergedForm.hasMatchTickets,
+            match_dates: mergedForm.matchDates ?? [],
+            ticket_cities: mergedForm.ticketCities ?? [],
+            personal_context: mergedForm.personalContext || null,
+            surprise_me: mergedForm.surpriseMe ?? false,
+            food_preference: mergedForm.foodPreference || null,
+            nightlife_preference: mergedForm.nightlifePreference || null,
+            climate_preference: mergedForm.climatePreference || null,
+            start_date: mergedForm.startDate || null,
+            end_date: mergedForm.endDate || null,
+            itinerary,
+            user_id: userId,
+          });
 
-    // Save to database (optional - for tracking)
-    const { error: saveError } = await supabase
-      .from('travel_plans')
-      .insert({
-        origin_city: mergedForm.originCity || mergedForm.originAirport?.city || null,
-        origin_airport: mergedForm.originAirport || null,
-        group_size: mergedForm.groupSize,
-        children: mergedForm.children,
-        seniors: mergedForm.seniors,
-        mobility_issues: mergedForm.mobilityIssues,
-        transport_mode: mergedForm.transportMode,
-        budget_level: mergedForm.budgetLevel,
-        trip_focus: mergedForm.tripFocus ?? [],
-        cities_visiting: mergedForm.citiesVisiting,
-        has_match_tickets: mergedForm.hasMatchTickets,
-        match_dates: mergedForm.matchDates ?? [],
-        ticket_cities: mergedForm.ticketCities ?? [],
-        personal_context: mergedForm.personalContext || null,
-        surprise_me: mergedForm.surpriseMe ?? false,
-        food_preference: mergedForm.foodPreference || null,
-        nightlife_preference: mergedForm.nightlifePreference || null,
-        climate_preference: mergedForm.climatePreference || null,
-        start_date: mergedForm.startDate || null,
-        end_date: mergedForm.endDate || null,
-        itinerary,
-        user_id: userId,
-      });
-
-    if (saveError) {
-      console.error('Failed to save travel plan:', saveError);
-      // Don't fail the request if saving fails
-    }
-
-    return NextResponse.json({ success: true, itinerary });
+        if (saveError) {
+          console.error('Failed to save travel plan:', saveError);
+        }
+        
+        // Send complete result
+        await writer.write(encoder.encode(`data: ${JSON.stringify({ 
+          type: 'complete',
+          itinerary
+        })}\n\n`));
+        
+      } catch (error) {
+        console.error('Streaming error:', error);
+        await writer.write(encoder.encode(`data: ${JSON.stringify({ 
+          type: 'error',
+          error: error instanceof Error ? error.message : 'Failed to generate itinerary'
+        })}\n\n`));
+      } finally {
+        await writer.close();
+      }
+    })();
+    
+    return new Response(stream.readable, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    });
 
   } catch (error) {
     console.error('Travel planner error:', error);

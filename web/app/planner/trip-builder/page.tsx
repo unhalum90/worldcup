@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import ItineraryResults from '@/components/ItineraryResults';
-import DidYouKnowCarousel from '@/components/DidYouKnowCarousel';
+import PlannerLoader from '@/components/PlannerLoader';
 import { useAuth } from '@/lib/AuthContext';
 import AuthModal from '@/components/AuthModal';
 import { useProfile } from '@/lib/profile/api';
@@ -21,6 +21,7 @@ export default function PlannerPage() {
   const [lastForm, setLastForm] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<'review' | 'trip'>('review');
+  const [streamProgress, setStreamProgress] = useState<{message: string; progress: number}>({ message: '', progress: 0 });
   
   // Apply trip builder theme
   usePlannerTheme('trip');
@@ -30,6 +31,7 @@ export default function PlannerPage() {
   const handleFormSubmit = async (formData: any) => {
     setIsLoading(true);
     setError(null);
+    setStreamProgress({ message: 'Connecting to AI planner...', progress: 0 });
 
     try {
       const response = await fetch('/api/travel-planner', {
@@ -45,9 +47,48 @@ export default function PlannerPage() {
         throw new Error(errorData.error || 'Failed to generate itinerary');
       }
 
-  const data = await response.json();
-  setLastForm(formData);
-  setItinerary(data.itinerary);
+      // Handle streaming response
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      
+      if (!reader) {
+        throw new Error('No response stream available');
+      }
+
+      let buffer = '';
+      
+      while (true) {
+        const { done, value } = await reader.read();
+        
+        if (done) break;
+        
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n\n');
+        buffer = lines.pop() || '';
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              
+              if (data.type === 'progress') {
+                setStreamProgress({ 
+                  message: data.message || 'Processing...', 
+                  progress: data.progress || 0 
+                });
+              } else if (data.type === 'complete') {
+                setLastForm(formData);
+                setItinerary(data.itinerary);
+                setStreamProgress({ message: 'Complete!', progress: 100 });
+              } else if (data.type === 'error') {
+                throw new Error(data.error);
+              }
+            } catch (parseError) {
+              console.error('Error parsing stream data:', parseError);
+            }
+          }
+        }
+      }
     } catch (err) {
       console.error('Error generating itinerary:', err);
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
@@ -141,51 +182,63 @@ export default function PlannerPage() {
           </div>
         )}
 
-        {isLoading && (
-          <div className="max-w-5xl mx-auto px-6 space-y-8">
-            {/* Title and Progress */}
-            <div className="text-center space-y-4">
-              <div className="animate-pulse">
-                <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                  🌍 Crafting Your Perfect World Cup Journey...
-                </h2>
-                <p className="text-lg text-gray-600">
-                  Our AI is analyzing your preferences with expert local knowledge
-                </p>
-              </div>
-              
-              {/* Progress bar */}
-              <div className="max-w-md mx-auto">
-                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                  <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full animate-progress"></div>
+        {isLoading && lastForm && (
+          <div className="max-w-5xl mx-auto px-6 space-y-6">
+            {/* Streaming Progress Display */}
+            <div className="bg-white rounded-2xl shadow-lg p-8 space-y-6">
+              <div className="text-center space-y-4">
+                <div className="animate-pulse">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                    🌍 Crafting Your Perfect World Cup Journey...
+                  </h2>
+                  <p className="text-lg text-gray-600">
+                    {streamProgress.message || 'Our AI is analyzing your preferences...'}
+                  </p>
                 </div>
-                <p className="text-sm text-gray-500 mt-2">⏱️ This usually takes 45-60 seconds</p>
+                
+                {/* Enhanced Progress bar with streaming data */}
+                <div className="max-w-md mx-auto">
+                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div 
+                      className="bg-gradient-to-r from-purple-500 to-purple-600 h-3 rounded-full transition-all duration-500 ease-out relative"
+                      style={{ width: `${streamProgress.progress}%` }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-2 flex items-center justify-between">
+                    <span>⏱️ Processing your request...</span>
+                    <span className="font-mono font-semibold">{Math.round(streamProgress.progress)}%</span>
+                  </p>
+                </div>
               </div>
             </div>
-
-            {/* Did You Know Carousel */}
-            <div className="py-6">
-              <h3 className="text-xl font-semibold text-center text-gray-800 mb-6">
-                While You Wait: World Cup History Quiz
-              </h3>
-              <DidYouKnowCarousel />
-            </div>
-
-            {/* Status messages */}
-            <div className="max-w-md mx-auto space-y-3 text-center">
-              <div className="flex items-center justify-center space-x-2 text-gray-600">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <p className="text-sm">Loading city-specific travel guides...</p>
-              </div>
-              <div className="flex items-center justify-center space-x-2 text-gray-600">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <p className="text-sm">Analyzing flight connections and lodging options...</p>
-              </div>
-              <div className="flex items-center justify-center space-x-2 text-gray-600">
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                <p className="text-sm">Calculating match day logistics...</p>
-              </div>
-            </div>
+            
+            {/* Use PlannerLoader for visual consistency */}
+            <PlannerLoader 
+              plannerType="trip" 
+              trip={{
+                optionIndex: 0,
+                option: {
+                  title: 'World Cup 2026 Trip',
+                  summary: 'Planning your custom itinerary',
+                  cities: (lastForm.citiesVisiting || []).map((city: string) => ({
+                    cityName: city,
+                    lodgingZones: [],
+                    matchDayLogistics: '',
+                    insiderTips: []
+                  })),
+                  flights: { estimatedCost: 'TBD' },
+                  trip: {
+                    cityOrder: lastForm.citiesVisiting || [],
+                    nightsPerCity: {}
+                  }
+                },
+                tripInput: lastForm,
+                savedAt: Date.now()
+              }}
+              duration={50000}
+            />
           </div>
         )}
 

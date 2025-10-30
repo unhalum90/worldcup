@@ -15,13 +15,16 @@ import {
   Car,
   Utensils,
   Building2,
-  Home
+  Home,
+  Calendar,
+  Map,
+  Sparkles
 } from 'lucide-react';
 import { useSimulatedProgress } from '@/hooks/useSimulatedProgress';
 import type { StoredSelection } from '@/types/trip';
 
 interface PlannerLoaderProps {
-  plannerType: 'flight' | 'lodging';
+  plannerType: 'flight' | 'lodging' | 'trip';
   trip: StoredSelection;
   duration?: number;
 }
@@ -53,6 +56,17 @@ const LODGING_MESSAGES: PlannerMessage[] = [
   { icon: Home, text: 'Comparing **{nights}-night stay** under ${budget}/night...', behavior: 'wiggle' },
   { icon: Bed, text: 'Finding quiet stays for your "{tripType}" preference...', behavior: 'slide' },
   { icon: MapPin, text: 'Finalizing lodging zones and travel scores...', behavior: 'drop' },
+];
+
+const TRIP_MESSAGES: PlannerMessage[] = [
+  { icon: Globe2, text: 'Analyzing **{travelers}** travelers across **multiple cities**...', behavior: 'rotate' },
+  { icon: Calendar, text: 'Mapping **{nights}-day** itinerary from **{from}** to **{to}**...', behavior: 'pulse' },
+  { icon: Plane, text: 'Optimizing flight routes and connections...', behavior: 'glide' },
+  { icon: Building2, text: 'Finding lodging near stadiums in each city...', behavior: 'drop' },
+  { icon: Map, text: 'Building day-by-day logistics and match schedules...', behavior: 'slide' },
+  { icon: Utensils, text: 'Discovering local dining and nightlife hotspots...', behavior: 'wiggle' },
+  { icon: Brain, text: 'Crafting personalized recommendations and insider tips...', behavior: 'pulse' },
+  { icon: Sparkles, text: 'Finalizing your complete World Cup adventure...', behavior: 'wave' },
 ];
 
 const iconAnimations: Record<AnimationBehavior, any> = {
@@ -142,7 +156,7 @@ function formatMessage(template: string, trip: StoredSelection): string {
     .replace(/{tripType}/g, tripType);
 }
 
-function ProgressBar({ progress, plannerType }: { progress: number; plannerType: 'flight' | 'lodging' }) {
+function ProgressBar({ progress, plannerType }: { progress: number; plannerType: 'flight' | 'lodging' | 'trip' }) {
   const colors = {
     flight: {
       bg: 'bg-blue-100',
@@ -153,6 +167,11 @@ function ProgressBar({ progress, plannerType }: { progress: number; plannerType:
       bg: 'bg-rose-100', 
       fill: 'bg-rose-500',
       gradient: 'from-rose-400 to-rose-600'
+    },
+    trip: {
+      bg: 'bg-purple-100',
+      fill: 'bg-purple-500',
+      gradient: 'from-purple-400 to-purple-600'
     }
   };
 
@@ -180,7 +199,9 @@ export default function PlannerLoader({ plannerType, trip, duration = 60000 }: P
   const progress = useSimulatedProgress(duration);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   
-  const messages = plannerType === 'flight' ? FLIGHT_MESSAGES : LODGING_MESSAGES;
+  const messages = plannerType === 'flight' ? FLIGHT_MESSAGES : 
+                   plannerType === 'lodging' ? LODGING_MESSAGES :
+                   TRIP_MESSAGES;
   
   useEffect(() => {
     const messageInterval = setInterval(() => {
@@ -196,12 +217,20 @@ export default function PlannerLoader({ plannerType, trip, duration = 60000 }: P
 
   const containerColors = {
     flight: 'from-blue-50 to-sky-50',
-    lodging: 'from-rose-50 to-orange-50'
+    lodging: 'from-rose-50 to-orange-50',
+    trip: 'from-purple-50 to-indigo-50'
   };
 
   const textColors = {
     flight: 'text-blue-900',
-    lodging: 'text-rose-900'
+    lodging: 'text-rose-900',
+    trip: 'text-purple-900'
+  };
+
+  const borderColors = {
+    flight: 'border-blue-200',
+    lodging: 'border-rose-200',
+    trip: 'border-purple-200'
   };
 
   // Split text on ** for bold formatting
@@ -211,12 +240,14 @@ export default function PlannerLoader({ plannerType, trip, duration = 60000 }: P
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-gradient-to-br ${containerColors[plannerType]} border-2 ${plannerType === 'flight' ? 'border-blue-200' : 'border-rose-200'} rounded-2xl shadow-lg p-8 space-y-6`}
+      className={`bg-gradient-to-br ${containerColors[plannerType]} border-2 ${borderColors[plannerType]} rounded-2xl shadow-lg p-8 space-y-6`}
     >
       {/* Header */}
       <div className="text-center space-y-2">
         <p className={`text-sm font-semibold ${textColors[plannerType]} opacity-75`}>
-          {plannerType === 'flight' ? 'Flight Planner AI' : 'Lodging Zone AI'} Working...
+          {plannerType === 'flight' ? 'Flight Planner AI' : 
+           plannerType === 'lodging' ? 'Lodging Zone AI' :
+           'Trip Builder AI'} Working...
         </p>
         <div className={`text-xs ${textColors[plannerType]} opacity-60`}>
           Processing your {trip.option.title} itinerary
