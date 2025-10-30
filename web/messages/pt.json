@@ -2,10 +2,14 @@
   "nav": {
     "home": "Início",
     "blog": "Newsletter",
-    "privacy": "Privacidade",
+    "newsletter": "Boletim",
+    "teams": "Equipes",
     "guides": "Guias",
-    "forums": "Fóruns",
     "planner": "Planejador",
+    "signIn": "Entrar",
+    "subscribeFree": "Inscreva-se Grátis",
+    "privacy": "Privacidade",
+    "forums": "Fóruns",
     "roadmap": "Roteiro"
   },
   "hero": {

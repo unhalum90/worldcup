@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from 'next/navigation';
+import { sendMagicLink } from '@/lib/auth/magicLink';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -10,65 +11,53 @@ interface AuthModalProps {
 }
 
 export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProps) {
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const router = useRouter();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   if (!isOpen) return null;
+
+  const targetPath = redirectTo || '/onboarding';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSuccess('');
 
     try {
-      if (mode === 'signup') {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: redirectTo ? `${window.location.origin}${redirectTo}` : undefined,
-          },
-        });
-        if (error) throw error;
-        
-        // Close modal and redirect
+      await sendMagicLink(email, targetPath);
+      
+      // Store email for verification page
+      localStorage.setItem('pending_verification_email', email);
+      localStorage.setItem('pending_verification_redirect', targetPath);
+
+      // Show success message
+      setSuccess('Check your email! We sent you a magic link to sign in.');
+      
+      // Redirect to verification page after brief delay
+      setTimeout(() => {
         onClose();
-        if (redirectTo) {
-          window.location.href = redirectTo;
-        }
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        
-        // Close modal and redirect
-        onClose();
-        if (redirectTo) {
-          window.location.href = redirectTo;
-        }
-      }
+        router.push('/verify-email');
+      }, 1500);
     } catch (err) {
-      let errorMessage = 'An error occurred';
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Unable to send magic link. Please try again.';
       
-      if (err instanceof Error) {
-        errorMessage = err.message;
-        
-        // Provide helpful context for common errors
-        if (errorMessage.includes('fetch')) {
-          errorMessage = 'Unable to connect to authentication service. Please check your internet connection or try again later.';
-        } else if (errorMessage.includes('Invalid login credentials')) {
-          errorMessage = 'Invalid email or password. Please try again.';
-        } else if (errorMessage.includes('User already registered')) {
-          errorMessage = 'This email is already registered. Try signing in instead.';
-        }
+      // Handle existing user case gracefully
+      if (message.includes('already registered') || message.includes('user_already_exists')) {
+        setSuccess('This email is already registered — check your inbox for a Magic Link to sign in.');
+        setTimeout(() => {
+          onClose();
+          router.push('/verify-email');
+        }, 2000);
+      } else {
+        setError(message);
       }
-      
-      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -96,51 +85,31 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
           </button>
 
           {/* Header */}
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              {mode === 'signup' ? 'Create Account' : 'Welcome Back'}
-            </h2>
-            <p className="text-gray-600">
-              {mode === 'signup' 
-                ? 'Join to access forums and AI travel planner' 
-                : 'Sign in to continue'}
+          <div className="text-center mb-6 space-y-2">
+            <h2 className="text-3xl font-bold text-gray-900">Welcome</h2>
+            <p className="text-gray-600 text-sm">
+              Enter your email and we'll send you a magic link.
+              <br />
+              <span className="font-medium">No password needed.</span>
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="auth-email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email
               </label>
               <input
-                id="email"
+                id="auth-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="you@example.com"
+                autoFocus
               />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="••••••••"
-              />
-              {mode === 'signup' && (
-                <p className="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
-              )}
             </div>
 
             {error && (
@@ -149,29 +118,24 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
               </div>
             )}
 
+            {success && (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+                {success}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
             >
-              {loading ? 'Please wait...' : mode === 'signup' ? 'Create Account' : 'Sign In'}
+              {loading ? 'Sending link…' : 'Send magic link'}
             </button>
           </form>
 
-          {/* Toggle mode */}
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => {
-                setMode(mode === 'signup' ? 'signin' : 'signup');
-                setError('');
-              }}
-              className="text-blue-600 hover:text-blue-700 font-medium text-sm"
-            >
-              {mode === 'signup' 
-                ? 'Already have an account? Sign in' 
-                : "Don't have an account? Sign up"}
-            </button>
-          </div>
+          <p className="mt-6 text-center text-xs text-gray-500">
+            Works for new and existing accounts. Check your spam folder if you don't see the email.
+          </p>
         </div>
       </div>
     </div>

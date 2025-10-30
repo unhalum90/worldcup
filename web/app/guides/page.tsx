@@ -60,9 +60,9 @@ export default function GuidesPage() {
               <p className="text-sm text-gray-600">Metro, Uber, and stadium connections simplified.</p>
             </div>
             <div className="bg-white rounded-xl p-4 border border-gray-200">
-              <div className="text-2xl">🍻</div>
-              <h3 className="font-semibold mt-2">Fan Hotspots</h3>
-              <p className="text-sm text-gray-600">Top bars and meetups for match days.</p>
+              <div className="text-2xl">✈️</div>
+              <h3 className="font-semibold mt-2">Flight Itineraries</h3>
+              <p className="text-sm text-gray-600">Review which airports are best for your trip.</p>
             </div>
             <div className="bg-white rounded-xl p-4 border border-gray-200">
               <div className="text-2xl">💡</div>

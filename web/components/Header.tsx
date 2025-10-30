@@ -29,9 +29,9 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { href: '/teams', label: 'Teams' },
-    { href: '/guides', label: 'Guides' },
-    { href: '/planner', label: 'Travel Planner' },
+    { href: '/teams', label: t('teams') },
+    { href: '/guides', label: t('guides') },
+    { href: '/planner', label: t('planner') },
   ];
 
   const isActive = (href: string) => {
@@ -97,7 +97,7 @@ export default function Header() {
                 color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined
               }}
             >
-              Newsletter
+              {t('newsletter')}
             </a>
             
             <LanguageSwitcher />
@@ -114,13 +114,13 @@ export default function Header() {
                     backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"
                   }}
                 >
-                  Sign in
+                  {t('signIn')}
                 </button>
                 <button
                   onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
                   className="px-4 py-2 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-sm shadow-md"
                 >
-                  Subscribe Free
+                  {t('subscribeFree')}
                 </button>
               </div>
             )}
@@ -205,7 +205,7 @@ export default function Header() {
                 className={`text-sm font-medium py-2 px-3 rounded-lg hover:opacity-80 text-left transition-opacity ${!profile?.favorite_team ? 'text-gray-900' : ''}`}
                 style={{ color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827" }}
               >
-                Newsletter
+                {t('newsletter')}
               </button>
               
               <div className="py-2 px-3">
@@ -226,13 +226,13 @@ export default function Header() {
                       borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827"
                     }}
                   >
-                    Sign in
+                    {t('signIn')}
                   </button>
                   <button
                     onClick={() => { setIsMenuOpen(false); window.dispatchEvent(new Event('fz:open-subscribe')); }}
                     className="px-4 py-3 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-center shadow-md"
                   >
-                    Subscribe Free
+                    {t('subscribeFree')}
                   </button>
                 </>
               )}
@@ -274,7 +274,7 @@ export default function Header() {
             onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
             className="px-6 py-3 rounded-full bg-[color:var(--color-accent-red)] text-white font-bold hover:brightness-110 transition-all shadow-2xl hover:shadow-3xl flex items-center gap-2 animate-bounce-subtle"
           >
-            Subscribe Free
+            {t('subscribeFree')}
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>

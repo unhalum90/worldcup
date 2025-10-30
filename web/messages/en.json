@@ -2,6 +2,12 @@
   "nav": {
     "home": "Home",
     "blog": "Newsletter",
+    "newsletter": "Newsletter",
+    "teams": "Teams",
+    "guides": "Guides",
+    "planner": "Travel Planner",
+    "signIn": "Sign in",
+    "subscribeFree": "Subscribe Free",
     "privacy": "Privacy"
   },
   "hero": {

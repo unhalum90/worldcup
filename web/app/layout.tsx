@@ -10,7 +10,7 @@ import ExitIntentModal from "@/components/ExitIntentModal";
 import SubscribeModal from "@/components/SubscribeModal";
 import GlobalAuthLauncher from "@/components/GlobalAuthLauncher";
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getLocale } from 'next-intl/server';
 import { AuthProvider } from '@/lib/AuthContext';
 import LanguageModal from '@/components/LanguageModal';
 import { WebVitals } from '@/components/WebVitals';
@@ -43,11 +43,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const messages = await getMessages();
+  const locale = await getLocale();
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
+  
   // Feature flag: hide first-visit language selection modal unless explicitly enabled
   const showLanguageModal = process.env.NEXT_PUBLIC_ENABLE_LANGUAGE_MODAL === 'true';
   
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

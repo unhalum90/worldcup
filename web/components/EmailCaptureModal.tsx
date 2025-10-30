@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { sendMagicLink } from "@/lib/auth/magicLink";
 
 interface EmailCaptureModalProps {
   isOpen: boolean;
@@ -24,22 +24,12 @@ export default function EmailCaptureModal({ isOpen, onClose }: EmailCaptureModal
     setError("");
 
     try {
-      const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password: Math.random().toString(36).slice(-12) + "Aa1!", // Random password
-        options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-        },
-      });
+      // Send Magic Link for authentication
+      await sendMagicLink(email, "/onboarding");
 
-      if (signUpError) {
-        setError(signUpError.message);
-        setLoading(false);
-        return;
-      }
-
-      // Store email for resend functionality
+      // Store email for resend functionality and verification page
       localStorage.setItem("pending_verification_email", email);
+      localStorage.setItem("pending_verification_redirect", "/onboarding");
 
       // Send newsletter opt-in if checked
       if (optIn) {
@@ -61,8 +51,16 @@ export default function EmailCaptureModal({ isOpen, onClose }: EmailCaptureModal
       // Redirect to verify page
       router.push("/verify-email");
     } catch (e: any) {
-      setError(e.message || "Something went wrong. Please try again.");
-      setLoading(false);
+      // Handle existing user case gracefully
+      if (e.message?.includes('already registered') || e.message?.includes('user_already_exists')) {
+        // Still redirect to verify page for existing users
+        localStorage.setItem("pending_verification_email", email);
+        localStorage.setItem("pending_verification_redirect", "/onboarding");
+        router.push("/verify-email");
+      } else {
+        setError(e.message || "Something went wrong. Please try again.");
+        setLoading(false);
+      }
     }
   }
 

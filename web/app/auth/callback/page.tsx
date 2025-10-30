@@ -11,60 +11,74 @@ export default function AuthCallback() {
   useEffect(() => {
     async function handleCallback() {
       try {
-        // The hash fragment contains the tokens from Supabase
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const accessToken = hashParams.get('access_token');
-        const refreshToken = hashParams.get('refresh_token');
-        
-        // Also check query params for code-based flow
+        // Get redirect path from URL params
         const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
+        const redirectPath = urlParams.get('redirect');
 
-        if (accessToken && refreshToken) {
-          // Set the session from the hash params
-          const { error: sessionError } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          });
+        // Wait a moment for Supabase to auto-detect and handle the session from URL
+        // The createBrowserClient has detectSessionInUrl: true, so it handles PKCE automatically
+        await new Promise(resolve => setTimeout(resolve, 100));
 
-          if (sessionError) {
-            console.error('Error setting session:', sessionError);
-            setError(sessionError.message);
-            return;
-          }
-
-          // Successfully authenticated, redirect to onboarding
-          router.replace("/onboarding");
-          return;
-        }
-
-        if (code) {
-          // Try exchanging code for session
-          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-          
-          if (exchangeError) {
-            console.error('Error exchanging code:', exchangeError);
-            setError(exchangeError.message);
-            return;
-          }
-
-          router.replace("/onboarding");
-          return;
-        }
-
-        // Fallback: check if there's already a session
-        const { data: sessionData } = await supabase.auth.getSession();
+        // Now check if we have a valid session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
-        if (sessionData?.session) {
-          router.replace("/onboarding");
-        } else {
-          // No session found, redirect to home
-          console.log('No auth data found, redirecting home');
-          router.replace("/");
+        if (sessionError) {
+          console.error('Error getting session:', sessionError);
+          setError(sessionError.message);
+          return;
         }
+
+        if (!session) {
+          console.log('No session found after callback, redirecting home');
+          router.replace("/");
+          return;
+        }
+
+        // We have a session! Determine where to send the user
+        const destination = await determineUserDestination(redirectPath);
+        router.replace(destination);
       } catch (err: any) {
         console.error('Callback error:', err);
         setError(err.message || 'Something went wrong');
+      }
+    }
+
+    async function determineUserDestination(redirectPath: string | null): Promise<string> {
+      try {
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) {
+          return "/";
+        }
+
+        // Check if user has completed onboarding (has user_profile)
+        const { data: profile } = await supabase
+          .from('user_profile')
+          .select('user_id, home_airport')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        // New user - send to onboarding
+        if (!profile || !profile.home_airport) {
+          console.log('New user detected - redirecting to onboarding');
+          return "/onboarding";
+        }
+
+        // Returning user - send to intended destination or planner
+        console.log('Returning user detected - redirecting to destination');
+        
+        // If they had a specific redirect path, use it
+        if (redirectPath && redirectPath !== '/') {
+          return redirectPath;
+        }
+
+        // Otherwise send to planner as default
+        return "/planner";
+      } catch (error) {
+        console.error('Error determining user destination:', error);
+        // On error, default to onboarding to be safe
+        return "/onboarding";
       }
     }
     
@@ -89,8 +103,8 @@ export default function AuthCallback() {
         ) : (
           <>
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
-            <p className="text-lg font-medium text-gray-700">Verifying your account...</p>
-            <p className="text-sm text-gray-500">You'll be redirected shortly</p>
+            <p className="text-lg font-medium text-gray-700">Signing you in...</p>
+            <p className="text-sm text-gray-500">Please wait a moment</p>
           </>
         )}
       </div>

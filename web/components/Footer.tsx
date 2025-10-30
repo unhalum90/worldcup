@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 
 const LANGUAGES = [
   { code: 'en', flag: '🇺🇸', name: 'English' },
-  { code: 'es', flag: '🇪🇸', name: 'Español' },
   { code: 'fr', flag: '🇫🇷', name: 'Français' },
+  { code: 'es', flag: '🇪🇸', name: 'Español' },
   { code: 'pt', flag: '🇵🇹', name: 'Português' },
   { code: 'ar', flag: '🇸🇦', name: 'العربية' },
 ];
