@@ -9,60 +9,63 @@ async function determineUserDestination(userId: string, redirectPath: string | n
   try {
     console.log('[AuthCallback Server] Determining destination for user:', userId);
     
-    const cookieStore = await cookies();
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
-          },
-          set(name: string, value: string, options: any) {
-            cookieStore.set({ name, value, ...options });
-          },
-          remove(name: string, options: any) {
-            cookieStore.delete({ name, ...options });
-          },
-        },
-      }
-    );
-
-    // Check if user has completed onboarding (has user_profile)
-    const { data: profile, error: profileError } = await supabase
-      .from('user_profile')
-      .select('user_id, home_airport')
-      .eq('user_id', userId)
-      .maybeSingle();
-
-    console.log('[AuthCallback Server] Profile check:', { 
-      hasProfile: !!profile, 
-      hasHomeAirport: !!profile?.home_airport,
-      error: profileError 
-    });
-
-    // New user - send to onboarding
-    if (!profile || !profile.home_airport) {
-      console.log('[AuthCallback Server] New user - redirecting to onboarding');
-      return "/onboarding";
-    }
-
-    // Returning user - send to intended destination or planner
-    console.log('[AuthCallback Server] Returning user - redirecting to destination');
-    
-    // If they had a specific redirect path, use it
+    // If they had a specific redirect path, use it (unless it's /account which causes loops)
     if (redirectPath && redirectPath !== '/' && redirectPath !== '/account') {
       console.log('[AuthCallback Server] Using redirect path:', redirectPath);
       return redirectPath;
     }
 
-    // Otherwise send to planner as default
-    console.log('[AuthCallback Server] Using default destination: /planner');
-    return "/planner";
+    // Try to check profile, but don't fail if it errors
+    try {
+      const cookieStore = await cookies();
+      const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          cookies: {
+            get(name: string) {
+              return cookieStore.get(name)?.value;
+            },
+            set(name: string, value: string, options: any) {
+              cookieStore.set({ name, value, ...options });
+            },
+            remove(name: string, options: any) {
+              cookieStore.delete({ name, ...options });
+            },
+          },
+        }
+      );
+
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profile')
+        .select('user_id, home_airport')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      console.log('[AuthCallback Server] Profile check:', { 
+        hasProfile: !!profile, 
+        hasHomeAirport: !!profile?.home_airport,
+        error: profileError 
+      });
+
+      // If profile exists with home airport, they're a returning user -> planner
+      if (profile?.home_airport) {
+        console.log('[AuthCallback Server] Returning user with profile - redirecting to planner');
+        return "/planner";
+      }
+    } catch (profileCheckError) {
+      console.error('[AuthCallback Server] Profile check failed, defaulting to planner:', profileCheckError);
+      // If profile check fails, assume returning user and send to planner
+      return "/planner";
+    }
+
+    // No profile or no home airport - new user -> onboarding
+    console.log('[AuthCallback Server] New user or incomplete profile - redirecting to onboarding');
+    return "/onboarding";
   } catch (error) {
     console.error('[AuthCallback Server] Error determining destination:', error);
-    // On error, default to onboarding
-    return "/onboarding";
+    // On any error, default to planner (safer for existing users)
+    return "/planner";
   }
 }
 
@@ -105,11 +108,24 @@ export default async function AuthCallback({
     );
 
     // Exchange the code for a session
+    console.log('[AuthCallback Server] Attempting to exchange code for session...');
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+    console.log('[AuthCallback Server] Exchange result:', {
+      hasData: !!data,
+      hasSession: !!data?.session,
+      hasUser: !!data?.user,
+      error: error ? {
+        message: error.message,
+        status: error.status,
+        name: error.name,
+      } : null,
+    });
 
     if (error) {
       console.error('[AuthCallback Server] Error exchanging code:', error);
-      redirect(`/auth/auth-code-error?error=${encodeURIComponent(error.message)}`);
+      const errorMessage = error.message || 'Failed to authenticate. Please try requesting a new sign-in link.';
+      redirect(`/auth/auth-code-error?error=${encodeURIComponent(errorMessage)}`);
     }
 
     if (data.session) {
