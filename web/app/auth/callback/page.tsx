@@ -9,80 +9,119 @@ export default function AuthCallback() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let mounted = true;
+
     async function handleCallback() {
       try {
+        console.log('[AuthCallback] Starting callback handler...');
+        
         // Get redirect path from URL params
         const urlParams = new URLSearchParams(window.location.search);
         const redirectPath = urlParams.get('redirect');
+        console.log('[AuthCallback] Redirect path:', redirectPath);
 
-        // Wait a moment for Supabase to auto-detect and handle the session from URL
+        // Wait for Supabase to auto-detect and handle the session from URL
         // The createBrowserClient has detectSessionInUrl: true, so it handles PKCE automatically
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        if (!mounted) return;
 
         // Now check if we have a valid session
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
+        console.log('[AuthCallback] Session check:', { hasSession: !!session, error: sessionError });
+        
         if (sessionError) {
-          console.error('Error getting session:', sessionError);
-          setError(sessionError.message);
+          console.error('[AuthCallback] Error getting session:', sessionError);
+          if (mounted) {
+            setError(sessionError.message);
+          }
           return;
         }
 
         if (!session) {
-          console.log('No session found after callback, redirecting home');
-          router.replace("/");
+          console.log('[AuthCallback] No session found, redirecting home');
+          if (mounted) {
+            router.replace("/");
+          }
           return;
         }
 
         // We have a session! Determine where to send the user
+        console.log('[AuthCallback] Session found, determining destination...');
         const destination = await determineUserDestination(redirectPath);
-        router.replace(destination);
+        console.log('[AuthCallback] Redirecting to:', destination);
+        
+        if (mounted) {
+          router.replace(destination);
+        }
       } catch (err: any) {
-        console.error('Callback error:', err);
-        setError(err.message || 'Something went wrong');
+        console.error('[AuthCallback] Callback error:', err);
+        if (mounted) {
+          setError(err.message || 'Something went wrong');
+        }
       }
     }
 
     async function determineUserDestination(redirectPath: string | null): Promise<string> {
       try {
+        console.log('[AuthCallback] Determining destination...');
+        
         // Get current user
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        
+        console.log('[AuthCallback] User check:', { hasUser: !!user, error: userError });
         
         if (!user) {
+          console.log('[AuthCallback] No user found, returning home');
           return "/";
         }
 
+        console.log('[AuthCallback] Checking user profile for user:', user.id);
+
         // Check if user has completed onboarding (has user_profile)
-        const { data: profile } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from('user_profile')
           .select('user_id, home_airport')
           .eq('user_id', user.id)
           .maybeSingle();
 
+        console.log('[AuthCallback] Profile check:', { 
+          hasProfile: !!profile, 
+          hasHomeAirport: !!profile?.home_airport,
+          error: profileError 
+        });
+
         // New user - send to onboarding
         if (!profile || !profile.home_airport) {
-          console.log('New user detected - redirecting to onboarding');
+          console.log('[AuthCallback] New user detected - will redirect to onboarding');
           return "/onboarding";
         }
 
         // Returning user - send to intended destination or planner
-        console.log('Returning user detected - redirecting to destination');
+        console.log('[AuthCallback] Returning user detected - will redirect to destination');
         
         // If they had a specific redirect path, use it
         if (redirectPath && redirectPath !== '/') {
+          console.log('[AuthCallback] Using redirect path:', redirectPath);
           return redirectPath;
         }
 
         // Otherwise send to planner as default
+        console.log('[AuthCallback] Using default destination: /planner');
         return "/planner";
       } catch (error) {
-        console.error('Error determining user destination:', error);
+        console.error('[AuthCallback] Error determining user destination:', error);
         // On error, default to onboarding to be safe
         return "/onboarding";
       }
     }
     
     handleCallback();
+
+    return () => {
+      mounted = false;
+    };
   }, [router]);
 
   return (
