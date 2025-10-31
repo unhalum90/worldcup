@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
-type RouteParams = {
-  params: {
-    id: string;
-  };
-};
+type RouteParams =
+  | { params: { id: string } }
+  | { params: Promise<{ id: string }> };
 
 type UpdateBody = {
   title?: unknown;
@@ -56,7 +54,7 @@ async function ensureUser() {
 }
 
 export async function GET(_req: NextRequest, context: RouteParams) {
-  const id = context?.params?.id;
+  const id = await resolveRouteId(context);
   if (!id) return missingIdResponse();
 
   const { supabase, user, response } = await ensureUser();
@@ -80,7 +78,7 @@ export async function GET(_req: NextRequest, context: RouteParams) {
 }
 
 export async function PATCH(req: NextRequest, context: RouteParams) {
-  const id = context?.params?.id;
+  const id = await resolveRouteId(context);
   if (!id) return missingIdResponse();
 
   const { supabase, user, response } = await ensureUser();
@@ -127,7 +125,7 @@ export async function PATCH(req: NextRequest, context: RouteParams) {
 }
 
 export async function DELETE(_req: NextRequest, context: RouteParams) {
-  const id = context?.params?.id;
+  const id = await resolveRouteId(context);
   if (!id) return missingIdResponse();
 
   const { supabase, user, response } = await ensureUser();
@@ -144,4 +142,10 @@ export async function DELETE(_req: NextRequest, context: RouteParams) {
   }
 
   return new NextResponse(null, { status: 204 });
+}
+
+async function resolveRouteId(context: RouteParams): Promise<string | null> {
+  if (!context || !('params' in context)) return null;
+  const params = await context.params;
+  return params?.id ?? null;
 }

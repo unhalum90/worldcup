@@ -50,12 +50,30 @@ export interface ItineraryOption {
 
 export interface TripInput {
   originCity?: string;
+  originAirport?: {
+    code?: string;
+    name?: string;
+    city?: string;
+    country?: string;
+  } | null;
   groupSize?: number;
   children?: number;
   seniors?: number;
   startDate?: string;
   endDate?: string;
   citiesVisiting?: string[];
+  tripFocus?: string[];
+  ticketCities?: string[];
+  matchDates?: string[];
+  budgetLevel?: string;
+  favoriteTeam?: string;
+  hasMatchTickets?: boolean;
+  transportMode?: string;
+  surpriseMe?: boolean;
+  foodPreference?: string;
+  nightlifePreference?: string;
+  climatePreference?: string;
+  mobilityIssues?: boolean;
 }
 
 export interface StoredSelection {
