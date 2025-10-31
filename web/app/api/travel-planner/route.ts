@@ -530,136 +530,53 @@ ${USE_CITY_CONTEXT ? '**CRITICAL:** Use the authoritative city guides above as p
       }
     });
     
-    // Create streaming response
-    const encoder = new TextEncoder();
-    const stream = new TransformStream();
-    const writer = stream.writable.getWriter();
-    
-    // Start async generation
-    (async () => {
-      const progressMessages = [
-        'Analyzing your trip requirements...',
-        'Mapping city insights and match logistics...',
-        'Planning flight routes and inter-city moves...',
-        'Selecting the best lodging zones for each stop...',
-        'Curating insider tips to elevate your experience...',
-      ];
-      
-      let progressActive = true;
-      let progressIndex = 0;
-      let progressValue = 10;
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
 
-      const progressLoop = (async () => {
-        while (progressActive) {
-          const message = progressMessages[progressIndex % progressMessages.length];
-          progressIndex += 1;
-          progressValue = Math.min(progressValue + 8, 90);
-          await writer.write(encoder.encode(`data: ${JSON.stringify({
-            type: 'progress',
-            status: 'generating',
-            message,
-            progress: progressValue,
-          })}\n\n`));
-          await new Promise(resolve => setTimeout(resolve, 4000));
-        }
-      })();
+    // Parse JSON from response (strip markdown code blocks if present)
+    let jsonText = text.trim();
+    if (jsonText.startsWith('```json')) {
+      jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+    } else if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```\n?/g, '');
+    }
 
-      try {
-        // Send initial progress
-        await writer.write(encoder.encode(`data: ${JSON.stringify({
-          type: 'progress',
-          status: 'analyzing',
-          message: 'Gathering your travel profile and trip inputs...',
-          progress: 5,
-        })}\n\n`));
+    const itinerary = JSON.parse(jsonText);
 
-        // Generate full response (non-streaming for reliability)
-        const generationPromise = model.generateContent(prompt);
-        const result = await generationPromise;
-        progressActive = false;
-        await progressLoop;
+    // Save to database
+    const { error: saveError } = await supabase
+      .from('travel_plans')
+      .insert({
+        origin_city: mergedForm.originCity || mergedForm.originAirport?.city || null,
+        origin_airport: mergedForm.originAirport || null,
+        group_size: mergedForm.groupSize,
+        children: mergedForm.children,
+        seniors: mergedForm.seniors,
+        mobility_issues: mergedForm.mobilityIssues,
+        transport_mode: mergedForm.transportMode,
+        budget_level: mergedForm.budgetLevel,
+        trip_focus: mergedForm.tripFocus ?? [],
+        cities_visiting: mergedForm.citiesVisiting,
+        has_match_tickets: mergedForm.hasMatchTickets,
+        match_dates: mergedForm.matchDates ?? [],
+        ticket_cities: mergedForm.ticketCities ?? [],
+        personal_context: mergedForm.personalContext || null,
+        surprise_me: mergedForm.surpriseMe ?? false,
+        food_preference: mergedForm.foodPreference || null,
+        nightlife_preference: mergedForm.nightlifePreference || null,
+        climate_preference: mergedForm.climatePreference || null,
+        start_date: mergedForm.startDate || null,
+        end_date: mergedForm.endDate || null,
+        itinerary,
+        user_id: userId,
+      });
 
-        // Send finalizing message
-        await writer.write(encoder.encode(`data: ${JSON.stringify({
-          type: 'progress',
-          status: 'finalizing',
-          message: 'Finalizing your itinerary...',
-          progress: 95,
-        })}\n\n`));
+    if (saveError) {
+      console.error('Failed to save travel plan:', saveError);
+    }
 
-        // Parse JSON from complete response (strip markdown code blocks if present)
-        let jsonText = result.response.text().trim();
-        if (jsonText.startsWith('```json')) {
-          jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
-        } else if (jsonText.startsWith('```')) {
-          jsonText = jsonText.replace(/```\n?/g, '');
-        }
-
-        const itinerary = JSON.parse(jsonText);
-        
-        // Save to database
-        const { error: saveError } = await supabase
-          .from('travel_plans')
-          .insert({
-            origin_city: mergedForm.originCity || mergedForm.originAirport?.city || null,
-            origin_airport: mergedForm.originAirport || null,
-            group_size: mergedForm.groupSize,
-            children: mergedForm.children,
-            seniors: mergedForm.seniors,
-            mobility_issues: mergedForm.mobilityIssues,
-            transport_mode: mergedForm.transportMode,
-            budget_level: mergedForm.budgetLevel,
-            trip_focus: mergedForm.tripFocus ?? [],
-            cities_visiting: mergedForm.citiesVisiting,
-            has_match_tickets: mergedForm.hasMatchTickets,
-            match_dates: mergedForm.matchDates ?? [],
-            ticket_cities: mergedForm.ticketCities ?? [],
-            personal_context: mergedForm.personalContext || null,
-            surprise_me: mergedForm.surpriseMe ?? false,
-            food_preference: mergedForm.foodPreference || null,
-            nightlife_preference: mergedForm.nightlifePreference || null,
-            climate_preference: mergedForm.climatePreference || null,
-            start_date: mergedForm.startDate || null,
-            end_date: mergedForm.endDate || null,
-            itinerary,
-            user_id: userId,
-          });
-
-        if (saveError) {
-          console.error('Failed to save travel plan:', saveError);
-        }
-        
-        // Send complete result
-        await writer.write(encoder.encode(`data: ${JSON.stringify({
-          type: 'complete',
-          itinerary,
-        })}\n\n`));
-        await writer.write(encoder.encode(`data: ${JSON.stringify({
-          type: 'progress',
-          status: 'complete',
-          message: 'Itinerary ready!',
-          progress: 100,
-        })}\n\n`));
-      } catch (error) {
-        progressActive = false;
-        await progressLoop.catch(() => undefined);
-        console.error('Streaming error:', error);
-        await writer.write(encoder.encode(`data: ${JSON.stringify({
-          type: 'error',
-          error: error instanceof Error ? error.message : 'Failed to generate itinerary',
-        })}\n\n`));
-      } finally {
-        await writer.close();
-      }
-    })();
-    
-    return new Response(stream.readable, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
-    });
+    return NextResponse.json({ success: true, itinerary });
 
   } catch (error) {
     console.error('Travel planner error:', error);
