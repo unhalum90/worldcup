@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import ItineraryResults from '@/components/ItineraryResults';
-import DidYouKnowCarousel from '@/components/DidYouKnowCarousel';
+import PlannerLoader from '@/components/PlannerLoader';
 import { useAuth } from '@/lib/AuthContext';
 import AuthModal from '@/components/AuthModal';
 import { useProfile } from '@/lib/profile/api';
@@ -143,7 +143,6 @@ export default function PlannerPage() {
 
         {isLoading && (
           <div className="max-w-5xl mx-auto px-6 space-y-8">
-            {/* Title and Progress */}
             <div className="text-center space-y-4">
               <div className="animate-pulse">
                 <h2 className="text-3xl font-bold text-gray-900 mb-3">
@@ -153,39 +152,34 @@ export default function PlannerPage() {
                   Our AI is analyzing your preferences with expert local knowledge
                 </p>
               </div>
-              
-              {/* Progress bar */}
-              <div className="max-w-md mx-auto">
-                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                  <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full animate-progress"></div>
-                </div>
-                <p className="text-sm text-gray-500 mt-2">⏱️ This usually takes 45-60 seconds</p>
-              </div>
+
+              <p className="text-sm text-gray-500">⏱️ This usually takes 45-60 seconds</p>
             </div>
 
-            {/* Did You Know Carousel */}
-            <div className="py-6">
-              <h3 className="text-xl font-semibold text-center text-gray-800 mb-6">
-                While You Wait: World Cup History Quiz
-              </h3>
-              <DidYouKnowCarousel />
-            </div>
-
-            {/* Status messages */}
-            <div className="max-w-md mx-auto space-y-3 text-center">
-              <div className="flex items-center justify-center space-x-2 text-gray-600">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <p className="text-sm">Loading city-specific travel guides...</p>
-              </div>
-              <div className="flex items-center justify-center space-x-2 text-gray-600">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <p className="text-sm">Analyzing flight connections and lodging options...</p>
-              </div>
-              <div className="flex items-center justify-center space-x-2 text-gray-600">
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                <p className="text-sm">Calculating match day logistics...</p>
-              </div>
-            </div>
+            <PlannerLoader
+              plannerType="trip"
+              duration={60000}
+              trip={{
+                optionIndex: 0,
+                option: {
+                  title: 'World Cup 2026 Trip',
+                  summary: 'Analyzing your itinerary inputs...',
+                  cities: (lastForm?.citiesVisiting || []).map((city: string) => ({
+                    cityName: city,
+                    lodgingZones: [],
+                    matchDayLogistics: '',
+                    insiderTips: [],
+                  })),
+                  flights: { estimatedCost: 'TBD' },
+                  trip: {
+                    cityOrder: lastForm?.citiesVisiting || [],
+                    nightsPerCity: {},
+                  },
+                },
+                tripInput: lastForm,
+                savedAt: Date.now(),
+              }}
+            />
           </div>
         )}
 
