@@ -28,7 +28,7 @@ export default function AuthCallback() {
         
         if (!session) {
           console.error('[Callback] No session after callback');
-          router.replace('/');
+          window.location.href = '/';
           return;
         }
 
@@ -49,14 +49,14 @@ export default function AuthCallback() {
         // Determine destination
         if (!profile || !profile.home_airport) {
           console.log('[Callback] Redirecting to onboarding');
-          router.replace('/onboarding');
+          window.location.href = '/onboarding';
         } else {
           console.log('[Callback] Redirecting to planner');
-          router.replace('/planner');
+          window.location.href = '/planner';
         }
       } catch (error) {
         console.error('[Callback] Auth callback error:', error);
-        router.replace('/');
+        window.location.href = '/';
       }
     };
 

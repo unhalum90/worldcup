@@ -72,8 +72,11 @@ export default function PlannerPage() {
         
         for (const line of lines) {
           if (line.startsWith('data: ')) {
+            const jsonStr = line.slice(6).trim();
+            if (!jsonStr) continue; // Skip empty data
+            
             try {
-              const data = JSON.parse(line.slice(6));
+              const data = JSON.parse(jsonStr);
               
               if (data.type === 'progress') {
                 setStreamProgress({ 
@@ -88,7 +91,8 @@ export default function PlannerPage() {
                 throw new Error(data.error);
               }
             } catch (parseError) {
-              console.error('Error parsing stream data:', parseError);
+              console.error('Error parsing stream data:', parseError, 'Line:', jsonStr);
+              // Continue processing other lines instead of failing completely
             }
           }
         }
