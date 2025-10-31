@@ -8,24 +8,59 @@ export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
+    let isActive = true;
+
+    const waitForSession = async () => {
+      const maxAttempts = 10;
+
+      for (let attempt = 0; attempt < maxAttempts && isActive; attempt += 1) {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (session) {
+          return session;
+        }
+
+        // Gradually back off while we wait for Supabase to finish exchanging the code.
+        const delay = attempt < 4 ? 200 : 500;
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+
+      return null;
+    };
+
     const handleCallback = async () => {
       try {
         console.log('[Callback] Starting auth callback handler...');
-        
-        // The createBrowserClient has detectSessionInUrl: true
-        // so it automatically handles the PKCE code exchange
-        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const currentUrl = new URL(window.location.href);
+        const code = currentUrl.searchParams.get('code');
+        const redirectParam = currentUrl.searchParams.get('redirect');
+        const redirectPath =
+          redirectParam && redirectParam.startsWith('/') ? redirectParam : null;
+
+        if (code) {
+          console.log('[Callback] Exchanging code for session...');
+          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+          if (exchangeError) {
+            console.error('[Callback] Code exchange error:', exchangeError);
+            throw exchangeError;
+          }
+
+          // Once the code has been exchanged, clear it from the URL so refreshes don't repeat the flow.
+          currentUrl.searchParams.delete('code');
+          window.history.replaceState({}, '', `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`);
+        }
 
         console.log('[Callback] Checking for session...');
-        // Check if we have a session now
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        console.log('[Callback] Session check:', { 
-          hasSession: !!session, 
+        const session = await waitForSession();
+
+        console.log('[Callback] Session check:', {
+          hasSession: !!session,
           userId: session?.user?.id,
-          error: sessionError 
         });
-        
+
         if (!session) {
           console.error('[Callback] No session after callback');
           window.location.href = '/';
@@ -46,14 +81,13 @@ export default function AuthCallback() {
           error: profileError 
         });
 
-                // Determine destination
-        let destination = '/planner';
+        // Determine destination
+        let destination = redirectPath || '/planner';
         if (!profile || !profile.home_airport) {
           console.log('[Callback] Redirecting to onboarding');
           destination = '/onboarding';
         } else {
           console.log('[Callback] Redirecting to planner');
-          destination = '/planner';
         }
         
         // Use window.location for hard redirect (router.replace doesn't work reliably here)
@@ -65,6 +99,10 @@ export default function AuthCallback() {
     };
 
     handleCallback();
+
+    return () => {
+      isActive = false;
+    };
   }, [router]);
 
   return (
