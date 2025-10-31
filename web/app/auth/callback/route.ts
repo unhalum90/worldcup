@@ -34,7 +34,7 @@ export async function GET(req: Request) {
   const code = url.searchParams.get("code");
   const redirectParam = url.searchParams.get("redirect");
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const cookieUpdates: CookieUpdate[] = [];
 
   const supabaseUrl = normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || "");
@@ -42,7 +42,7 @@ export async function GET(req: Request) {
 
   if (!supabaseUrl || !supabaseKey) {
     console.error("[Callback] Supabase environment variables are missing");
-    return NextResponse.redirect(buildErrorRedirect("invalid_supabase_config"));
+    return NextResponse.redirect(new URL(buildErrorRedirect("invalid_supabase_config"), req.url));
   }
 
   const supabase = createServerClient(supabaseUrl, supabaseKey, {
@@ -61,7 +61,7 @@ export async function GET(req: Request) {
 
   if (!code) {
     console.error("[Callback] Missing code in auth callback");
-    const response = NextResponse.redirect(buildErrorRedirect("missing_code"));
+    const response = NextResponse.redirect(new URL(buildErrorRedirect("missing_code"), req.url));
     applyCookieUpdates(response, cookieUpdates);
     return response;
   }
@@ -72,7 +72,7 @@ export async function GET(req: Request) {
   if (error || !data?.session) {
     console.error("[Callback] Auth exchange failed:", error);
     const response = NextResponse.redirect(
-      buildErrorRedirect(error?.message || "session_exchange_failed"),
+      new URL(buildErrorRedirect(error?.message || "session_exchange_failed"), req.url),
     );
     applyCookieUpdates(response, cookieUpdates);
     return response;
@@ -103,7 +103,7 @@ export async function GET(req: Request) {
   }
 
   console.log("[Callback] Auth session established, redirecting to:", destination);
-  const response = NextResponse.redirect(destination);
+  const response = NextResponse.redirect(new URL(destination, req.url));
   applyCookieUpdates(response, cookieUpdates);
   return response;
 }
