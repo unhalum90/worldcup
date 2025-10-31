@@ -537,55 +537,58 @@ ${USE_CITY_CONTEXT ? '**CRITICAL:** Use the authoritative city guides above as p
     
     // Start async generation
     (async () => {
+      const progressMessages = [
+        'Analyzing your trip requirements...',
+        'Mapping city insights and match logistics...',
+        'Planning flight routes and inter-city moves...',
+        'Selecting the best lodging zones for each stop...',
+        'Curating insider tips to elevate your experience...',
+      ];
+      
+      let progressActive = true;
+      let progressIndex = 0;
+      let progressValue = 10;
+
+      const progressLoop = (async () => {
+        while (progressActive) {
+          const message = progressMessages[progressIndex % progressMessages.length];
+          progressIndex += 1;
+          progressValue = Math.min(progressValue + 8, 90);
+          await writer.write(encoder.encode(`data: ${JSON.stringify({
+            type: 'progress',
+            status: 'generating',
+            message,
+            progress: progressValue,
+          })}\n\n`));
+          await new Promise(resolve => setTimeout(resolve, 4000));
+        }
+      })();
+
       try {
         // Send initial progress
-        await writer.write(encoder.encode(`data: ${JSON.stringify({ 
+        await writer.write(encoder.encode(`data: ${JSON.stringify({
           type: 'progress',
-          status: 'analyzing', 
-          message: 'Analyzing your trip requirements...',
-          progress: 5
+          status: 'analyzing',
+          message: 'Gathering your travel profile and trip inputs...',
+          progress: 5,
         })}\n\n`));
-        
-        // Generate with streaming
-        const result = await model.generateContentStream(prompt);
-        let buffer = '';
-        let progressCounter = 10;
-        
-        for await (const chunk of result.stream) {
-          const chunkText = chunk.text();
-          buffer += chunkText;
-          
-          // Send progress updates based on buffer size
-          progressCounter = Math.min(90, progressCounter + 5);
-          
-          // Determine current phase based on content
-          let message = 'Building your itinerary...';
-          if (buffer.includes('"flights"')) {
-            message = 'Planning flight routes...';
-          } else if (buffer.includes('"lodgingZones"')) {
-            message = 'Finding best lodging zones...';
-          } else if (buffer.includes('"insiderTips"')) {
-            message = 'Adding insider tips...';
-          }
-          
-          await writer.write(encoder.encode(`data: ${JSON.stringify({ 
-            type: 'progress',
-            status: 'generating', 
-            message,
-            progress: progressCounter
-          })}\n\n`));
-        }
-        
+
+        // Generate full response (non-streaming for reliability)
+        const generationPromise = model.generateContent(prompt);
+        const result = await generationPromise;
+        progressActive = false;
+        await progressLoop;
+
         // Send finalizing message
-        await writer.write(encoder.encode(`data: ${JSON.stringify({ 
+        await writer.write(encoder.encode(`data: ${JSON.stringify({
           type: 'progress',
-          status: 'finalizing', 
+          status: 'finalizing',
           message: 'Finalizing your itinerary...',
-          progress: 95
+          progress: 95,
         })}\n\n`));
 
         // Parse JSON from complete response (strip markdown code blocks if present)
-        let jsonText = buffer.trim();
+        let jsonText = result.response.text().trim();
         if (jsonText.startsWith('```json')) {
           jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
         } else if (jsonText.startsWith('```')) {
@@ -627,16 +630,23 @@ ${USE_CITY_CONTEXT ? '**CRITICAL:** Use the authoritative city guides above as p
         }
         
         // Send complete result
-        await writer.write(encoder.encode(`data: ${JSON.stringify({ 
+        await writer.write(encoder.encode(`data: ${JSON.stringify({
           type: 'complete',
-          itinerary
+          itinerary,
         })}\n\n`));
-        
+        await writer.write(encoder.encode(`data: ${JSON.stringify({
+          type: 'progress',
+          status: 'complete',
+          message: 'Itinerary ready!',
+          progress: 100,
+        })}\n\n`));
       } catch (error) {
+        progressActive = false;
+        await progressLoop.catch(() => undefined);
         console.error('Streaming error:', error);
-        await writer.write(encoder.encode(`data: ${JSON.stringify({ 
+        await writer.write(encoder.encode(`data: ${JSON.stringify({
           type: 'error',
-          error: error instanceof Error ? error.message : 'Failed to generate itinerary'
+          error: error instanceof Error ? error.message : 'Failed to generate itinerary',
         })}\n\n`));
       } finally {
         await writer.close();
