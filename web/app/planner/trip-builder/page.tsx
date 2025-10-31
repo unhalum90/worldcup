@@ -29,7 +29,6 @@ export default function PlannerPage() {
 
   const handleFormSubmit = async (formData: any) => {
     setIsLoading(true);
-    setItinerary(null);
     setError(null);
 
     try {
@@ -46,9 +45,9 @@ export default function PlannerPage() {
         throw new Error(errorData.error || 'Failed to generate itinerary');
       }
 
-      const data = await response.json();
-      setLastForm(formData);
-      setItinerary(data.itinerary);
+  const data = await response.json();
+  setLastForm(formData);
+  setItinerary(data.itinerary);
     } catch (err) {
       console.error('Error generating itinerary:', err);
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');

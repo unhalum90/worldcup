@@ -520,14 +520,10 @@ ${USE_CITY_CONTEXT ? cityContextPrompt : ''}
 
 ${USE_CITY_CONTEXT ? '**CRITICAL:** Use the authoritative city guides above as primary references when relevant. Do not contradict the guides.' : 'Use your own up-to-date knowledge. Prefer realistic airlines, routes, neighborhoods, and costs. Avoid hallucinations; if uncertain, provide typical ranges and clearly label estimates.'}`;
 
-    // Call Gemini API with streaming for better UX
+    // Call Gemini API
     // Use gemini-2.5-flash (fast and cost-effective for this API key)
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-2.5-flash',
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 4096,
-      }
+      model: 'gemini-2.5-flash'
     });
     
     const result = await model.generateContent(prompt);
@@ -544,7 +540,7 @@ ${USE_CITY_CONTEXT ? '**CRITICAL:** Use the authoritative city guides above as p
 
     const itinerary = JSON.parse(jsonText);
 
-    // Save to database
+    // Save to database (optional - for tracking)
     const { error: saveError } = await supabase
       .from('travel_plans')
       .insert({
@@ -574,6 +570,7 @@ ${USE_CITY_CONTEXT ? '**CRITICAL:** Use the authoritative city guides above as p
 
     if (saveError) {
       console.error('Failed to save travel plan:', saveError);
+      // Don't fail the request if saving fails
     }
 
     return NextResponse.json({ success: true, itinerary });
