@@ -1,6 +1,21 @@
-import { createRouteHandlerClient } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
+
+type CookieUpdate =
+  | { action: "set"; name: string; value: string; options?: Record<string, any> }
+  | { action: "remove"; name: string; options?: Record<string, any> };
+
+function normalizeToHttps(u: string): string {
+  if (!u) return "";
+  try {
+    const parsed = new URL(u);
+    if (parsed.protocol !== "https:") parsed.protocol = "https:";
+    return parsed.toString().replace(/\/$/, "");
+  } catch {
+    return u.replace(/^http:\/\//i, "https://");
+  }
+}
 
 function buildErrorRedirect(message: string) {
   const params = new URLSearchParams({ error: message });
@@ -19,19 +34,48 @@ export async function GET(req: Request) {
   const code = url.searchParams.get("code");
   const redirectParam = url.searchParams.get("redirect");
 
-  if (!code) {
-    console.error("[Callback] Missing code in auth callback");
-    return redirect(buildErrorRedirect("missing_code"));
+  const cookieStore = cookies();
+  const cookieUpdates: CookieUpdate[] = [];
+
+  const supabaseUrl = normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || "");
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+
+  if (!supabaseUrl || !supabaseKey) {
+    console.error("[Callback] Supabase environment variables are missing");
+    return NextResponse.redirect(buildErrorRedirect("invalid_supabase_config"));
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createServerClient(supabaseUrl, supabaseKey, {
+    cookies: {
+      get(name: string) {
+        return cookieStore.get(name)?.value;
+      },
+      set(name: string, value: string, options: any) {
+        cookieUpdates.push({ action: "set", name, value, options });
+      },
+      remove(name: string, options: any) {
+        cookieUpdates.push({ action: "remove", name, options });
+      },
+    },
+  });
+
+  if (!code) {
+    console.error("[Callback] Missing code in auth callback");
+    const response = NextResponse.redirect(buildErrorRedirect("missing_code"));
+    applyCookieUpdates(response, cookieUpdates);
+    return response;
+  }
 
   console.log("[Callback] Exchanging code for session...");
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error || !data?.session) {
     console.error("[Callback] Auth exchange failed:", error);
-    return redirect(buildErrorRedirect(error?.message || "session_exchange_failed"));
+    const response = NextResponse.redirect(
+      buildErrorRedirect(error?.message || "session_exchange_failed"),
+    );
+    applyCookieUpdates(response, cookieUpdates);
+    return response;
   }
 
   const session = data.session;
@@ -59,5 +103,26 @@ export async function GET(req: Request) {
   }
 
   console.log("[Callback] Auth session established, redirecting to:", destination);
-  redirect(destination);
+  const response = NextResponse.redirect(destination);
+  applyCookieUpdates(response, cookieUpdates);
+  return response;
+}
+
+function applyCookieUpdates(response: NextResponse, updates: CookieUpdate[]) {
+  for (const update of updates) {
+    if (update.action === "set") {
+      response.cookies.set({
+        name: update.name,
+        value: update.value,
+        ...(update.options ?? {}),
+      });
+    } else {
+      response.cookies.set({
+        name: update.name,
+        value: "",
+        ...(update.options ?? {}),
+        maxAge: 0,
+      });
+    }
+  }
 }
