@@ -27,6 +27,8 @@ interface PlannerLoaderProps {
   plannerType: 'flight' | 'lodging' | 'trip';
   trip: StoredSelection;
   duration?: number;
+  progressOverride?: number;
+  messageOverride?: string;
 }
 
 type AnimationBehavior = 'glide' | 'pulse' | 'slide' | 'wiggle' | 'rotate' | 'wave' | 'drop' | 'fade' | 'appear';
@@ -195,8 +197,17 @@ function ProgressBar({ progress, plannerType }: { progress: number; plannerType:
   );
 }
 
-export default function PlannerLoader({ plannerType, trip, duration = 60000 }: PlannerLoaderProps) {
-  const progress = useSimulatedProgress(duration);
+export default function PlannerLoader({
+  plannerType,
+  trip,
+  duration = 60000,
+  progressOverride,
+  messageOverride,
+}: PlannerLoaderProps) {
+  const simulatedProgress = useSimulatedProgress(duration);
+  const progress = typeof progressOverride === 'number'
+    ? Math.max(simulatedProgress, progressOverride)
+    : simulatedProgress;
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   
   const messages = plannerType === 'flight' ? FLIGHT_MESSAGES : 
@@ -212,7 +223,7 @@ export default function PlannerLoader({ plannerType, trip, duration = 60000 }: P
   }, [messages.length, duration]);
 
   const currentMessage = messages[currentMessageIndex];
-  const formattedText = formatMessage(currentMessage.text, trip);
+  const formattedText = messageOverride || formatMessage(currentMessage.text, trip);
   const IconComponent = currentMessage.icon;
 
   const containerColors = {

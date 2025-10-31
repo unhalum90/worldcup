@@ -21,6 +21,56 @@ interface FlightRoutingRequest {
   locale?: string;
 }
 
+function cleanupJsonResponse(raw: string) {
+  let jsonText = raw.trim();
+  if (jsonText.startsWith('```')) {
+    jsonText = jsonText.replace(/```json\s*/gi, '').replace(/```\s*$/gi, '');
+  }
+  jsonText = jsonText.trim();
+  const curlyStart = jsonText.indexOf('{');
+  const curlyEnd = jsonText.lastIndexOf('}');
+  if (curlyStart !== -1 && curlyEnd > curlyStart) {
+    return jsonText.slice(curlyStart, curlyEnd + 1);
+  }
+  const squareStart = jsonText.indexOf('[');
+  const squareEnd = jsonText.lastIndexOf(']');
+  if (squareStart !== -1 && squareEnd > squareStart) {
+    return jsonText.slice(squareStart, squareEnd + 1);
+  }
+  return jsonText;
+}
+
+async function generateFlightPlan(
+  model: ReturnType<GoogleGenerativeAI['getGenerativeModel']>,
+  prompt: string,
+  attempt = 0,
+) {
+  const attemptPrompt =
+    attempt === 0
+      ? prompt
+      : `${prompt}
+
+IMPORTANT: Respond with valid minified JSON only. Do not include markdown fences, commentary, or trailing commas.`;
+
+  const result = await model.generateContent(attemptPrompt);
+  const text = result.response.text();
+  const cleaned = cleanupJsonResponse(text);
+
+  try {
+    return JSON.parse(cleaned);
+  } catch (error) {
+    if (attempt >= 2) {
+      throw error;
+    }
+    console.warn('Flight routing JSON parse failed, retrying...', {
+      attempt: attempt + 1,
+      reason: error instanceof Error ? error.message : String(error),
+      response: cleaned.slice(0, 200),
+    });
+    return generateFlightPlan(model, prompt, attempt + 1);
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const data: FlightRoutingRequest = await request.json();
@@ -82,18 +132,7 @@ Return ONLY valid JSON following this schema:
       }
     });
     
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-
-    // Parse JSON
-    let jsonText = text.trim();
-    if (jsonText.startsWith('```json')) {
-      jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
-    } else if (jsonText.startsWith('```')) {
-      jsonText = jsonText.replace(/```\n?/g, '');
-    }
-
-    const flightPlan = JSON.parse(jsonText);
+    const flightPlan = await generateFlightPlan(model, prompt);
 
     return NextResponse.json(flightPlan);
 

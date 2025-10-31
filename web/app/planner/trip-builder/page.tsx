@@ -208,44 +208,13 @@ export default function PlannerPage() {
 
         {isLoading && lastForm && (
           <div className="max-w-5xl mx-auto px-6 space-y-6">
-            {/* Streaming Progress Display */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 space-y-6">
-              <div className="text-center space-y-4">
-                <div className="animate-pulse">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                    🌍 Crafting Your Perfect World Cup Journey...
-                  </h2>
-                  <p className="text-lg text-gray-600">
-                    {streamProgress.message || 'Our AI is analyzing your preferences...'}
-                  </p>
-                </div>
-                
-                {/* Enhanced Progress bar with streaming data */}
-                <div className="max-w-md mx-auto">
-                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                    <div 
-                      className="bg-gradient-to-r from-purple-500 to-purple-600 h-3 rounded-full transition-all duration-500 ease-out relative"
-                      style={{ width: `${streamProgress.progress}%` }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-500 mt-2 flex items-center justify-between">
-                    <span>⏱️ Processing your request...</span>
-                    <span className="font-mono font-semibold">{Math.round(streamProgress.progress)}%</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Use PlannerLoader for visual consistency */}
             <PlannerLoader 
               plannerType="trip" 
               trip={{
                 optionIndex: 0,
                 option: {
                   title: 'World Cup 2026 Trip',
-                  summary: 'Planning your custom itinerary',
+                  summary: streamProgress.message || 'Planning your custom itinerary',
                   cities: (lastForm.citiesVisiting || []).map((city: string) => ({
                     cityName: city,
                     lodgingZones: [],
@@ -262,6 +231,8 @@ export default function PlannerPage() {
                 savedAt: Date.now()
               }}
               duration={50000}
+              progressOverride={streamProgress.progress}
+              messageOverride={streamProgress.message}
             />
           </div>
         )}
