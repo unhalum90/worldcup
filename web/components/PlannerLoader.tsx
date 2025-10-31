@@ -234,7 +234,7 @@ export default function PlannerLoader({
 
   const textColors = {
     flight: 'text-blue-900',
-    lodging: 'text-rose-900',
+    lodging: 'text-gray-900',
     trip: 'text-purple-900'
   };
 
@@ -303,14 +303,11 @@ export default function PlannerLoader({
       {/* Progress Bar */}
       <div className="space-y-2">
         <ProgressBar progress={progress} plannerType={plannerType} />
-        <div className="flex justify-between text-xs opacity-60">
+        <div className="flex justify-start text-xs opacity-60">
           <span className={textColors[plannerType]}>
             {progress < 70 ? 'Scanning options...' : 
              progress < 90 ? 'Analyzing matches...' : 
              'Finalizing results...'}
-          </span>
-          <span className={`font-mono ${textColors[plannerType]}`}>
-            {Math.round(progress)}%
           </span>
         </div>
       </div>
