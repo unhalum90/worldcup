@@ -30,8 +30,10 @@ export default function PlannerPage() {
 
   const handleFormSubmit = async (formData: any) => {
     setIsLoading(true);
+    setItinerary(null);
     setError(null);
     setStreamProgress({ message: 'Connecting to AI planner...', progress: 0 });
+    setLastForm(formData);
 
     try {
       // Use parallel processing if enabled
@@ -60,42 +62,56 @@ export default function PlannerPage() {
       }
 
       let buffer = '';
+      const processEvent = (line: string) => {
+        if (!line.startsWith('data:')) {
+          return;
+        }
+
+        const jsonStr = line.slice(5).trimStart().replace(/^:/, '').trim();
+        if (!jsonStr) {
+          return;
+        }
+
+        try {
+          const data = JSON.parse(jsonStr);
+
+          if (data.type === 'progress') {
+            setStreamProgress({
+              message: data.message || 'Processing...',
+              progress: data.progress || 0,
+            });
+          } else if (data.type === 'complete') {
+            setItinerary(data.itinerary);
+            setStreamProgress({ message: 'Complete!', progress: 100 });
+          } else if (data.type === 'error') {
+            throw new Error(data.error);
+          }
+        } catch (parseError) {
+          console.error('Error parsing stream data:', parseError, 'Line:', jsonStr);
+        }
+      };
       
       while (true) {
         const { done, value } = await reader.read();
-        
-        if (done) break;
-        
-        buffer += decoder.decode(value, { stream: true });
+
+        buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
         const lines = buffer.split('\n\n');
         buffer = lines.pop() || '';
-        
+
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const jsonStr = line.slice(6).trim();
-            if (!jsonStr) continue; // Skip empty data
-            
-            try {
-              const data = JSON.parse(jsonStr);
-              
-              if (data.type === 'progress') {
-                setStreamProgress({ 
-                  message: data.message || 'Processing...', 
-                  progress: data.progress || 0 
-                });
-              } else if (data.type === 'complete') {
-                setLastForm(formData);
-                setItinerary(data.itinerary);
-                setStreamProgress({ message: 'Complete!', progress: 100 });
-              } else if (data.type === 'error') {
-                throw new Error(data.error);
-              }
-            } catch (parseError) {
-              console.error('Error parsing stream data:', parseError, 'Line:', jsonStr);
-              // Continue processing other lines instead of failing completely
-            }
-          }
+          processEvent(line.trim());
         }
+
+        if (done) {
+          break;
+        }
+      }
+
+      // Flush any remaining decoded text and process leftover event
+      buffer += decoder.decode();
+      const remainingLines = buffer.split('\n\n').map(line => line.trim()).filter(Boolean);
+      for (const line of remainingLines) {
+        processEvent(line);
       }
     } catch (err) {
       console.error('Error generating itinerary:', err);
