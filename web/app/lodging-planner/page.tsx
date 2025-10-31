@@ -95,7 +95,7 @@ export default function LodgingPlannerPage() {
   if (loadingSelection) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-amber-50 flex items-center justify-center">
-        <p className="text-sm text-rose-500">Loading your Trip Builder selection…</p>
+        <p className="text-sm text-gray-600">Loading your Trip Builder selection…</p>
       </main>
     );
   }
@@ -105,9 +105,9 @@ export default function LodgingPlannerPage() {
       <main className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-amber-50 flex items-center justify-center px-6">
         <section className="max-w-2xl w-full bg-white/90 backdrop-blur rounded-3xl border border-rose-100 shadow-2xl p-10 space-y-6">
           <div className="space-y-2 text-center">
-            <p className="text-xs uppercase tracking-[0.3em] text-rose-400 font-semibold">Lodging Planner</p>
-            <h1 className="text-3xl font-black text-rose-950">Let’s grab your itinerary first</h1>
-            <p className="text-sm text-rose-700 max-w-lg mx-auto">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-500 font-semibold">Lodging Planner</p>
+            <h1 className="text-3xl font-black text-gray-900">Let’s grab your itinerary first</h1>
+            <p className="text-sm text-gray-700 max-w-lg mx-auto">
               The Lodging Planner pulls your selected Trip Builder option so it knows your city order, dates, and traveler count. Follow the quick steps
               below to capture it, then hop right back.
             </p>
@@ -122,7 +122,7 @@ export default function LodgingPlannerPage() {
                 <span className="mt-0.5 h-7 w-7 flex items-center justify-center rounded-full bg-rose-600 text-white font-semibold text-sm">
                   {idx + 1}
                 </span>
-                <span className="text-sm text-rose-900">{step}</span>
+                <span className="text-sm text-gray-900">{step}</span>
               </li>
             ))}
           </ol>
@@ -135,7 +135,7 @@ export default function LodgingPlannerPage() {
             </Link>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 rounded-full border border-rose-200 text-sm font-semibold text-rose-600 hover:bg-rose-50"
+              className="px-6 py-3 rounded-full border border-rose-200 text-sm font-semibold text-gray-700 hover:bg-rose-50"
             >
               I already saved my selection
             </button>
@@ -149,9 +149,9 @@ export default function LodgingPlannerPage() {
     <main className="min-h-screen bg-gradient-to-b from-rose-50 via-white to-orange-50 pb-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
         <header className="text-center space-y-3">
-          <p className="text-xs uppercase tracking-[0.3em] text-rose-500 font-semibold">Step 2 of 3</p>
-          <h1 className="text-4xl font-black text-rose-950">World Cup 2026 Lodging Planner</h1>
-          <p className="text-lg text-rose-700 max-w-3xl mx-auto">
+          <p className="text-xs uppercase tracking-[0.3em] text-gray-600 font-semibold">Step 2 of 3</p>
+          <h1 className="text-4xl font-black text-gray-900">World Cup 2026 Lodging Planner</h1>
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
             We imported your Trip Builder itinerary. Dial in your nightly budget, family toggles, and zone priorities—then we’ll map the highest-match
             neighborhoods, commute times, and booking guidance.
           </p>
@@ -160,29 +160,29 @@ export default function LodgingPlannerPage() {
         <section className="bg-white/90 backdrop-blur rounded-3xl border border-rose-100 shadow-xl p-6 space-y-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="text-xs uppercase tracking-wide text-rose-400 font-semibold">Selected itinerary</p>
-              <h2 className="text-2xl font-bold text-rose-950">{selection.option.title}</h2>
-              <p className="text-sm text-rose-700 mt-2 max-w-2xl">{selection.option.summary}</p>
+              <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Selected itinerary</p>
+              <h2 className="text-2xl font-bold text-gray-900">{selection.option.title}</h2>
+              <p className="text-sm text-gray-700 mt-2 max-w-2xl">{selection.option.summary}</p>
             </div>
             <button
               onClick={() => window.open('/planner/trip-builder', '_blank')}
-              className="px-4 py-2 rounded-full border border-rose-100 text-sm font-semibold text-rose-600 hover:bg-rose-50"
+              className="px-4 py-2 rounded-full border border-rose-100 text-sm font-semibold text-gray-700 hover:bg-rose-50"
             >
               Switch itinerary
             </button>
           </div>
-          <div className="grid gap-4 md:grid-cols-3 text-sm text-rose-900">
+          <div className="grid gap-4 md:grid-cols-3 text-sm text-gray-900">
             <div className="rounded-2xl bg-rose-50/80 p-4">
-              <p className="text-xs uppercase text-rose-400 font-semibold">Cities</p>
-              <p className="font-semibold text-rose-950">{cityList.join(' → ')}</p>
+              <p className="text-xs uppercase text-gray-500 font-semibold">Cities</p>
+              <p className="font-semibold text-gray-900">{cityList.join(' → ')}</p>
             </div>
             <div className="rounded-2xl bg-rose-50/80 p-4">
-              <p className="text-xs uppercase text-rose-400 font-semibold">Dates</p>
-              <p className="font-semibold text-rose-950">{formatDateRange(selection)}</p>
+              <p className="text-xs uppercase text-gray-500 font-semibold">Dates</p>
+              <p className="font-semibold text-gray-900">{formatDateRange(selection)}</p>
             </div>
             <div className="rounded-2xl bg-rose-50/80 p-4">
-              <p className="text-xs uppercase text-rose-400 font-semibold">Travelers</p>
-              <p className="font-semibold text-rose-950">{formatTravelerSummary(selection)}</p>
+              <p className="text-xs uppercase text-gray-500 font-semibold">Travelers</p>
+              <p className="font-semibold text-gray-900">{formatTravelerSummary(selection)}</p>
             </div>
           </div>
         </section>
@@ -190,17 +190,17 @@ export default function LodgingPlannerPage() {
         <section className="bg-[#fff8f5] rounded-3xl border border-rose-100 shadow-lg p-6 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <p className="text-xs uppercase text-rose-400 font-semibold">Preference controls</p>
-              <h3 className="text-2xl font-bold text-rose-950">Tune the Lodging Planner</h3>
+              <p className="text-xs uppercase text-gray-500 font-semibold">Preference controls</p>
+              <h3 className="text-2xl font-bold text-gray-900">Tune the Lodging Planner</h3>
             </div>
-            <p className="text-xs text-rose-500">Changes auto-save locally so you can tweak and rerun instantly.</p>
+            <p className="text-xs text-gray-600">Changes auto-save locally so you can tweak and rerun instantly.</p>
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="space-y-6">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm font-semibold text-rose-900">Nightly budget target</p>
-                  <span className="text-lg font-bold text-rose-900">${preferences.nightlyBudget}</span>
+                  <p className="text-sm font-semibold text-gray-900">Nightly budget target</p>
+                  <span className="text-lg font-bold text-gray-900">${preferences.nightlyBudget}</span>
                 </div>
                 <input
                   type="range"
@@ -213,14 +213,14 @@ export default function LodgingPlannerPage() {
                 />
               </div>
               <label className="flex flex-col gap-2">
-                <span className="text-sm font-semibold text-rose-900">Nights to cover</span>
+                <span className="text-sm font-semibold text-gray-900">Nights to cover</span>
                 <input
                   type="number"
                   min={1}
                   value={preferences.nights}
                   onChange={(e) =>
                     setPreferences((prev) => ({ ...prev, nights: Math.max(1, Number(e.target.value) || prev.nights) }))}
-                  className="rounded-2xl border border-rose-100 px-4 py-2 text-rose-900"
+                  className="rounded-2xl border border-rose-100 px-4 py-2 text-gray-900"
                 />
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -249,10 +249,10 @@ export default function LodgingPlannerPage() {
                 <div key={weight.key} className="bg-rose-50/70 rounded-2xl p-4 border border-rose-100">
                   <div className="flex items-center justify-between mb-1">
                     <div>
-                      <p className="text-sm font-semibold text-rose-900">{weight.label}</p>
-                      <p className="text-xs text-rose-500">{weight.hint}</p>
+                      <p className="text-sm font-semibold text-gray-900">{weight.label}</p>
+                      <p className="text-xs text-gray-600">{weight.hint}</p>
                     </div>
-                    <span className="text-sm font-bold text-rose-900">{preferences.weights[weight.key]}%</span>
+                    <span className="text-sm font-bold text-gray-900">{preferences.weights[weight.key]}%</span>
                   </div>
                   <input
                     type="range"
@@ -266,7 +266,7 @@ export default function LodgingPlannerPage() {
                       }))}
                     className="w-full accent-rose-500"
                   />
-                  <div className="flex items-center justify-between text-[11px] text-rose-500 mt-1">
+                  <div className="flex items-center justify-between text-[11px] text-gray-600 mt-1">
                     <span>{weight.low}</span>
                     <span>{weight.high}</span>
                   </div>
@@ -282,7 +282,7 @@ export default function LodgingPlannerPage() {
             >
               {loadingPlan ? 'Scoring zones…' : 'Generate lodging plan'}
             </button>
-            {error ? <p className="text-sm text-red-600">{error}</p> : <p className="text-xs text-rose-500">We blend Trip Builder context + city RAG files so Gemini can score each zone.</p>}
+            {error ? <p className="text-sm text-red-600">{error}</p> : <p className="text-xs text-gray-600">We blend Trip Builder context + city RAG files so Gemini can score each zone.</p>}
           </div>
         </section>
 
@@ -317,12 +317,12 @@ export default function LodgingPlannerPage() {
               <div className="bg-white rounded-3xl border border-rose-100 shadow-lg p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase text-rose-400 font-semibold">Top recommendation</p>
-                    <h4 className="text-2xl font-bold text-rose-950">{plan.topRecommendation.zoneName}</h4>
+                    <p className="text-xs uppercase text-gray-500 font-semibold">Top recommendation</p>
+                    <h4 className="text-2xl font-bold text-gray-900">{plan.topRecommendation.zoneName}</h4>
                   </div>
-                  <span className="text-3xl font-black text-rose-600">{plan.topRecommendation.matchScore}% match</span>
+                  <span className="text-3xl font-black text-gray-700">{plan.topRecommendation.matchScore}% match</span>
                 </div>
-                <div className="grid gap-3 text-sm text-rose-900">
+                <div className="grid gap-3 text-sm text-gray-900">
                   <p><span className="font-semibold">Price range:</span> {plan.topRecommendation.priceRange}</p>
                   <p><span className="font-semibold">Est. total:</span> {plan.topRecommendation.estimatedTotal}</p>
                   <p><span className="font-semibold">Stadium commute:</span> {plan.topRecommendation.stadiumCommute}</p>
@@ -331,8 +331,8 @@ export default function LodgingPlannerPage() {
                   )}
                 </div>
                 <div>
-                  <p className="text-xs uppercase text-rose-400 font-semibold mb-2">Why it wins</p>
-                  <ul className="text-sm text-rose-900 space-y-1 list-disc list-inside">
+                  <p className="text-xs uppercase text-gray-500 font-semibold mb-2">Why it wins</p>
+                  <ul className="text-sm text-gray-900 space-y-1 list-disc list-inside">
                     {plan.topRecommendation.reasons.map((reason, idx) => (
                       <li key={idx}>{reason}</li>
                     ))}
@@ -345,13 +345,13 @@ export default function LodgingPlannerPage() {
             <div className="bg-white rounded-3xl border border-rose-100 shadow-lg p-6 space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs uppercase text-rose-400 font-semibold">Zone comparisons</p>
-                  <p className="text-sm text-rose-700">{showAllZones ? 'All recommended areas' : 'Other strong matches'}</p>
+                  <p className="text-xs uppercase text-gray-500 font-semibold">Zone comparisons</p>
+                  <p className="text-sm text-gray-700">{showAllZones ? 'All recommended areas' : 'Other strong matches'}</p>
                 </div>
                 {plan.zoneComparisons.length > 1 && (
                   <button
                     onClick={() => setShowAllZones((prev) => !prev)}
-                    className="text-sm font-semibold text-rose-600 hover:text-rose-800"
+                    className="text-sm font-semibold text-gray-700 hover:text-gray-900"
                   >
                     {showAllZones ? 'Hide top zone' : 'See all zones'}
                   </button>
@@ -361,21 +361,21 @@ export default function LodgingPlannerPage() {
                 {(showAllZones ? plan.zoneComparisons : plan.zoneComparisons.slice(1)).map((zone) => (
                   <article key={zone.zoneName} className="rounded-2xl border border-rose-100 p-4 space-y-3 bg-rose-50/50">
                     <div>
-                      <p className="text-xs uppercase text-rose-400 font-semibold">Match score</p>
-                      <p className="text-2xl font-black text-rose-900">{zone.matchScore}%</p>
+                      <p className="text-xs uppercase text-gray-500 font-semibold">Match score</p>
+                      <p className="text-2xl font-black text-gray-900">{zone.matchScore}%</p>
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-rose-950">{zone.zoneName}</h4>
-                      {zone.vibe && <p className="text-sm text-rose-600">{zone.vibe}</p>}
+                      <h4 className="text-lg font-semibold text-gray-900">{zone.zoneName}</h4>
+                      {zone.vibe && <p className="text-sm text-gray-700">{zone.vibe}</p>}
                     </div>
-                    <p className="text-sm text-rose-900"><span className="font-semibold">Price:</span> {zone.priceRange}</p>
-                    <p className="text-sm text-rose-900"><span className="font-semibold">Stadium commute:</span> {zone.stadiumCommute}</p>
+                    <p className="text-sm text-gray-900"><span className="font-semibold">Price:</span> {zone.priceRange}</p>
+                    <p className="text-sm text-gray-900"><span className="font-semibold">Stadium commute:</span> {zone.stadiumCommute}</p>
                     {zone.fanFestCommute && (
-                      <p className="text-sm text-rose-900"><span className="font-semibold">Fan Fest:</span> {zone.fanFestCommute}</p>
+                      <p className="text-sm text-gray-900"><span className="font-semibold">Fan Fest:</span> {zone.fanFestCommute}</p>
                     )}
                     <div>
-                      <p className="text-xs uppercase text-rose-400 font-semibold">Pros</p>
-                      <ul className="text-xs text-rose-900 space-y-1 list-disc list-inside">
+                      <p className="text-xs uppercase text-gray-500 font-semibold">Pros</p>
+                      <ul className="text-xs text-gray-900 space-y-1 list-disc list-inside">
                         {(zone.pros.length ? zone.pros : ['Easy access, good value']).slice(0, 3).map((pro, idx) => (
                           <li key={idx}>{pro}</li>
                         ))}
@@ -383,8 +383,8 @@ export default function LodgingPlannerPage() {
                     </div>
                     {zone.cons.length > 0 && (
                       <div>
-                        <p className="text-xs uppercase text-rose-400 font-semibold">Trade-offs</p>
-                        <ul className="text-xs text-rose-900 space-y-1 list-disc list-inside">
+                        <p className="text-xs uppercase text-gray-500 font-semibold">Trade-offs</p>
+                        <ul className="text-xs text-gray-900 space-y-1 list-disc list-inside">
                           {zone.cons.slice(0, 2).map((con, idx) => (
                             <li key={idx}>{con}</li>
                           ))}
@@ -394,7 +394,7 @@ export default function LodgingPlannerPage() {
                   </article>
                 ))}
                 {!showAllZones && plan.zoneComparisons.slice(1).length === 0 && (
-                  <div className="col-span-full text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-2xl p-4">
+                  <div className="col-span-full text-sm text-gray-700 bg-rose-50 border border-rose-100 rounded-2xl p-4">
                     Your top pick is the standout zone. Tap “See all zones” to review the detailed grid.
                   </div>
                 )}
@@ -403,13 +403,13 @@ export default function LodgingPlannerPage() {
 
             <div className="grid gap-6 lg:grid-cols-2">
               <div className="bg-rose-50 border border-rose-100 rounded-3xl shadow-lg p-6">
-                <p className="text-xs uppercase text-rose-500 font-semibold mb-2 flex items-center gap-2">
-                  <span className="text-rose-600">⚠️</span> Insights & alerts
+                <p className="text-xs uppercase text-gray-600 font-semibold mb-2 flex items-center gap-2">
+                  <span className="text-gray-700">⚠️</span> Insights & alerts
                 </p>
-                <ul className="space-y-2 text-sm text-rose-900">
+                <ul className="space-y-2 text-sm text-gray-900">
                   {plan.insights.map((insight, idx) => (
                     <li key={idx} className="flex gap-2">
-                      <span className="text-rose-500">•</span>
+                      <span className="text-gray-600">•</span>
                       <span>{insight}</span>
                     </li>
                   ))}
@@ -441,7 +441,7 @@ export default function LodgingPlannerPage() {
                 </button>
                 <button
                   onClick={() => alert('Save to Supabase profile coming soon!')}
-                  className="px-4 py-2 rounded-full bg-white text-rose-600 font-semibold"
+                  className="px-4 py-2 rounded-full bg-white text-gray-700 font-semibold"
                 >
                   Save plan (beta)
                 </button>
@@ -456,8 +456,8 @@ export default function LodgingPlannerPage() {
           </section>
         ) : !loadingPlan ? (
           <section className="bg-white rounded-3xl border border-rose-100 shadow-inner p-8 text-center space-y-4">
-            <h3 className="text-2xl font-bold text-rose-950">Ready when you are</h3>
-            <p className="text-rose-700">
+            <h3 className="text-2xl font-bold text-gray-900">Ready when you are</h3>
+            <p className="text-gray-700">
               Set your nightly budget + sliders, then tap "Generate lodging plan." We'll showcase top zones, cost bands, commute times, and a printable summary.
             </p>
           </section>
@@ -482,7 +482,7 @@ function PreferenceToggle({
     <button
       type="button"
       onClick={() => onChange(!value)}
-      className={`rounded-2xl border px-4 py-3 text-left transition ${value ? 'bg-rose-600 text-white border-rose-600' : 'border-rose-100 text-rose-900 hover:bg-rose-50'}`}
+      className={`rounded-2xl border px-4 py-3 text-left transition ${value ? 'bg-rose-600 text-white border-rose-600' : 'border-rose-100 text-gray-900 hover:bg-rose-50'}`}
     >
       <p className="font-semibold">{label}</p>
       <p className="text-xs opacity-80">{description}</p>
@@ -493,7 +493,7 @@ function PreferenceToggle({
 function MapPreview({ markers }: { markers: LodgingMapMarker[] }) {
   if (!markers || markers.length === 0) {
     return (
-      <div className="bg-white rounded-3xl border border-rose-100 shadow-lg p-6 flex flex-col items-center justify-center text-center text-rose-500 h-full">
+      <div className="bg-white rounded-3xl border border-rose-100 shadow-lg p-6 flex flex-col items-center justify-center text-center text-gray-600 h-full">
         <p className="font-semibold">Map preview coming soon</p>
         <p className="text-xs">Leaflet overlay ships with Phase C. For now, compare zones using the cards.</p>
       </div>
@@ -517,10 +517,10 @@ function MapPreview({ markers }: { markers: LodgingMapMarker[] }) {
     <div className="bg-white rounded-3xl border border-rose-100 shadow-lg p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase text-rose-400 font-semibold">Zone map preview</p>
-          <h4 className="text-lg font-semibold text-rose-950">Phase 1 heat map</h4>
+          <p className="text-xs uppercase text-gray-500 font-semibold">Zone map preview</p>
+          <h4 className="text-lg font-semibold text-gray-900">Phase 1 heat map</h4>
         </div>
-        <span className="text-xs text-rose-400">Leaflet overlay ships with Phase C</span>
+        <span className="text-xs text-gray-500">Leaflet overlay ships with Phase C</span>
       </div>
       <div className="relative rounded-3xl bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#0f172a] h-72 overflow-hidden">
         <div className="absolute inset-4">
@@ -557,12 +557,12 @@ function MapPreview({ markers }: { markers: LodgingMapMarker[] }) {
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         {markers.map((marker) => (
-          <div key={marker.name} className="rounded-2xl border border-rose-100 p-3 text-sm text-rose-900">
+          <div key={marker.name} className="rounded-2xl border border-rose-100 p-3 text-sm text-gray-900">
             <div className="flex items-center justify-between">
               <p className="font-semibold">{marker.name}</p>
-              <span className="text-xs text-rose-500">{marker.matchScore}%</span>
+              <span className="text-xs text-gray-600">{marker.matchScore}%</span>
             </div>
-            <p className="text-xs text-rose-600">{marker.travelTimeToStadium || 'Commute TBD'}</p>
+            <p className="text-xs text-gray-700">{marker.travelTimeToStadium || 'Commute TBD'}</p>
           </div>
         ))}
       </div>

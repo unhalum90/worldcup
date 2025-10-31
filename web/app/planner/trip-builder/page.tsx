@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ItineraryResults from '@/components/ItineraryResults';
 import PlannerLoader from '@/components/PlannerLoader';
@@ -9,18 +9,24 @@ import AuthModal from '@/components/AuthModal';
 import { useProfile } from '@/lib/profile/api';
 import ProfileReview from '@/components/trip-planner/ProfileReview';
 import TripIntentForm from '@/components/trip-planner/TripIntentForm';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { usePlannerTheme } from '@/hooks/usePlannerTheme';
+import { fetchSavedTrip } from '@/lib/travel-plans/api';
 
 export default function PlannerPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const savedTripId = searchParams.get('saved');
   const { profile, loading: profileLoading, error: profileError } = useProfile({ enabled: !!user });
   const [isLoading, setIsLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
   const [lastForm, setLastForm] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<'review' | 'trip'>('review');
+  const [loadingSavedTrip, setLoadingSavedTrip] = useState(false);
+  const [loadedSavedId, setLoadedSavedId] = useState<string | null>(null);
+  const [initialExpandedIndex, setInitialExpandedIndex] = useState<number | null>(null);
   
   // Apply trip builder theme
   usePlannerTheme('trip');
@@ -30,6 +36,8 @@ export default function PlannerPage() {
   const handleFormSubmit = async (formData: any) => {
     setIsLoading(true);
     setError(null);
+    setInitialExpandedIndex(null);
+    setLoadedSavedId(null);
 
     try {
       const response = await fetch('/api/travel-planner', {
@@ -60,6 +68,57 @@ export default function PlannerPage() {
     // TODO: Implement email capture modal
     alert('Email capture coming soon! For now, screenshot your itinerary.');
   };
+
+  useEffect(() => {
+    if (!user || !savedTripId || savedTripId === loadedSavedId || loading) {
+      return;
+    }
+
+    let ignore = false;
+    setLoadingSavedTrip(true);
+    setError(null);
+
+    fetchSavedTrip(savedTripId)
+      .then((saved) => {
+        if (ignore) return;
+        if (!saved) {
+          setError('We could not find that saved itinerary.');
+          setItinerary(null);
+          setLastForm(null);
+          setInitialExpandedIndex(null);
+          return;
+        }
+
+        if (!saved.itinerary || !Array.isArray((saved.itinerary as any).options) || (saved.itinerary as any).options.length === 0) {
+          setError('Saved itinerary is missing details. Try generating a new one.');
+          setItinerary(null);
+          setLastForm(saved.tripInput ?? null);
+          setInitialExpandedIndex(null);
+          return;
+        }
+
+        setItinerary(saved.itinerary);
+        setLastForm(saved.tripInput ?? null);
+        setInitialExpandedIndex(
+          typeof saved.selectedOptionIndex === 'number' ? saved.selectedOptionIndex : null
+        );
+        setMode('trip');
+        setLoadedSavedId(saved.id);
+      })
+      .catch((err) => {
+        if (ignore) return;
+        const message = err instanceof Error ? err.message : 'Failed to load saved itinerary.';
+        setError(message);
+      })
+      .finally(() => {
+        if (ignore) return;
+        setLoadingSavedTrip(false);
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [loading, loadedSavedId, savedTripId, user]);
 
   // Loading state while validating auth
   if (loading) {
@@ -101,6 +160,13 @@ export default function PlannerPage() {
           <div className="max-w-3xl mx-auto px-6 mb-6">
             <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
               We couldn’t load your saved travel profile. Please refresh to retry or reopen onboarding to capture it again.
+            </div>
+          </div>
+        )}
+        {loadingSavedTrip && (
+          <div className="max-w-3xl mx-auto px-6 mb-6">
+            <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800">
+              Loading your saved itinerary…
             </div>
           </div>
         )}
@@ -199,7 +265,12 @@ export default function PlannerPage() {
         )}
 
         {itinerary && !isLoading && (
-          <ItineraryResults itinerary={itinerary} tripInput={lastForm} onEmailCapture={handleEmailCapture} />
+          <ItineraryResults
+            itinerary={itinerary}
+            tripInput={lastForm}
+            onEmailCapture={handleEmailCapture}
+            initialExpandedIndex={initialExpandedIndex}
+          />
         )}
       </main>
 

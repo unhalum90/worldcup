@@ -56,7 +56,7 @@ export default function QualifiedTeamsSection() {
         <div className="text-center">
           <Link
             href="/teams"
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200"
+            className="inline-flex items-center gap-2 bg-blue-600 !text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200"
           >
             {t('viewAll', { count: qualifiedTeams.length })}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

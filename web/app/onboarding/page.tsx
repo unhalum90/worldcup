@@ -476,7 +476,11 @@ export default function OnboardingPage() {
           <h2 className="text-2xl font-semibold text-gray-900">{t('done.title')}</h2>
           <p className="text-sm text-gray-600">{t('done.subtitle')}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href={redirectTarget || '/planner/trip-builder'} className="px-5 py-3 rounded-full bg-[color:var(--primary-color)] text-white font-semibold shadow">
+            <a
+              href={redirectTarget || '/planner/trip-builder'}
+              className="px-5 py-3 rounded-full bg-[color:var(--primary-color)] text-white font-semibold shadow"
+              style={{ color: '#FFFFFF' }}
+            >
               {redirectTarget ? t('done.ctaContinue') : t('done.ctaTripBuilder')}
             </a>
             <a href="/account/profile" className="px-5 py-3 rounded-full border font-semibold text-gray-700 hover:bg-gray-50">{t('done.ctaEdit')}</a>

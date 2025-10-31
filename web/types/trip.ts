@@ -64,3 +64,32 @@ export interface StoredSelection {
   tripInput?: TripInput;
   savedAt: number;
 }
+
+export type SavedItineraryPayload = {
+  options?: ItineraryOption[];
+  [key: string]: unknown;
+};
+
+export interface SavedTravelPlanRecord {
+  id: string;
+  user_id: string;
+  trip_input: TripInput | null;
+  itinerary: SavedItineraryPayload | null;
+  selected_option_index: number | null;
+  title: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SavedTravelPlan {
+  id: string;
+  userId: string;
+  tripInput: TripInput | null;
+  itinerary: SavedItineraryPayload | null;
+  selectedOptionIndex: number | null;
+  title: string;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}

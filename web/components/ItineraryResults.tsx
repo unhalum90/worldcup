@@ -6,21 +6,104 @@ import Link from 'next/link';
 import { getCityMapPath } from '@/lib/cityMaps';
 import RouteRibbon from './RouteRibbon';
 import { useAuth } from '@/lib/AuthContext';
-import type { ItineraryOption, TripInput } from '@/types/trip';
+import AuthModal from '@/components/AuthModal';
+import { createSavedTrip } from '@/lib/travel-plans/api';
+import type { ItineraryOption, TripInput, SavedTravelPlan } from '@/types/trip';
+
+type ItineraryData = {
+  options: ItineraryOption[];
+  [key: string]: unknown;
+};
 
 interface ItineraryResultsProps {
-  itinerary: {
-    options: ItineraryOption[];
-  };
+  itinerary: ItineraryData;
   tripInput?: TripInput;
   onEmailCapture?: () => void;
+  initialExpandedIndex?: number | null;
+  onTripSaved?: (trip: SavedTravelPlan) => void;
 }
 
 const SELECTED_TRIP_STORAGE_KEY = 'fz_selected_trip_option';
 
-export default function ItineraryResults({ itinerary, tripInput, onEmailCapture: _onEmailCapture }: ItineraryResultsProps) {
-  const [expandedIndex, setExpandedIndex] = React.useState<number | null>(null);
+export default function ItineraryResults({
+  itinerary,
+  tripInput,
+  onEmailCapture: _onEmailCapture,
+  initialExpandedIndex,
+  onTripSaved,
+}: ItineraryResultsProps) {
+  const [expandedIndex, setExpandedIndex] = React.useState<number | null>(initialExpandedIndex ?? null);
   const { user } = useAuth();
+  const [showAuthModal, setShowAuthModal] = React.useState(false);
+  const [saving, setSaving] = React.useState(false);
+  const [saveStatus, setSaveStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
+  const [saveMessage, setSaveMessage] = React.useState<string | null>(null);
+  const saveResetRef = React.useRef<number | null>(null);
+
+  React.useEffect(() => {
+    if (initialExpandedIndex !== undefined && initialExpandedIndex !== null) {
+      setExpandedIndex(initialExpandedIndex);
+    }
+  }, [initialExpandedIndex]);
+
+  React.useEffect(() => {
+    if (saveStatus === 'success') {
+      if (typeof window !== 'undefined') {
+        saveResetRef.current = window.setTimeout(() => {
+          setSaveStatus('idle');
+          setSaveMessage(null);
+        }, 3500);
+      }
+    }
+    return () => {
+      if (saveResetRef.current !== null && typeof window !== 'undefined') {
+        window.clearTimeout(saveResetRef.current);
+        saveResetRef.current = null;
+      }
+    };
+  }, [saveStatus]);
+
+  const handleSaveItinerary = React.useCallback(async () => {
+    if (!Array.isArray(itinerary?.options) || itinerary.options.length === 0) {
+      setSaveStatus('error');
+      setSaveMessage('No itinerary to save yet.');
+      return;
+    }
+
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+
+    const selectedIndex = expandedIndex ?? 0;
+    setSaving(true);
+    setSaveStatus('idle');
+    setSaveMessage(null);
+
+    try {
+      const payload = {
+        ...itinerary,
+        selectedOptionIndex: selectedIndex,
+      };
+      const saved = await createSavedTrip({
+        tripInput: tripInput ?? null,
+        itinerary: payload,
+        selectedOptionIndex: selectedIndex,
+        title: itinerary.options[selectedIndex]?.title,
+      });
+      setSaveStatus('success');
+      setSaveMessage('Trip saved to your account.');
+      onTripSaved?.(saved);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to save trip.';
+      setSaveStatus('error');
+      setSaveMessage(message);
+    } finally {
+      setSaving(false);
+    }
+  }, [expandedIndex, itinerary, onTripSaved, tripInput, user]);
+
+  const hasOptions = Array.isArray(itinerary?.options) && itinerary.options.length > 0;
   // No budget math or totals shown; display cost notes only per latest spec.
 
   // Derive trip summary from provided form input (if available)
@@ -164,6 +247,9 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture:
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-8">
+      {showAuthModal && (
+        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} redirectTo="/planner/trip-builder" />
+      )}
       {/* Branded header for share/print */}
       <div className="flex items-center justify-between text-sm text-gray-500 print:text-gray-700">
         <div className="flex items-center gap-2">
@@ -172,34 +258,120 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture:
         </div>
         <a href="https://wc26fanzone.com" className="hover:underline" target="_blank" rel="noopener noreferrer">wc26fanzone.com</a>
       </div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-blue-100 bg-blue-50/60 px-5 py-4 print:hidden">
+        <div>
+          <h2 className="text-base font-semibold text-blue-900">Save this itinerary</h2>
+          <p className="text-sm text-blue-800">
+            Keep it in your account so you can revisit or pick it back up later.
+          </p>
+        </div>
+        <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
+          <button
+            onClick={handleSaveItinerary}
+            disabled={!hasOptions || saving || saveStatus === 'success'}
+            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors disabled:cursor-not-allowed disabled:bg-blue-400 hover:bg-blue-700"
+          >
+            {saving ? 'Saving…' : saveStatus === 'success' ? 'Saved!' : 'Save itinerary'}
+          </button>
+          {saveMessage && (
+            <span
+              className={`text-sm ${
+                saveStatus === 'success' ? 'text-green-700' : 'text-red-600'
+              }`}
+            >
+              {saveMessage}
+            </span>
+          )}
+        </div>
+      </div>
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-gray-900">Your World Cup 2026 Itinerary Options</h1>
-        <p className="text-lg text-gray-600">We've created {itinerary.options.length} personalized trip plans for you</p>
+        <h1 className="text-4xl font-bold text-gray-900 heading-print">Your World Cup 2026 Itinerary Options</h1>
+        <p className="text-lg text-gray-600 subheading-print">We've created {itinerary.options.length} personalized trip plans for you</p>
       </div>
 
       {/* Trip input summary (dates, travelers, cities) */}
       {tripInput && (
-        <div className="rounded-lg border border-blue-200 bg-blue-50/60 px-4 py-3 text-sm text-blue-900">
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {tripInput.originCity && <span><strong>Origin:</strong> {tripInput.originCity}</span>}
-            {tripInput.startDate && tripInput.endDate && (
-              <span>
-                <strong>Dates:</strong> {tripInput.startDate} → {tripInput.endDate}
-                {tripDurationDays ? ` (${tripDurationDays} days)` : ''}
-              </span>
-            )}
-            {(tripInput.groupSize || tripInput.children || tripInput.seniors) && (
-              <span>
-                <strong>Travelers:</strong> {tripInput.groupSize ?? 0} adults{(tripInput.children ?? 0) > 0 ? `, ${tripInput.children} children` : ''}{(tripInput.seniors ?? 0) > 0 ? `, ${tripInput.seniors} seniors` : ''}
-              </span>
-            )}
-            {tripInput.citiesVisiting && tripInput.citiesVisiting.length > 0 && (
-              <span>
-                <strong>Cities:</strong> {tripInput.citiesVisiting.length} {tripInput.citiesVisiting.length === 1 ? 'City' : 'Cities'} — {tripInput.citiesVisiting.join(' → ')}
-              </span>
-            )}
+        <>
+          <div className="rounded-lg border border-blue-200 bg-blue-50/60 px-4 py-3 text-sm text-blue-900 print-hidden-summary">
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
+              {tripInput.originCity && <span><strong>Origin:</strong> {tripInput.originCity}</span>}
+              {tripInput.startDate && tripInput.endDate && (
+                <span>
+                  <strong>Dates:</strong> {tripInput.startDate} → {tripInput.endDate}
+                  {tripDurationDays ? ` (${tripDurationDays} days)` : ''}
+                </span>
+              )}
+              {(tripInput.groupSize || tripInput.children || tripInput.seniors) && (
+                <span>
+                  <strong>Travelers:</strong> {tripInput.groupSize ?? 0} adults{(tripInput.children ?? 0) > 0 ? `, ${tripInput.children} children` : ''}{(tripInput.seniors ?? 0) > 0 ? `, ${tripInput.seniors} seniors` : ''}
+                </span>
+              )}
+              {tripInput.citiesVisiting && tripInput.citiesVisiting.length > 0 && (
+                <span>
+                  <strong>Cities:</strong> {tripInput.citiesVisiting.length} {tripInput.citiesVisiting.length === 1 ? 'City' : 'Cities'} — {tripInput.citiesVisiting.join(' → ')}
+                </span>
+              )}
+              {tripInput.budgetLevel && (
+                <span><strong>Budget:</strong> {tripInput.budgetLevel.charAt(0).toUpperCase() + tripInput.budgetLevel.slice(1)}</span>
+              )}
+              {tripInput.favoriteTeam && (
+                <span><strong>Favorite Team:</strong> {tripInput.favoriteTeam}</span>
+              )}
+            </div>
           </div>
-        </div>
+          <div className="hidden print:block">
+            <table className="print-table">
+              <tbody>
+                {tripInput.originCity && (
+                  <tr>
+                    <th>Origin City</th>
+                    <td>{tripInput.originCity}</td>
+                  </tr>
+                )}
+                {tripInput.startDate && tripInput.endDate && (
+                  <tr>
+                    <th>Travel Dates</th>
+                    <td>{tripInput.startDate} → {tripInput.endDate}{tripDurationDays ? ` (${tripDurationDays} days)` : ''}</td>
+                  </tr>
+                )}
+                {(tripInput.groupSize || tripInput.children || tripInput.seniors) && (
+                  <tr>
+                    <th>Travel Party</th>
+                    <td>
+                      {tripInput.groupSize ?? 0} adults
+                      {(tripInput.children ?? 0) > 0 ? `, ${tripInput.children} children` : ''}
+                      {(tripInput.seniors ?? 0) > 0 ? `, ${tripInput.seniors} seniors` : ''}
+                    </td>
+                  </tr>
+                )}
+                {tripInput.citiesVisiting && tripInput.citiesVisiting.length > 0 && (
+                  <tr>
+                    <th>Cities Planned</th>
+                    <td>{tripInput.citiesVisiting.join(' → ')}</td>
+                  </tr>
+                )}
+                {tripInput.budgetLevel && (
+                  <tr>
+                    <th>Budget Level</th>
+                    <td>{tripInput.budgetLevel.charAt(0).toUpperCase() + tripInput.budgetLevel.slice(1)}</td>
+                  </tr>
+                )}
+                {tripInput.favoriteTeam && (
+                  <tr>
+                    <th>Favorite Team</th>
+                    <td>{tripInput.favoriteTeam}</td>
+                  </tr>
+                )}
+                {tripInput.hasMatchTickets && (
+                  <tr>
+                    <th>Match Tickets</th>
+                    <td>Yes — itinerary prioritizes match day logistics.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
 
       {/* Summary Cards */}
@@ -209,7 +381,7 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture:
             <div
               key={index}
               onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
-              className={`cursor-pointer rounded-xl border-2 shadow-sm transition-all ${expandedIndex === index ? 'border-blue-500 ring-2 ring-blue-200' : 'border-blue-100 hover:border-blue-300 hover:shadow-lg'}`}
+              className={`cursor-pointer rounded-xl border-2 shadow-sm transition-all print-section ${expandedIndex === index ? 'border-blue-500 ring-2 ring-blue-200' : 'border-blue-100 hover:border-blue-300 hover:shadow-lg'}`}
             >
               <div className="p-5 h-full flex flex-col">
                 <div className="mb-3">
@@ -434,23 +606,6 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture:
                     Continue to Flight Planner
                   </button>
                   <button onClick={() => window.print()} className="px-5 py-2 rounded-lg bg-gray-900 text-white hover:bg-black">Print PDF</button>
-                  <button
-                    onClick={() => {
-                      if (!user) {
-                        window.dispatchEvent(new Event('fz:open-auth'));
-                        return;
-                      }
-                      try {
-                        localStorage.setItem('fz_saved_itinerary', JSON.stringify({ when: Date.now(), optionIndex: expandedIndex }));
-                        alert('Itinerary saved to your profile (placeholder).');
-                      } catch {
-                        alert('Save is coming soon — accounts will sync itineraries.');
-                      }
-                    }}
-                    className="px-5 py-2 rounded-lg border font-semibold hover:bg-gray-50"
-                  >
-                    Save Itinerary (beta)
-                  </button>
                 </div>
               </div>
             )}
@@ -487,6 +642,7 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture:
       <style jsx global>{`
         @media print {
           html, body { background: #fff !important; }
+          body { font-family: 'Inter', Arial, sans-serif; font-size: 12px; line-height: 1.45; color: #111 !important; }
           * { box-shadow: none !important; }
           .shadow, .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl { box-shadow: none !important; }
           .bg-gradient-to-r, .bg-blue-50, .bg-green-50, .bg-yellow-50, .bg-purple-50, .bg-white { background: #fff !important; }
@@ -495,10 +651,21 @@ export default function ItineraryResults({ itinerary, tripInput, onEmailCapture:
           .ring-2, .ring, .ring-blue-200 { box-shadow: none !important; }
           /* Hide interactive-only UI */
           button, .print\:hidden { display: none !important; }
+          .print-hidden-summary { display: none !important; }
           /* Ensure comfortable margins */
           @page { margin: 16mm; }
           /* Sticky brand header/footer for print */
           .print\:brand-header { display: block !important; }
+          .heading-print { font-size: 24px !important; margin-bottom: 6mm !important; }
+          .subheading-print { font-size: 14px !important; color: #333 !important; }
+          .print-table { width: 100%; border-collapse: collapse; margin-top: 6mm; margin-bottom: 8mm; }
+          .print-table th,
+          .print-table td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+          .print-table th { background: #f9f9f9; font-weight: 600; width: 32%; }
+          .print-section { break-inside: avoid; page-break-inside: avoid; margin-bottom: 10mm; }
+          .print-section h2,
+          .print-section h3,
+          .print-section h4 { color: #111 !important; }
         }
       `}</style>
     </div>
