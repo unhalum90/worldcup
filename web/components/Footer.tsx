@@ -46,7 +46,7 @@ export default function Footer() {
               <span>WC26 Fan Zone</span>
             </Link>
             <p className="text-sm text-gray-600 mb-4 max-w-md">
-              Your complete resource for planning the perfect World Cup 2026 experience. Travel guides, forums, and AI-powered trip planning.
+              Your complete resource for planning the perfect World Cup 2026 experience. Travel guides and AI-powered trip planning.
             </p>
             
             {/* Social Links */}
@@ -71,9 +71,6 @@ export default function Footer() {
             <nav className="flex flex-col gap-2">
               <Link href="/guides" className="text-sm text-gray-600 hover:text-[color:var(--color-primary)] transition-colors">
                 City Guides
-              </Link>
-              <Link href="/forums" className="text-sm text-gray-600 hover:text-[color:var(--color-primary)] transition-colors">
-                Fan Forums
               </Link>
               <Link href="/planner" className="text-sm text-gray-600 hover:text-[color:var(--color-primary)] transition-colors">
                 AI Planner
