@@ -6,6 +6,7 @@ import type { StoredSelection } from '@/types/trip';
 import type { LodgingPlannerPlan, LodgingPlannerPreferences, LodgingMapMarker } from '@/types/lodging';
 import { usePlannerTheme } from '@/hooks/usePlannerTheme';
 import PlannerLoader from '@/components/PlannerLoader';
+import LodgingZoneMap from '@/components/lodging/LodgingZoneMap';
 
 const STORAGE_KEY = 'fz_selected_trip_option';
 
@@ -491,27 +492,7 @@ function PreferenceToggle({
 }
 
 function MapPreview({ markers }: { markers: LodgingMapMarker[] }) {
-  if (!markers || markers.length === 0) {
-    return (
-      <div className="bg-white rounded-3xl border border-rose-100 shadow-lg p-6 flex flex-col items-center justify-center text-center text-gray-600 h-full">
-        <p className="font-semibold">Map preview coming soon</p>
-        <p className="text-xs">Leaflet overlay ships with Phase C. For now, compare zones using the cards.</p>
-      </div>
-    );
-  }
-
-  const latBounds = getBounds(markers.map((m) => m.lat));
-  const lngBounds = getBounds(markers.map((m) => m.lng));
-
-  const project = (lat: number, lng: number) => {
-    const [minLat, maxLat] = latBounds;
-    const [minLng, maxLng] = lngBounds;
-    const yRange = maxLat - minLat || 1;
-    const xRange = maxLng - minLng || 1;
-    const y = ((maxLat - lat) / yRange) * 220 + 20;
-    const x = ((lng - minLng) / xRange) * 360 + 20;
-    return { x, y };
-  };
+  const hasMarkers = markers && markers.length > 0;
 
   return (
     <div className="bg-white rounded-3xl border border-rose-100 shadow-lg p-6 space-y-4">
@@ -520,59 +501,43 @@ function MapPreview({ markers }: { markers: LodgingMapMarker[] }) {
           <p className="text-xs uppercase text-gray-500 font-semibold">Zone map preview</p>
           <h4 className="text-lg font-semibold text-gray-900">Phase 1 heat map</h4>
         </div>
-        <span className="text-xs text-gray-500">Leaflet overlay ships with Phase C</span>
+        <span className="text-xs text-gray-500">
+          {hasMarkers ? 'Pan + zoom to explore' : 'Map will appear once we have zone coordinates'}
+        </span>
       </div>
-      <div className="relative rounded-3xl bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#0f172a] h-72 overflow-hidden">
-        <div className="absolute inset-4">
-          <svg viewBox="0 0 400 260" className="w-full h-full">
-            <defs>
-              <radialGradient id="zoneGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#fb7185" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#fb7185" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-            {markers.map((marker, idx) => {
-              const { x, y } = project(marker.lat, marker.lng);
-              return (
-                <g key={`${marker.name}-${idx}`}>
-                  <circle cx={x} cy={y} r={28} fill="url(#zoneGlow)" opacity={marker.highlight ? 0.9 : 0.4} />
-                  <circle
-                    cx={x}
-                    cy={y}
-                    r={9}
-                    fill={marker.highlight ? '#f97316' : '#fb7185'}
-                    stroke="#fff"
-                    strokeWidth={2}
-                  />
-                  <text x={x + 12} y={y + 4} className="text-[10px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" fill="#fff">
-                    {marker.name}
-                  </text>
-                </g>
-              );
-            })}
-          </svg>
-        </div>
-        <div className="absolute inset-0 border border-white/10 rounded-3xl pointer-events-none" />
-        <div className="absolute bottom-3 right-4 text-[11px] text-white/70">Tap to expand (Phase C map)</div>
-      </div>
-      <div className="grid gap-3 sm:grid-cols-2">
-        {markers.map((marker) => (
-          <div key={marker.name} className="rounded-2xl border border-rose-100 p-3 text-sm text-gray-900">
-            <div className="flex items-center justify-between">
-              <p className="font-semibold">{marker.name}</p>
-              <span className="text-xs text-gray-600">{marker.matchScore}%</span>
+      {hasMarkers ? (
+        <>
+          <div className="relative">
+            <LodgingZoneMap markers={markers} />
+            <div className="pointer-events-none absolute bottom-3 right-4 text-[11px] text-white/80 drop-shadow" aria-hidden>
+              Tap to expand (Phase C map)
             </div>
-            <p className="text-xs text-gray-700">{marker.travelTimeToStadium || 'Commute TBD'}</p>
           </div>
-        ))}
-      </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {markers.map((marker) => (
+              <div key={marker.name} className="rounded-2xl border border-rose-100 p-3 text-sm text-gray-900 bg-rose-50/40">
+                <div className="flex items-center justify-between">
+                  <p className="font-semibold">{marker.name}</p>
+                  <span className="text-xs text-gray-600">{marker.matchScore}%</span>
+                </div>
+                <p className="text-xs text-gray-700">{marker.travelTimeToStadium || 'Commute TBD'}</p>
+                {marker.travelTimeToFanFest && (
+                  <p className="text-xs text-gray-700">Fan Fest: {marker.travelTimeToFanFest}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="h-72 w-full rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col items-center justify-center text-center text-white/70">
+          <p className="font-semibold">Map preview coming soon</p>
+          <p className="text-xs max-w-xs">
+            We’re collecting coordinates for this city. Once ready, you’ll see a live map with each recommended zone.
+          </p>
+        </div>
+      )}
     </div>
   );
-}
-
-function getBounds(values: number[]): [number, number] {
-  if (!values.length) return [0, 1];
-  return [Math.min(...values), Math.max(...values)];
 }
 
 function deriveNights(selection: StoredSelection): number | null {

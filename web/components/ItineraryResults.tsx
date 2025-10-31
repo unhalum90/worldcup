@@ -594,6 +594,13 @@ export default function ItineraryResults({
                 </div>
                 <div className="mt-6 flex flex-col sm:flex-row gap-3 print:hidden">
                   <button
+                    onClick={handleSaveItinerary}
+                    disabled={!hasOptions || saving || saveStatus === 'success'}
+                    className="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-400"
+                  >
+                    {saving ? 'Saving…' : saveStatus === 'success' ? 'Saved!' : 'Save itinerary'}
+                  </button>
+                  <button
                     onClick={() => handlePlanNavigation('/lodging-planner?from=trip-builder')}
                     className="px-5 py-2 rounded-lg bg-rose-600 text-white font-semibold hover:bg-rose-700"
                   >
@@ -607,6 +614,15 @@ export default function ItineraryResults({
                   </button>
                   <button onClick={() => window.print()} className="px-5 py-2 rounded-lg bg-gray-900 text-white hover:bg-black">Print PDF</button>
                 </div>
+                {saveMessage && (
+                  <p
+                    className={`mt-2 text-sm ${
+                      saveStatus === 'success' ? 'text-emerald-700' : 'text-red-600'
+                    } print:hidden`}
+                  >
+                    {saveMessage}
+                  </p>
+                )}
               </div>
             )}
           </div>
