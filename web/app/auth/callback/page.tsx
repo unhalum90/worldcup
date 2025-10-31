@@ -46,14 +46,18 @@ export default function AuthCallback() {
           error: profileError 
         });
 
-        // Determine destination
+                // Determine destination
+        let destination = '/planner';
         if (!profile || !profile.home_airport) {
           console.log('[Callback] Redirecting to onboarding');
-          window.location.href = '/onboarding';
+          destination = '/onboarding';
         } else {
           console.log('[Callback] Redirecting to planner');
-          window.location.href = '/planner';
+          destination = '/planner';
         }
+        
+        // Use window.location for hard redirect (router.replace doesn't work reliably here)
+        window.location.href = destination;
       } catch (error) {
         console.error('[Callback] Auth callback error:', error);
         window.location.href = '/';
