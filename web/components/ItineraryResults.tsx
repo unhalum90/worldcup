@@ -287,6 +287,9 @@ export default function ItineraryResults({
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-gray-900 heading-print">Your World Cup 2026 Itinerary Options</h1>
         <p className="text-lg text-gray-600 subheading-print">We've created {itinerary.options.length} personalized trip plans for you</p>
+        <p className="text-xs text-gray-500 max-w-2xl mx-auto italic print:text-gray-600">
+          Generated with Google Gemini — it can make mistakes, so double-check key details like match logistics, directions, and opening hours.
+        </p>
       </div>
 
       {/* Trip input summary (dates, travelers, cities) */}
@@ -556,6 +559,9 @@ export default function ItineraryResults({
                   </div>
                   <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5 shadow-sm">
                     <h4 className="font-bold text-blue-900 mb-3 flex items-center text-lg"><span className="mr-3">🎫</span> Match Day Logistics</h4>
+                    <p className="text-[11px] text-blue-700/80 italic mb-2">
+                      Gemini may blend stadium tips from other cities — confirm transport routes and timing before match day.
+                    </p>
                     <p className="text-sm text-blue-900 leading-relaxed">{city.matchDayLogistics}</p>
                   </div>
                   {city.insiderTips && city.insiderTips.length > 0 && (

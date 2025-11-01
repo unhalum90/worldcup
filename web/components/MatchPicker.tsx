@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { createMatchKey, sortMatchKeys } from '@/lib/matchSelection';
 
 type MatchEntry = {
   id: string;
@@ -16,11 +17,11 @@ interface MatchPickerProps {
   selectedCities: string[];
   startDate?: string;
   endDate?: string;
-  selectedDates: string[];
-  onChangeDates: (dates: string[]) => void;
+  selectedMatchKeys: string[];
+  onChangeMatchKeys: (keys: string[]) => void;
 }
 
-export default function MatchPicker({ selectedCities, startDate, endDate, selectedDates, onChangeDates }: MatchPickerProps) {
+export default function MatchPicker({ selectedCities, startDate, endDate, selectedMatchKeys, onChangeMatchKeys }: MatchPickerProps) {
   const [data, setData] = React.useState<Record<string, MatchEntry[]>>({});
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -50,10 +51,16 @@ export default function MatchPicker({ selectedCities, startDate, endDate, select
     load();
   }, [selectedCities.join(','), startDate, endDate]);
 
-  const toggleDate = (date: string) => {
-    const set = new Set(selectedDates);
-    if (set.has(date)) set.delete(date); else set.add(date);
-    onChangeDates(Array.from(set).sort());
+  const toggleMatch = (city: string, date: string) => {
+    const key = createMatchKey(city, date);
+    if (!key) return;
+    const set = new Set(selectedMatchKeys);
+    if (set.has(key)) {
+      set.delete(key);
+    } else {
+      set.add(key);
+    }
+    onChangeMatchKeys(sortMatchKeys(Array.from(set)));
   };
 
   if (!selectedCities || selectedCities.length === 0) return null;
@@ -79,7 +86,8 @@ export default function MatchPicker({ selectedCities, startDate, endDate, select
               <ul className="divide-y">
                 {matches.map((m) => {
                   const dateLabel = m.date;
-                  const isSelected = selectedDates.includes(dateLabel);
+                  const key = createMatchKey(city, m.date);
+                  const isSelected = key ? selectedMatchKeys.includes(key) : false;
                   return (
                     <li key={m.id} className={`flex items-center justify-between px-3 py-2 ${isSelected ? 'bg-blue-50' : ''}`}>
                       <div>
@@ -88,7 +96,7 @@ export default function MatchPicker({ selectedCities, startDate, endDate, select
                       </div>
                       <button
                         type="button"
-                        onClick={() => toggleDate(dateLabel)}
+                        onClick={() => toggleMatch(city, dateLabel)}
                         className={`px-3 py-1 rounded-md text-sm font-semibold ${isSelected ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}
                       >
                         {isSelected ? 'Selected' : 'Add date'}

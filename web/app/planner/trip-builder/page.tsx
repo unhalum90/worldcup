@@ -38,6 +38,9 @@ export default function PlannerPage() {
     setError(null);
     setInitialExpandedIndex(null);
     setLoadedSavedId(null);
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     try {
       const response = await fetch('/api/travel-planner', {

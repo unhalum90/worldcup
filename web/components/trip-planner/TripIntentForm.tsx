@@ -5,6 +5,7 @@ import type { UserProfile } from '@/lib/profile/types';
 import { WORLD_CUP_CITIES } from '@/components/TravelPlannerWizard';
 import MatchPicker from '@/components/MatchPicker';
 import type { MatchItem } from '@/lib/matchSchedule';
+import { createMatchKey, extractDateFromMatchKey, sortMatchKeys } from '@/lib/matchSelection';
 
 type TravelPlanRequest = {
   originCity: string;
@@ -57,19 +58,23 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
     return Array.from(set);
   }, [profile.ticket_match?.city, storedTicketMatches]);
 
-  const defaultDates = useMemo(() => {
+  const defaultMatchSelections = useMemo(() => {
     const set = new Set<string>();
-    if (profile.ticket_match?.date) set.add(profile.ticket_match.date);
-    storedTicketMatches.forEach((m) => set.add(m.date));
+    const profileKey = createMatchKey(profile.ticket_match?.city ?? null, profile.ticket_match?.date ?? null);
+    if (profileKey) set.add(profileKey);
+    storedTicketMatches.forEach((m) => {
+      const key = createMatchKey(m.city, m.date);
+      if (key) set.add(key);
+    });
     return Array.from(set);
-  }, [profile.ticket_match?.date, storedTicketMatches]);
+  }, [profile.ticket_match?.city, profile.ticket_match?.date, storedTicketMatches]);
 
   const [citiesVisiting, setCitiesVisiting] = useState<string[]>(defaultCities);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [hasTickets, setHasTickets] = useState(Boolean(profile.has_tickets) || storedTicketMatches.length > 0);
   const [ticketCities, setTicketCities] = useState<string[]>(defaultCities);
-  const [matchDates, setMatchDates] = useState<string[]>(defaultDates);
+  const [matchSelections, setMatchSelections] = useState<string[]>(sortMatchKeys(defaultMatchSelections));
   const [personalContext, setPersonalContext] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -86,13 +91,13 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
     if (defaultCities.length && ticketCities.length === 0) {
       setTicketCities(defaultCities);
     }
-    if (defaultDates.length && matchDates.length === 0) {
-      setMatchDates(defaultDates);
+    if (defaultMatchSelections.length && matchSelections.length === 0) {
+      setMatchSelections(sortMatchKeys(defaultMatchSelections));
     }
     if (storedTicketMatches.length && !hasTickets) {
       setHasTickets(true);
     }
-  }, [defaultCities, defaultDates, citiesVisiting.length, ticketCities.length, matchDates.length, storedTicketMatches, hasTickets]);
+  }, [defaultCities, defaultMatchSelections, citiesVisiting.length, ticketCities.length, matchSelections.length, storedTicketMatches, hasTickets]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,6 +110,15 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
 
     try {
       const payload = buildPayloadFromProfile(profile);
+      const matchDatesForPayload = hasTickets
+        ? Array.from(
+            new Set(
+              matchSelections
+                .map(extractDateFromMatchKey)
+                .filter((date): date is string => Boolean(date))
+            )
+          )
+        : [];
       await onSubmit({
         ...payload,
         citiesVisiting,
@@ -113,7 +127,7 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
         personalContext,
         hasMatchTickets: hasTickets,
         ticketCities: hasTickets ? ticketCities : [],
-        matchDates: hasTickets ? matchDates : [],
+        matchDates: matchDatesForPayload,
       });
     } catch (err: any) {
       setError(err?.message || 'Failed to submit');
@@ -209,10 +223,10 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
                   setHasTickets(e.target.checked);
                   if (!e.target.checked) {
                     setTicketCities([]);
-                    setMatchDates([]);
+                    setMatchSelections([]);
                   } else if (ticketCities.length === 0 && defaultCities.length) {
                     setTicketCities(defaultCities);
-                    setMatchDates(defaultDates);
+                    setMatchSelections(sortMatchKeys(defaultMatchSelections));
                   }
                 }}
               />
@@ -246,8 +260,8 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
                 selectedCities={ticketCities}
                 startDate={startDate}
                 endDate={endDate}
-                selectedDates={matchDates}
-                onChangeDates={setMatchDates}
+                selectedMatchKeys={matchSelections}
+                onChangeMatchKeys={(keys) => setMatchSelections(sortMatchKeys(keys))}
               />
             </div>
           )}
