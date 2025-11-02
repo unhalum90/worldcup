@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTeamBySlug, teams } from '@/lib/teamsData';
 import MiniCountdown from '@/components/MiniCountdown';
+import SubscribeButton from '@/components/SubscribeButton';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -594,15 +595,12 @@ export default async function TeamPage({ params }: Props) {
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
             Our free weekly newsletter for World Cup 2026 fans. Get city updates, travel tips, and early access to new guides as they launch.
           </p>
-          <button
-            onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
-            className="inline-flex items-center gap-2 bg-[color:var(--color-accent-red)] text-white px-8 py-4 rounded-lg font-bold text-lg hover:brightness-110 transition-colors shadow-lg"
-          >
+          <SubscribeButton className="inline-flex items-center gap-2 bg-[color:var(--color-accent-red)] text-white px-8 py-4 rounded-lg font-bold text-lg hover:brightness-110 transition-colors shadow-lg">
             Subscribe Free
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </button>
+          </SubscribeButton>
         </div>
       </div>
     </div>

@@ -30,6 +30,7 @@ export default function Header() {
 
   const navLinks = [
     { href: '/teams', label: t('teams') },
+    { href: '/groups', label: t('groups') },
     { href: '/guides', label: t('guides') },
     { href: '/planner', label: t('planner') },
   ];

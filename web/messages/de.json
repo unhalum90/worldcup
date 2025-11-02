@@ -2,7 +2,14 @@
   "nav": {
     "home": "Start",
     "blog": "Blog",
-    "privacy": "Datenschutz"
+    "privacy": "Datenschutz",
+    "teams": "Teams",
+    "groups": "Gruppen",
+    "guides": "Guides",
+    "planner": "Reiseplaner",
+    "signIn": "Anmelden",
+    "subscribeFree": "Kostenlos abonnieren",
+    "newsletter": "Newsletter"
   },
   "hero": {
     "title": "Plane deine Reise zur Weltmeisterschaft 2026 und vernetze dich mit Fans",
@@ -39,7 +46,12 @@
     "social": {
       "headline": "Trusted by fan communities",
       "subhead": "across 2026 host cities worldwide.",
-      "badges": ["Supporters clubs", "Local guides", "City volunteers", "Fan creators"]
+      "badges": [
+        "Supporters clubs",
+        "Local guides",
+        "City volunteers",
+        "Fan creators"
+      ]
     },
     "chunks": {
       "title": "What you'll get next",
