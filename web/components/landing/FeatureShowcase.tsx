@@ -12,7 +12,7 @@ export default function FeatureShowcase() {
       title: t('cityGuides.title'),
       description: t('cityGuides.description'),
       cta: t('cityGuides.cta'),
-      href: 'https://fanzonenetwork.lemonsqueezy.com/buy/cbd81218-8b0e-4162-b273-fcec2840e785',
+      href: 'https://fanzonenetwork.lemonsqueezy.com/buy/fac0321c-ed0b-4e68-89d1-a01fde5b4166',
       gradient: 'from-blue-500 to-blue-600',
     },
     {

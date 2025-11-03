@@ -29,7 +29,7 @@ export default function GuidesPage() {
               <p className="text-2xl font-bold">Dallas Travel Guide</p>
             </div>
             <a
-              href="https://fanzonenetwork.lemonsqueezy.com/buy/cbd81218-8b0e-4162-b273-fcec2840e785"
+              href="https://fanzonenetwork.lemonsqueezy.com/buy/fac0321c-ed0b-4e68-89d1-a01fde5b4166"
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-md"

@@ -76,6 +76,10 @@ export async function middleware(req: NextRequest) {
   }
 
   const pathname = req.nextUrl.pathname;
+  const adminEmails = (process.env.ADMIN_EMAILS || '')
+    .split(',')
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
 
   // 🚧 Bypass middleware during Supabase auth callback or immediate post-login refresh
   if (pathname.startsWith('/auth/callback')) {
@@ -94,6 +98,13 @@ export async function middleware(req: NextRequest) {
     const url = new URL('/login', req.url);
     url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
     return NextResponse.redirect(url);
+  }
+
+  if (pathname.startsWith('/admin')) {
+    const email = typeof user?.email === 'string' ? user.email.toLowerCase() : null;
+    if (!email || (adminEmails.length > 0 && !adminEmails.includes(email))) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
   }
 
   // Optional onboarding gate (disabled by default). When enabled, if a user is authenticated
