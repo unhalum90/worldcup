@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { MAJOR_AIRPORTS } from '@/lib/airportData';
 import { validateProfileInput } from '@/lib/profile/types';
+import { syncMailingList } from '@/lib/mailerlite/server';
 
 function findAirportByCode(code: string) {
   const c = code.toUpperCase();
@@ -65,6 +66,57 @@ export async function PUT(req: NextRequest) {
       .maybeSingle();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+    if (user.email && data) {
+      const tags: string[] = ['onboarding_completed'];
+      if (Array.isArray(data.travel_focus)) {
+        data.travel_focus
+          .filter((focus: unknown): focus is string => typeof focus === 'string' && focus.trim().length > 0)
+          .forEach((focus: string) => tags.push(`focus:${focus.trim()}`));
+      }
+      if (data.has_tickets) tags.push('has_tickets');
+      if (data.favorite_team) tags.push(`team:${String(data.favorite_team).trim()}`);
+
+      const fields = {
+        source: 'onboarding',
+        home_airport: data.home_airport?.code ?? null,
+        group_size: data.group_size ?? null,
+        tickets: data.has_tickets ? 1 : 0,
+        climate_pref: data.climate_preference ?? null,
+        favorite_team: data.favorite_team ?? null,
+      };
+
+      const metadata = {
+        profile_snapshot: {
+          home_airport: data.home_airport,
+          group_size: data.group_size,
+          children_0_5: data.children_0_5,
+          children_6_18: data.children_6_18,
+          seniors: data.seniors,
+          has_tickets: data.has_tickets,
+          ticket_match: data.ticket_match,
+          travel_focus: data.travel_focus,
+          preferred_transport: data.preferred_transport,
+          budget_level: data.budget_level,
+          climate_preference: data.climate_preference,
+        },
+      };
+
+      try {
+        await syncMailingList({
+          email: user.email,
+          userId: user.id,
+          source: 'onboarding',
+          tags,
+          metadata,
+          fields,
+          confirmed: true,
+        });
+      } catch (syncError) {
+        console.error('[Profile] Failed to sync MailerLite subscriber', syncError);
+      }
+    }
+
     return NextResponse.json({ profile: data });
   } catch (e: any) {
     return NextResponse.json({ error: e?.message || 'Server error' }, { status: 500 });
