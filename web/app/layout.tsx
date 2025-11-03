@@ -15,6 +15,7 @@ import { AuthProvider } from '@/lib/AuthContext';
 import LanguageModal from '@/components/LanguageModal';
 import { WebVitals } from '@/components/WebVitals';
 import ScrollToTop from '@/components/ScrollToTop';
+import CookieConsent from "@/components/CookieConsent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,6 +68,7 @@ export default async function RootLayout({
             <GlobalAuthLauncher />
             <Footer />
             <ScrollToTop />
+            <CookieConsent />
             <Analytics />
             <SpeedInsights />
           </AuthProvider>
