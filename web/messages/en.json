@@ -475,7 +475,66 @@
           "title": "🌍 Crafting Your Perfect World Cup Journey...",
           "subtitle": "Our AI is analyzing your preferences with expert local knowledge",
           "note": "⏱️ This usually takes 45-60 seconds",
-          "itinerarySummary": "Analyzing your itinerary inputs..."
+          "itinerarySummary": "Analyzing your itinerary inputs...",
+          "header": {
+            "label": {
+              "flight": "Flight Planner",
+              "lodging": "Lodging Planner",
+              "trip": "Trip Planner"
+            },
+            "status": "{planner} active",
+            "processing": "Processing",
+            "defaults": {
+              "plan": "your plan"
+            }
+          },
+          "progress": {
+            "scanning": "Scanning...",
+            "analyzing": "Analyzing...",
+            "finalizing": "Finalizing..."
+          },
+          "context": {
+            "defaults": {
+              "from": "your starting point",
+              "to": "destination",
+              "city": "city"
+            },
+            "tripType": {
+              "family": "family trip",
+              "fan": "fan trip"
+            }
+          },
+          "messages": {
+            "flight": {
+              "scanRoute": "Scanning flight routes from <strong>{from}</strong> to <strong>{to}</strong>",
+              "layovers": "Analyzing connection times and layover options",
+              "seats": "Checking seat availability for <strong>{travelers}</strong> passengers",
+              "baggage": "Considering baggage policies and fees",
+              "hubs": "Finding most efficient connection hubs",
+              "optimize": "Optimizing for best price-time balance",
+              "finalize": "Finalizing your flight options"
+            },
+            "lodging": {
+              "neighborhoods": "Exploring neighborhoods in <strong>{city}</strong>",
+              "commute": "Calculating commute times to stadium and Fan Fest",
+              "family": "Finding family-friendly accommodations",
+              "dining": "Identifying areas with local dining options",
+              "culture": "Highlighting spots near cultural attractions",
+              "nightsBudget": "Estimating costs for <strong>{nights}</strong> nights at <strong>{budget}</strong>/night budget",
+              "preferences": "Matching with your travel style preferences",
+              "finalize": "Finalizing your lodging recommendations"
+            },
+            "trip": {
+              "travelers": "Planning for <strong>{travelers}</strong> travelers on a <highlight>{tripType}</highlight>",
+              "timeline": "Organizing your timeline across <strong>{nights}</strong> nights",
+              "flights": "Routing flights from <strong>{from}</strong> to <strong>{to}</strong>",
+              "lodging": "Finding the best areas to stay in <strong>{city}</strong>",
+              "logistics": "Mapping transport and match day logistics",
+              "dining": "Recommending local food experiences",
+              "recommendations": "Crafting activities and insider tips",
+              "finalize": "Bringing it all together in your personalized itinerary"
+            }
+          }
         },
         "errors": {
           "generate": "Failed to generate itinerary.",

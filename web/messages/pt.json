@@ -622,7 +622,66 @@
           "title": "🌍 Criando sua jornada perfeita para a Copa...",
           "subtitle": "Nossa IA analisa suas preferências com conhecimento local",
           "note": "⏱️ Isso geralmente leva 45-60 segundos",
-          "itinerarySummary": "Analisando os dados do seu itinerário..."
+          "itinerarySummary": "Analisando os dados do seu itinerário...",
+          "header": {
+            "label": {
+              "flight": "Planificador de Voos",
+              "lodging": "Planificador de Hospedagem",
+              "trip": "Planificador de Viagem"
+            },
+            "status": "{planner} ativo",
+            "processing": "Processando",
+            "defaults": {
+              "plan": "seu plano"
+            }
+          },
+          "progress": {
+            "scanning": "Escaneando...",
+            "analyzing": "Analisando...",
+            "finalizing": "Finalizando..."
+          },
+          "context": {
+            "defaults": {
+              "from": "seu ponto de partida",
+              "to": "destino",
+              "city": "cidade"
+            },
+            "tripType": {
+              "family": "viagem em família",
+              "fan": "viagem de torcedor"
+            }
+          },
+          "messages": {
+            "flight": {
+              "scanRoute": "Escaneando rotas de voo de <strong>{from}</strong> para <strong>{to}</strong>",
+              "layovers": "Analisando tempos de conexão e opções de escalas",
+              "seats": "Verificando disponibilidade de assentos para <strong>{travelers}</strong> passageiros",
+              "baggage": "Considerando políticas de bagagem e taxas",
+              "hubs": "Encontrando hubs de conexão mais eficientes",
+              "optimize": "Otimizando para melhor equilíbrio preço-tempo",
+              "finalize": "Finalizando suas opções de voo"
+            },
+            "lodging": {
+              "neighborhoods": "Explorando bairros em <strong>{city}</strong>",
+              "commute": "Calculando tempos de deslocamento ao estádio e Fan Fest",
+              "family": "Buscando acomodações adequadas para famílias",
+              "dining": "Identificando áreas com opções de restaurantes locais",
+              "culture": "Destacando locais próximos a atrações culturais",
+              "nightsBudget": "Estimando custos para <strong>{nights}</strong> noites com orçamento de <strong>{budget}</strong>/noite",
+              "preferences": "Combinando com suas preferências de estilo de viagem",
+              "finalize": "Finalizando suas recomendações de hospedagem"
+            },
+            "trip": {
+              "travelers": "Planejando para <strong>{travelers}</strong> viajantes em uma <highlight>{tripType}</highlight>",
+              "timeline": "Organizando sua linha do tempo durante <strong>{nights}</strong> noites",
+              "flights": "Roteando voos de <strong>{from}</strong> para <strong>{to}</strong>",
+              "lodging": "Encontrando as melhores áreas para se hospedar em <strong>{city}</strong>",
+              "logistics": "Mapeando transporte e logística do dia do jogo",
+              "dining": "Recomendando experiências gastronômicas locais",
+              "recommendations": "Elaborando atividades e dicas de insider",
+              "finalize": "Reunindo tudo em seu itinerário personalizado"
+            }
+          }
         },
         "errors": {
           "generate": "Não foi possível gerar o itinerário.",
@@ -805,7 +864,76 @@
             "budget": "Nível de orçamento",
             "team": "Time favorito",
             "tickets": "Ingressos"
+          },
+          "budgetLevels": {
+            "budget": "Viajante econômico",
+            "moderate": "Orçamento moderado",
+            "premium": "Conforto premium"
           }
+        },
+        "alerts": {
+          "selectOption": "Selecione primeiro uma opção de itinerário.",
+          "navigationError": "Não foi possível continuar agora. Tente novamente."
+        },
+        "sections": {
+          "flights": {
+            "title": "Voos",
+            "layover": "Conexão: {duration}",
+            "details": {
+              "airlines": "Companhias Aéreas",
+              "scheduleLabel": "Exemplo de Horário",
+              "scheduleValue": "Partida {departure} → Chegada {arrival}",
+              "availability": "Disponibilidade",
+              "notes": "Observações"
+            },
+            "cost": {
+              "total": "Custo Total de Voos"
+            },
+            "cta": {
+              "title": "Precisa de tarifas ao vivo?",
+              "defaultMessage": "Entre no Planejador de Voos para comparar rotas reais, horários e preços atuais para esses trechos.",
+              "button": "Abrir Planejador de Voos"
+            }
+          },
+          "lodging": {
+            "title": "Áreas de Hospedagem Recomendadas",
+            "perNight": "por noite",
+            "toStadium": "Ao Estádio",
+            "toFanFest": "Ao Fan Fest",
+            "pros": "Prós:",
+            "cons": "Contras:"
+          },
+          "matchDay": {
+            "title": "Logística do Dia do Jogo",
+            "warning": "O Gemini pode misturar dicas de estádios de outras cidades — confirme rotas de transporte e horários antes do dia do jogo."
+          },
+          "insider": {
+            "title": "Dicas de Insider"
+          }
+        },
+        "timeline": {
+          "title": "Sua Viagem em Resumo",
+          "range": "{start}–{end}",
+          "actions": {
+            "arrive": "Chegar em {city}",
+            "fly": "Voar para {city}",
+            "match": "Dia do Jogo",
+            "return": "Voo de Retorno para Casa",
+            "explore": "Explorar {city}"
+          },
+          "comingSoon": "<emoji/> <strong>Em breve em Maio de 2026:</strong> Nossos Planejadores de Cidades-Sede serão lançados com todos os eventos da Copa, Fan Fests e guias de transporte — facilitando ainda mais a exploração de cada cidade."
+        },
+        "cta": {
+          "subscribe": {
+            "message": "📩 Inscreva-se no Fan Zone Weekly para atualizações de cidades e alertas de viagem.",
+            "button": "Inscrever-se Grátis"
+          }
+        },
+        "actions": {
+          "openLodgingPlanner": "Explorar Zonas de Hospedagem",
+          "openFlightPlanner": "Continuar para o Planejador de Voos",
+          "print": "Imprimir PDF",
+          "startOver": "← Recomeçar com Novas Preferências"
         },
         "save": {
           "title": "Salve este itinerário",
