@@ -297,9 +297,68 @@
         "savedLoading": "Chargement de votre itinéraire enregistré…",
         "loader": {
           "title": "🌍 Création de votre voyage parfait pour la Coupe du Monde...",
-          "subtitle": "Notre IA analyse vos préférences avec l’expertise locale",
+          "subtitle": "Notre IA analyse vos préférences avec l'expertise locale",
           "note": "⏱️ Cela prend généralement 45 à 60 secondes",
-          "itinerarySummary": "Analyse de vos données d’itinéraire..."
+          "itinerarySummary": "Analyse de vos données d'itinéraire...",
+          "header": {
+            "label": {
+              "flight": "Planificateur de vols",
+              "lodging": "Planificateur d'hébergement",
+              "trip": "Planificateur de voyage"
+            },
+            "status": "{planner} actif",
+            "processing": "Traitement en cours",
+            "defaults": {
+              "plan": "votre plan"
+            }
+          },
+          "progress": {
+            "scanning": "Analyse en cours...",
+            "analyzing": "Analyse...",
+            "finalizing": "Finalisation..."
+          },
+          "context": {
+            "defaults": {
+              "from": "votre point de départ",
+              "to": "destination",
+              "city": "ville"
+            },
+            "tripType": {
+              "family": "voyage en famille",
+              "fan": "voyage de supporter"
+            }
+          },
+          "messages": {
+            "flight": {
+              "scanRoute": "Analyse des itinéraires de vol de <strong>{from}</strong> à <strong>{to}</strong>",
+              "layovers": "Analyse des temps de correspondance et options d'escale",
+              "seats": "Vérification de la disponibilité des sièges pour <strong>{travelers}</strong> passagers",
+              "baggage": "Examen des politiques de bagages et frais",
+              "hubs": "Recherche des hubs de correspondance les plus efficaces",
+              "optimize": "Optimisation du meilleur rapport prix-temps",
+              "finalize": "Finalisation de vos options de vol"
+            },
+            "lodging": {
+              "neighborhoods": "Exploration des quartiers à <strong>{city}</strong>",
+              "commute": "Calcul des temps de trajet vers le stade et la Fan Fest",
+              "family": "Recherche d'hébergements adaptés aux familles",
+              "dining": "Identification des zones avec options de restauration locale",
+              "culture": "Mise en avant des lieux proches d'attractions culturelles",
+              "nightsBudget": "Estimation des coûts pour <strong>{nights}</strong> nuits avec un budget de <strong>{budget}</strong>/nuit",
+              "preferences": "Adaptation à vos préférences de style de voyage",
+              "finalize": "Finalisation de vos recommandations d'hébergement"
+            },
+            "trip": {
+              "travelers": "Planification pour <strong>{travelers}</strong> voyageurs dans un <highlight>{tripType}</highlight>",
+              "timeline": "Organisation de votre planning sur <strong>{nights}</strong> nuits",
+              "flights": "Établissement d'itinéraires de vol de <strong>{from}</strong> à <strong>{to}</strong>",
+              "lodging": "Recherche des meilleures zones de séjour à <strong>{city}</strong>",
+              "logistics": "Cartographie des transports et logistique du jour de match",
+              "dining": "Recommandation d'expériences culinaires locales",
+              "recommendations": "Élaboration d'activités et conseils d'initiés",
+              "finalize": "Rassemblement de tout dans votre itinéraire personnalisé"
+            }
+          }
         },
         "errors": {
           "generate": "Impossible de générer l’itinéraire.",
@@ -377,6 +436,9 @@
           "step": "Étape {step}",
           "title": "Passez en revue votre profil voyage",
           "subtitle": "Nous utiliserons ces préférences enregistrées pour chaque voyage. Confirmez les informations ou modifiez-les avant de poursuivre."
+        },
+        "common": {
+          "separator": " • "
         },
         "cards": {
           "home": {
@@ -472,27 +534,96 @@
           "ticketsYes": "Oui — l’itinéraire privilégie la logistique du jour de match.",
           "ticketsNo": "Aucun billet enregistré",
           "print": {
-            "origin": "Ville de départ",
+            "origin": "Ville d'origine",
             "dates": "Dates du voyage",
             "travelers": "Groupe de voyage",
             "cities": "Villes prévues",
             "budget": "Niveau de budget",
             "team": "Équipe favorite",
             "tickets": "Billets"
+          },
+          "budgetLevels": {
+            "budget": "Voyageur budget",
+            "moderate": "Budget modéré",
+            "premium": "Confort premium"
           }
+        },
+        "alerts": {
+          "selectOption": "Sélectionnez d'abord une option d'itinéraire.",
+          "navigationError": "Impossible de continuer pour le moment. Veuillez réessayer."
+        },
+        "sections": {
+          "flights": {
+            "title": "Vols",
+            "layover": "Escale : {duration}",
+            "details": {
+              "airlines": "Compagnies aériennes",
+              "scheduleLabel": "Exemple d'horaire",
+              "scheduleValue": "Départ {departure} → Arrivée {arrival}",
+              "availability": "Disponibilité",
+              "notes": "Notes"
+            },
+            "cost": {
+              "total": "Coût total des vols"
+            },
+            "cta": {
+              "title": "Besoin de tarifs en direct ?",
+              "defaultMessage": "Accédez au Planificateur de vols pour comparer les itinéraires réels, les horaires et les prix actuels pour ces trajets.",
+              "button": "Ouvrir le Planificateur de vols"
+            }
+          },
+          "lodging": {
+            "title": "Zones d'hébergement recommandées",
+            "perNight": "par nuit",
+            "toStadium": "Vers le stade",
+            "toFanFest": "Vers la Fan Fest",
+            "pros": "Avantages :",
+            "cons": "Inconvénients :"
+          },
+          "matchDay": {
+            "title": "Logistique du jour de match",
+            "warning": "Gemini peut mélanger des conseils de stades d'autres villes — vérifiez les itinéraires de transport et les horaires avant le jour du match."
+          },
+          "insider": {
+            "title": "Conseils d'initiés"
+          }
+        },
+        "timeline": {
+          "title": "Votre voyage en un coup d'œil",
+          "range": "{start}–{end}",
+          "actions": {
+            "arrive": "Arrivée à {city}",
+            "fly": "Vol vers {city}",
+            "match": "Jour de match",
+            "return": "Vol de retour",
+            "explore": "Explorer {city}"
+          },
+          "comingSoon": "<emoji/> <strong>Bientôt en mai 2026 :</strong> Nos Planificateurs de villes hôtes seront lancés avec tous les événements de la Coupe du Monde, les Fan Fests et les guides de transport — facilitant encore plus l'exploration de chaque ville."
+        },
+        "cta": {
+          "subscribe": {
+            "message": "📩 Abonnez-vous à Fan Zone Weekly pour les mises à jour des villes et les alertes de voyage.",
+            "button": "S'abonner gratuitement"
+          }
+        },
+        "actions": {
+          "openLodgingPlanner": "Explorer les zones d'hébergement",
+          "openFlightPlanner": "Continuer vers le Planificateur de vols",
+          "print": "Imprimer en PDF",
+          "startOver": "← Recommencer avec de nouvelles préférences"
         },
         "save": {
           "title": "Enregistrer cet itinéraire",
           "description": "Conservez-le dans votre compte pour y revenir ou le reprendre plus tard.",
           "button": {
-            "default": "Enregistrer l’itinéraire",
+            "default": "Enregistrer l'itinéraire",
             "saving": "Enregistrement…",
             "success": "Enregistré !"
           },
           "messages": {
             "none": "Aucun itinéraire à enregistrer pour le moment.",
             "success": "Voyage enregistré dans votre compte.",
-            "errorGeneric": "Échec de l’enregistrement du voyage.",
+            "errorGeneric": "Échec de l'enregistrement du voyage.",
             "selectOption": "Sélectionnez un itinéraire pour continuer.",
             "navigationError": "Impossible de continuer pour le moment. Veuillez réessayer."
           }
