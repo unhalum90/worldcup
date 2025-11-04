@@ -2,6 +2,7 @@ import { getRequestConfig } from "next-intl/server";
 import { cookies } from "next/headers";
 import { locales, defaultLocale } from "../i18n";
 
+// Force rebuild after JSON fix - Nov 4, 2025
 export default getRequestConfig(async () => {
   // Get locale from cookie
   const cookieStore = await cookies();
