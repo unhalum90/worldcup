@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plane, 
@@ -20,6 +20,7 @@ import {
   Map,
   Sparkles
 } from 'lucide-react';
+import { useTranslations, useFormatter } from 'next-intl';
 import { useSimulatedProgress } from '@/hooks/useSimulatedProgress';
 import type { StoredSelection } from '@/types/trip';
 
@@ -35,40 +36,40 @@ type AnimationBehavior = 'glide' | 'pulse' | 'slide' | 'wiggle' | 'rotate' | 'wa
 
 interface PlannerMessage {
   icon: any;
-  text: string;
+  key: string;
   behavior: AnimationBehavior;
 }
 
 const FLIGHT_MESSAGES: PlannerMessage[] = [
-  { icon: Plane, text: 'Scanning flights from **{from}** → **{to}**...', behavior: 'glide' },
-  { icon: Clock, text: 'Checking layovers under 2 hours...', behavior: 'pulse' },
-  { icon: Users, text: 'Comparing seat options for **{travelers}** travelers...', behavior: 'slide' },
-  { icon: Luggage, text: 'Estimating total travel time and baggage cost...', behavior: 'wiggle' },
-  { icon: Globe2, text: 'Evaluating alternate hubs: EWR · BWI · IAD', behavior: 'rotate' },
-  { icon: Brain, text: 'Matching **Smartest**, **Budget**, and **Fastest** routes...', behavior: 'pulse' },
-  { icon: Flag, text: 'Finalizing best itinerary suggestions...', behavior: 'wave' },
+  { icon: Plane, key: 'messages.flight.scanRoute', behavior: 'glide' },
+  { icon: Clock, key: 'messages.flight.layovers', behavior: 'pulse' },
+  { icon: Users, key: 'messages.flight.seats', behavior: 'slide' },
+  { icon: Luggage, key: 'messages.flight.baggage', behavior: 'wiggle' },
+  { icon: Globe2, key: 'messages.flight.hubs', behavior: 'rotate' },
+  { icon: Brain, key: 'messages.flight.optimize', behavior: 'pulse' },
+  { icon: Flag, key: 'messages.flight.finalize', behavior: 'wave' },
 ];
 
 const LODGING_MESSAGES: PlannerMessage[] = [
-  { icon: Building2, text: 'Mapping top-rated neighborhoods in **{city}**...', behavior: 'drop' },
-  { icon: Car, text: 'Checking commute time to stadium and Fan Fest...', behavior: 'slide' },
-  { icon: Users, text: 'Prioritizing **family-friendly** options...', behavior: 'fade' },
-  { icon: Utensils, text: 'Balancing nightlife and dining options nearby...', behavior: 'pulse' },
-  { icon: MapPin, text: 'Exploring cultural highlights near your zone...', behavior: 'appear' },
-  { icon: Home, text: 'Comparing **{nights}-night stay** under ${budget}/night...', behavior: 'wiggle' },
-  { icon: Bed, text: 'Finding quiet stays for your "{tripType}" preference...', behavior: 'slide' },
-  { icon: MapPin, text: 'Finalizing lodging zones and travel scores...', behavior: 'drop' },
+  { icon: Building2, key: 'messages.lodging.neighborhoods', behavior: 'drop' },
+  { icon: Car, key: 'messages.lodging.commute', behavior: 'slide' },
+  { icon: Users, key: 'messages.lodging.family', behavior: 'fade' },
+  { icon: Utensils, key: 'messages.lodging.dining', behavior: 'pulse' },
+  { icon: MapPin, key: 'messages.lodging.culture', behavior: 'appear' },
+  { icon: Home, key: 'messages.lodging.nightsBudget', behavior: 'wiggle' },
+  { icon: Bed, key: 'messages.lodging.preferences', behavior: 'slide' },
+  { icon: MapPin, key: 'messages.lodging.finalize', behavior: 'drop' },
 ];
 
 const TRIP_MESSAGES: PlannerMessage[] = [
-  { icon: Globe2, text: 'Analyzing **{travelers}** travelers across **multiple cities**...', behavior: 'rotate' },
-  { icon: Calendar, text: 'Mapping **{nights}-day** itinerary from **{from}** to **{to}**...', behavior: 'pulse' },
-  { icon: Plane, text: 'Optimizing flight routes and connections...', behavior: 'glide' },
-  { icon: Building2, text: 'Finding lodging near stadiums in each city...', behavior: 'drop' },
-  { icon: Map, text: 'Building day-by-day logistics and match schedules...', behavior: 'slide' },
-  { icon: Utensils, text: 'Discovering local dining and nightlife hotspots...', behavior: 'wiggle' },
-  { icon: Brain, text: 'Crafting personalized recommendations and insider tips...', behavior: 'pulse' },
-  { icon: Sparkles, text: 'Finalizing your complete World Cup adventure...', behavior: 'wave' },
+  { icon: Globe2, key: 'messages.trip.travelers', behavior: 'rotate' },
+  { icon: Calendar, key: 'messages.trip.timeline', behavior: 'pulse' },
+  { icon: Plane, key: 'messages.trip.flights', behavior: 'glide' },
+  { icon: Building2, key: 'messages.trip.lodging', behavior: 'drop' },
+  { icon: Map, key: 'messages.trip.logistics', behavior: 'slide' },
+  { icon: Utensils, key: 'messages.trip.dining', behavior: 'wiggle' },
+  { icon: Brain, key: 'messages.trip.recommendations', behavior: 'pulse' },
+  { icon: Sparkles, key: 'messages.trip.finalize', behavior: 'wave' },
 ];
 
 const iconAnimations: Record<AnimationBehavior, any> = {
@@ -130,34 +131,6 @@ const iconAnimations: Record<AnimationBehavior, any> = {
   }
 };
 
-function formatMessage(template: string, trip: StoredSelection): string {
-  const cityList = trip.option.trip?.cityOrder?.length 
-    ? trip.option.trip.cityOrder 
-    : trip.option.cities.map((c) => c.cityName);
-  
-  const from = cityList[0] || 'your departure city';
-  const to = cityList[cityList.length - 1] || 'your destination';
-  const city = to;
-  const travelers = trip.tripInput?.groupSize || 1;
-  
-  // Calculate nights
-  const start = trip.tripInput?.startDate ? new Date(trip.tripInput.startDate) : null;
-  const end = trip.tripInput?.endDate ? new Date(trip.tripInput.endDate) : null;
-  const nights = start && end ? Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))) : 4;
-  
-  const budget = 225;
-  const tripType = trip.tripInput?.children ? 'Family Trip' : 'Fan Experience';
-
-  return template
-    .replace(/{from}/g, from)
-    .replace(/{to}/g, to)
-    .replace(/{city}/g, city)
-    .replace(/{travelers}/g, travelers.toString())
-    .replace(/{nights}/g, nights.toString())
-    .replace(/{budget}/g, budget.toString())
-    .replace(/{tripType}/g, tripType);
-}
-
 function ProgressBar({ progress, plannerType }: { progress: number; plannerType: 'flight' | 'lodging' | 'trip' }) {
   const colors = {
     flight: {
@@ -204,16 +177,18 @@ export default function PlannerLoader({
   progressOverride,
   messageOverride,
 }: PlannerLoaderProps) {
+  const t = useTranslations('planner.tripBuilder.loader');
+  const formatter = useFormatter();
   const simulatedProgress = useSimulatedProgress(duration);
   const progress = typeof progressOverride === 'number'
     ? Math.max(simulatedProgress, progressOverride)
     : simulatedProgress;
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-  
-  const messages = plannerType === 'flight' ? FLIGHT_MESSAGES : 
+
+  const messages = plannerType === 'flight' ? FLIGHT_MESSAGES :
                    plannerType === 'lodging' ? LODGING_MESSAGES :
                    TRIP_MESSAGES;
-  
+
   useEffect(() => {
     const messageInterval = setInterval(() => {
       setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
@@ -223,8 +198,66 @@ export default function PlannerLoader({
   }, [messages.length, duration]);
 
   const currentMessage = messages[currentMessageIndex];
-  const formattedText = messageOverride || formatMessage(currentMessage.text, trip);
   const IconComponent = currentMessage.icon;
+
+  const cityList = trip.option.trip?.cityOrder?.length
+    ? trip.option.trip.cityOrder
+    : trip.option.cities.map((c) => c.cityName);
+
+  const defaultFrom = t('context.defaults.from');
+  const defaultTo = t('context.defaults.to');
+  const defaultCity = t('context.defaults.city');
+
+  const from = cityList[0] || defaultFrom;
+  const to = cityList[cityList.length - 1] || defaultTo;
+  const city = cityList[cityList.length - 1] || defaultCity;
+  const travelersCount = trip.tripInput?.groupSize ?? 1;
+
+  const start = trip.tripInput?.startDate ? new Date(trip.tripInput.startDate) : null;
+  const end = trip.tripInput?.endDate ? new Date(trip.tripInput.endDate) : null;
+  const nights =
+    start && end
+      ? Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)))
+      : 4;
+
+  const budgetValue = 225;
+  const tripTypeKey = (trip.tripInput?.children ?? 0) > 0 ? 'family' : 'fan';
+
+  const messageValues = {
+    from,
+    to,
+    city,
+    travelers: formatter.number(travelersCount),
+    nights: formatter.number(nights),
+    budget: formatter.number(budgetValue, {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+    }),
+    tripType: t(`context.tripType.${tripTypeKey}`),
+  };
+
+  const richComponents = {
+    strong: (chunks: ReactNode) => <span className="font-bold">{chunks}</span>,
+    highlight: (chunks: ReactNode) => <span className="font-semibold">{chunks}</span>,
+  };
+
+  const messageContent: ReactNode = messageOverride
+    ? messageOverride
+    : t.rich(currentMessage.key, { ...messageValues, ...richComponents });
+
+  const plannerLabel = t(`header.label.${plannerType}`);
+  const statusText = t('header.status', { planner: plannerLabel });
+  const processingText = t('header.processing', {
+    plan: trip.option.title || t('header.defaults.plan'),
+  });
+
+  const progressLabel =
+    progress < 70
+      ? t('progress.scanning')
+      : progress < 90
+        ? t('progress.analyzing')
+        : t('progress.finalizing');
 
   const containerColors = {
     flight: 'from-blue-50 to-sky-50',
@@ -244,9 +277,6 @@ export default function PlannerLoader({
     trip: 'border-purple-200'
   };
 
-  // Split text on ** for bold formatting
-  const textParts = formattedText.split(/(\*\*.*?\*\*)/);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -256,12 +286,10 @@ export default function PlannerLoader({
       {/* Header */}
       <div className="text-center space-y-2">
         <p className={`text-sm font-semibold ${textColors[plannerType]} opacity-75`}>
-          {plannerType === 'flight' ? 'Flight Planner AI' : 
-           plannerType === 'lodging' ? 'Lodging Zone AI' :
-           'Trip Builder AI'} Working...
+          {statusText}
         </p>
         <div className={`text-xs ${textColors[plannerType]} opacity-60`}>
-          Processing your {trip.option.title} itinerary
+          {processingText}
         </div>
       </div>
 
@@ -285,16 +313,7 @@ export default function PlannerLoader({
               transition={{ duration: 0.5 }}
               className={`text-lg ${textColors[plannerType]} text-center`}
             >
-              {textParts.map((part, index) => {
-                if (part.startsWith('**') && part.endsWith('**')) {
-                  return (
-                    <span key={index} className="font-bold">
-                      {part.slice(2, -2)}
-                    </span>
-                  );
-                }
-                return part;
-              })}
+              {messageContent}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -305,9 +324,7 @@ export default function PlannerLoader({
         <ProgressBar progress={progress} plannerType={plannerType} />
         <div className="flex justify-start text-xs opacity-60">
           <span className={textColors[plannerType]}>
-            {progress < 70 ? 'Scanning options...' : 
-             progress < 90 ? 'Analyzing matches...' : 
-             'Finalizing results...'}
+            {progressLabel}
           </span>
         </div>
       </div>

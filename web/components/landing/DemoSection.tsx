@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 
 export default function DemoSection() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const t = useTranslations('demoSection');
+  const t = useTranslations('landing.demo');
 
   return (
     <section className="container py-16 sm:py-24 bg-gradient-to-b from-gray-50 to-white">

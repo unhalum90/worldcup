@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useI18nFormatters } from "@/lib/i18nFormatters";
 
 type Props = {
   target: string | number | Date;
@@ -12,8 +14,10 @@ type Props = {
  * A compact, subtle countdown showing only days remaining until a target date.
  * Hides itself after the date passes.
  */
-export default function MiniCountdown({ target, label = "Days until event", className = "" }: Props) {
+export default function MiniCountdown({ target, label, className = "" }: Props) {
   const [daysLeft, setDaysLeft] = useState<number | null>(null);
+  const { number } = useI18nFormatters();
+  const t = useTranslations("landing.countdown");
 
   useEffect(() => {
     const targetTime = new Date(target).getTime();
@@ -36,11 +40,14 @@ export default function MiniCountdown({ target, label = "Days until event", clas
 
   if (daysLeft === null || daysLeft <= 0) return null;
 
+  const resolvedLabel = label ?? t("mini.defaultLabel");
+  const formattedCount = number(daysLeft, { maximumFractionDigits: 0 });
+
   return (
     <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-yellow-100 text-yellow-900 border border-yellow-200 text-sm font-semibold ${className}`}>
       <span aria-hidden>🗓️</span>
       <span>
-        {daysLeft} day{daysLeft === 1 ? "" : "s"} until {label}
+        {t("mini.pill", { count: daysLeft, formattedCount, label: resolvedLabel })}
       </span>
     </div>
   );

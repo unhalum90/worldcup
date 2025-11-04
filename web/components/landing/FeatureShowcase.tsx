@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 export default function FeatureShowcase() {
-  const t = useTranslations('featureShowcase');
+  const t = useTranslations('landing.featureShowcase');
   
   const features = [
     {

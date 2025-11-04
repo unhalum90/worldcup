@@ -39,10 +39,192 @@
       {
         "title": "Matchday planning",
         "desc": "Key info at a glance for every venue."
+      },
+      "loader": {
+        "messages": {
+          "flight": {
+            "scanRoute": "Scanning flights from <strong>{from}</strong> → <strong>{to}</strong>…",
+            "layovers": "Checking layovers under 2 hours…",
+            "seats": "Comparing seat options for <strong>{travelers}</strong> travelers…",
+            "baggage": "Estimating total travel time and baggage cost…",
+            "hubs": "Evaluating alternate hubs: EWR · BWI · IAD",
+            "optimize": "Matching <strong>Smartest</strong>, <strong>Budget</strong>, and <strong>Fastest</strong> routes…",
+            "finalize": "Finalizing best itinerary suggestions…"
+          },
+          "lodging": {
+            "neighborhoods": "Mapping top-rated neighborhoods in <strong>{city}</strong>…",
+            "commute": "Checking commute time to stadium and Fan Fest…",
+            "family": "Prioritizing <strong>family-friendly</strong> options…",
+            "dining": "Balancing nightlife and dining options nearby…",
+            "culture": "Exploring cultural highlights near your zone…",
+            "nightsBudget": "Comparing <strong>{nights}-night stay</strong> under {budget}/night…",
+            "preferences": "Finding quiet stays for your “{tripType}” preference…",
+            "finalize": "Finalizing lodging zones and travel scores…"
+          },
+          "trip": {
+            "travelers": "Analyzing <strong>{travelers}</strong> travelers across <strong>multiple cities</strong>…",
+            "timeline": "Mapping <strong>{nights}-day</strong> itinerary from <strong>{from}</strong> to <strong>{to}</strong>…",
+            "flights": "Optimizing flight routes and connections…",
+            "lodging": "Finding lodging near stadiums in each city…",
+            "logistics": "Building day-by-day logistics and match schedules…",
+            "dining": "Discovering local dining and nightlife hotspots…",
+            "recommendations": "Crafting personalized recommendations and insider tips…",
+            "finalize": "Finalizing your complete World Cup adventure…"
+          }
+        },
+        "context": {
+          "defaults": {
+            "from": "your departure city",
+            "to": "your destination",
+            "city": "your destination city"
+          },
+          "tripType": {
+            "family": "Family Trip",
+            "fan": "Fan Experience"
+          }
+        },
+        "header": {
+          "label": {
+            "flight": "Flight Planner AI",
+            "lodging": "Lodging Zone AI",
+            "trip": "Trip Builder AI"
+          },
+          "status": "{planner} working…",
+          "processing": "Processing your {plan} itinerary",
+          "defaults": {
+            "plan": "trip"
+          }
+        },
+        "progress": {
+          "scanning": "Scanning options…",
+          "analyzing": "Analyzing matches…",
+          "finalizing": "Finalizing results…"
+        }
       }
     ]
   },
   "landing": {
+    "hero": {
+      "headline": "<highlight>Dallas</highlight> Isn't in Dallas. <highlight>Boston</highlight> Isn't in Boston. <highlight>Miami</highlight> Isn't in Miami.",
+      "paragraphs": {
+        "logistics": "Many World Cup stadiums are 20+ miles from their host cities—with no trains, $600/night hotels, and logistics nightmares.",
+        "scope": "The 2026 World Cup spans <strong>16 cities, 3 countries, and 2 million square miles</strong>. We spent 200+ hours mapping every stadium, transit line, and neighborhood quirk.",
+        "pitch": "Get personalized flights, lodging, and day-by-day plans in <strong>60 seconds</strong>—plans that would take you <strong>20+ hours</strong> to research."
+      },
+      "ctaPrimary": "Plan My Trip Free",
+      "ctaSecondary": "Watch How It Works (90 sec)",
+      "ctaSecondaryAria": "Watch a 90 second demo video",
+      "videoFallback": "Your browser doesn't support video playback.",
+      "ctaSupplement": "No credit card required",
+      "stats": {
+        "fans": "<strong>500+ fans</strong> from <strong>15+ countries</strong>",
+        "languagesLabel": "Available in 5 languages:",
+        "languagesList": "🇺🇸 English • 🇪🇸 Español • 🇧🇷 Português • 🇫🇷 Français • 🇸🇦 العربية"
+      }
+    },
+    "countdown": {
+      "kickoffBadge": "Kickoff in:",
+      "labels": {
+        "days": "Days",
+        "hours": "Hrs",
+        "minutes": "Min",
+        "seconds": "Sec"
+      },
+      "mini": {
+        "defaultLabel": "the event",
+        "pill": "{count, plural, one {{formattedCount} day until {label}} other {{formattedCount} days until {label}}}"
+      }
+    },
+    "featureShowcase": {
+      "title": "Two Ways to Plan Your World Cup Journey",
+      "subtitle": "Everything you need to make your 2026 World Cup trip unforgettable",
+      "cityGuides": {
+        "icon": "📚",
+        "title": "City Travel Guides",
+        "description": "16 detailed PDFs created for each host city — logistics, transport, lodging, safety, and fan experiences.",
+        "cta": "Download Dallas Free"
+      },
+      "forums": {
+        "icon": "💬",
+        "title": "City Forums",
+        "description": "Join Reddit-style discussions for every host city — find meetups, share travel tips, and get advice from local fans.",
+        "cta": "Visit Forums"
+      },
+      "aiPlanner": {
+        "icon": "🤖",
+        "title": "AI Travel Planner",
+        "description": "Enter your cities, budget, and group size — get a personalized route, lodging suggestions, and daily plan.",
+        "cta": "Try the AI Planner"
+      }
+    },
+    "demo": {
+      "title": "See How It Works",
+      "subtitle": "Watch how our platform helps you plan the perfect World Cup 2026 experience",
+      "watchDemo": "Watch the Demo",
+      "demoDescription": "See our AI planner in action, explore city guides, and get personalized travel insights.",
+      "duration": "45 seconds",
+      "callout": "Join the waitlist for early access",
+      "launchDate": "Launching December 5, 2025",
+      "videoError": "Your browser doesn't support video playback.",
+      "playButton": "Play demo video"
+    },
+    "qualifiedTeams": {
+      "title": "Qualified Teams",
+      "subtitle": "{count} teams have officially booked their place at the 2026 World Cup",
+      "counts": "{count} Qualified Teams",
+      "viewAll": "View All {count} Teams"
+    },
+    "footer": {
+      "brand": {
+        "name": "WC26 Fan Zone",
+        "tagline": "Your complete resource for planning the perfect World Cup 2026 experience. Travel guides and AI-powered trip planning."
+      },
+      "social": {
+        "reddit": {
+          "label": "Reddit",
+          "aria": "Visit our Reddit community"
+        },
+        "instagram": {
+          "label": "Instagram",
+          "aria": "Follow us on Instagram"
+        },
+        "x": {
+          "label": "X (Twitter)",
+          "aria": "Follow us on X (Twitter)"
+        },
+        "youtube": {
+          "label": "YouTube",
+          "aria": "Subscribe to our YouTube channel"
+        }
+      },
+      "headings": {
+        "features": "Features",
+        "legal": "Legal"
+      },
+      "links": {
+        "cityGuides": "City Guides",
+        "aiPlanner": "AI Planner",
+        "newsletter": "Newsletter",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "sitemap": "Sitemap",
+        "contact": "Contact Us"
+      },
+      "languages": {
+        "heading": "Available in multiple languages:",
+        "names": {
+          "en": "English",
+          "fr": "Français",
+          "es": "Español",
+          "pt": "Português",
+          "ar": "العربية"
+        }
+      },
+      "legal": {
+        "copyright": "© {year} WC26 Fan Zone — All rights reserved",
+        "disclaimer": "Not affiliated with FIFA or the 2026 World Cup organizing committee"
+      }
+    },
     "social": {
       "headline": "Trusted by fan communities",
       "subhead": "across 2026 host cities worldwide.",
@@ -177,44 +359,448 @@
   "footer": {
     "rights": "All rights reserved."
   },
-  "featureShowcase": {
-    "title": "Two Ways to Plan Your World Cup Journey",
-    "subtitle": "Everything you need to make your 2026 World Cup trip unforgettable",
-    "cityGuides": {
-      "icon": "📚",
-      "title": "City Travel Guides",
-      "description": "16 detailed PDFs created for each host city — logistics, transport, lodging, safety, and fan experiences.",
-      "cta": "Download Dallas Free"
+  "common": {
+    "separator": " • "
+  },
+  "planner": {
+    "hub": {
+      "loading": "Loading...",
+      "locked": {
+        "message": "This section is for members. Please sign in to continue."
+      },
+      "hero": {
+        "title": "Plan Every Step of Your World Cup Journey",
+        "subtitle": "From booking your first flight to finding fan fests on match day — we've got you covered, city by city.",
+        "primaryCta": "Start Planning",
+        "primaryCtaAria": "Scroll to the planner phases",
+        "badge": "Powered by smart AI — so your trip plans itself ✨"
+      },
+      "intro": {
+        "body": "The <highlight>Fan Zone Travel Planner</highlight> brings everything together — your matches, flights, stays, and on-the-ground experiences — into one easy place to explore. Whether you're following your team across borders or soaking up one host city's atmosphere, this is your home base for travel planning."
+      },
+      "ctaSection": {
+        "title": "Wherever your team takes you — we've got your trip covered",
+        "subtitle": "Get updates, new features, and fresh travel insights straight to your inbox.",
+        "buttons": {
+          "subscribe": "Subscribe to Fan Zone Insider",
+          "guides": "Browse City Guides"
+        }
+      },
+      "featureList": {
+        "heading": "Features:"
+      },
+      "statuses": {
+        "comingSoonBadge": "🚧 Coming Soon",
+        "may2026Badge": "📅 May 2026",
+        "comingSoonButton": "Coming Soon",
+        "may2026Button": "Launches May 2026"
+      },
+      "phases": {
+        "tripBuilder": {
+          "title": "Trip Builder",
+          "description": "Choose your nearest airport, target host cities, and personal preferences — we’ll assemble smart itineraries for you.",
+          "howItWorks": {
+            "title": "How It Works",
+            "steps": [
+              {
+                "title": "1. Pick cities & matches",
+                "description": "Choose by team, date, or must-see stadiums."
+              },
+              {
+                "title": "2. Get smart routes",
+                "description": "Best connections with buffers, distances, and transit."
+              },
+              {
+                "title": "3. Share your itinerary",
+                "description": "Export to share with your group — PDF/link soon."
+              }
+            ],
+            "cta": {
+              "open": "Open Trip Builder",
+              "demo": "Demo Planner"
+            }
+          }
+        },
+        "flightPlanner": {
+          "title": "Flight Planner",
+          "description": "Find the fastest and most affordable ways to hop between World Cup cities — flight suggestions, routes, and smart timing insights.",
+          "features": [
+            "Hub airport suggestions",
+            "Flexible fare recommendations",
+            "Multi-city route optimization"
+          ],
+          "cta": "Open Flight Planner"
+        },
+        "lodgingPlanner": {
+          "title": "Lodging Planner",
+          "description": "Hand-picked hotels, hostels, and neighborhoods — all near stadiums and fan celebrations.",
+          "features": [
+            "Stadium radius filters",
+            "Fan Zone recommended areas",
+            "Save favorite stays"
+          ],
+          "cta": "Open Lodging Planner"
+        },
+        "whileThere": {
+          "title": "While You're There",
+          "description": "From fan fests to public transport, discover everything you need once you've arrived.",
+          "features": [
+            "Fan fest locations & schedules",
+            "Local transport guides",
+            "Safety & cultural tips",
+            "Watch party listings"
+          ]
+        }
+      }
     },
-    "forums": {
-      "icon": "💬",
-      "title": "City Forums",
-      "description": "Join Reddit-style discussions for every host city — find meetups, share travel tips, and get advice from local fans.",
-      "cta": "Visit Forums"
-    },
-    "aiPlanner": {
-      "icon": "🤖",
-      "title": "AI Travel Planner",
-      "description": "Enter your cities, budget, and group size — get a personalized route, lodging suggestions, and daily plan.",
-      "cta": "Try the AI Planner"
+    "tripBuilder": {
+      "page": {
+        "loading": "Loading...",
+        "lockedMessage": "This section is for members. Please sign in to continue.",
+        "alerts": {
+          "emailCapture": "Email capture coming soon! For now, screenshot your itinerary."
+        },
+        "header": {
+          "title": "World Cup 2026 Travel Planner",
+          "subtitle": "AI-powered itineraries for the greatest show on earth ⚽"
+        },
+        "profileRequired": {
+          "title": "Let’s capture your travel profile first",
+          "body": "We need your onboarding details before building itineraries. Head to onboarding to fill it out, then come back here.",
+          "button": "Complete onboarding"
+        },
+        "profileLoading": "Loading your travel profile…",
+        "savedLoading": "Loading your saved itinerary…",
+        "loader": {
+          "title": "🌍 Crafting Your Perfect World Cup Journey...",
+          "subtitle": "Our AI is analyzing your preferences with expert local knowledge",
+          "note": "⏱️ This usually takes 45-60 seconds",
+          "itinerarySummary": "Analyzing your itinerary inputs..."
+        },
+        "errors": {
+          "generate": "Failed to generate itinerary.",
+          "generic": "Something went wrong. Please try again.",
+          "missingSaved": "We could not find that saved itinerary.",
+          "savedMissingDetails": "Saved itinerary is missing details. Try generating a new one.",
+          "loadSaved": "Failed to load saved itinerary.",
+          "profileLoad": "We couldn’t load your saved travel profile. Please refresh to retry or reopen onboarding to capture it again."
+        },
+        "errorState": {
+          "title": "Oops! Something went wrong",
+          "retry": "Try Again"
+        },
+        "footer": {
+          "tagline": "Planning your World Cup 2026 adventure? We've got you covered.",
+          "backHome": "← Back to Home",
+          "guides": "City Guides",
+          "forums": "Fan Forums"
+        }
+      },
+      "form": {
+        "header": {
+          "step": "Step {step}",
+          "title": "Tell us about this specific trip",
+          "subtitle": "We already have your traveler profile. Now add the trip details—we’ll merge everything before generating your itinerary.",
+          "back": "← Back to profile review"
+        },
+        "sections": {
+          "dates": {
+            "title": "Dates",
+            "start": "Start date",
+            "end": "End date"
+          },
+          "cities": {
+            "title": "Which host cities are you planning to visit?",
+            "selected": "Selected",
+            "error": "Select at least one city."
+          },
+          "tickets": {
+            "title": "Match tickets",
+            "toggle": "Yes — align my trip to existing tickets",
+            "cityPrompt": "Which cities are those tickets for?",
+            "cityError": "Select at least one city with tickets."
+          },
+          "notes": {
+            "title": "Anything else for this trip?",
+            "optional": "Optional",
+            "placeholder": "e.g., Celebrating a birthday, need vegetarian options, split-time in Toronto & Vancouver…"
+          }
+        },
+        "buttons": {
+          "submit": "Generate my trip",
+          "submitting": "Planning…"
+        },
+        "note": "You can always tweak preferences later—this adds trip-specific context on top of your profile.",
+        "errors": {
+          "dateOrder": "End date must be after the start date.",
+          "submit": "Failed to submit."
+        }
+      },
+      "matchPicker": {
+        "title": "Select your exact matches (click to add dates)",
+        "loading": "Loading…",
+        "errors": {
+          "load": "Failed to load matches"
+        },
+        "empty": "No matches found for the selected cities. If you already know your dates, you can enter them above.",
+        "emptyWithDates": "No matches found for the selected cities between {start} and {end}. If you already know your dates, you can enter them above.",
+        "matchLabel": "Match",
+        "selected": "Selected",
+        "add": "Add date"
+      },
+      "review": {
+        "header": {
+          "step": "Step {step}",
+          "title": "Review your travel profile",
+          "subtitle": "We’ll use these saved preferences across every trip. Confirm what we have on file or update anything first."
+        },
+        "cards": {
+          "home": {
+            "title": "Home base",
+            "empty": "Not set"
+          },
+          "group": {
+            "title": "Group & accessibility",
+            "adults": "{count, plural, one {# adult} other {# adults}}",
+            "children": "{count, plural, one {# child} other {# children}}",
+            "seniors": "{count, plural, one {# senior} other {# seniors}}",
+            "mobility": "Mobility considerations noted",
+            "empty": "Group details not provided"
+          },
+          "travelStyle": {
+            "title": "Travel style"
+          },
+          "transport": {
+            "title": "Transport preference",
+            "options": {
+              "public": "Public transit",
+              "car": "Car / rental",
+              "mixed": "Mixed transport",
+              "default": "Mixed transport"
+            }
+          },
+          "focus": {
+            "title": "Focus areas",
+            "empty": "No specific focus selected"
+          },
+          "tickets": {
+            "title": "Tickets on hand",
+            "empty": "No tickets on file",
+            "summary": "{match} • {city} • {date}"
+          }
+        },
+        "style": {
+          "empty": "No preferences saved yet",
+          "budget": {
+            "budget": "Budget traveler",
+            "moderate": "Moderate budget",
+            "premium": "Premium comfort"
+          },
+          "food": {
+            "local_flavors": "Food: Local flavors",
+            "international": "Food: International favorites",
+            "mix": "Food: Mix of both"
+          },
+          "nightlife": {
+            "quiet": "Nightlife: Quiet evenings",
+            "social": "Nightlife: Social outings",
+            "party": "Nightlife: Party vibe"
+          },
+          "climate": {
+            "all": "Open to any climate",
+            "prefer_northerly": "Prefers cooler hosts",
+            "comfortable": "Prefers mild climates"
+          }
+        },
+        "focus": {
+          "fanfest": "Fan Fests & atmosphere",
+          "local_culture": "Local culture & food",
+          "stadium_experience": "Stadium experience",
+          "nightlife": "Nightlife",
+          "unsure": "Open to suggestions"
+        },
+        "actions": {
+          "confirm": "Looks good — continue",
+          "edit": "Make changes first",
+          "restart": "Start onboarding again"
+        }
+      },
+      "results": {
+        "header": {
+          "title": "Your World Cup 2026 Itinerary Options",
+          "subtitle": "We've created {count, plural, one {# personalized trip plan for you} other {# personalized trip plans for you}}",
+          "disclaimer": "Generated with Google Gemini — it can make mistakes, so double-check key details like match logistics, directions, and opening hours."
+        },
+        "save": {
+          "title": "Save this itinerary",
+          "description": "Keep it in your account so you can revisit or pick it back up later.",
+          "button": {
+            "default": "Save itinerary",
+            "saving": "Saving…",
+            "success": "Saved!"
+          },
+          "messages": {
+            "none": "No itinerary to save yet.",
+            "success": "Trip saved to your account.",
+            "errorGeneric": "Failed to save trip.",
+            "selectOption": "Select an itinerary to continue.",
+            "navigationError": "Unable to continue right now. Please try again."
+          }
+        },
+        "cards": {
+          "citiesLabel": "Cities",
+          "viewDetails": "View details",
+          "hideDetails": "Hide details"
+        },
+        "summary": {
+          "origin": "Origin",
+          "dates": "Dates",
+          "days": "{count, plural, one {# day} other {# days}}",
+          "travelers": "Travelers",
+          "travelersAdults": "{count, plural, one {# adult} other {# adults}}",
+          "travelersChildren": "{count, plural, one {# child} other {# children}}",
+          "travelersSeniors": "{count, plural, one {# senior} other {# seniors}}",
+          "separator": " • ",
+          "cities": "Cities",
+          "citiesDetail": "{count, plural, one {# city} other {# cities}}",
+          "budget": "Budget",
+          "team": "Favorite Team",
+          "tickets": "Match Tickets",
+          "ticketsYes": "Yes — itinerary prioritizes match day logistics.",
+          "ticketsNo": "No tickets on file",
+          "print": {
+            "origin": "Origin City",
+            "dates": "Travel Dates",
+            "travelers": "Travel Party",
+            "cities": "Cities Planned",
+            "budget": "Budget Level",
+            "team": "Favorite Team",
+            "tickets": "Match Tickets"
+          },
+          "budgetLevels": {
+            "budget": "Budget traveler",
+            "moderate": "Moderate budget",
+            "premium": "Premium comfort"
+          }
+        },
+        "alerts": {
+          "selectOption": "Select an itinerary option first.",
+          "navigationError": "Unable to continue right now. Please try again."
+        },
+        "sections": {
+          "flights": {
+            "title": "Flights",
+            "layover": "Layover: {duration}",
+            "details": {
+              "airlines": "Airlines",
+              "scheduleLabel": "Example Schedule",
+              "scheduleValue": "Depart {departure} → Arrive {arrival}",
+              "availability": "Availability",
+              "notes": "Notes"
+            },
+            "cost": {
+              "total": "Total Flight Cost"
+            },
+            "cta": {
+              "title": "Need live fares?",
+              "defaultMessage": "Jump into the Flight Planner to compare real routes, schedules, and current prices for these legs.",
+              "button": "Open Flight Planner"
+            }
+          },
+          "lodging": {
+            "title": "Recommended Lodging Areas",
+            "perNight": "per night",
+            "toStadium": "To Stadium",
+            "toFanFest": "To Fan Fest",
+            "pros": "Pros:",
+            "cons": "Cons:"
+          },
+          "matchDay": {
+            "title": "Match Day Logistics",
+            "warning": "Gemini may blend stadium tips from other cities — confirm transport routes and timing before match day."
+          },
+          "insider": {
+            "title": "Insider Tips"
+          }
+        },
+        "timeline": {
+          "title": "Your Trip at a Glance",
+          "range": "{start}–{end}",
+          "actions": {
+            "arrive": "Arrive in {city}",
+            "fly": "Fly to {city}",
+            "match": "Match Day",
+            "return": "Return Flight Home",
+            "explore": "Explore {city}"
+          },
+          "comingSoon": "<emoji/> <strong>Coming May 2026:</strong> Our Host City Travel Planners will launch with all World Cup events, Fan Fests, and transport guides — making it even easier to explore each city."
+        },
+        "cta": {
+          "subscribe": {
+            "message": "📩 Subscribe to Fan Zone Weekly for city updates and travel alerts.",
+            "button": "Subscribe Free"
+          }
+        },
+        "actions": {
+          "openLodgingPlanner": "Explore Lodging Zones",
+          "openFlightPlanner": "Continue to Flight Planner",
+          "print": "Print PDF",
+          "startOver": "← Start Over with New Preferences"
+        }
+      }
     }
   },
-  "demoSection": {
-    "title": "See How It Works",
-    "subtitle": "Watch how our platform helps you plan the perfect World Cup 2026 experience",
-    "watchDemo": "Watch the Demo",
-    "demoDescription": "See our AI planner in action, explore city guides, and get personalized travel insights.",
-    "duration": "45 seconds",
-    "callout": "Join the waitlist for early access",
-    "launchDate": "Launching December 5, 2025",
-    "videoError": "Your browser doesn't support video playback.",
-    "playButton": "Play demo video"
-  },
-  "qualifiedTeams": {
-    "title": "Qualified Teams",
-    "subtitle": "{count} teams have officially booked their place at the 2026 World Cup",
-    "counts": "{count} Qualified Teams",
-    "viewAll": "View All {count} Teams"
+  "auth": {
+    "modal": {
+      "header": {
+        "title": "Welcome",
+        "subtitle": {
+          "line1": "Enter your email and we'll send you a magic link.",
+          "line2": "No password needed."
+        }
+      },
+      "form": {
+        "emailLabel": "Email",
+        "placeholder": "you@example.com"
+      },
+      "actions": {
+        "submit": "Send magic link",
+        "sending": "Sending link…"
+      },
+      "success": {
+        "primary": "Check your email! We sent you a magic link to sign in.",
+        "existing": "This email is already registered — check your inbox for a magic link to sign in."
+      },
+      "errors": {
+        "generic": "Unable to send magic link. Please try again."
+      },
+      "footer": {
+        "note": "Works for new and existing accounts. Check your spam folder if you don't see the email."
+      }
+    },
+    "verify": {
+      "header": {
+        "title": "Check your inbox ✉️",
+        "subtitle": {
+          "line1": "We've sent a confirmation link to your email.",
+          "line2": "Click it to verify and unlock your Trip Builder."
+        }
+      },
+      "actions": {
+        "resend": "Resend Email",
+        "sending": "Sending...",
+        "home": "Back to Home"
+      },
+      "messages": {
+        "resendSuccess": "✓ Verification email resent! Check your inbox.",
+        "resendError": "Error resending email. Please try again.",
+        "missingEmail": "Email not found. Please try signing up again.",
+        "genericError": "Something went wrong. Please try again."
+      },
+      "footer": {
+        "note": "Didn't receive the email? Check your spam folder or click \"Resend Email\" above."
+      }
+    }
   },
   "timeline": {
     "title": "Road to the World Cup",

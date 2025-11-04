@@ -63,6 +63,495 @@
       }
     ]
   },
+  "landing": {
+    "hero": {
+      "headline": "<highlight>Dallas</highlight> n’est pas à Dallas. <highlight>Boston</highlight> n’est pas à Boston. <highlight>Miami</highlight> n’est pas à Miami.",
+      "paragraphs": {
+        "logistics": "De nombreux stades de la Coupe du Monde se situent à plus de 20 miles de leur ville hôte—sans train, avec des hôtels à 600 $ la nuit et des casse-têtes logistiques.",
+        "scope": "La Coupe du Monde 2026 couvre <strong>16 villes, 3 pays et 2 millions de miles carrés</strong>. Nous avons passé plus de 200 heures à cartographier chaque stade, ligne de transport et particularité de quartier.",
+        "pitch": "Obtenez des vols, hébergements et plans jour par jour personnalisés en <strong>60 secondes</strong>—un travail de recherche qui vous prendrait <strong>plus de 20 heures</strong>."
+      },
+      "ctaPrimary": "Planifier mon voyage gratuitement",
+      "ctaSecondary": "Voir comment ça marche (90 s)",
+      "ctaSecondaryAria": "Lancer la vidéo démo de 90 secondes",
+      "videoFallback": "Votre navigateur ne prend pas en charge la lecture vidéo.",
+      "ctaSupplement": "Aucune carte de crédit requise",
+      "stats": {
+        "fans": "Plus de <strong>500 fans</strong> issus de <strong>plus de 15 pays</strong>",
+        "languagesLabel": "Disponible en 5 langues :",
+        "languagesList": "🇺🇸 Anglais • 🇪🇸 Espagnol • 🇧🇷 Portugais • 🇫🇷 Français • 🇸🇦 Arabe"
+      }
+    },
+    "countdown": {
+      "kickoffBadge": "Coup d’envoi dans :",
+      "labels": {
+        "days": "Jours",
+        "hours": "H",
+        "minutes": "Min",
+        "seconds": "Sec"
+      },
+      "mini": {
+        "defaultLabel": "l’événement",
+        "pill": "{count, plural, one {{formattedCount} jour avant {label}} other {{formattedCount} jours avant {label}}}"
+      }
+    },
+    "featureShowcase": {
+      "title": "Trois Façons de Planifier Votre Voyage pour la Coupe du Monde",
+      "subtitle": "Tout ce dont vous avez besoin pour rendre votre voyage à la Coupe du Monde 2026 inoubliable",
+      "cityGuides": {
+        "icon": "📚",
+        "title": "Guides de Voyage des Villes",
+        "description": "16 PDF détaillés créés pour chaque ville hôte — logistique, transport, hébergement, sécurité et expériences de fans.",
+        "cta": "Télécharger Dallas Gratuitement"
+      },
+      "forums": {
+        "icon": "💬",
+        "title": "Forums des Villes",
+        "description": "Rejoignez des discussions de style Reddit pour chaque ville hôte — trouvez des rencontres, partagez des conseils de voyage et obtenez des conseils de fans locaux.",
+        "cta": "Visiter les Forums"
+      },
+      "aiPlanner": {
+        "icon": "🤖",
+        "title": "Planificateur de Voyage IA",
+        "description": "Entrez vos villes, budget et taille de groupe — obtenez un itinéraire personnalisé, des suggestions d'hébergement et un plan quotidien.",
+        "cta": "Essayer le Planificateur IA"
+      }
+    },
+    "demo": {
+      "title": "Voir Comment Ça Marche",
+      "subtitle": "Regardez comment notre plateforme vous aide à planifier l'expérience parfaite de la Coupe du Monde 2026",
+      "watchDemo": "Regarder la Démo",
+      "demoDescription": "Voyez notre planificateur IA en action, explorez les guides de villes et découvrez comment les fans se connectent via les forums.",
+      "duration": "45 secondes",
+      "callout": "Rejoignez la liste d'attente pour un accès anticipé",
+      "launchDate": "Lancement le 5 décembre 2025",
+      "videoError": "Votre navigateur ne supporte pas la lecture vidéo.",
+      "playButton": "Lire la vidéo de démonstration"
+    },
+    "footer": {
+      "brand": {
+        "name": "WC26 Fan Zone",
+        "tagline": "Votre ressource complète pour planifier une expérience parfaite de la Coupe du Monde 2026. Guides de voyage et planification alimentée par l'IA."
+      },
+      "social": {
+        "reddit": {
+          "label": "Reddit",
+          "aria": "Visitez notre communauté Reddit"
+        },
+        "instagram": {
+          "label": "Instagram",
+          "aria": "Suivez-nous sur Instagram"
+        },
+        "x": {
+          "label": "X (Twitter)",
+          "aria": "Suivez-nous sur X (Twitter)"
+        },
+        "youtube": {
+          "label": "YouTube",
+          "aria": "Abonnez-vous à notre chaîne YouTube"
+        }
+      },
+      "headings": {
+        "features": "Fonctionnalités",
+        "legal": "Légal"
+      },
+      "links": {
+        "cityGuides": "Guides de villes",
+        "aiPlanner": "Planificateur IA",
+        "newsletter": "Newsletter",
+        "privacy": "Politique de confidentialité",
+        "terms": "Conditions d'utilisation",
+        "sitemap": "Plan du site",
+        "contact": "Nous contacter"
+      },
+      "languages": {
+        "heading": "Disponible en plusieurs langues :",
+        "names": {
+          "en": "English",
+          "fr": "Français",
+          "es": "Español",
+          "pt": "Português",
+          "ar": "العربية"
+        }
+      },
+      "legal": {
+        "copyright": "© {year} WC26 Fan Zone — Tous droits réservés",
+        "disclaimer": "Non affilié à la FIFA ou au comité d'organisation de la Coupe du Monde 2026"
+      }
+    },
+    "qualifiedTeams": {
+      "title": "Équipes qualifiées",
+      "subtitle": "{count} équipes ont officiellement obtenu leur place à la Coupe du Monde 2026",
+      "counts": "{count} équipes qualifiées",
+      "viewAll": "Voir les {count} équipes"
+    }
+  },
+  "planner": {
+    "hub": {
+      "loading": "Chargement...",
+      "locked": {
+        "message": "Cette section est réservée aux membres. Veuillez vous connecter pour continuer."
+      },
+      "hero": {
+        "title": "Planifiez chaque étape de votre voyage pour la Coupe du Monde",
+        "subtitle": "Du premier vol aux fan fests le jour du match — nous vous accompagnons, ville après ville.",
+        "primaryCta": "Commencer la planification",
+        "primaryCtaAria": "Faire défiler jusqu'aux phases du planificateur",
+        "badge": "Propulsé par une IA intelligente — votre voyage se planifie tout seul ✨"
+      },
+      "intro": {
+        "body": "Le <highlight>Planificateur de voyage Fan Zone</highlight> réunit tout — vos matchs, vols, séjours et expériences sur place — en un seul endroit facile à explorer. Que vous suiviez votre équipe à travers plusieurs pays ou que vous profitiez de l'atmosphère d'une ville hôte, c'est votre base de planification."
+      },
+      "ctaSection": {
+        "title": "Où que votre équipe vous emmène — nous couvrons votre voyage",
+        "subtitle": "Recevez des mises à jour, de nouvelles fonctionnalités et des conseils de voyage directement dans votre boîte mail.",
+        "buttons": {
+          "subscribe": "S'abonner à Fan Zone Insider",
+          "guides": "Explorer les guides de villes"
+        }
+      },
+      "featureList": {
+        "heading": "Fonctionnalités :"
+      },
+      "statuses": {
+        "comingSoonBadge": "🚧 Bientôt disponible",
+        "may2026Badge": "📅 Mai 2026",
+        "comingSoonButton": "Bientôt disponible",
+        "may2026Button": "Sortie prévue en mai 2026"
+      },
+      "phases": {
+        "tripBuilder": {
+          "title": "Trip Builder",
+          "description": "Choisissez votre aéroport le plus proche, les villes hôtes que vous souhaitez visiter et vos préférences — nous créons des itinéraires intelligents pour vous.",
+          "howItWorks": {
+            "title": "Comment ça marche",
+            "steps": [
+              {
+                "title": "1. Choisissez villes et matchs",
+                "description": "Filtrez par équipe, date ou stades incontournables."
+              },
+              {
+                "title": "2. Recevez des trajets intelligents",
+                "description": "Meilleures correspondances avec marges, distances et transport."
+              },
+              {
+                "title": "3. Partagez votre itinéraire",
+                "description": "Exportez-le pour votre groupe — PDF/lien bientôt disponible."
+              }
+            ],
+            "cta": {
+              "open": "Ouvrir Trip Builder",
+              "demo": "Voir la démo"
+            }
+          }
+        },
+        "flightPlanner": {
+          "title": "Planificateur de vols",
+          "description": "Trouvez les moyens les plus rapides et économiques de rejoindre les villes de la Coupe du Monde — suggestions de vols, trajets et conseils de timing.",
+          "features": [
+            "Suggestions d'aéroports hub",
+            "Recommandations de tarifs flexibles",
+            "Optimisation d'itinéraires multi-villes"
+          ],
+          "cta": "Ouvrir le Planificateur de Vols"
+        },
+        "lodgingPlanner": {
+          "title": "Planificateur d'hébergements",
+          "description": "Hôtels, auberges et quartiers sélectionnés — tous proches des stades et des célébrations de fans.",
+          "features": [
+            "Filtres de distance depuis le stade",
+            "Quartiers recommandés par Fan Zone",
+            "Enregistrez vos séjours favoris"
+          ],
+          "cta": "Ouvrir le Planificateur d'Hébergements"
+        },
+        "whileThere": {
+          "title": "Une fois sur place",
+          "description": "Des fan fests aux transports publics, découvrez tout ce qu'il vous faut une fois arrivé.",
+          "features": [
+            "Lieux et horaires des fan fests",
+            "Guides de transport local",
+            "Conseils de sécurité et culture",
+            "Listes d'événements pour regarder les matchs"
+          ]
+        }
+      }
+    },
+    "tripBuilder": {
+      "page": {
+        "loading": "Chargement...",
+        "lockedMessage": "Cette section est réservée aux membres. Connectez-vous pour continuer.",
+        "alerts": {
+          "emailCapture": "La capture d’e-mail arrive bientôt. Pour l’instant, faites une capture d’écran de votre itinéraire."
+        },
+        "header": {
+          "title": "Planificateur de voyage Coupe du Monde 2026",
+          "subtitle": "Itinéraires propulsés par l’IA pour le plus grand spectacle du monde ⚽"
+        },
+        "profileRequired": {
+          "title": "Commençons par votre profil de voyage",
+          "body": "Nous avons besoin de vos informations d’onboarding avant de générer des itinéraires. Terminez l’onboarding puis revenez ici.",
+          "button": "Terminer l’onboarding"
+        },
+        "profileLoading": "Chargement de votre profil de voyage…",
+        "savedLoading": "Chargement de votre itinéraire enregistré…",
+        "loader": {
+          "title": "🌍 Création de votre voyage parfait pour la Coupe du Monde...",
+          "subtitle": "Notre IA analyse vos préférences avec l’expertise locale",
+          "note": "⏱️ Cela prend généralement 45 à 60 secondes",
+          "itinerarySummary": "Analyse de vos données d’itinéraire..."
+        },
+        "errors": {
+          "generate": "Impossible de générer l’itinéraire.",
+          "generic": "Un problème est survenu. Veuillez réessayer.",
+          "missingSaved": "Nous n’avons pas trouvé cet itinéraire enregistré.",
+          "savedMissingDetails": "L’itinéraire enregistré est incomplet. Générez-en un nouveau.",
+          "loadSaved": "Erreur lors du chargement de l’itinéraire enregistré.",
+          "profileLoad": "Impossible de charger votre profil enregistré. Actualisez ou relancez l’onboarding."
+        },
+        "errorState": {
+          "title": "Oups ! Une erreur est survenue",
+          "retry": "Réessayer"
+        },
+        "footer": {
+          "tagline": "Vous planifiez votre aventure Coupe du Monde 2026 ? Nous sommes là pour vous.",
+          "backHome": "← Retour à l'accueil",
+          "guides": "Guides de villes",
+          "forums": "Forums de fans"
+        }
+      },
+      "form": {
+        "header": {
+          "step": "Étape {step}",
+          "title": "Parlez-nous de ce voyage précis",
+          "subtitle": "Nous avons déjà votre profil voyageur. Ajoutez maintenant les détails du voyage : nous fusionnerons le tout avant de générer l’itinéraire.",
+          "back": "← Retour à la révision du profil"
+        },
+        "sections": {
+          "dates": {
+            "title": "Dates",
+            "start": "Date de début",
+            "end": "Date de fin"
+          },
+          "cities": {
+            "title": "Quelles villes hôtes prévoyez-vous de visiter ?",
+            "selected": "Sélectionnée",
+            "error": "Sélectionnez au moins une ville."
+          },
+          "tickets": {
+            "title": "Billets de match",
+            "toggle": "Oui — ajuster mon voyage aux billets que je possède déjà",
+            "cityPrompt": "Pour quelles villes sont ces billets ?",
+            "cityError": "Sélectionnez au moins une ville avec billets."
+          },
+          "notes": {
+            "title": "Autre chose pour ce voyage ?",
+            "optional": "Optionnel",
+            "placeholder": "ex. : anniversaire à fêter, options végétariennes, séjour partagé entre Toronto et Vancouver…"
+          }
+        },
+        "buttons": {
+          "submit": "Générer mon voyage",
+          "submitting": "Planification…"
+        },
+        "note": "Vous pourrez toujours ajuster vos préférences plus tard — ceci ajoute un contexte propre à ce voyage à votre profil.",
+        "errors": {
+          "dateOrder": "La date de fin doit être postérieure à la date de début.",
+          "submit": "Impossible d’envoyer."
+        }
+      },
+      "matchPicker": {
+        "title": "Sélectionnez précisément vos matchs (cliquez pour ajouter des dates)",
+        "loading": "Chargement…",
+        "errors": {
+          "load": "Impossible de charger les matchs"
+        },
+        "empty": "Aucun match trouvé pour les villes sélectionnées. Si vous connaissez déjà vos dates, saisissez-les ci-dessus.",
+        "emptyWithDates": "Aucun match trouvé pour les villes sélectionnées entre {start} et {end}. Si vous connaissez déjà vos dates, saisissez-les ci-dessus.",
+        "matchLabel": "Match",
+        "selected": "Sélectionné",
+        "add": "Ajouter la date"
+      },
+      "review": {
+        "header": {
+          "step": "Étape {step}",
+          "title": "Passez en revue votre profil voyage",
+          "subtitle": "Nous utiliserons ces préférences enregistrées pour chaque voyage. Confirmez les informations ou modifiez-les avant de poursuivre."
+        },
+        "cards": {
+          "home": {
+            "title": "Ville de départ",
+            "empty": "Non renseigné"
+          },
+          "group": {
+            "title": "Groupe et accessibilité",
+            "adults": "{count, plural, one {# adulte} other {# adultes}}",
+            "children": "{count, plural, one {# enfant} other {# enfants}}",
+            "seniors": "{count, plural, one {# senior} other {# seniors}}",
+            "mobility": "Besoins de mobilité pris en compte",
+            "empty": "Aucune information sur le groupe"
+          },
+          "travelStyle": {
+            "title": "Style de voyage"
+          },
+          "transport": {
+            "title": "Transport préféré",
+            "options": {
+              "public": "Transports en commun",
+              "car": "Voiture / location",
+              "mixed": "Transport mixte",
+              "default": "Transport mixte"
+            }
+          },
+          "focus": {
+            "title": "Centres d’intérêt",
+            "empty": "Aucun focus spécifique"
+          },
+          "tickets": {
+            "title": "Billets en poche",
+            "empty": "Aucun billet enregistré",
+            "summary": "{match} • {city} • {date}"
+          }
+        },
+        "style": {
+          "empty": "Aucune préférence enregistrée",
+          "budget": {
+            "budget": "Voyageur budget",
+            "moderate": "Budget modéré",
+            "premium": "Confort premium"
+          },
+          "food": {
+            "local_flavors": "Gastronomie : saveurs locales",
+            "international": "Gastronomie : classiques internationaux",
+            "mix": "Gastronomie : mélange des deux"
+          },
+          "nightlife": {
+            "quiet": "Vie nocturne : soirées calmes",
+            "social": "Vie nocturne : sorties conviviales",
+            "party": "Vie nocturne : ambiance festive"
+          },
+          "climate": {
+            "all": "Ouvert à tous les climats",
+            "prefer_northerly": "Préfère les hôtes plus frais",
+            "comfortable": "Préfère les climats tempérés"
+          }
+        },
+        "focus": {
+          "fanfest": "Fan Fests et ambiance",
+          "local_culture": "Culture locale et gastronomie",
+          "stadium_experience": "Expérience au stade",
+          "nightlife": "Vie nocturne",
+          "unsure": "Ouvert aux suggestions"
+        },
+        "actions": {
+          "confirm": "Tout est bon — continuer",
+          "edit": "Modifier d’abord",
+          "restart": "Relancer l’onboarding"
+        }
+      },
+      "results": {
+        "header": {
+          "title": "Vos options d’itinéraire Coupe du Monde 2026",
+          "subtitle": "Nous avons créé {count, plural, one {# plan de voyage personnalisé pour vous} other {# plans de voyage personnalisés pour vous}}",
+          "disclaimer": "Généré avec Google Gemini — il peut se tromper, vérifiez donc les éléments clés comme la logistique des matchs, les trajets et les horaires."
+        },
+        "summary": {
+          "origin": "Ville de départ",
+          "dates": "Dates",
+          "days": "{count, plural, one {# jour} other {# jours}}",
+          "travelers": "Voyageurs",
+          "travelersAdults": "{count, plural, one {# adulte} other {# adultes}}",
+          "travelersChildren": "{count, plural, one {# enfant} other {# enfants}}",
+          "travelersSeniors": "{count, plural, one {# senior} other {# seniors}}",
+          "separator": " • ",
+          "cities": "Villes",
+          "citiesDetail": "{count, plural, one {# ville} other {# villes}}",
+          "budget": "Budget",
+          "team": "Équipe favorite",
+          "tickets": "Billets",
+          "ticketsYes": "Oui — l’itinéraire privilégie la logistique du jour de match.",
+          "ticketsNo": "Aucun billet enregistré",
+          "print": {
+            "origin": "Ville de départ",
+            "dates": "Dates du voyage",
+            "travelers": "Groupe de voyage",
+            "cities": "Villes prévues",
+            "budget": "Niveau de budget",
+            "team": "Équipe favorite",
+            "tickets": "Billets"
+          }
+        },
+        "save": {
+          "title": "Enregistrer cet itinéraire",
+          "description": "Conservez-le dans votre compte pour y revenir ou le reprendre plus tard.",
+          "button": {
+            "default": "Enregistrer l’itinéraire",
+            "saving": "Enregistrement…",
+            "success": "Enregistré !"
+          },
+          "messages": {
+            "none": "Aucun itinéraire à enregistrer pour le moment.",
+            "success": "Voyage enregistré dans votre compte.",
+            "errorGeneric": "Échec de l’enregistrement du voyage.",
+            "selectOption": "Sélectionnez un itinéraire pour continuer.",
+            "navigationError": "Impossible de continuer pour le moment. Veuillez réessayer."
+          }
+        }
+      }
+    }
+  },
+  "auth": {
+    "modal": {
+      "header": {
+        "title": "Bienvenue",
+        "subtitle": {
+          "line1": "Saisissez votre e-mail et nous vous enverrons un lien magique.",
+          "line2": "Aucun mot de passe requis."
+        }
+      },
+      "form": {
+        "emailLabel": "E-mail",
+        "placeholder": "vous@example.com"
+      },
+      "actions": {
+        "submit": "Envoyer le lien magique",
+        "sending": "Envoi du lien…"
+      },
+      "success": {
+        "primary": "Vérifiez votre boîte mail ! Nous vous avons envoyé un lien magique pour vous connecter.",
+        "existing": "Cet e-mail est déjà enregistré — vérifiez votre boîte de réception pour retrouver le lien magique."
+      },
+      "errors": {
+        "generic": "Impossible d'envoyer le lien magique. Veuillez réessayer."
+      },
+      "footer": {
+        "note": "Fonctionne pour les comptes nouveaux et existants. Vérifiez vos spams si vous ne voyez pas l'e-mail."
+      }
+    },
+    "verify": {
+      "header": {
+        "title": "Vérifiez votre boîte mail ✉️",
+        "subtitle": {
+          "line1": "Nous avons envoyé un lien de confirmation à votre adresse e-mail.",
+          "line2": "Cliquez dessus pour vérifier et débloquer votre Trip Builder."
+        }
+      },
+      "actions": {
+        "resend": "Renvoyer l’e-mail",
+        "sending": "Envoi en cours…",
+        "home": "Retour à l'accueil"
+      },
+      "messages": {
+        "resendSuccess": "✓ E-mail de vérification renvoyé ! Vérifiez votre boîte de réception.",
+        "resendError": "Erreur lors de l’envoi de l’e-mail. Veuillez réessayer.",
+        "missingEmail": "Adresse introuvable. Veuillez recommencer l’inscription.",
+        "genericError": "Un problème est survenu. Veuillez réessayer."
+      },
+      "footer": {
+        "note": "Vous n'avez pas reçu l'e-mail ? Vérifiez vos spams ou cliquez sur « Renvoyer l’e-mail »."
+      }
+    }
+  },
   "demo": {
     "title": "Regarder la Démo",
     "duration": "45 secondes",
@@ -223,49 +712,12 @@
     "title": "Perspectives pour la Coupe du Monde 2026",
     "empty": "Aucun article."
   },
+  "common": {
+    "separator": " • "
+  },
   "privacy": {
     "title": "Politique de Confidentialité",
     "content": "Politique de confidentialité."
-  },
-  "featureShowcase": {
-    "title": "Trois Façons de Planifier Votre Voyage pour la Coupe du Monde",
-    "subtitle": "Tout ce dont vous avez besoin pour rendre votre voyage à la Coupe du Monde 2026 inoubliable",
-    "cityGuides": {
-      "icon": "📚",
-      "title": "Guides de Voyage des Villes",
-      "description": "16 PDF détaillés créés pour chaque ville hôte — logistique, transport, hébergement, sécurité et expériences de fans.",
-      "cta": "Télécharger Dallas Gratuitement"
-    },
-    "forums": {
-      "icon": "💬",
-      "title": "Forums des Villes",
-      "description": "Rejoignez des discussions de style Reddit pour chaque ville hôte — trouvez des rencontres, partagez des conseils de voyage et obtenez des conseils de fans locaux.",
-      "cta": "Visiter les Forums"
-    },
-    "aiPlanner": {
-      "icon": "🤖",
-      "title": "Planificateur de Voyage IA",
-      "description": "Entrez vos villes, budget et taille de groupe — obtenez un itinéraire personnalisé, des suggestions d'hébergement et un plan quotidien.",
-      "cta": "Essayer le Planificateur IA"
-    }
-  },
-  "demoSection": {
-    "title": "Voir Comment Ça Marche",
-    "subtitle": "Regardez comment notre plateforme vous aide à planifier l'expérience parfaite de la Coupe du Monde 2026",
-    "watchDemo": "Regarder la Démo",
-    "demoDescription": "Voyez notre planificateur IA en action, explorez les guides de villes et découvrez comment les fans se connectent via les forums.",
-    "duration": "45 secondes",
-    "callout": "Rejoignez la liste d'attente pour un accès anticipé",
-    "launchDate": "Lancement le 5 décembre 2025",
-    "videoError": "Votre navigateur ne supporte pas la lecture vidéo.",
-    "playButton": "Lire la vidéo de démonstration"
-  }
-  ,
-  "qualifiedTeams": {
-    "title": "Équipes qualifiées",
-    "subtitle": "{count} équipes ont officiellement obtenu leur place à la Coupe du Monde 2026",
-    "counts": "{count} équipes qualifiées",
-    "viewAll": "Voir les {count} équipes"
   },
   "onboarding": {
     "titleDefault": "Bienvenue ! Personnalisons votre expérience",

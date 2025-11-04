@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations, useFormatter } from 'next-intl';
 import { getCityMapPath } from '@/lib/cityMaps';
 import RouteRibbon from './RouteRibbon';
 import { useAuth } from '@/lib/AuthContext';
@@ -14,6 +15,8 @@ type ItineraryData = {
   options: ItineraryOption[];
   [key: string]: unknown;
 };
+
+type TranslatorFn = ReturnType<typeof useTranslations>;
 
 interface ItineraryResultsProps {
   itinerary: ItineraryData;
@@ -32,6 +35,8 @@ export default function ItineraryResults({
   initialExpandedIndex,
   onTripSaved,
 }: ItineraryResultsProps) {
+  const t = useTranslations('planner.tripBuilder.results');
+  const formatter = useFormatter();
   const [expandedIndex, setExpandedIndex] = React.useState<number | null>(initialExpandedIndex ?? null);
   const { user } = useAuth();
   const [showAuthModal, setShowAuthModal] = React.useState(false);
@@ -66,7 +71,7 @@ export default function ItineraryResults({
   const handleSaveItinerary = React.useCallback(async () => {
     if (!Array.isArray(itinerary?.options) || itinerary.options.length === 0) {
       setSaveStatus('error');
-      setSaveMessage('No itinerary to save yet.');
+      setSaveMessage(t('save.messages.none'));
       return;
     }
 
@@ -92,16 +97,15 @@ export default function ItineraryResults({
         title: itinerary.options[selectedIndex]?.title,
       });
       setSaveStatus('success');
-      setSaveMessage('Trip saved to your account.');
+      setSaveMessage(t('save.messages.success'));
       onTripSaved?.(saved);
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to save trip.';
       setSaveStatus('error');
-      setSaveMessage(message);
+      setSaveMessage(t('save.messages.errorGeneric'));
     } finally {
       setSaving(false);
     }
-  }, [expandedIndex, itinerary, onTripSaved, tripInput, user]);
+  }, [expandedIndex, itinerary, onTripSaved, t, tripInput, user]);
 
   const hasOptions = Array.isArray(itinerary?.options) && itinerary.options.length > 0;
   // No budget math or totals shown; display cost notes only per latest spec.
@@ -123,13 +127,20 @@ export default function ItineraryResults({
     return d;
   };
   const fmtPretty = (date: Date) =>
-    date.toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
+    formatter.dateTime(date, { month: 'long', day: 'numeric' });
   const toISO = (date: Date) => {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
   };
+  const getBudgetLabel = React.useCallback(
+    (level?: TripInput['budgetLevel'] | null) => {
+      if (!level) return '';
+      return t(`summary.budgetLevels.${level}` as any);
+    },
+    [t]
+  );
   type TimelineEntry = { start: Date; end: Date; kind: 'arrive' | 'fly' | 'match' | 'explore' | 'return'; city?: string };
   const buildTimeline = (option: ItineraryOption): TimelineEntry[] => {
     if (!tripInput?.startDate || !tripInput?.endDate) return [] as TimelineEntry[];
@@ -222,8 +233,8 @@ export default function ItineraryResults({
 
   const handlePlanNavigation = React.useCallback(
     (destination: string) => {
-      if (expandedIndex === null) {
-        alert('Select an itinerary to continue.');
+    if (expandedIndex === null) {
+        alert(t('alerts.selectOption'));
         return;
       }
       try {
@@ -239,10 +250,10 @@ export default function ItineraryResults({
         }
       } catch (err) {
         console.error('Failed to stash itinerary for planner navigation', err);
-        alert('Unable to continue right now. Please try again.');
+        alert(t('alerts.navigationError'));
       }
     },
-    [expandedIndex, itinerary.options, tripInput]
+    [expandedIndex, itinerary.options, t, tripInput]
   );
 
   return (
@@ -260,9 +271,9 @@ export default function ItineraryResults({
       </div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-blue-100 bg-blue-50/60 px-5 py-4 print:hidden">
         <div>
-          <h2 className="text-base font-semibold text-blue-900">Save this itinerary</h2>
+          <h2 className="text-base font-semibold text-blue-900">{t('save.title')}</h2>
           <p className="text-sm text-blue-800">
-            Keep it in your account so you can revisit or pick it back up later.
+            {t('save.description')}
           </p>
         </div>
         <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
@@ -271,7 +282,7 @@ export default function ItineraryResults({
             disabled={!hasOptions || saving || saveStatus === 'success'}
             className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors disabled:cursor-not-allowed disabled:bg-blue-400 hover:bg-blue-700"
           >
-            {saving ? 'Saving…' : saveStatus === 'success' ? 'Saved!' : 'Save itinerary'}
+            {saving ? t('save.button.saving') : saveStatus === 'success' ? t('save.button.success') : t('save.button.default')}
           </button>
           {saveMessage && (
             <span
@@ -285,10 +296,10 @@ export default function ItineraryResults({
         </div>
       </div>
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-gray-900 heading-print">Your World Cup 2026 Itinerary Options</h1>
-        <p className="text-lg text-gray-600 subheading-print">We've created {itinerary.options.length} personalized trip plans for you</p>
+        <h1 className="text-4xl font-bold text-gray-900 heading-print">{t('header.title')}</h1>
+        <p className="text-lg text-gray-600 subheading-print">{t('header.subtitle', { count: itinerary.options.length })}</p>
         <p className="text-xs text-gray-500 max-w-2xl mx-auto italic print:text-gray-600">
-          Generated with Google Gemini — it can make mistakes, so double-check key details like match logistics, directions, and opening hours.
+          {t('header.disclaimer')}
         </p>
       </div>
 
@@ -297,28 +308,31 @@ export default function ItineraryResults({
         <>
           <div className="rounded-lg border border-blue-200 bg-blue-50/60 px-4 py-3 text-sm text-blue-900 print-hidden-summary">
             <div className="flex flex-wrap gap-x-6 gap-y-2">
-              {tripInput.originCity && <span><strong>Origin:</strong> {tripInput.originCity}</span>}
+              {tripInput.originCity && <span><strong>{t('summary.origin')}:</strong> {tripInput.originCity}</span>}
               {tripInput.startDate && tripInput.endDate && (
                 <span>
-                  <strong>Dates:</strong> {tripInput.startDate} → {tripInput.endDate}
-                  {tripDurationDays ? ` (${tripDurationDays} days)` : ''}
+                  <strong>{t('summary.dates')}:</strong> {tripInput.startDate} → {tripInput.endDate}
+                  {tripDurationDays ? ` (${t('summary.days', { count: tripDurationDays })})` : ''}
                 </span>
               )}
               {(tripInput.groupSize || tripInput.children || tripInput.seniors) && (
                 <span>
-                  <strong>Travelers:</strong> {tripInput.groupSize ?? 0} adults{(tripInput.children ?? 0) > 0 ? `, ${tripInput.children} children` : ''}{(tripInput.seniors ?? 0) > 0 ? `, ${tripInput.seniors} seniors` : ''}
+                  <strong>{t('summary.travelers')}:</strong> {formatTravelers(tripInput.groupSize ?? 0, tripInput.children ?? 0, tripInput.seniors ?? 0, t)}
                 </span>
               )}
               {tripInput.citiesVisiting && tripInput.citiesVisiting.length > 0 && (
                 <span>
-                  <strong>Cities:</strong> {tripInput.citiesVisiting.length} {tripInput.citiesVisiting.length === 1 ? 'City' : 'Cities'} — {tripInput.citiesVisiting.join(' → ')}
+                  <strong>{t('summary.cities')}:</strong> {t('summary.citiesDetail', { count: tripInput.citiesVisiting.length })} — {tripInput.citiesVisiting.join(' → ')}
                 </span>
               )}
               {tripInput.budgetLevel && (
-                <span><strong>Budget:</strong> {tripInput.budgetLevel.charAt(0).toUpperCase() + tripInput.budgetLevel.slice(1)}</span>
+                <span><strong>{t('summary.budget')}:</strong> {getBudgetLabel(tripInput.budgetLevel)}</span>
               )}
               {tripInput.favoriteTeam && (
-                <span><strong>Favorite Team:</strong> {tripInput.favoriteTeam}</span>
+                <span><strong>{t('summary.team')}:</strong> {tripInput.favoriteTeam}</span>
+              )}
+              {typeof tripInput.hasMatchTickets === 'boolean' && (
+                <span><strong>{t('summary.tickets')}:</strong> {tripInput.hasMatchTickets ? t('summary.ticketsYes') : t('summary.ticketsNo')}</span>
               )}
             </div>
           </div>
@@ -327,48 +341,44 @@ export default function ItineraryResults({
               <tbody>
                 {tripInput.originCity && (
                   <tr>
-                    <th>Origin City</th>
+                    <th>{t('summary.print.origin')}</th>
                     <td>{tripInput.originCity}</td>
                   </tr>
                 )}
                 {tripInput.startDate && tripInput.endDate && (
                   <tr>
-                    <th>Travel Dates</th>
-                    <td>{tripInput.startDate} → {tripInput.endDate}{tripDurationDays ? ` (${tripDurationDays} days)` : ''}</td>
+                    <th>{t('summary.print.dates')}</th>
+                    <td>{tripInput.startDate} → {tripInput.endDate}{tripDurationDays ? ` (${t('summary.days', { count: tripDurationDays })})` : ''}</td>
                   </tr>
                 )}
                 {(tripInput.groupSize || tripInput.children || tripInput.seniors) && (
                   <tr>
-                    <th>Travel Party</th>
-                    <td>
-                      {tripInput.groupSize ?? 0} adults
-                      {(tripInput.children ?? 0) > 0 ? `, ${tripInput.children} children` : ''}
-                      {(tripInput.seniors ?? 0) > 0 ? `, ${tripInput.seniors} seniors` : ''}
-                    </td>
+                    <th>{t('summary.print.travelers')}</th>
+                    <td>{formatTravelers(tripInput.groupSize ?? 0, tripInput.children ?? 0, tripInput.seniors ?? 0, t)}</td>
                   </tr>
                 )}
                 {tripInput.citiesVisiting && tripInput.citiesVisiting.length > 0 && (
                   <tr>
-                    <th>Cities Planned</th>
+                    <th>{t('summary.print.cities')}</th>
                     <td>{tripInput.citiesVisiting.join(' → ')}</td>
                   </tr>
                 )}
                 {tripInput.budgetLevel && (
                   <tr>
-                    <th>Budget Level</th>
-                    <td>{tripInput.budgetLevel.charAt(0).toUpperCase() + tripInput.budgetLevel.slice(1)}</td>
+                    <th>{t('summary.print.budget')}</th>
+                    <td>{getBudgetLabel(tripInput.budgetLevel)}</td>
                   </tr>
                 )}
                 {tripInput.favoriteTeam && (
                   <tr>
-                    <th>Favorite Team</th>
+                    <th>{t('summary.print.team')}</th>
                     <td>{tripInput.favoriteTeam}</td>
                   </tr>
                 )}
                 {tripInput.hasMatchTickets && (
                   <tr>
-                    <th>Match Tickets</th>
-                    <td>Yes — itinerary prioritizes match day logistics.</td>
+                    <th>{t('summary.print.tickets')}</th>
+                    <td>{t('summary.ticketsYes')}</td>
                   </tr>
                 )}
               </tbody>
@@ -393,7 +403,7 @@ export default function ItineraryResults({
                 </div>
                 <div className="mt-auto space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Cities</span>
+                    <span className="text-gray-600">{t('cards.citiesLabel')}</span>
                     <span className="font-semibold text-gray-900">{option.cities.length}</span>
                   </div>
                   {/* Flights note removed on cards per spec; keep details inside expanded view */}
@@ -403,7 +413,7 @@ export default function ItineraryResults({
                     aria-expanded={expandedIndex === index}
                     aria-controls={`itinerary-details-${index}`}
                   >
-                    {expandedIndex === index ? 'Hide details' : 'View details'}
+                    {expandedIndex === index ? t('cards.hideDetails') : t('cards.viewDetails')}
                   </button>
                 </div>
               </div>
@@ -428,7 +438,7 @@ export default function ItineraryResults({
             {/* Flights Section */}
             <div className="space-y-4">
               <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                <span className="mr-3">✈️</span> Flights
+                <span className="mr-3">✈️</span> {t('sections.flights.title')}
               </h3>
 
               {itinerary.options[expandedIndex].flights.legs && itinerary.options[expandedIndex].flights.legs!.length > 0 ? (
@@ -437,7 +447,7 @@ export default function ItineraryResults({
                     <div key={legIndex} className="bg-gradient-to-r from-blue-50 to-sky-50 border border-blue-200 rounded-lg p-5">
                       {leg.layoverBefore && (
                         <div className="mb-3 pb-3 border-b border-blue-200">
-                          <p className="text-sm font-medium text-blue-700">⏱️ Layover: {leg.layoverBefore}</p>
+                          <p className="text-sm font-medium text-blue-700">⏱️ {t('sections.flights.layover', { duration: leg.layoverBefore })}</p>
                           {leg.layoverNotes && <p className="text-xs text-blue-600 mt-1">{leg.layoverNotes}</p>}
                         </div>
                       )}
@@ -451,24 +461,24 @@ export default function ItineraryResults({
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                         <div>
-                          <p className="text-gray-600 font-medium">Airlines</p>
+                          <p className="text-gray-600 font-medium">{t('sections.flights.details.airlines')}</p>
                           <p className="text-gray-900">{leg.airlines.join(', ')}</p>
                         </div>
                         {leg.exampleDeparture && leg.exampleArrival && (
                           <div>
-                            <p className="text-gray-600 font-medium">Example Schedule</p>
-                            <p className="text-gray-900">Depart {leg.exampleDeparture} → Arrive {leg.exampleArrival}</p>
+                            <p className="text-gray-600 font-medium">{t('sections.flights.details.scheduleLabel')}</p>
+                            <p className="text-gray-900">{t('sections.flights.details.scheduleValue', { departure: leg.exampleDeparture, arrival: leg.exampleArrival })}</p>
                           </div>
                         )}
                         {leg.frequency && (
                           <div>
-                            <p className="text-gray-600 font-medium">Availability</p>
+                            <p className="text-gray-600 font-medium">{t('sections.flights.details.availability')}</p>
                             <p className="text-gray-900">{leg.frequency}</p>
                           </div>
                         )}
                         {leg.notes && (
                           <div className="md:col-span-2">
-                            <p className="text-gray-600 font-medium">Notes</p>
+                            <p className="text-gray-600 font-medium">{t('sections.flights.details.notes')}</p>
                             <p className="text-gray-900">{leg.notes}</p>
                           </div>
                         )}
@@ -481,7 +491,7 @@ export default function ItineraryResults({
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-green-700 font-medium">Total Flight Cost</p>
+                          <p className="text-sm text-green-700 font-medium">{t('sections.flights.cost.total')}</p>
                           {itinerary.options[expandedIndex].flights.costBreakdown && (
                             <p className="text-xs text-green-600 mt-1">{itinerary.options[expandedIndex].flights.costBreakdown}</p>
                           )}
@@ -519,7 +529,7 @@ export default function ItineraryResults({
                     </div>
                   )}
                   <div className="space-y-4">
-                    <h4 className="font-semibold text-gray-800 text-lg">Recommended Lodging Areas:</h4>
+                    <h4 className="font-semibold text-gray-800 text-lg">{t('sections.lodging.title')}</h4>
                     {city.lodgingZones.map((zone, zoneIndex) => (
                       <div key={zoneIndex} className="bg-gray-50 border-2 border-gray-300 rounded-xl p-6 space-y-4 shadow-sm">
                         <div className="flex items-start justify-between">
@@ -529,26 +539,34 @@ export default function ItineraryResults({
                           </div>
                           <div className="text-right ml-4">
                             <p className="font-bold text-blue-800 text-lg">{zone.estimatedRate}</p>
-                            <p className="text-xs text-gray-600 font-medium">per night</p>
+                            <p className="text-xs text-gray-600 font-medium">{t('sections.lodging.perNight')}</p>
                           </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm bg-white rounded-lg p-4 border border-gray-200">
                           <div>
-                            <p className="text-gray-700"><span className="font-semibold">To Stadium:</span> {zone.transitToStadium}</p>
+                            <p className="text-gray-700">
+                              <span className="font-semibold">{t('sections.lodging.toStadium')}:</span> {zone.transitToStadium}
+                            </p>
                           </div>
                           <div>
-                            <p className="text-gray-700"><span className="font-semibold">To Fan Fest:</span> {zone.transitToFanFest}</p>
+                            <p className="text-gray-700">
+                              <span className="font-semibold">{t('sections.lodging.toFanFest')}:</span> {zone.transitToFanFest}
+                            </p>
                           </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                           <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-                            <p className="text-sm font-bold text-green-800 mb-2 flex items-center"><span className="mr-2">✓</span> Pros:</p>
+                            <p className="text-sm font-bold text-green-800 mb-2 flex items-center">
+                              <span className="mr-2">✓</span> {t('sections.lodging.pros')}
+                            </p>
                             <ul className="text-sm text-green-900 space-y-1.5">
                               {zone.pros.map((pro, i) => (<li key={i} className="leading-relaxed">• {pro}</li>))}
                             </ul>
                           </div>
                           <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
-                            <p className="text-sm font-bold text-orange-800 mb-2 flex items-center"><span className="mr-2">⚠️</span> Cons:</p>
+                            <p className="text-sm font-bold text-orange-800 mb-2 flex items-center">
+                              <span className="mr-2">⚠️</span> {t('sections.lodging.cons')}
+                            </p>
                             <ul className="text-sm text-orange-900 space-y-1.5 pl-1">
                               {zone.cons.map((con, i) => (<li key={i} className="leading-relaxed">• {con}</li>))}
                             </ul>
@@ -558,15 +576,15 @@ export default function ItineraryResults({
                     ))}
                   </div>
                   <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5 shadow-sm">
-                    <h4 className="font-bold text-blue-900 mb-3 flex items-center text-lg"><span className="mr-3">🎫</span> Match Day Logistics</h4>
+                    <h4 className="font-bold text-blue-900 mb-3 flex items-center text-lg"><span className="mr-3">🎫</span> {t('sections.matchDay.title')}</h4>
                     <p className="text-[11px] text-blue-700/80 italic mb-2">
-                      Gemini may blend stadium tips from other cities — confirm transport routes and timing before match day.
+                      {t('sections.matchDay.warning')}
                     </p>
                     <p className="text-sm text-blue-900 leading-relaxed">{city.matchDayLogistics}</p>
                   </div>
                   {city.insiderTips && city.insiderTips.length > 0 && (
                     <div className="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-5 shadow-sm">
-                      <h4 className="font-bold text-yellow-900 mb-3 flex items-center text-lg"><span className="mr-3">💡</span> Insider Tips</h4>
+                      <h4 className="font-bold text-yellow-900 mb-3 flex items-center text-lg"><span className="mr-3">💡</span> {t('sections.insider.title')}</h4>
                       <ul className="text-sm text-yellow-900 space-y-2">
                         {city.insiderTips.map((tip, i) => (<li key={i} className="leading-relaxed">• {tip}</li>))}
                       </ul>
@@ -580,14 +598,25 @@ export default function ItineraryResults({
             {/* Bottom Itinerary Summary */}
             {tripInput?.startDate && tripInput?.endDate && (
               <div className="pt-4 mt-2 border-t border-gray-200">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center"><span className="mr-2">🗓️</span> Your Trip at a Glance</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center"><span className="mr-2">🗓️</span> {t('timeline.title')}</h3>
                 <ul className="text-base text-gray-900 space-y-2 leading-relaxed">
                   {buildTimeline(itinerary.options[expandedIndex]).map((seg, i) => {
                     const sameDay = seg.start.getTime() === seg.end.getTime();
-                    const dateText = sameDay ? fmtPretty(seg.start) : `${fmtPretty(seg.start)}–${fmtPretty(seg.end)}`;
+                    const dateText = sameDay
+                      ? fmtPretty(seg.start)
+                      : t('timeline.range', { start: fmtPretty(seg.start), end: fmtPretty(seg.end) });
                     const city = seg.city ? seg.city : '';
                     const emoji = seg.kind === 'arrive' || seg.kind === 'fly' || seg.kind === 'return' ? '✈️' : seg.kind === 'match' ? '⚽' : (city.includes('Bay Area') ? '🏖' : '🏙');
-                    const action = seg.kind === 'arrive' ? `Arrive in ${city}` : seg.kind === 'fly' ? `Fly to ${city}` : seg.kind === 'match' ? 'Match Day' : seg.kind === 'return' ? 'Return Flight Home' : `Explore ${city}`;
+                    const action =
+                      seg.kind === 'arrive'
+                        ? t('timeline.actions.arrive', { city })
+                        : seg.kind === 'fly'
+                          ? t('timeline.actions.fly', { city })
+                          : seg.kind === 'match'
+                            ? t('timeline.actions.match', { city })
+                            : seg.kind === 'return'
+                              ? t('timeline.actions.return')
+                              : t('timeline.actions.explore', { city });
                     return (
                       <li key={i}><strong>{dateText}</strong> — {emoji} {action}</li>
                     );
@@ -595,7 +624,10 @@ export default function ItineraryResults({
                 </ul>
                 <div className="mt-5 bg-purple-50 border border-purple-200 rounded-lg p-4 print:bg-white print:border-gray-300">
                   <p className="text-sm text-purple-900 print:text-gray-900">
-                    🌍 <strong>Coming May 2026:</strong> Our Host City Travel Planners will launch with all World Cup events, Fan Fests, and transport guides — making it even easier to explore each city.
+                    {t.rich('timeline.comingSoon', {
+                      strong: (chunks) => <strong>{chunks}</strong>,
+                      emoji: () => '🌍',
+                    })}
                   </p>
                 </div>
                 <div className="mt-6 flex flex-col sm:flex-row gap-3 print:hidden">
@@ -604,21 +636,21 @@ export default function ItineraryResults({
                     disabled={!hasOptions || saving || saveStatus === 'success'}
                     className="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-400"
                   >
-                    {saving ? 'Saving…' : saveStatus === 'success' ? 'Saved!' : 'Save itinerary'}
+                    {saving ? t('save.button.saving') : saveStatus === 'success' ? t('save.button.success') : t('save.button.default')}
                   </button>
                   <button
                     onClick={() => handlePlanNavigation('/lodging-planner?from=trip-builder')}
                     className="px-5 py-2 rounded-lg bg-rose-600 text-white font-semibold hover:bg-rose-700"
                   >
-                    Explore Lodging Zones
+                    {t('actions.openLodgingPlanner')}
                   </button>
                   <button
                     onClick={() => handlePlanNavigation('/flight-planner?from=trip-builder')}
                     className="px-5 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700"
                   >
-                    Continue to Flight Planner
+                    {t('actions.openFlightPlanner')}
                   </button>
-                  <button onClick={() => window.print()} className="px-5 py-2 rounded-lg bg-gray-900 text-white hover:bg-black">Print PDF</button>
+                  <button onClick={() => window.print()} className="px-5 py-2 rounded-lg bg-gray-900 text-white hover:bg-black">{t('actions.print')}</button>
                 </div>
                 {saveMessage && (
                   <p
@@ -640,13 +672,13 @@ export default function ItineraryResults({
       {/* CTA footer */}
       <div className="mt-6 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 flex flex-col sm:flex-row items-center justify-between gap-3 print:hidden">
         <div className="text-center sm:text-left">
-          <p className="font-semibold">📩 Subscribe to Fan Zone Weekly for city updates and travel alerts.</p>
+          <p className="font-semibold">{t('cta.subscribe.message')}</p>
         </div>
         <button
           onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
           className="px-5 py-2 rounded-lg bg-white text-blue-700 font-bold hover:bg-gray-100"
         >
-          Subscribe Free
+          {t('cta.subscribe.button')}
         </button>
       </div>
 
@@ -656,7 +688,7 @@ export default function ItineraryResults({
           onClick={() => window.location.reload()}
           className="text-blue-600 hover:text-blue-700 font-medium"
         >
-          ← Start Over with New Preferences
+          {t('actions.startOver')}
         </button>
       </div>
 
@@ -695,20 +727,33 @@ export default function ItineraryResults({
 }
 
 function FlightPlannerCTA({ message }: { message?: string }) {
+  const t = useTranslations('planner.tripBuilder.results');
   return (
     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <p className="text-sm text-blue-800 font-medium">Need live fares?</p>
+        <p className="text-sm text-blue-800 font-medium">{t('sections.flights.cta.title')}</p>
         <p className="text-blue-900 mt-1">
-          {message || 'Jump into the Flight Planner to compare real routes, schedules, and current prices for these legs.'}
+          {message || t('sections.flights.cta.defaultMessage')}
         </p>
       </div>
       <Link
         href="/ai/flights"
         className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700 transition-colors"
       >
-        Open Flight Planner
+        {t('sections.flights.cta.button')}
       </Link>
     </div>
   );
+}
+
+function formatTravelers(adults: number, children: number, seniors: number, t: TranslatorFn) {
+  const parts: string[] = [];
+  parts.push(t('summary.travelersAdults', { count: adults }));
+  if (children > 0) {
+    parts.push(t('summary.travelersChildren', { count: children }));
+  }
+  if (seniors > 0) {
+    parts.push(t('summary.travelersSeniors', { count: seniors }));
+  }
+  return parts.join(t('summary.separator'));
 }

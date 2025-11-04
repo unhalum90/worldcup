@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { sendMagicLink } from '@/lib/auth/magicLink';
 
 interface AuthModalProps {
@@ -12,6 +13,7 @@ interface AuthModalProps {
 
 export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProps) {
   const router = useRouter();
+  const t = useTranslations('auth.modal');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -35,7 +37,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
       localStorage.setItem('pending_verification_redirect', targetPath);
 
       // Show success message
-      setSuccess('Check your email! We sent you a magic link to sign in.');
+      setSuccess(t('success.primary'));
       
       // Redirect to verification page after brief delay
       setTimeout(() => {
@@ -46,17 +48,17 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
       const message =
         err instanceof Error
           ? err.message
-          : 'Unable to send magic link. Please try again.';
+          : '';
       
       // Handle existing user case gracefully
       if (message.includes('already registered') || message.includes('user_already_exists')) {
-        setSuccess('This email is already registered — check your inbox for a Magic Link to sign in.');
+        setSuccess(t('success.existing'));
         setTimeout(() => {
           onClose();
           router.push('/verify-email');
         }, 2000);
       } else {
-        setError(message);
+        setError(t('errors.generic'));
       }
     } finally {
       setLoading(false);
@@ -86,11 +88,11 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
 
           {/* Header */}
           <div className="text-center mb-6 space-y-2">
-            <h2 className="text-3xl font-bold text-gray-900">Welcome</h2>
+            <h2 className="text-3xl font-bold text-gray-900">{t('header.title')}</h2>
             <p className="text-gray-600 text-sm">
-              Enter your email and we'll send you a magic link.
+              {t('header.subtitle.line1')}
               <br />
-              <span className="font-medium">No password needed.</span>
+              <span className="font-medium">{t('header.subtitle.line2')}</span>
             </p>
           </div>
 
@@ -98,7 +100,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="auth-email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email
+                {t('form.emailLabel')}
               </label>
               <input
                 id="auth-email"
@@ -107,7 +109,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="you@example.com"
+                placeholder={t('form.placeholder')}
                 autoFocus
               />
             </div>
@@ -129,12 +131,12 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
               disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
             >
-              {loading ? 'Sending link…' : 'Send magic link'}
+              {loading ? t('actions.sending') : t('actions.submit')}
             </button>
           </form>
 
           <p className="mt-6 text-center text-xs text-gray-500">
-            Works for new and existing accounts. Check your spam folder if you don't see the email.
+            {t('footer.note')}
           </p>
         </div>
       </div>

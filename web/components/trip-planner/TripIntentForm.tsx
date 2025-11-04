@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import type { UserProfile } from '@/lib/profile/types';
 import { WORLD_CUP_CITIES } from '@/components/TravelPlannerWizard';
 import MatchPicker from '@/components/MatchPicker';
@@ -29,6 +30,7 @@ type TravelPlanRequest = {
   nightlifePreference?: string | null;
   foodPreference?: string | null;
   climatePreference?: string | null;
+  locale?: string;
 };
 
 interface TripIntentFormProps {
@@ -39,6 +41,8 @@ interface TripIntentFormProps {
 }
 
 export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }: TripIntentFormProps) {
+  const t = useTranslations('planner.tripBuilder.form');
+  const locale = useLocale();
   const [storedTicketMatches, setStoredTicketMatches] = useState<MatchItem[]>([]);
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -104,7 +108,7 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
     setError(null);
 
     if (new Date(startDate) > new Date(endDate)) {
-      setError('End date must be after the start date.');
+      setError(t('errors.dateOrder'));
       return;
     }
 
@@ -128,9 +132,10 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
         hasMatchTickets: hasTickets,
         ticketCities: hasTickets ? ticketCities : [],
         matchDates: matchDatesForPayload,
+        locale,
       });
     } catch (err: any) {
-      setError(err?.message || 'Failed to submit');
+      setError(err?.message || t('errors.submit'));
     }
   };
 
@@ -139,11 +144,11 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
       <header className="mb-6">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-wide text-blue-600 font-semibold mb-1">Step 2</p>
-            <h2 className="text-2xl font-bold text-gray-900">Tell us about this specific trip</h2>
-            <p className="text-sm text-gray-600 mt-1">
-              We already have your traveler profile. Now just add the trip details—we’ll merge everything before generating your itinerary.
+            <p className="text-xs uppercase tracking-wide text-blue-600 font-semibold mb-1">
+              {t('header.step', { step: 2 })}
             </p>
+            <h2 className="text-2xl font-bold text-gray-900">{t('header.title')}</h2>
+            <p className="text-sm text-gray-600 mt-1">{t('header.subtitle')}</p>
           </div>
           {onBack && (
             <button
@@ -151,7 +156,7 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
               onClick={onBack}
               className="text-sm text-gray-500 underline underline-offset-2 hover:text-gray-700"
             >
-              ← Back to profile review
+              {t('header.back')}
             </button>
           )}
         </div>
@@ -159,10 +164,10 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
 
       <form className="space-y-8" onSubmit={handleSubmit}>
         <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-gray-900">Dates</h3>
+          <h3 className="text-lg font-semibold text-gray-900">{t('sections.dates.title')}</h3>
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Start date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('sections.dates.start')}</label>
               <input
                 type="date"
                 className="w-full rounded-lg border border-gray-300 px-3 py-2"
@@ -174,7 +179,7 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">End date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('sections.dates.end')}</label>
               <input
                 type="date"
                 className="w-full rounded-lg border border-gray-300 px-3 py-2"
@@ -189,7 +194,7 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
         </div>
 
         <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-gray-900">Which host cities are you planning to visit?</h3>
+          <h3 className="text-lg font-semibold text-gray-900">{t('sections.cities.title')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {WORLD_CUP_CITIES.map((city) => {
               const isSelected = citiesVisiting.includes(city);
@@ -203,17 +208,17 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
                   }`}
                 >
                   <span className="font-medium">{city}</span>
-                  {isSelected && <span className="ml-2 text-xs text-blue-700 font-semibold">Selected</span>}
+                  {isSelected && <span className="ml-2 text-xs text-blue-700 font-semibold">{t('sections.cities.selected')}</span>}
                 </button>
               );
             })}
           </div>
-          {citiesVisiting.length === 0 && <p className="text-xs text-red-500">Select at least one city.</p>}
+          {citiesVisiting.length === 0 && <p className="text-xs text-red-500">{t('sections.cities.error')}</p>}
         </div>
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">Match tickets</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{t('sections.tickets.title')}</h3>
             <label className="flex items-center gap-2 text-sm text-gray-700">
               <input
                 type="checkbox"
@@ -230,13 +235,13 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
                   }
                 }}
               />
-              Yes — align my trip to existing tickets
+              {t('sections.tickets.toggle')}
             </label>
           </div>
           {hasTickets && (
             <div className="space-y-4 border border-blue-100 rounded-xl p-4 bg-blue-50/50">
               <div>
-                <p className="text-sm font-medium text-gray-800 mb-2">Which cities are those tickets for?</p>
+                <p className="text-sm font-medium text-gray-800 mb-2">{t('sections.tickets.cityPrompt')}</p>
                 <div className="flex flex-wrap gap-2">
                   {WORLD_CUP_CITIES.map((city) => {
                     const isSelected = ticketCities.includes(city);
@@ -254,7 +259,7 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
                     );
                   })}
                 </div>
-                {ticketCities.length === 0 && <p className="text-xs text-red-500 mt-1">Select at least one city with tickets.</p>}
+                {ticketCities.length === 0 && <p className="text-xs text-red-500 mt-1">{t('sections.tickets.cityError')}</p>}
               </div>
               <MatchPicker
                 selectedCities={ticketCities}
@@ -269,15 +274,15 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">Anything else for this trip?</h3>
-            <span className="text-xs text-gray-500">Optional</span>
+            <h3 className="text-lg font-semibold text-gray-900">{t('sections.notes.title')}</h3>
+            <span className="text-xs text-gray-500">{t('sections.notes.optional')}</span>
           </div>
           <textarea
             value={personalContext}
             onChange={(e) => setPersonalContext(e.target.value)}
             rows={4}
             className="w-full rounded-lg border border-gray-300 px-3 py-2"
-            placeholder="e.g., Celebrating a birthday, need vegetarian options, split-time in Toronto & Vancouver…"
+            placeholder={t('sections.notes.placeholder')}
           />
         </div>
 
@@ -289,10 +294,10 @@ export default function TripIntentForm({ profile, onSubmit, isLoading, onBack }:
             disabled={disabled || isLoading}
             className="inline-flex items-center justify-center rounded-lg bg-green-600 px-6 py-3 text-white font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Planning…' : 'Generate my trip'}
+            {isLoading ? t('buttons.submitting') : t('buttons.submit')}
           </button>
           <p className="text-sm text-gray-500">
-            You can always tweak preferences later—this adds trip-specific context on top of your profile.
+            {t('note')}
           </p>
         </div>
       </form>

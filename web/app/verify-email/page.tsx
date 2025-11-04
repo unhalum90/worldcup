@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function VerifyEmailPage() {
   const router = useRouter();
+  const t = useTranslations("auth.verify");
   const [resending, setResending] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -17,7 +19,7 @@ export default function VerifyEmailPage() {
       const email = localStorage.getItem("pending_verification_email");
       
       if (!email) {
-        setMessage("Email not found. Please try signing up again.");
+        setMessage(t("messages.missingEmail"));
         setResending(false);
         return;
       }
@@ -31,12 +33,12 @@ export default function VerifyEmailPage() {
       });
 
       if (error) {
-        setMessage("Error resending email. Please try again.");
+        setMessage(t("messages.resendError"));
       } else {
-        setMessage("✓ Verification email resent! Check your inbox.");
+        setMessage(t("messages.resendSuccess"));
       }
     } catch (e) {
-      setMessage("Something went wrong. Please try again.");
+      setMessage(t("messages.genericError"));
     } finally {
       setResending(false);
     }
@@ -56,17 +58,17 @@ export default function VerifyEmailPage() {
 
         {/* Content */}
         <div className="text-center space-y-3">
-          <h1 className="text-2xl font-bold text-gray-900">Check your inbox ✉️</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t("header.title")}</h1>
           <p className="text-gray-600">
-            We've sent a confirmation link to your email.
+            {t("header.subtitle.line1")}
             <br />
-            Click it to verify and unlock your Trip Builder.
+            {t("header.subtitle.line2")}
           </p>
         </div>
 
         {/* Message */}
         {message && (
-          <div className={`text-sm text-center p-3 rounded-lg ${message.startsWith('✓') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+          <div className={`text-sm text-center p-3 rounded-lg ${message.startsWith("✓") ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}>
             {message}
           </div>
         )}
@@ -78,20 +80,20 @@ export default function VerifyEmailPage() {
             disabled={resending}
             className="w-full px-6 py-3 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           >
-            {resending ? "Sending..." : "Resend Email"}
+            {resending ? t("actions.sending") : t("actions.resend")}
           </button>
           
           <button
             onClick={() => router.push("/")}
             className="w-full px-6 py-3 rounded-lg font-semibold text-gray-700 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-colors"
           >
-            Back to Home
+            {t("actions.home")}
           </button>
         </div>
 
         {/* Help text */}
         <p className="text-xs text-center text-gray-500">
-          Didn't receive the email? Check your spam folder or click "Resend Email" above.
+          {t("footer.note")}
         </p>
       </div>
     </main>

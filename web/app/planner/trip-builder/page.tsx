@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import ItineraryResults from '@/components/ItineraryResults';
 import PlannerLoader from '@/components/PlannerLoader';
@@ -14,6 +15,7 @@ import { usePlannerTheme } from '@/hooks/usePlannerTheme';
 import { fetchSavedTrip } from '@/lib/travel-plans/api';
 
 export default function PlannerPage() {
+  const t = useTranslations('planner.tripBuilder.page');
   const { user, loading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -53,7 +55,7 @@ export default function PlannerPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate itinerary');
+        throw new Error(errorData.error || t('errors.generate'));
       }
 
   const data = await response.json();
@@ -61,15 +63,14 @@ export default function PlannerPage() {
   setItinerary(data.itinerary);
     } catch (err) {
       console.error('Error generating itinerary:', err);
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : t('errors.generic'));
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleEmailCapture = () => {
-    // TODO: Implement email capture modal
-    alert('Email capture coming soon! For now, screenshot your itinerary.');
+    alert(t('alerts.emailCapture'));
   };
 
   useEffect(() => {
@@ -85,7 +86,7 @@ export default function PlannerPage() {
       .then((saved) => {
         if (ignore) return;
         if (!saved) {
-          setError('We could not find that saved itinerary.');
+          setError(t('errors.missingSaved'));
           setItinerary(null);
           setLastForm(null);
           setInitialExpandedIndex(null);
@@ -93,7 +94,7 @@ export default function PlannerPage() {
         }
 
         if (!saved.itinerary || !Array.isArray((saved.itinerary as any).options) || (saved.itinerary as any).options.length === 0) {
-          setError('Saved itinerary is missing details. Try generating a new one.');
+          setError(t('errors.savedMissingDetails'));
           setItinerary(null);
           setLastForm(saved.tripInput ?? null);
           setInitialExpandedIndex(null);
@@ -110,7 +111,7 @@ export default function PlannerPage() {
       })
       .catch((err) => {
         if (ignore) return;
-        const message = err instanceof Error ? err.message : 'Failed to load saved itinerary.';
+        const message = err instanceof Error ? err.message : t('errors.loadSaved');
         setError(message);
       })
       .finally(() => {
@@ -129,7 +130,7 @@ export default function PlannerPage() {
       <div className="min-h-screen flex items-center justify-center" style={themeBackground}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600">{t('loading')}</p>
         </div>
       </div>
     );
@@ -141,7 +142,7 @@ export default function PlannerPage() {
       <div className="min-h-screen flex items-center justify-center p-6" style={themeBackground}>
         <AuthModal isOpen={true} onClose={() => {}} redirectTo="/planner/trip-builder" />
         <div className="absolute bottom-8 text-center text-sm text-gray-600">
-          <p>This section is for members. Please sign in to continue.</p>
+          <p>{t('lockedMessage')}</p>
         </div>
       </div>
     );
@@ -152,8 +153,8 @@ export default function PlannerPage() {
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">World Cup 2026 Travel Planner</h1>
-          <p className="text-gray-600">AI-powered itineraries for the greatest show on earth ⚽</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('header.title')}</h1>
+          <p className="text-gray-600">{t('header.subtitle')}</p>
         </div>
       </header>
 
@@ -162,35 +163,35 @@ export default function PlannerPage() {
         {profileError && (
           <div className="max-w-3xl mx-auto px-6 mb-6">
             <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
-              We couldn’t load your saved travel profile. Please refresh to retry or reopen onboarding to capture it again.
+              {t('errors.profileLoad')}
             </div>
           </div>
         )}
         {loadingSavedTrip && (
           <div className="max-w-3xl mx-auto px-6 mb-6">
             <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800">
-              Loading your saved itinerary…
+              {t('savedLoading')}
             </div>
           </div>
         )}
         {!itinerary && !isLoading && !profileLoading && !profile && (
           <div className="max-w-3xl mx-auto px-6 py-12 text-center space-y-3">
-            <p className="text-lg font-semibold text-gray-900">Let’s capture your travel profile first</p>
+            <p className="text-lg font-semibold text-gray-900">{t('profileRequired.title')}</p>
             <p className="text-sm text-gray-600">
-              We need your onboarding details before building itineraries. Head to onboarding to fill it out, then come back here.
+              {t('profileRequired.body')}
             </p>
             <button
               onClick={() => router.push('/onboarding?redirect=/planner/trip-builder')}
               className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700"
             >
-              Complete onboarding
+              {t('profileRequired.button')}
             </button>
           </div>
         )}
 
         {!itinerary && !isLoading && profileLoading && (
           <div className="max-w-3xl mx-auto px-6 py-12 text-center text-sm text-gray-600">
-            Loading your travel profile…
+            {t('profileLoading')}
           </div>
         )}
 
@@ -215,14 +216,14 @@ export default function PlannerPage() {
             <div className="text-center space-y-4">
               <div className="animate-pulse">
                 <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                  🌍 Crafting Your Perfect World Cup Journey...
+                  {t('loader.title')}
                 </h2>
                 <p className="text-lg text-gray-600">
-                  Our AI is analyzing your preferences with expert local knowledge
+                  {t('loader.subtitle')}
                 </p>
               </div>
 
-              <p className="text-sm text-gray-500">⏱️ This usually takes 45-60 seconds</p>
+              <p className="text-sm text-gray-500">{t('loader.note')}</p>
             </div>
 
             <PlannerLoader
@@ -233,6 +234,7 @@ export default function PlannerPage() {
                 option: {
                   title: 'World Cup 2026 Trip',
                   summary: 'Analyzing your itinerary inputs...',
+                  summary: t('loader.itinerarySummary'),
                   cities: (lastForm?.citiesVisiting || []).map((city: string) => ({
                     cityName: city,
                     lodgingZones: [],
@@ -255,13 +257,13 @@ export default function PlannerPage() {
         {error && (
           <div className="max-w-3xl mx-auto p-6">
             <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-              <h2 className="text-xl font-bold text-red-900 mb-2">Oops! Something went wrong</h2>
+              <h2 className="text-xl font-bold text-red-900 mb-2">{t('errorState.title')}</h2>
               <p className="text-red-700 mb-4">{error}</p>
               <button
                 onClick={() => window.location.reload()}
                 className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
               >
-                Try Again
+                {t('errorState.retry')}
               </button>
             </div>
           </div>
@@ -280,13 +282,13 @@ export default function PlannerPage() {
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 mt-12">
         <div className="max-w-7xl mx-auto px-6 py-6 text-center text-sm text-gray-600">
-          <p>Planning your World Cup 2026 adventure? We've got you covered.</p>
+          <p>{t('footer.tagline')}</p>
           <p className="mt-2">
-            <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">← Back to Home</Link>
+            <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">{t('footer.backHome')}</Link>
             {' | '}
-            <Link href="/guides" className="text-blue-600 hover:text-blue-700 font-medium">City Guides</Link>
+            <Link href="/guides" className="text-blue-600 hover:text-blue-700 font-medium">{t('footer.guides')}</Link>
             {' | '}
-            <Link href="/forums" className="text-blue-600 hover:text-blue-700 font-medium">Fan Forums</Link>
+            <Link href="/forums" className="text-blue-600 hover:text-blue-700 font-medium">{t('footer.forums')}</Link>
           </p>
         </div>
       </footer>
