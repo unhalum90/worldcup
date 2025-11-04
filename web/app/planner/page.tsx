@@ -197,10 +197,10 @@ function PhaseCard({ phase }: { phase: Phase }) {
   const phaseTitle = phaseT('title');
   const phaseDescription = phaseT('description');
   const features = !isTripBuilder
-    ? (phaseT('features', { returnObjects: true }) as string[])
+    ? (phaseT.raw('features') as string[])
     : undefined;
   const howItWorksSteps = isTripBuilder
-    ? (phaseT('howItWorks.steps', { returnObjects: true }) as Array<{ title: string; description: string }>)
+    ? (phaseT.raw('howItWorks.steps') as Array<{ title: string; description: string }>)
     : [];
   
   const cardContent = (
@@ -273,7 +273,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
               Features:
             </h4>
             <ul className="space-y-2 mb-6">
-              {phase.features.map((feature, idx) => (
+              {features?.map((feature, idx) => (
                 <li key={idx} className="flex items-start text-gray-600 text-sm">
                   <svg className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

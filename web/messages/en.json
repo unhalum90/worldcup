@@ -39,9 +39,10 @@
       {
         "title": "Matchday planning",
         "desc": "Key info at a glance for every venue."
-      },
-      "loader": {
-        "messages": {
+      }
+    ],
+    "loader": {
+      "messages": {
           "flight": {
             "scanRoute": "Scanning flights from <strong>{from}</strong> → <strong>{to}</strong>…",
             "layovers": "Checking layovers under 2 hours…",
@@ -101,7 +102,7 @@
           "finalizing": "Finalizing results…"
         }
       }
-    ]
+    }
   },
   "landing": {
     "hero": {

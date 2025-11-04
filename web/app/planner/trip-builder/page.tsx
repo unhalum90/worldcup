@@ -233,7 +233,6 @@ export default function PlannerPage() {
                 optionIndex: 0,
                 option: {
                   title: 'World Cup 2026 Trip',
-                  summary: 'Analyzing your itinerary inputs...',
                   summary: t('loader.itinerarySummary'),
                   cities: (lastForm?.citiesVisiting || []).map((city: string) => ({
                     cityName: city,

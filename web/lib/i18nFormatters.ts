@@ -1,6 +1,6 @@
 import {useFormatter} from 'next-intl';
 
-type CurrencyCode = Intl.NumberFormatOptions['currency'];
+type CurrencyCode = string;
 
 /**
  * Centralized helpers around `next-intl` formatters.
@@ -10,13 +10,13 @@ export function useI18nFormatters() {
   const formatter = useFormatter();
 
   return {
-    date: (value: Date | number | string, options?: Intl.DateTimeFormatOptions) =>
+    date: (value: Date | number | string, options?: any) =>
       formatter.dateTime(new Date(value), {dateStyle: 'medium', ...options}),
-    time: (value: Date | number | string, options?: Intl.DateTimeFormatOptions) =>
+    time: (value: Date | number | string, options?: any) =>
       formatter.dateTime(new Date(value), {timeStyle: 'short', ...options}),
-    number: (value: number, options?: Intl.NumberFormatOptions) =>
+    number: (value: number, options?: any) =>
       formatter.number(value, options),
-    currency: (value: number, currency: CurrencyCode = 'USD', options?: Intl.NumberFormatOptions) =>
+    currency: (value: number, currency: CurrencyCode = 'USD', options?: any) =>
       formatter.number(value, {style: 'currency', currency, ...options}),
   };
 }
