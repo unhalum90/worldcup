@@ -53,8 +53,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    // Set a timeout to prevent infinite loading
+    const timeout = setTimeout(() => {
+      console.warn('[AuthContext] Session check timeout after 10s, forcing loading=false');
+      setLoading(false);
+    }, 10000);
+
     // Check active session
     supabase.auth.getSession().then(async ({ data: { session } }: { data: { session: Session | null } }) => {
+      clearTimeout(timeout);
+      console.log('[AuthContext] Session loaded:', !!session);
       setUser(session?.user ?? null);
       if (session?.user) {
         await hydrateProfile(session.user.id);
@@ -62,6 +70,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setProfile(null);
         applyTheme(undefined);
       }
+      setLoading(false);
+    }).catch((error: unknown) => {
+      clearTimeout(timeout);
+      console.error('[AuthContext] getSession failed:', error);
       setLoading(false);
     });
 
