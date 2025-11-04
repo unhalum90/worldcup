@@ -554,6 +554,9 @@
           "title": "Review your travel profile",
           "subtitle": "We’ll use these saved preferences across every trip. Confirm what we have on file or update anything first."
         },
+        "common": {
+          "separator": " • "
+        },
         "cards": {
           "home": {
             "title": "Home base",

@@ -701,6 +701,9 @@
           "title": "Revise seu perfil de viagem",
           "subtitle": "Usaremos essas preferências salvas em cada viagem. Confirme o que temos ou atualize algo antes de continuar."
         },
+        "common": {
+          "separator": " • "
+        },
         "cards": {
           "home": {
             "title": "Base",

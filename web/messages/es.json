@@ -707,6 +707,9 @@
           "title": "Revisa tu perfil de viaje",
           "subtitle": "Usaremos estas preferencias guardadas en cada viaje. Confirma lo que tenemos o actualiza cualquier dato primero."
         },
+        "common": {
+          "separator": " • "
+        },
         "cards": {
           "home": {
             "title": "Ciudad de origen",
