@@ -102,9 +102,8 @@
           "finalizing": "Finalizing results…"
         }
       }
-    }
-  },
-  "landing": {
+    },
+    "landing": {
     "hero": {
       "headline": "<highlight>Dallas</highlight> Isn't in Dallas. <highlight>Boston</highlight> Isn't in Boston. <highlight>Miami</highlight> Isn't in Miami.",
       "paragraphs": {
