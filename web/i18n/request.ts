@@ -2,7 +2,23 @@ import { getRequestConfig } from "next-intl/server";
 import { cookies } from "next/headers";
 import { locales, defaultLocale } from "../i18n";
 
-// Force rebuild after JSON fix - Nov 4, 2025
+// Import all message files explicitly to avoid dynamic import issues with Turbopack
+import enMessages from "../messages/en.json";
+import esMessages from "../messages/es.json";
+import ptMessages from "../messages/pt.json";
+import frMessages from "../messages/fr.json";
+import arMessages from "../messages/ar.json";
+import deMessages from "../messages/de.json";
+
+const messagesMap: Record<string, any> = {
+  en: enMessages,
+  es: esMessages,
+  pt: ptMessages,
+  fr: frMessages,
+  ar: arMessages,
+  de: deMessages,
+};
+
 export default getRequestConfig(async () => {
   // Get locale from cookie
   const cookieStore = await cookies();
@@ -14,6 +30,6 @@ export default getRequestConfig(async () => {
 
   return {
     locale: current,
-    messages: (await import(`../messages/${current}.json`)).default,
+    messages: messagesMap[current] || messagesMap[defaultLocale],
   };
 });
