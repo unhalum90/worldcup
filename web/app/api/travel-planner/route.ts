@@ -209,7 +209,15 @@ export async function POST(request: NextRequest) {
     
     // Detect user's locale from request headers or formData
     const locale = formData.locale || request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
-    const isSpanish = locale === 'es';
+    
+    // Generate language instruction for AI based on locale
+    const languageInstructions: Record<string, string> = {
+      es: '\n\n**IMPORTANTE: Responde en español. Todos los textos descriptivos, resúmenes, consejos, notas y etiquetas deben estar en español. Mantén los nombres propios de ciudades, estadios y aeropuertos en su forma original.**\n\n',
+      fr: '\n\n**IMPORTANT : Répondez en français. Tous les textes descriptifs, résumés, conseils, notes et étiquettes doivent être en français. Conservez les noms propres de villes, stades et aéroports dans leur forme originale.**\n\n',
+      pt: '\n\n**IMPORTANTE: Responda em português. Todos os textos descritivos, resumos, conselhos, notas e rótulos devem estar em português. Mantenha os nomes próprios de cidades, estádios e aeroportos em sua forma original.**\n\n',
+      ar: '\n\n**مهم: أجب باللغة العربية. يجب أن تكون جميع النصوص الوصفية والملخصات والنصائح والملاحظات والتسميات باللغة العربية. احتفظ بأسماء المدن والملاعب والمطارات بصيغتها الأصلية.**\n\n',
+    };
+    const languageInstruction = languageInstructions[locale] || '';
     
     const supabase = createServerClient();
     let profile: UserProfile | null = null;
@@ -259,11 +267,6 @@ export async function POST(request: NextRequest) {
     );
 
     const profileSummary = buildProfileSummary(profile, mergedForm);
-
-    // Language instruction for AI
-    const languageInstruction = isSpanish 
-      ? '\n\n**IMPORTANTE: Responde en español. Todos los textos descriptivos, resúmenes, consejos, notas y etiquetas deben estar en español. Mantén los nombres propios de ciudades, estadios y aeropuertos en su forma original.**\n\n'
-      : '';
 
     // Build the prompt for Gemini
     const prompt = `You are a senior World Cup 2026 travel planner.${languageInstruction}Using the traveler inputs and the "Cities & Stadiums" list, produce 2–3 distinct, realistic itinerary options that COVER ALL REQUIRED TRAVEL: origin → first city, inter-city moves, and last city → origin. Reflect the EXACT dates and ALL cities provided. If multiple cities are listed, you MUST include the movement between them (flight/train/car) consistent with Transport Mode.

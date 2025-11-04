@@ -552,6 +552,11 @@
           "selectOption": "Sélectionnez d'abord une option d'itinéraire.",
           "navigationError": "Impossible de continuer pour le moment. Veuillez réessayer."
         },
+        "cards": {
+          "citiesLabel": "Villes",
+          "viewDetails": "Voir les détails",
+          "hideDetails": "Masquer les détails"
+        },
         "sections": {
           "flights": {
             "title": "Vols",
