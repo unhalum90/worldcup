@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabaseClient";
+import { buildAuthCallbackUrl } from "@/lib/auth/magicLink";
 import EmailOtpVerify from "@/components/EmailOtpVerify";
 
 export default function VerifyEmailPage() {
@@ -29,7 +30,7 @@ export default function VerifyEmailPage() {
         type: "signup",
         email,
         options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+          emailRedirectTo: buildAuthCallbackUrl(localStorage.getItem("pending_verification_redirect") || undefined),
         },
       });
 

@@ -68,8 +68,8 @@ body {
 
 /* When a modal is open, stop scrolling and hide interactive maps behind it */
 html.modal-open, body.modal-open { overflow: hidden; }
-.modal-open .leaflet-container { opacity: 0 !important; pointer-events: none !important; }
-.modal-open .leaflet-pane, .modal-open .leaflet-top, .modal-open .leaflet-bottom { pointer-events: none !important; }
+.modal-open .leaflet-container { opacity: 0 !important; pointer-events: none !important; z-index: 0 !important; }
+.modal-open .leaflet-pane, .modal-open .leaflet-top, .modal-open .leaflet-bottom { pointer-events: none !important; z-index: 0 !important; }
 
 /* RTL helper: flip horizontal flex layouts in RTL locales where applied */
 :where([dir="rtl"] .flip-rtl) { flex-direction: row-reverse; }

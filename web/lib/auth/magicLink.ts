@@ -1,11 +1,12 @@
 import { supabase } from '@/lib/supabaseClient';
 
 function getSiteUrl() {
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return process.env.NEXT_PUBLIC_SITE_URL;
-  }
+  // Prefer the actual runtime origin to avoid www/non-www mismatches
   if (typeof window !== 'undefined' && window.location?.origin) {
     return window.location.origin;
+  }
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
   }
   return 'http://localhost:3000';
 }

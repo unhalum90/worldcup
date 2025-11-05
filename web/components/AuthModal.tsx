@@ -78,7 +78,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
   };
 
   return (
-    <div className="fixed inset-0 z-[1000] overflow-y-auto">
+    <div className="fixed inset-0 z-[9999] overflow-y-auto">
       {/* Backdrop */}
       <div 
         className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"

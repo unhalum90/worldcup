@@ -44,7 +44,7 @@ export default function SubscribeModal() {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4" onClick={() => setOpen(false)}>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={() => setOpen(false)}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       <div
         className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden"
