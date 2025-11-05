@@ -1,20 +1,11 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
-import Map from "@/components/Map";
+import dynamic from "next/dynamic";
 import { groups } from "@/data/groups";
 import { venues } from "@/data/venues";
 
-export const metadata: Metadata = {
-  title: "World Cup 2026 Groups: Complete Stage Analysis & Fan Travel Insights",
-  description:
-    "Explore every World Cup 2026 group with travel distance, stadium transit access, climate notes, and logistics guidance for fans.",
-  openGraph: {
-    title: "World Cup 2026 Groups: Complete Stage Analysis & Fan Travel Insights",
-    description:
-      "Explore every World Cup 2026 group with travel distance, stadium transit access, climate notes, and logistics guidance for fans.",
-    type: "website",
-  },
-};
+const Map = dynamic(() => import("@/components/Map"), { ssr: false });
 
 const methodology = [
   "This analysis evaluates all 12 groups across five fan-relevant factors: total distance, stadium transit access, climate zones, complexity, and unique cities.",
@@ -79,6 +70,35 @@ const GroupsPage = () => {
           </div>
         </section>
 
+        {/* CTA Section */}
+        <section className="mx-auto max-w-3xl">
+          <div className="rounded-3xl border border-blue-100 bg-white/80 p-10 text-center shadow-sm backdrop-blur-sm">
+            <h3 className="text-3xl font-semibold text-neutral-900">Plan Your World Cup Journey</h3>
+            <p className="mt-3 text-neutral-600">
+              Download our premium city guides or create a custom itinerary with the AI Trip Builder.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+              <Link
+                href="/guides"
+                className="inline-flex items-center justify-center rounded-full bg-blue-900 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-blue-800"
+              >
+                Download city guides
+              </Link>
+              <Link
+                href="/planner/trip-builder"
+                className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-emerald-500"
+              >
+                Plan your trip with the AI Trip Builder
+              </Link>
+            </div>
+
+            <p className="mt-6 text-sm text-neutral-500">
+              Get detailed analysis for each group below.
+            </p>
+          </div>
+        </section>
+
         <section>
           <h2 className="text-2xl font-bold text-neutral-900">Group breakdown</h2>
           <div className="mt-6 rounded-3xl border border-blue-100 bg-white/70 p-6 shadow-sm backdrop-blur-sm">
@@ -127,7 +147,7 @@ const GroupsPage = () => {
                     <div className="mt-6">
                       <Link
                         href={`/groups/${group.id.toLowerCase()}`}
-                        className="inline-flex w-full items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                        className="inline-flex w-full items-center justify-center rounded-full bg-[#2563eb] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1d4ed8]"
                       >
                         View full analysis
                       </Link>

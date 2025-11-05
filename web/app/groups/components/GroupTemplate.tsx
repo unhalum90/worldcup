@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import Map, { type MapPoint } from "@/components/Map";
+import dynamic from "next/dynamic";
+import type { MapPoint } from "@/components/Map";
 import type { GroupData } from "@/data/groups";
 import { venues } from "@/data/venues";
+
+const Map = dynamic(() => import("@/components/Map"), { ssr: false });
 
 interface GroupTemplateProps {
   data: GroupData;
@@ -172,6 +175,35 @@ const GroupTemplate = ({ data }: GroupTemplateProps) => {
               })}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="mx-auto max-w-3xl">
+        <div className="rounded-3xl border border-blue-100 bg-white/80 p-10 text-center shadow-sm backdrop-blur-sm">
+          <h3 className="text-3xl font-semibold text-neutral-900">Plan Your {data.title} Journey</h3>
+          <p className="mt-3 text-neutral-600">
+            Download our premium city guides or create a custom itinerary with the AI Trip Builder.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <Link
+              href="/guides"
+              className="inline-flex items-center justify-center rounded-full bg-blue-900 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-blue-800"
+            >
+              Download city guides
+            </Link>
+            <Link
+              href="/planner/trip-builder"
+              className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-emerald-500"
+            >
+              Plan your trip with the AI Trip Builder
+            </Link>
+          </div>
+
+          <p className="mt-6 text-sm text-neutral-500">
+            Explore detailed climate and city information below.
+          </p>
         </div>
       </section>
 
