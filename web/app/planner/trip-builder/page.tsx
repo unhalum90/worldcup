@@ -12,6 +12,9 @@ import TripIntentForm from '@/components/trip-planner/TripIntentForm';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { usePlannerTheme } from '@/hooks/usePlannerTheme';
 import { fetchSavedTrip } from '@/lib/travel-plans/api';
+import AirportAutocomplete from '@/components/AirportAutocomplete';
+import type { Airport } from '@/lib/airportData';
+import type { UserProfile } from '@/lib/profile/types';
 
 export default function PlannerPage() {
   const t = useTranslations('planner.tripBuilder.page');
@@ -25,6 +28,16 @@ export default function PlannerPage() {
   const [lastForm, setLastForm] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<'review' | 'trip'>('review');
+  const [guestProfile, setGuestProfile] = useState<UserProfile | null>(null);
+  // Guest quick profile capture state
+  const [guestAirportInput, setGuestAirportInput] = useState('');
+  const [guestAirport, setGuestAirport] = useState<Airport | undefined>(undefined);
+  const [guestGroupSize, setGuestGroupSize] = useState(1);
+  const [guestChildren05, setGuestChildren05] = useState(0);
+  const [guestChildren618, setGuestChildren618] = useState(0);
+  const [guestSeniors, setGuestSeniors] = useState(0);
+  const [guestTransport, setGuestTransport] = useState<'public'|'car'|'mixed'>('mixed');
+  const [guestBudget, setGuestBudget] = useState<'budget'|'moderate'|'premium'>('moderate');
   const [loadingSavedTrip, setLoadingSavedTrip] = useState(false);
   const [loadedSavedId, setLoadedSavedId] = useState<string | null>(null);
   const [initialExpandedIndex, setInitialExpandedIndex] = useState<number | null>(null);
@@ -151,13 +164,84 @@ export default function PlannerPage() {
             </div>
           </div>
         )}
-        {!itinerary && !isLoading && !profileLoading && !profile && (
-          <div className="max-w-4xl mx-auto px-6">
-            <TripIntentForm
-              profile={{ home_airport: null, has_tickets: false, ticket_match: null } as any}
-              onSubmit={handleFormSubmit}
-              isLoading={isLoading}
-            />
+        {/* Guest Step 1: quick profile capture */}
+        {!itinerary && !isLoading && !profileLoading && !profile && mode === 'review' && (
+          <div className="max-w-3xl mx-auto px-6 py-8 bg-white rounded-2xl shadow-sm border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">Tell us about you</h2>
+            <p className="text-sm text-gray-600 mb-6">Set your home airport and group details to start planning.</p>
+
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Home airport</label>
+                <AirportAutocomplete
+                  value={guestAirportInput}
+                  onChange={(val, ap) => { setGuestAirportInput(val); setGuestAirport(ap); }}
+                  placeholder="City or airport (e.g., London, Oslo, LIS)"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Group size</label>
+                  <input type="number" min={1} value={guestGroupSize} onChange={(e)=>setGuestGroupSize(Math.max(1, Number(e.target.value)||1))} className="w-full rounded-lg border border-gray-300 px-3 py-2"/>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Children 0–5</label>
+                  <input type="number" min={0} value={guestChildren05} onChange={(e)=>setGuestChildren05(Math.max(0, Number(e.target.value)||0))} className="w-full rounded-lg border border-gray-300 px-3 py-2"/>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Children 6–18</label>
+                  <input type="number" min={0} value={guestChildren618} onChange={(e)=>setGuestChildren618(Math.max(0, Number(e.target.value)||0))} className="w-full rounded-lg border border-gray-300 px-3 py-2"/>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Seniors</label>
+                  <input type="number" min={0} value={guestSeniors} onChange={(e)=>setGuestSeniors(Math.max(0, Number(e.target.value)||0))} className="w-full rounded-lg border border-gray-300 px-3 py-2"/>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Preferred transport</label>
+                  <select value={guestTransport} onChange={(e)=>setGuestTransport(e.target.value as any)} className="w-full rounded-lg border border-gray-300 px-3 py-2">
+                    <option value="public">Public transit</option>
+                    <option value="car">Car</option>
+                    <option value="mixed">Mixed</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Budget level</label>
+                  <select value={guestBudget} onChange={(e)=>setGuestBudget(e.target.value as any)} className="w-full rounded-lg border border-gray-300 px-3 py-2">
+                    <option value="budget">Budget</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="premium">Premium</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  onClick={() => {
+                    const gp: UserProfile = {
+                      home_airport: guestAirport ? { code: guestAirport.code, name: guestAirport.name, city: guestAirport.city, country: guestAirport.country } : null,
+                      group_size: guestGroupSize,
+                      children_0_5: guestChildren05,
+                      children_6_18: guestChildren618,
+                      seniors: guestSeniors,
+                      preferred_transport: guestTransport,
+                      budget_level: guestBudget,
+                      has_tickets: false,
+                      ticket_match: null,
+                      mobility_issues: false,
+                    } as any;
+                    setGuestProfile(gp);
+                    setMode('trip');
+                  }}
+                  className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700"
+                >
+                  Continue to Trip Builder
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -180,6 +264,13 @@ export default function PlannerPage() {
         {!itinerary && !isLoading && profile && mode === 'trip' && (
           <div className="max-w-4xl mx-auto px-6">
             <TripIntentForm profile={profile} onSubmit={handleFormSubmit} isLoading={isLoading} onBack={() => setMode('review')} />
+          </div>
+        )}
+
+        {/* Guest Step 2: Trip form using quick profile */}
+        {!itinerary && !isLoading && !profileLoading && !profile && mode === 'trip' && guestProfile && (
+          <div className="max-w-4xl mx-auto px-6">
+            <TripIntentForm profile={guestProfile} onSubmit={handleFormSubmit} isLoading={isLoading} onBack={() => setMode('review')} />
           </div>
         )}
 

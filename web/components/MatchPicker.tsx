@@ -93,7 +93,7 @@ export default function MatchPicker({ selectedCities, startDate, endDate, select
                   const key = createMatchKey(city, m.date);
                   const isSelected = key ? selectedMatchKeys.includes(key) : false;
                   return (
-                    <li key={m.id} className={`flex items-center justify-between px-3 py-2 ${isSelected ? 'bg-blue-50' : ''}`}>
+                    <li key={key || `${city}-${m.date}-${m.time || 'tbd'}-${m.number ?? ''}`} className={`flex items-center justify-between px-3 py-2 ${isSelected ? 'bg-blue-50' : ''}`}>
                       <div>
                         <div className="text-sm font-medium text-gray-900">
                           {m.stage ? `${m.stage}` : t('matchLabel')} {m.number ? `#${m.number}` : ''} {m.group ? `• ${m.group}` : ''}
