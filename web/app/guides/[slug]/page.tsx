@@ -42,8 +42,17 @@ export default async function CityGuidePage({ params }: Props) {
     notFound();
   }
 
-  // Narrow type for schedule data
-  const schedule = (matchDates as Record<string, { stadium: string; matches: { date: string; stage: string; kickoff: string }[] }>)[slug];
+  // Narrow type for schedule data (supports optional teams and kickoff)
+  type MatchRow = {
+    date: string;
+    stage?: string;
+    kickoff?: string;
+    teams?: (string | null)[];
+    homeTeam?: string;
+    awayTeam?: string;
+  };
+  type CitySchedule = { stadium: string; matches: MatchRow[] };
+  const schedule = (matchDates as unknown as Record<string, CitySchedule>)[slug];
   const mapImage = getCityMapPath(city.name);
 
   return (
