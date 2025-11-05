@@ -28,10 +28,10 @@ export default function Footer() {
   };
 
   const socialLinks = [
-    { name: 'Reddit', icon: '🔴', href: '#', ariaLabel: 'Visit our Reddit community' },
-    { name: 'Instagram', icon: '📷', href: '#', ariaLabel: 'Follow us on Instagram' },
-    { name: 'X/Twitter', icon: '𝕏', href: '#', ariaLabel: 'Follow us on X (Twitter)' },
-    { name: 'YouTube', icon: '▶️', href: '#', ariaLabel: 'Subscribe to our YouTube channel' },
+    { name: 'Instagram', icon: '📷', href: 'https://www.instagram.com/fanzonenetwork/', ariaLabel: 'Follow us on Instagram' },
+    { name: 'YouTube', icon: '▶️', href: 'https://www.youtube.com/@TheFanZoneNetwork', ariaLabel: 'Subscribe to our YouTube channel' },
+    { name: 'X (Twitter)', icon: '𝕏', href: 'https://x.com/thefanzonenet', ariaLabel: 'Follow us on X (Twitter)' },
+    { name: 'Reddit', icon: '👽', href: 'https://www.reddit.com/user/thefanzonenetwork/', ariaLabel: 'Visit our Reddit community' },
   ];
 
   return (
