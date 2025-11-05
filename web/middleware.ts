@@ -95,6 +95,11 @@ export async function middleware(req: NextRequest) {
   // Premium gating for planner removed — allow anonymous access to /planner routes
 
   if (pathname.startsWith('/admin')) {
+    // Allow public admin auth pages to render without being redirected
+    const publicAdminPages = ['/admin/login', '/admin/forgot-password', '/admin/reset-password'];
+    if (publicAdminPages.some((p) => pathname === p || pathname.startsWith(p))) {
+      return res;
+    }
     const email = typeof user?.email === 'string' ? user.email.toLowerCase() : null;
     if (!email || (adminEmails.length > 0 && !adminEmails.includes(email))) {
       return NextResponse.redirect(new URL('/', req.url));
