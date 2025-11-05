@@ -17,8 +17,11 @@ function normalizeToHttps(u: string): string {
   }
 }
 
-function buildErrorRedirect(message: string) {
+function buildErrorRedirect(message: string, redirect?: string | null) {
   const params = new URLSearchParams({ error: message });
+  if (redirect && redirect.startsWith('/')) {
+    params.set('redirect', redirect);
+  }
   return `/auth/auth-code-error?${params.toString()}`;
 }
 
@@ -61,7 +64,9 @@ export async function GET(req: Request) {
 
   if (!code) {
     console.error("[Callback] Missing code in auth callback");
-    const response = NextResponse.redirect(new URL(buildErrorRedirect("missing_code"), req.url));
+    const response = NextResponse.redirect(
+      new URL(buildErrorRedirect("missing_code", redirectParam), req.url),
+    );
     applyCookieUpdates(response, cookieUpdates);
     return response;
   }
@@ -72,7 +77,10 @@ export async function GET(req: Request) {
   if (error || !data?.session) {
     console.error("[Callback] Auth exchange failed:", error);
     const response = NextResponse.redirect(
-      new URL(buildErrorRedirect(error?.message || "session_exchange_failed"), req.url),
+      new URL(
+        buildErrorRedirect(error?.message || "session_exchange_failed", redirectParam),
+        req.url,
+      ),
     );
     applyCookieUpdates(response, cookieUpdates);
     return response;

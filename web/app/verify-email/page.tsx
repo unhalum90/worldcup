@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabaseClient";
+import EmailOtpVerify from "@/components/EmailOtpVerify";
 
 export default function VerifyEmailPage() {
   const router = useRouter();
@@ -89,6 +90,11 @@ export default function VerifyEmailPage() {
           >
             {t("actions.home")}
           </button>
+        </div>
+
+        {/* OTP Fallback */}
+        <div className="pt-2">
+          <EmailOtpVerify />
         </div>
 
         {/* Help text */}
