@@ -32,6 +32,7 @@ export default function Footer() {
     { name: 'YouTube', icon: '▶️', href: 'https://www.youtube.com/@TheFanZoneNetwork', ariaLabel: 'Subscribe to our YouTube channel' },
     { name: 'X (Twitter)', icon: '𝕏', href: 'https://x.com/thefanzonenet', ariaLabel: 'Follow us on X (Twitter)' },
     { name: 'Reddit', icon: '👽', href: 'https://www.reddit.com/user/thefanzonenetwork/', ariaLabel: 'Visit our Reddit community' },
+    { name: 'Facebook', icon: '📘', href: 'https://www.facebook.com/profile.php?id=61583328603408', ariaLabel: 'Follow us on Facebook' },
   ];
 
   return (
