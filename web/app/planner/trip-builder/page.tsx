@@ -6,7 +6,6 @@ import Link from 'next/link';
 import ItineraryResults from '@/components/ItineraryResults';
 import PlannerLoader from '@/components/PlannerLoader';
 import { useAuth } from '@/lib/AuthContext';
-import AuthModal from '@/components/AuthModal';
 import { useProfile } from '@/lib/profile/api';
 import ProfileReview from '@/components/trip-planner/ProfileReview';
 import TripIntentForm from '@/components/trip-planner/TripIntentForm';
@@ -124,29 +123,7 @@ export default function PlannerPage() {
     };
   }, [loading, loadedSavedId, savedTripId, user]);
 
-  // Loading state while validating auth
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={themeBackground}>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('loading')}</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Hard gate for premium page
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-6" style={themeBackground}>
-        <AuthModal isOpen={true} onClose={() => {}} redirectTo="/planner/trip-builder" />
-        <div className="absolute bottom-8 text-center text-sm text-gray-600">
-          <p>{t('lockedMessage')}</p>
-        </div>
-      </div>
-    );
-  }
+  // Public access: no hard auth gate. Loading may be used only for profile fetch if logged in.
 
   return (
     <div className="min-h-screen" style={themeBackground}>
@@ -175,17 +152,12 @@ export default function PlannerPage() {
           </div>
         )}
         {!itinerary && !isLoading && !profileLoading && !profile && (
-          <div className="max-w-3xl mx-auto px-6 py-12 text-center space-y-3">
-            <p className="text-lg font-semibold text-gray-900">{t('profileRequired.title')}</p>
-            <p className="text-sm text-gray-600">
-              {t('profileRequired.body')}
-            </p>
-            <button
-              onClick={() => router.push('/onboarding?redirect=/planner/trip-builder')}
-              className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-white font-semibold hover:bg-blue-700"
-            >
-              {t('profileRequired.button')}
-            </button>
+          <div className="max-w-4xl mx-auto px-6">
+            <TripIntentForm
+              profile={{ home_airport: null, has_tickets: false, ticket_match: null } as any}
+              onSubmit={handleFormSubmit}
+              isLoading={isLoading}
+            />
           </div>
         )}
 

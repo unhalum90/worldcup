@@ -7,7 +7,8 @@ import { useTranslations } from 'next-intl';
 
 export default function QualifiedTeamsSection() {
   const qualifiedTeams = getQualifiedTeams();
-  const t = useTranslations('qualifiedTeams');
+  // Messages are under the 'landing.qualifiedTeams' namespace
+  const t = useTranslations('landing.qualifiedTeams');
   
   // Show a selection of teams (first 12 qualified)
   const featuredTeams = qualifiedTeams.slice(0, 12);

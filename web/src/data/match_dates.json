@@ -1,0 +1,178 @@
+{
+  "mexico-city": {
+    "stadium": "Estadio Azteca",
+    "matches": [
+      { "date": "2026-06-11", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-17", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-24", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-30", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-05", "stage": "Round of 16", "teams": [null, null] }
+    ]
+  },
+  "guadalajara": {
+    "stadium": "Estadio Akron",
+    "matches": [
+      { "date": "2026-06-11", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-23", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] }
+    ]
+  },
+  "monterrey": {
+    "stadium": "Estadio BBVA",
+    "matches": [
+      { "date": "2026-06-14", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-20", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-29", "stage": "Group Stage", "teams": [null, null] }
+    ]
+  },
+  "toronto": {
+    "stadium": "BMO Field",
+    "matches": [
+      { "date": "2026-06-12", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-17", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-20", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-23", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-02", "stage": "Round of 32", "teams": [null, null] }
+    ]
+  },
+  "vancouver": {
+    "stadium": "BC Place",
+    "matches": [
+      { "date": "2026-06-13", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-24", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-07", "stage": "Round of 16", "teams": [null, null] }
+    ]
+  },
+  "atlanta": {
+    "stadium": "Mercedes-Benz Stadium",
+    "matches": [
+      { "date": "2026-06-15", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-24", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-01", "stage": "Round of 32", "teams": [null, null] },
+      { "date": "2026-07-07", "stage": "Round of 16", "teams": [null, null] },
+      { "date": "2026-07-15", "stage": "Semifinal", "teams": [null, null] }
+    ]
+  },
+  "boston": {
+    "stadium": "Gillette Stadium",
+    "matches": [
+      { "date": "2026-06-13", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-16", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-19", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-23", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-29", "stage": "Round of 32", "teams": [null, null] },
+      { "date": "2026-07-09", "stage": "Quarterfinal", "teams": [null, null] }
+    ]
+  },
+  "dallas": {
+    "stadium": "AT&T Stadium",
+    "matches": [
+      { "date": "2026-06-14", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-17", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-22", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-30", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-06", "stage": "Round of 16", "teams": [null, null] },
+      { "date": "2026-07-14", "stage": "Semifinal", "teams": [null, null] }
+    ]
+  },
+  "houston": {
+    "stadium": "NRG Stadium",
+    "matches": [
+      { "date": "2026-06-14", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-17", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-20", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-23", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-29", "stage": "Round of 32", "teams": [null, null] },
+      { "date": "2026-07-04", "stage": "Round of 16", "teams": [null, null] }
+    ]
+  },
+  "kansas-city": {
+    "stadium": "Arrowhead Stadium",
+    "matches": [
+      { "date": "2026-06-16", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-20", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-03", "stage": "Round of 32", "teams": [null, null] },
+      { "date": "2026-07-11", "stage": "Quarterfinal", "teams": [null, null] }
+    ]
+  },
+  "los-angeles": {
+    "stadium": "SoFi Stadium",
+    "matches": [
+      { "date": "2026-06-12", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-15", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-21", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-02", "stage": "Round of 32", "teams": [null, null] },
+      { "date": "2026-07-10", "stage": "Quarterfinal", "teams": [null, null] }
+    ]
+  },
+  "miami": {
+    "stadium": "Hard Rock Stadium",
+    "matches": [
+      { "date": "2026-06-15", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-24", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-03", "stage": "Round of 32", "teams": [null, null] },
+      { "date": "2026-07-11", "stage": "Quarterfinal", "teams": [null, null] },
+      { "date": "2026-07-18", "stage": "Third Place", "teams": [null, null] }
+    ]
+  },
+  "new-york": {
+    "stadium": "MetLife Stadium",
+    "matches": [
+      { "date": "2026-06-13", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-16", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-22", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-30", "stage": "Round of 32", "teams": [null, null] },
+      { "date": "2026-07-05", "stage": "Round of 16", "teams": [null, null] },
+      { "date": "2026-07-19", "stage": "Final", "teams": [null, null] }
+    ]
+  },
+  "philadelphia": {
+    "stadium": "Lincoln Financial Field",
+    "matches": [
+      { "date": "2026-06-14", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-19", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-22", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-04", "stage": "Round of 16", "teams": [null, null] }
+    ]
+  },
+  "san-francisco": {
+    "stadium": "Levi's Stadium",
+    "matches": [
+      { "date": "2026-06-13", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-16", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-19", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-22", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-01", "stage": "Round of 32", "teams": [null, null] }
+    ]
+  },
+  "seattle": {
+    "stadium": "Lumen Field",
+    "matches": [
+      { "date": "2026-06-15", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-07-06", "stage": "Round of 16", "teams": [null, null] }
+    ]
+  }
+}

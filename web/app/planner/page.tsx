@@ -1,10 +1,8 @@
-'use client';
+"use client";
 
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import AuthModal from '@/components/AuthModal';
-import { useAuth } from '@/lib/AuthContext';
 
 type PhaseKey = 'tripBuilder' | 'flightPlanner' | 'lodgingPlanner' | 'whileThere';
 
@@ -19,44 +17,10 @@ interface Phase {
 
 export default function PlannerPage() {
   const t = useTranslations('planner.hub');
-  const { user, loading } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   // Preview video removed in favor of live demo page (/trip_builder_demo)
 
-  // Show auth modal if user is not logged in
-  useEffect(() => {
-    if (!loading && !user) {
-      setShowAuthModal(true);
-    }
-  }, [user, loading]);
-
-  // Show loading spinner while checking auth
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('loading')}</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Hard gate: if not authenticated, show a locked screen (middleware will also redirect on initial navigation)
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 flex items-center justify-center p-6">
-        <AuthModal 
-          isOpen={true}
-          onClose={() => { /* keep modal open on premium pages when unauthenticated */ }}
-          redirectTo="/planner"
-        />
-        <div className="absolute bottom-8 text-center text-sm text-gray-600">
-          <p>{t('locked.message')}</p>
-        </div>
-      </div>
-    );
-  }
+  // Auth is no longer required to access the planner hub.
 
   const phases: Phase[] = useMemo(() => [
     {
@@ -95,12 +59,7 @@ export default function PlannerPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
-      {/* Auth Modal */}
-      <AuthModal 
-        isOpen={showAuthModal} 
-        onClose={() => setShowAuthModal(false)}
-        redirectTo="/planner"
-      />
+      {/* Auth Modal removed for public access */}
   {/* Preview video removed; use the demo page instead */}
       
       {/* Hero Section */}

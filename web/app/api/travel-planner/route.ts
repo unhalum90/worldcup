@@ -180,7 +180,7 @@ interface TravelPlanRequestV2 {
 
 export async function POST(request: NextRequest) {
   try {
-    // Require authentication for premium planner API
+    // Public endpoint: try to read user (if logged in) but do not require auth
     let userId: string | null = null;
     try {
       const supabaseAuth = createSSRClient(
@@ -197,12 +197,11 @@ export async function POST(request: NextRequest) {
         }
       );
       const { data } = await supabaseAuth.auth.getUser();
-      if (!data.user) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      if (data.user) {
+        userId = data.user.id;
       }
-      userId = data.user.id;
     } catch (e) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      // Ignore auth lookup errors; proceed as guest
     }
 
     const formData: TravelPlanRequestV2 = await request.json();

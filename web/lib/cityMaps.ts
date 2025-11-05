@@ -13,6 +13,8 @@ export const CITY_MAP_FILES: Record<string, string> = {
   'Seattle': '/world_cup_maps/Seattle_World_cup_map.jpg',
   'Boston': '/world_cup_maps/Boston_World_cup_Map.jpg',
   'New York/New Jersey': '/world_cup_maps/NY _World_cup_map.jpg',
+  // Alias used by cityGuidesData
+  'New York / New Jersey': '/world_cup_maps/NY _World_cup_map.jpg',
   'Philadelphia': '/world_cup_maps/Philly_world_cup_map.jpg',
   'Toronto': '/world_cup_maps/Toronto_World_Cup_Map.jpg',
   'Vancouver': '/world_cup_maps/Vancouver_world_cup map.jpg',
@@ -27,5 +29,12 @@ export const CITY_MAP_FILES: Record<string, string> = {
  * @returns Image path or null if not found
  */
 export function getCityMapPath(cityName: string): string | null {
-  return CITY_MAP_FILES[cityName] || null;
+  if (CITY_MAP_FILES[cityName]) return CITY_MAP_FILES[cityName];
+  // Lightweight normalization: collapse spaces around slashes, trim, and try case-insensitive match
+  const normalized = cityName.replace(/\s*\/\s*/g, '/').trim().toLowerCase();
+  for (const key of Object.keys(CITY_MAP_FILES)) {
+    const keyNorm = key.replace(/\s*\/\s*/g, '/').trim().toLowerCase();
+    if (keyNorm === normalized) return CITY_MAP_FILES[key];
+  }
+  return null;
 }

@@ -1,8 +1,10 @@
-'use client';
+"use client";
 
 import Link from 'next/link';
 import { cityGuides, getCityGuidesByCountry } from '@/lib/cityGuidesData';
 import { useState } from 'react';
+import Image from 'next/image';
+import { getCityMapPath } from '@/lib/cityMaps';
 
 export default function GuidesPage() {
   const [countryFilter, setCountryFilter] = useState<'ALL' | 'USA' | 'CAN' | 'MEX'>('ALL');
@@ -99,12 +101,25 @@ export default function GuidesPage() {
               href={`/guides/${city.slug}`}
               className="group relative overflow-hidden rounded-2xl bg-white border-2 border-gray-200 hover:border-blue-500 hover:shadow-xl transition-all duration-300"
             >
-              {/* Placeholder Image */}
+              {/* Visual (city map thumbnail with gradient overlay and fallback) */}
               <div className="relative h-48 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
-                <div className="relative text-6xl opacity-50 group-hover:scale-110 transition-transform duration-500">
-                  🏟️
-                </div>
+                {(() => {
+                  const img = getCityMapPath(city.name);
+                  return img ? (
+                    <Image
+                      src={img}
+                      alt={`${city.name} World Cup map`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover scale-105 group-hover:scale-110 transition-transform duration-500"
+                      priority={index < 2}
+                    />
+                  ) : (
+                    <div className="relative text-6xl opacity-50 group-hover:scale-110 transition-transform duration-500">🏟️</div>
+                  );
+                })()}
+                {/* gradient overlay for readability */}
+                <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                 
                 {/* Status Badge */}
                 {city.isAvailable && (
@@ -119,7 +134,7 @@ export default function GuidesPage() {
                 )}
 
                 {/* City Name Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
+                <div className="absolute inset-0 flex items-end p-4">
                   <div>
                     <h3 className="text-white text-xl font-bold">{city.name}</h3>
                     <p className="text-white/80 text-sm">{city.country}</p>

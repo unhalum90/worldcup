@@ -92,13 +92,7 @@ export async function middleware(req: NextRequest) {
     return res;
   }
 
-  // Premium gating: require auth for planner routes
-  const requiresAuth = pathname.startsWith('/planner');
-  if (requiresAuth && !user) {
-    const url = new URL('/login', req.url);
-    url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
-    return NextResponse.redirect(url);
-  }
+  // Premium gating for planner removed — allow anonymous access to /planner routes
 
   if (pathname.startsWith('/admin')) {
     const email = typeof user?.email === 'string' ? user.email.toLowerCase() : null;

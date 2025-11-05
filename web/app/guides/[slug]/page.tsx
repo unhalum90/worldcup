@@ -2,6 +2,10 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getCityGuideBySlug, cityGuides } from '@/lib/cityGuidesData';
+import matchDates from '@/data/match_dates.json';
+import { getCityMapPath } from '@/lib/cityMaps';
+import LocationMap from '@/app/guides/components/LocationMap';
+import SubscribeButton from '@/components/SubscribeButton';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -38,6 +42,10 @@ export default async function CityGuidePage({ params }: Props) {
     notFound();
   }
 
+  // Narrow type for schedule data
+  const schedule = (matchDates as Record<string, { stadium: string; matches: { date: string; stage: string; kickoff: string }[] }>)[slug];
+  const mapImage = getCityMapPath(city.name);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Sticky Navigation */}
@@ -64,7 +72,7 @@ export default async function CityGuidePage({ params }: Props) {
       </div>
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white py-20 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white py-8 overflow-hidden">
         {/* Pattern Overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -83,20 +91,20 @@ export default async function CityGuidePage({ params }: Props) {
               {city.country}
             </div>
             
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-4">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-3">
               {city.name}
             </h1>
-            <p className="text-2xl md:text-3xl text-white/90 mb-2">
+            <p className="text-xl md:text-2xl text-white/90 mb-1">
               {city.stadium}
             </p>
-            <p className="text-lg text-white/80">
+            <p className="text-base text-white/80">
               Capacity: {city.capacity.toLocaleString()}
             </p>
           </div>
 
-          {/* Status Badge & CTA */}
-          <div className="text-center">
-            {city.isAvailable ? (
+          {/* Hero CTA only when downloadable; otherwise no badge */}
+          {city.isAvailable && (
+            <div className="text-center">
               <Link
                 href={city.downloadUrl || '#'}
                 className="inline-flex items-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-xl text-lg"
@@ -106,28 +114,50 @@ export default async function CityGuidePage({ params }: Props) {
                 </svg>
                 Download Free Guide
               </Link>
-            ) : (
-              <div className="inline-block">
-                <div className="bg-yellow-500 text-yellow-900 px-6 py-3 rounded-lg font-bold text-lg mb-2">
-                  🗓️ Coming Soon
-                </div>
-                {city.releaseDate && (
-                  <p className="text-sm text-white/80">
-                    Available after Group Draw: {new Date(city.releaseDate).toLocaleDateString('en-US', { 
-                      month: 'long', 
-                      day: 'numeric', 
-                      year: 'numeric' 
-                    })}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Match Schedule (now directly under header) */}
+        {schedule && (
+          <div className="bg-white rounded-xl shadow-md p-6 mb-10">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Match Schedule</h2>
+            <div className="overflow-x-auto">
+              {(() => {
+                const hasTeams = Array.isArray(schedule.matches) && schedule.matches.some((m: any) => (Array.isArray(m.teams) && (m.teams[0] || m.teams[1])) || m.homeTeam || m.awayTeam);
+                return (
+                  <table className="w-full text-left text-sm border-collapse">
+                    <thead>
+                      <tr className="bg-gray-50">
+                        <th className="p-3">Date</th>
+                        <th className="p-3">Stage</th>
+                        {hasTeams && <th className="p-3">Match</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {schedule.matches.map((m: any, i: number) => {
+                        const teams = Array.isArray(m.teams) ? m.teams.filter(Boolean).join(' vs ') : (m.homeTeam && m.awayTeam ? `${m.homeTeam} vs ${m.awayTeam}` : '');
+                        return (
+                          <tr key={i} className="border-t">
+                            <td className="p-3">
+                              <time>{m.date}</time>
+                            </td>
+                            <td className="p-3">{m.stage || 'TBD'}</td>
+                            {hasTeams && <td className="p-3">{teams}</td>}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                );
+              })()}
+            </div>
+          </div>
+        )}
+
         {/* Description */}
         <div className="bg-white rounded-xl shadow-md p-8 mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">About {city.name}</h2>
@@ -201,45 +231,30 @@ export default async function CityGuidePage({ params }: Props) {
           </div>
         </div>
 
-        {/* Map Placeholder */}
+        {/* Location Map */}
         <div className="bg-white rounded-xl shadow-md p-8 mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
             <span className="text-4xl mr-3">🗺️</span>
             Location
           </h2>
-          <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg p-12 border-2 border-dashed border-gray-300 text-center">
-            <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <p className="text-gray-600 font-semibold mb-2">Interactive Map Coming Soon</p>
-            <p className="text-sm text-gray-500">
-              Coordinates: {city.coordinates.lat}, {city.coordinates.lng}
-            </p>
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${city.coordinates.lat},${city.coordinates.lng}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-4 text-blue-600 hover:text-blue-700 font-semibold"
-            >
-              Open in Google Maps
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          </div>
+          <LocationMap
+            cityName={city.name}
+            stadium={city.stadium}
+            lat={city.coordinates.lat}
+            lng={city.coordinates.lng}
+            mapImage={mapImage}
+          />
         </div>
 
         {/* CTA Section */}
         <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl shadow-xl p-8 text-white text-center">
           <h2 className="text-3xl font-bold mb-4">
-            {city.isAvailable ? 'Download the Full Guide' : 'Get Notified When Available'}
+            {city.isAvailable ? 'Download the Full Guide' : 'Subscribe to Free Newsletter'}
           </h2>
           <p className="text-white/90 mb-6">
-            {city.isAvailable 
+            {city.isAvailable
               ? `Get the complete ${city.name} travel guide with detailed maps, accommodation tips, and local insights.`
-              : `Join our waitlist to receive the ${city.name} guide as soon as it's released after the Official Draw.`
-            }
+              : `Get notified when the ${city.name} guide becomes available after the Official Draw.`}
           </p>
           {city.isAvailable ? (
             <Link
@@ -252,15 +267,9 @@ export default async function CityGuidePage({ params }: Props) {
               Download Free Guide
             </Link>
           ) : (
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 bg-white text-purple-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
-            >
-              Join Waitlist
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
+            <SubscribeButton className="inline-flex items-center gap-2 bg-white text-purple-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-lg">
+              Subscribe Now →
+            </SubscribeButton>
           )}
         </div>
       </div>
