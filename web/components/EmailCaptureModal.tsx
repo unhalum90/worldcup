@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { sendMagicLink } from "@/lib/auth/magicLink";
 
@@ -17,6 +17,18 @@ export default function EmailCaptureModal({ isOpen, onClose }: EmailCaptureModal
   const [error, setError] = useState("");
 
   if (!isOpen) return null;
+
+  // Prevent background interaction and hide maps while modal is open
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    root.classList.add('modal-open');
+    body.classList.add('modal-open');
+    return () => {
+      root.classList.remove('modal-open');
+      body.classList.remove('modal-open');
+    };
+  }, []);
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();

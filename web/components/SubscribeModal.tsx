@@ -31,8 +31,20 @@ export default function SubscribeModal() {
 
   if (!open) return null;
 
+  // While open, prevent background scroll and hide maps
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    root.classList.add('modal-open');
+    body.classList.add('modal-open');
+    return () => {
+      root.classList.remove('modal-open');
+      body.classList.remove('modal-open');
+    };
+  }, []);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setOpen(false)}>
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4" onClick={() => setOpen(false)}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       <div
         className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden"

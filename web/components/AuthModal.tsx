@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { sendMagicLink } from '@/lib/auth/magicLink';
@@ -22,6 +22,18 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
   if (!isOpen) return null;
 
   const targetPath = redirectTo || '/onboarding';
+
+  // Prevent background interaction and hide maps while modal is open
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    root.classList.add('modal-open');
+    body.classList.add('modal-open');
+    return () => {
+      root.classList.remove('modal-open');
+      body.classList.remove('modal-open');
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +78,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-[1000] overflow-y-auto">
       {/* Backdrop */}
       <div 
         className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"

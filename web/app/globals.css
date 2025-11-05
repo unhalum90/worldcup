@@ -66,6 +66,11 @@ body {
   transition: background 0.6s ease;
 }
 
+/* When a modal is open, stop scrolling and hide interactive maps behind it */
+html.modal-open, body.modal-open { overflow: hidden; }
+.modal-open .leaflet-container { opacity: 0 !important; pointer-events: none !important; }
+.modal-open .leaflet-pane, .modal-open .leaflet-top, .modal-open .leaflet-bottom { pointer-events: none !important; }
+
 /* RTL helper: flip horizontal flex layouts in RTL locales where applied */
 :where([dir="rtl"] .flip-rtl) { flex-direction: row-reverse; }
 
@@ -134,6 +139,16 @@ header, nav {
 /* Basic link and heading coloring */
 a { color: var(--color-primary); }
 h1, h2, h3, h4, h5, h6 { color: var(--foreground); }
+
+/* CTA white text override for anchor elements on dark/colored buttons */
+.cta-white,
+.cta-white:hover,
+.cta-white:visited,
+.cta-white:focus,
+.cta-white:focus-visible,
+.cta-white:active {
+  color: #ffffff !important;
+}
 
 /* Coming soon section styles (used by /components/Features.tsx) */
 .coming-soon {
