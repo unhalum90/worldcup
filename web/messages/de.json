@@ -43,6 +43,16 @@
     ]
   },
   "landing": {
+    "heroMap": {
+      "title": {
+        "line1": "Deine WM‑2026‑Reise,",
+        "line2": "in 5 Minuten geplant."
+      },
+      "subtitle": "KI‑gestützter Reiseplaner mit recherchierter Grundlage + Logistik‑Guides für alle 16 Gastgeberstädte",
+      "ctaPlan": "Reise kostenlos planen →",
+      "ctaWatch": "So funktioniert’s (90 Sek)",
+      "ctaWatchAria": "So funktioniert es (90 Sekunden)"
+    },
     "hero": {
       "headline": "<highlight>Dallas</highlight> liegt nicht in Dallas. <highlight>Boston</highlight> liegt nicht in Boston. <highlight>Miami</highlight> liegt nicht in Miami.",
       "paragraphs": {

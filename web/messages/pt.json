@@ -271,6 +271,16 @@
     "content": "Política de privacidade."
   },
   "landing": {
+    "heroMap": {
+      "title": {
+        "line1": "Sua viagem para a Copa do Mundo 2026,",
+        "line2": "planejada em 5 minutos."
+      },
+      "subtitle": "Planejador de viagem com IA, baseado em pesquisa, + guias logísticos para as 16 cidades‑sede",
+      "ctaPlan": "Planejar minha viagem grátis →",
+      "ctaWatch": "Veja como funciona (90 s)",
+      "ctaWatchAria": "Veja como funciona (90 segundos)"
+    },
     "hero": {
       "headline": "<highlight>Dallas</highlight> não fica em Dallas. <highlight>Boston</highlight> não fica em Boston. <highlight>Miami</highlight> não fica em Miami.",
       "paragraphs": {

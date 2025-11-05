@@ -1,5 +1,4 @@
-import HeroSplit from "@/components/HeroSplit";
-import CountdownTimer from "@/components/CountdownTimer";
+import HeroMap from "@/components/landing/HeroMap";
 import FeatureShowcase from "@/components/landing/FeatureShowcase";
 import DemoSection from "@/components/landing/DemoSection";
 import WorldCupTimeline from "@/components/landing/WorldCupTimeline";
@@ -48,16 +47,13 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <div className="flex justify-center pt-6 pb-4">
-        <CountdownTimer />
-      </div>
-      <HeroSplit />
+      <HeroMap />
       {/* Alternating backgrounds with subtle dividers for better rhythm */}
       <section className="bg-white">
         <FeatureShowcase />
       </section>
       <SectionDivider />
-      <section className="bg-gray-50">
+      <section className="bg-gray-50" id="how-it-works">
         <DemoSection />
       </section>
       <SectionDivider />

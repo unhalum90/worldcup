@@ -64,6 +64,16 @@
     ]
   },
   "landing": {
+    "heroMap": {
+      "title": {
+        "line1": "Votre voyage Coupe du Monde 2026,",
+        "line2": "planifié en 5 minutes."
+      },
+      "subtitle": "Planificateur de voyage propulsé par l’IA et guides logistiques pour les 16 villes hôtes, fondés sur la recherche",
+      "ctaPlan": "Planifier mon voyage gratuitement →",
+      "ctaWatch": "Voir comment ça marche (90 s)",
+      "ctaWatchAria": "Voir comment ça marche (90 secondes)"
+    },
     "hero": {
       "headline": "<highlight>Dallas</highlight> n’est pas à Dallas. <highlight>Boston</highlight> n’est pas à Boston. <highlight>Miami</highlight> n’est pas à Miami.",
       "paragraphs": {

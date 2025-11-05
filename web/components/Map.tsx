@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
 import L from "leaflet";
@@ -31,29 +31,43 @@ interface MapProps {
   points: MapPoint[];
   className?: string;
   height?: number;
+  // Optional overrides for initial view (skip bounds fit when set)
+  forceCenter?: LatLngExpression;
+  forceZoom?: number;
+  fitPadding?: number; // pixels padding when fitting bounds
 }
 
-const Map = ({ points, className, height = 400 }: MapProps) => {
+const Map = ({ points, className, height = 400, forceCenter, forceZoom, fitPadding = 28 }: MapProps) => {
+  // Render only on client to avoid Leaflet container reuse issues during hydration
+  const [mounted, setMounted] = useState(false);
+  const keyRef = useRef<string>(Math.random().toString(36).slice(2));
+  useEffect(() => {
+    setMounted(true);
+    // No cleanup needed; react-leaflet handles unmount
+  }, []);
   const bounds = useMemo(() => {
-    if (!points.length) {
-      return null;
-    }
-
+    if (forceCenter || !points.length) return null;
     const latLngs = points.map((point) => [point.lat, point.lng] as LatLngExpression);
     return L.latLngBounds(latLngs);
-  }, [points]);
+  }, [points, forceCenter]);
 
   const fallbackCenter: LatLngExpression = points.length
     ? ([points[0].lat, points[0].lng] as LatLngExpression)
     : ([0, 0] as LatLngExpression);
 
+  if (!mounted) {
+    return <div className={className} style={{ height }} />;
+  }
+
   return (
     <div className={className} style={{ height }}>
       <MapContainer
+        key={(keyRef.current as unknown as string) || 'map'}
         bounds={bounds ?? undefined}
-        center={bounds ? undefined : fallbackCenter}
+        boundsOptions={bounds ? { padding: [fitPadding, fitPadding] } : undefined}
+        center={bounds ? undefined : (forceCenter ?? fallbackCenter)}
         scrollWheelZoom={false}
-        zoom={4}
+        zoom={forceCenter ? (forceZoom ?? 3) : 4}
         className="h-full w-full rounded-xl border border-neutral-200 shadow-sm"
       >
         <TileLayer

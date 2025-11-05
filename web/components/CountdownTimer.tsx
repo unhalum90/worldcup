@@ -7,7 +7,7 @@ import { useI18nFormatters } from "@/lib/i18nFormatters";
 /**
  * Countdown timer to the opening match on June 11, 2026 at Estadio Azteca
  */
-export default function CountdownTimer() {
+export default function CountdownTimer({ compact = false, className = "" }: { compact?: boolean; className?: string }) {
   const t = useTranslations("landing.countdown");
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -48,40 +48,48 @@ export default function CountdownTimer() {
     return () => clearInterval(interval);
   }, []);
 
+  const containerClasses = [
+    "inline-flex items-center text-white shadow-lg bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-accent-green)]",
+    compact ? "gap-2 px-5 py-2.5 rounded-full" : "gap-3 sm:gap-4 px-4 sm:px-6 py-3 sm:py-4 rounded-xl",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div className="inline-flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-[color:var(--color-primary)] to-[color:var(--color-accent-green)] text-white shadow-lg">
+    <div className={containerClasses}>
       <div className="flex items-center gap-1">
-        <span className="text-xl">⚽</span>
-        <span className="text-xs sm:text-sm font-semibold">{t("kickoffBadge")}</span>
+        <span className={compact ? "text-base" : "text-xl"}>⚽</span>
+        <span className={compact ? "text-[10px] sm:text-xs font-semibold" : "text-xs sm:text-sm font-semibold"}>{t("kickoffBadge")}</span>
       </div>
       
-      <div className="flex items-center gap-2 sm:gap-3">
-        <TimeUnit value={timeLeft.days} label={t("labels.days")} />
-        <Separator />
-        <TimeUnit value={timeLeft.hours} label={t("labels.hours")} />
-        <Separator />
-        <TimeUnit value={timeLeft.minutes} label={t("labels.minutes")} />
-        <Separator />
-        <TimeUnit value={timeLeft.seconds} label={t("labels.seconds")} />
+      <div className={compact ? "flex items-center gap-2" : "flex items-center gap-2 sm:gap-3"}>
+        <TimeUnit value={timeLeft.days} label={t("labels.days")} compact={compact} />
+        <Separator compact={compact} />
+        <TimeUnit value={timeLeft.hours} label={t("labels.hours")} compact={compact} />
+        <Separator compact={compact} />
+        <TimeUnit value={timeLeft.minutes} label={t("labels.minutes")} compact={compact} />
+        <Separator compact={compact} />
+        <TimeUnit value={timeLeft.seconds} label={t("labels.seconds")} compact={compact} />
       </div>
     </div>
   );
 }
 
-function TimeUnit({ value, label }: { value: number; label: string }) {
+function TimeUnit({ value, label, compact }: { value: number; label: string; compact?: boolean }) {
   const { number } = useI18nFormatters();
   return (
-    <div className="flex flex-col items-center min-w-[2.5rem] sm:min-w-[3rem]">
-      <div className="text-xl sm:text-2xl font-bold tabular-nums">
+    <div className={compact ? "flex flex-col items-center min-w-[2.2rem]" : "flex flex-col items-center min-w-[2.5rem] sm:min-w-[3rem]"}>
+      <div className={compact ? "text-base sm:text-lg font-bold tabular-nums" : "text-xl sm:text-2xl font-bold tabular-nums"}>
         {number(value, { minimumIntegerDigits: 2 })}
       </div>
-      <div className="text-[0.6rem] sm:text-xs font-medium opacity-90 uppercase tracking-wide">
+      <div className={compact ? "text-[9px] sm:text-[10px] font-medium opacity-90 uppercase tracking-wide" : "text-[0.6rem] sm:text-xs font-medium opacity-90 uppercase tracking-wide"}>
         {label}
       </div>
     </div>
   );
 }
 
-function Separator() {
-  return <div className="text-xl sm:text-2xl font-bold opacity-50">:</div>;
+function Separator({ compact }: { compact?: boolean }) {
+  return <div className={compact ? "text-lg font-bold opacity-50" : "text-xl sm:text-2xl font-bold opacity-50"}>:</div>;
 }

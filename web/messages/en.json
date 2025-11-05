@@ -135,6 +135,16 @@
         "pill": "{count, plural, one {{formattedCount} day until {label}} other {{formattedCount} days until {label}}}"
       }
     },
+    "heroMap": {
+      "title": {
+        "line1": "Your World Cup 2026 Trip,",
+        "line2": "Planned in 5 Minutes Flat."
+      },
+      "subtitle": "Research‑backed, AI‑fueled trip planner + logistics guides for all 16 host cities",
+      "ctaPlan": "Plan My Trip Free →",
+      "ctaWatch": "Watch How It Works (90 sec)",
+      "ctaWatchAria": "Watch how it works (90 sec)"
+    },
     "featureShowcase": {
       "title": "Two Ways to Plan Your World Cup Journey",
       "subtitle": "Everything you need to make your 2026 World Cup trip unforgettable",

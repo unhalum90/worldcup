@@ -271,6 +271,16 @@
     "content": "Política de privacidad."
   },
   "landing": {
+    "heroMap": {
+      "title": {
+        "line1": "Tu viaje al Mundial 2026,",
+        "line2": "planificado en 5 minutos."
+      },
+      "subtitle": "Planificador de viajes con IA, respaldado por investigación, + guías logísticas para las 16 ciudades sede",
+      "ctaPlan": "Planear mi viaje gratis →",
+      "ctaWatch": "Ver cómo funciona (90 s)",
+      "ctaWatchAria": "Ver cómo funciona (90 segundos)"
+    },
     "hero": {
       "headline": "<highlight>Dallas</highlight> no está en Dallas. <highlight>Boston</highlight> no está en Boston. <highlight>Miami</highlight> no está en Miami.",
       "paragraphs": {
