@@ -77,8 +77,8 @@ export default function DemoSection() {
                   title="Demo video"
                   loading="lazy"
                   className="absolute inset-0 w-full h-full border-0"
-                  src="https://www.canva.com/design/DAG35xn3VCI/1YBiPKlxT4r2hxqAgiQpCg/watch?embed"
-                  allow="fullscreen; autoplay"
+                  src="https://www.canva.com/design/DAG35xn3VCI/1YBiPKlxT4r2hxqAgiQpCg/watch?embed&autoplay=1"
+                  allow="autoplay; fullscreen"
                   allowFullScreen
                 />
               </div>
