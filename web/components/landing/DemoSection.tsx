@@ -1,11 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 export default function DemoSection() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const t = useTranslations('landing.demo');
+
+  // When user clicks the play button, mount the video and immediately play.
+  useEffect(() => {
+    if (isPlaying && videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // If autoplay with sound is blocked, the user can press play on controls.
+      });
+    }
+  }, [isPlaying]);
 
   return (
     <section className="container py-16 sm:py-24 bg-gradient-to-b from-gray-50 to-white">
@@ -60,16 +70,18 @@ export default function DemoSection() {
               <div className="absolute bottom-8 left-8 w-40 h-40 rounded-full bg-purple-500/10 blur-3xl" />
             </>
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-black">
-              <video
-                controls
-                autoPlay
-                className="w-full h-full"
-                poster="/demo-thumbnail.jpg"
-              >
-                <source src="/demo-video.mp4" type="video/mp4" />
-                {t('videoError')}
-              </video>
+            <div className="w-full h-full bg-black">
+              {/* Canva embed maintains 16:9 via absolute fill */}
+              <div className="relative w-full h-full">
+                <iframe
+                  title="Demo video"
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full border-0"
+                  src="https://www.canva.com/design/DAG35xn3VCI/1YBiPKlxT4r2hxqAgiQpCg/watch?embed"
+                  allow="fullscreen; autoplay"
+                  allowFullScreen
+                />
+              </div>
             </div>
           )}
         </div>
