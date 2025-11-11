@@ -21,6 +21,7 @@ const staticRoutes: Array<{
   { path: '/planner/trip-builder', changeFrequency: 'weekly', priority: 0.85, lastModified: now },
   { path: '/flight-planner', changeFrequency: 'weekly', priority: 0.75, lastModified: now },
   { path: '/lodging-planner', changeFrequency: 'weekly', priority: 0.75, lastModified: now },
+  { path: '/memberships', changeFrequency: 'monthly', priority: 0.7, lastModified: now },
   { path: '/trip_builder_demo', changeFrequency: 'monthly', priority: 0.5, lastModified: now },
   { path: '/cityguides', changeFrequency: 'weekly', priority: 0.8, lastModified: now },
   { path: '/guides', changeFrequency: 'weekly', priority: 0.9, lastModified: now },

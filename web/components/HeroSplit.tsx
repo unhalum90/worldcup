@@ -77,8 +77,8 @@ export default function HeroSplit() {
 
             {/* Primary CTA with pulse animation */}
             <div className="mb-3 sm:mb-4">
-              <button
-                onClick={() => setShowEmailModal(true)}
+              <a
+                href="/memberships"
                 className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-white bg-[color:var(--color-accent-red)] hover:brightness-110 transition-all animate-subtle-pulse hover:animate-none text-base sm:text-lg w-full sm:w-auto"
               >
                 {t("ctaPrimary")}
@@ -95,7 +95,7 @@ export default function HeroSplit() {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </button>
+              </a>
               <div className="text-xs sm:text-sm text-[color:var(--color-neutral-700)] mt-2 flex items-center gap-1.5 font-medium justify-center sm:justify-start">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />

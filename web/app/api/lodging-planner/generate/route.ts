@@ -3,6 +3,7 @@ import { createServerClient } from '@/lib/supabaseServer';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
+import { isActiveMember } from '@/lib/membership';
 import { loadZoneReports, type LodgingZone } from '@/lib/lodging/loadZoneReports';
 import type { LodgingPlannerPlan, LodgingPlannerPreferences, LodgingPlannerRequestBody, LodgingZoneComparison, LodgingMapMarker } from '@/types/lodging';
 import type { StoredSelection } from '@/types/trip';
@@ -68,7 +69,14 @@ export async function POST(req: NextRequest) {
     const { data: authData } = await supabaseAuth.auth.getUser();
     const user = authData.user;
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized', code: 'auth_required' }, { status: 401 });
+    }
+
+    // Membership required
+    const adminSupabase = createServerClient();
+    const active = await isActiveMember(adminSupabase, user.id);
+    if (!active) {
+      return NextResponse.json({ error: 'Membership required', code: 'membership_required' }, { status: 402 });
     }
 
     const body = (await req.json()) as LodgingPlannerRequestBody;
@@ -85,7 +93,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unable to determine focus city from selection' }, { status: 400 });
     }
 
-    const supabase = createServerClient();
+    const supabase = adminSupabase;
     const { data: profileRow } = await supabase
       .from('user_profile')
       .select('*')

@@ -92,7 +92,37 @@ export async function middleware(req: NextRequest) {
     return res;
   }
 
-  // Premium gating for planner removed — allow anonymous access to /planner routes
+  // Premium gating — allow runtime configuration via CSV env var
+  const envPrefixes = (process.env.NEXT_PUBLIC_PAYWALLED_PREFIXES || '')
+    .split(',')
+    .map((p) => p.trim())
+    .filter(Boolean);
+  // Sensible defaults if none provided
+  const paywalledPrefixes = envPrefixes.length > 0
+    ? envPrefixes
+    : ['/planner/trip-builder', '/flight-planner', '/lodging-planner'];
+  const isPaywalled = paywalledPrefixes.some((p) => pathname === p || pathname.startsWith(p + '/'));
+  if (isPaywalled) {
+    const redirectUrl = new URL('/memberships', req.url);
+    redirectUrl.searchParams.set('from', 'planner');
+    redirectUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+
+    // If no user, send to memberships page (public checkout) instead of login
+    if (!user) {
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    // If user exists but not an active member, redirect to memberships
+    try {
+      const active = await isActiveMember(supabase, user.id);
+      if (!active) {
+        return NextResponse.redirect(redirectUrl);
+      }
+    } catch {
+      // If membership check fails, be conservative and redirect
+      return NextResponse.redirect(redirectUrl);
+    }
+  }
 
   if (pathname.startsWith('/admin')) {
     // Allow public admin auth pages to render without being redirected

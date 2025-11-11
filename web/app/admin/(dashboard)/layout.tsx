@@ -15,48 +15,92 @@ export default function AdminLayout({
   const router = useRouter();
 
   useEffect(() => {
+    let cancelled = false;
+
+    const checkAuth = async () => {
+      try {
+        console.log("[AdminLayout] Checking auth...");
+
+        // Add a timeout so UI never hangs indefinitely
+        const timeout = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("auth-timeout")), 10000)
+        );
+
+        const getUserPromise = supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await Promise.race([getUserPromise, timeout]);
+
+        if (!user) {
+          console.log("[AdminLayout] No user, redirecting to /admin/login");
+          if (!cancelled) setLoading(false);
+          router.push("/admin/login");
+          return;
+        }
+
+        // First: allow via public allowlist (mirrors server middleware behavior)
+        const allowlist = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "")
+          .split(",")
+          .map((e) => e.trim().toLowerCase())
+          .filter(Boolean);
+        const email = (user.email || "").toLowerCase();
+        if (allowlist.length > 0 && allowlist.includes(email)) {
+          console.log("[AdminLayout] Allowed via NEXT_PUBLIC_ADMIN_EMAILS");
+          if (!cancelled) {
+            setIsAdmin(true);
+            setLoading(false);
+          }
+          return;
+        }
+
+        // Fallback: check a role in either profiles schema variant (id or user_id)
+        // Some environments have public.profiles(id) and others profiles(user_id)
+        const { data: profile, error } = await supabase
+          .from("profiles")
+          .select("role, id, user_id")
+          .or(`user_id.eq.${user.id},id.eq.${user.id}`)
+          .maybeSingle();
+
+        console.log("[AdminLayout] Profile role check:", profile?.role, error?.message);
+
+        const role = (profile as any)?.role;
+        const isPrivileged = role === "admin" || role === "superadmin" || role === "moderator";
+        if (isPrivileged || allowlist.length === 0) {
+          // If no allowlist is configured, treat any signed-in user as ok (server middleware still gates /admin)
+          if (!cancelled) {
+            setIsAdmin(true);
+            setLoading(false);
+          }
+          return;
+        }
+
+        console.warn("[AdminLayout] Not authorized for admin. Redirecting to home.");
+        if (!cancelled) setLoading(false);
+        router.push("/");
+      } catch (e: any) {
+        console.warn("[AdminLayout] Auth check failed:", e?.message || e);
+        // Fail open to avoid trapping the user on a spinner. Server middleware still protects routes.
+        if (!cancelled) {
+          setIsAdmin(true);
+          setLoading(false);
+        }
+      }
+    };
+
     checkAuth();
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+    // Listen for auth changes and re-check
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
       checkAuth();
     });
 
-    return () => subscription.unsubscribe();
-  }, []);
-
-  async function checkAuth() {
-    console.log("Checking auth...");
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if (!user) {
-      console.log("No user found, redirecting to login");
-      router.push("/admin/login");
-      return;
-    }
-
-    console.log("User found:", user.email);
-
-    // Check if user has admin role (you can customize this logic)
-    // For now, we'll use a simple check - you can enhance with RLS policies
-    const { data: profile, error } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("user_id", user.id)
-      .single();
-
-    console.log("Profile data:", profile, "Error:", error);
-
-    if (profile?.role !== "admin") {
-      console.log("User is not admin, redirecting to home");
-      router.push("/");
-      return;
-    }
-
-    console.log("User is admin, showing dashboard");
-    setIsAdmin(true);
-    setLoading(false);
-  }
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
+  }, [router]);
 
   if (loading) {
     return (

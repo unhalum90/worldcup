@@ -35,25 +35,29 @@ export default function AdminDashboard() {
   async function fetchDashboardStats() {
     try {
       // Get post counts
-      const { data: allPosts } = await supabase
+      const { data: allPosts, error: postsErr } = await supabase
         .from('blog_posts')
         .select('id, status');
+      if (postsErr) console.warn('blog_posts select error:', postsErr.message);
 
-      const totalPosts = allPosts?.length || 0;
-      const draftPosts = allPosts?.filter((p: any) => p.status === 'draft').length || 0;
-      const publishedPosts = allPosts?.filter((p: any) => p.status === 'published').length || 0;
+      const list = Array.isArray(allPosts) ? allPosts : [];
+      const totalPosts = list.length;
+      const draftPosts = list.filter((p: any) => p.status === 'draft').length;
+      const publishedPosts = list.filter((p: any) => p.status === 'published').length;
 
       // Get keyword count
-      const { count: keywordCount } = await supabase
+      const { count: keywordCount, error: kwErr } = await supabase
         .from('keywords')
         .select('*', { count: 'exact', head: true });
+      if (kwErr) console.warn('keywords count error:', kwErr.message);
 
       // Get recent posts
-      const { data: recentPosts } = await supabase
+      const { data: recentPosts, error: recentErr } = await supabase
         .from('blog_posts')
         .select('id, title, status, city, created_at')
         .order('created_at', { ascending: false })
         .limit(5);
+      if (recentErr) console.warn('recent posts error:', recentErr.message);
 
       setStats({
         totalPosts,

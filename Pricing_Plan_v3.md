@@ -1,6 +1,6 @@
 # ⚽ World Cup 26 Fan Zone — Pricing Plan (v3.0)
 
-**Date:** October 26, 2025  
+**Date:** Updated Nov 9, 2025  
 **Purpose:** Finalized pricing structure for MVP demo build and upcoming store activation.
 
 ---
@@ -50,8 +50,8 @@ Get beautifully designed, research-driven travel guides for the host cities you�
 **Headline:**  
 **Go all in with the Fan Zone Membership**
 
-**Launch Price:** $29.99 *(Early Bird through Nov 30, 2025)*  
-**Regular Price:** $39
+**Launch Price:** $29 *(Early Bird through Dec 4, 2025)*  
+**Regular Price:** $39 (one‑time fee)
 
 ### Includes:
 - 🏙️ **1 Free City Guide (PDF)** of your choice  
@@ -84,26 +84,27 @@ Get beautifully designed, research-driven travel guides for the host cities you�
 
 ---
 
-## 🧱 STORE DEMO REQUIREMENTS
+## 🧱 STORE REQUIREMENTS (Lemon Squeezy)
 
 ### Front-End
 - Dynamic pricing cards for:
   - Single Guide ($3.99)
   - 5-Guide Pack ($9.99)
-  - Membership ($29.99 Early Bird)
-- Stripe integration (test mode for demo)
-- Supabase user table updates on purchase:
-  - `membership_level`
-  - `user_guides` (array of purchased guides)
-- Placeholder “Coming Dec 5” badge for membership section.
+  - Membership ($29 Early Bird)
+- Lemon Squeezy checkout links (buy URLs) rendered from env/config
+- Supabase profile updates driven by webhook (no client writes)
+- “Updated after Draw” badges on guides; “Early Bird” badge on membership
 
 ### Back-End
-- All purchased PDFs delivered from Supabase Storage (secure link)
-- Membership flag unlocks access to AI planners
-- Email automation (Make.com / Beehiiv):
-  - Purchase confirmation  
-  - Guide download links  
-  - “Upgrade to Membership” upsell (after 2 purchases)
+- Lemon Squeezy webhook at `/api/webhooks/lemon`
+  - Verify HMAC with `LEMON_WEBHOOK_SECRET`
+  - Upsert into `purchases` (ls_order_id unique)
+  - Map by email to `profiles.user_id` when available
+  - If `product_id` in `LEMON_MEMBER_PRODUCT_IDS`, set `profiles.account_level = 'member'`, `subscription_tier = 'premium'`, `subscription_status = 'active'`
+- Planner gating:
+  - Middleware: redirect non‑members visiting `/planner`, `/flight-planner`, `/lodging-planner` to `/memberships?redirect=...`
+  - API: require auth + membership in `/api/travel-planner`, `/api/flight-planner/generate`, `/api/lodging-planner/generate`
+- PDFs can be public via Lemon-hosted links or proxied; membership not required
 
 ---
 
@@ -119,7 +120,7 @@ Get beautifully designed, research-driven travel guides for the host cities you�
 ---
 
 **Next Steps:**  
-- Implement pricing cards in Next.js site before store activation.  
-- Connect Stripe test environment.  
-- Test PDF delivery and membership unlock.  
-- Publish updated pricing text on `/pricing` page and Free Dallas Guide upsell.
+- Set `NEXT_PUBLIC_LS_MEMBER_BUY_URL` to the live membership checkout URL.  
+- Verify Lemon webhook to Supabase and `LEMON_MEMBER_PRODUCT_IDS`.  
+- Test gating: guest → /memberships; member → access planners; API 401/402 paths.  
+- Ensure Dallas free PDF link points to the correct Lemon product.

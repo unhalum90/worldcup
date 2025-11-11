@@ -3,6 +3,7 @@ import { createServerClient } from '@/lib/supabaseServer';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
+import { isActiveMember } from '@/lib/membership';
 
 function normalizeToHttps(u: string): string {
   if (!u) return '';
@@ -35,7 +36,14 @@ export async function POST(req: NextRequest) {
     );
     const { data } = await supabaseAuth.auth.getUser();
     if (!data.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized', code: 'auth_required' }, { status: 401 });
+    }
+
+    // Membership required
+    const adminSupabase = createServerClient();
+    const active = await isActiveMember(adminSupabase, data.user.id);
+    if (!active) {
+      return NextResponse.json({ error: 'Membership required', code: 'membership_required' }, { status: 402 });
     }
 
     const body = await req.json();
@@ -49,7 +57,7 @@ export async function POST(req: NextRequest) {
     const isSpanish = locale === 'es';
 
     const adjustments = body.adjustments || {};
-    const supabase = createServerClient();
+    const supabase = adminSupabase;
     const { data: profileRow } = await supabase
       .from('user_profile')
       .select('*')

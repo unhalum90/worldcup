@@ -45,8 +45,8 @@ export default function HeroMap() {
           {/* Actions row: CTA • Countdown • Watch */}
           <div className="mt-6 sm:mt-8 flex flex-col md:flex-row items-stretch md:items-center justify-center gap-3 md:gap-4">
             <Link
-              href="/planner/trip-builder"
-              className="inline-flex items-center justify-center rounded-full bg-[color:var(--color-accent-red)] px-8 py-3 text-white hover:text-white font-bold shadow-md hover:brightness-110 transition"
+              href="/memberships"
+              className="cta-white inline-flex items-center justify-center rounded-full bg-[color:var(--color-accent-red)] px-8 py-3 text-white hover:text-white visited:text-white focus-visible:text-white active:text-white font-bold shadow-md hover:brightness-110 transition"
             >
               {t('ctaPlan')}
             </Link>
@@ -55,7 +55,7 @@ export default function HeroMap() {
 
             <a
               href="#how-it-works"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-teal-500 to-emerald-600 px-6 py-3 text-white hover:text-white font-semibold shadow-sm hover:opacity-95 transition"
+              className="cta-white inline-flex items-center justify-center rounded-full bg-gradient-to-r from-teal-500 to-emerald-600 px-6 py-3 text-white hover:text-white visited:text-white focus-visible:text-white active:text-white font-semibold shadow-sm hover:opacity-95 transition"
               aria-label={t('ctaWatchAria')}
             >
               {t('ctaWatch')}

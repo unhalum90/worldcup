@@ -46,10 +46,10 @@ export default function ExitIntentModal() {
     };
   }, [armed, open]);
 
-  if (!open) return null;
-
   // Prevent background interaction and hide maps while modal is open
+  // Hook must not be conditional; depend on `open` instead
   useEffect(() => {
+    if (!open) return;
     const root = document.documentElement;
     const body = document.body;
     root.classList.add('modal-open');
@@ -58,7 +58,9 @@ export default function ExitIntentModal() {
       root.classList.remove('modal-open');
       body.classList.remove('modal-open');
     };
-  }, []);
+  }, [open]);
+
+  if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={() => setOpen(false)}>

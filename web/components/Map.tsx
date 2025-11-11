@@ -60,7 +60,7 @@ const Map = ({ points, className, height = 400, forceCenter, forceZoom, fitPaddi
   }
 
   return (
-    <div className={className} style={{ height }}>
+    <div className={["relative z-0", className].filter(Boolean).join(" ")} style={{ height }}>
       <MapContainer
         key={(keyRef.current as unknown as string) || 'map'}
         bounds={bounds ?? undefined}
