@@ -1,21 +1,66 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 
-export async function GET(req: NextRequest) {
-  const buy = process.env.NEXT_PUBLIC_LS_BUNDLE4_BUY_URL || ''
-  const portal = process.env.LEMON_PORTAL_URL || ''
-
-  if (buy && /^https?:\/\//i.test(buy)) {
-    return NextResponse.redirect(buy, { status: 302 })
+function normalizeToHttps(u: string): string {
+  if (!u) return ''
+  try {
+    const parsed = new URL(u)
+    if (parsed.protocol !== 'https:') parsed.protocol = 'https:'
+    return parsed.toString().replace(/\/$/, '')
+  } catch {
+    return u.replace(/^http:\/\//i, 'https://')
   }
-
-  if (portal && /^https?:\/\//i.test(portal)) {
-    return NextResponse.redirect(portal, { status: 302 })
-  }
-
-  const url = new URL(req.url)
-  const site = process.env.NEXT_PUBLIC_SITE_URL || ''
-  const to = site ? new URL('/guides', site) : new URL('/guides', url.origin)
-  return NextResponse.redirect(to, { status: 302 })
 }
 
-export const dynamic = 'force-dynamic'
+export async function GET(req: NextRequest) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+  const buyUrl = process.env.LS_BUNDLE4_BUY_URL || process.env.NEXT_PUBLIC_LS_BUNDLE4_BUY_URL
+
+  if (!buyUrl) {
+    return NextResponse.json({ error: 'missing_buy_url' }, { status: 500 })
+  }
+
+  const res = NextResponse.redirect('about:blank')
+  const supabase = createServerClient(
+    normalizeToHttps(supabaseUrl),
+    supabaseAnonKey,
+    {
+      cookies: {
+        get(name: string) {
+          return req.cookies.get(name)?.value
+        },
+        set(name: string, value: string, options: any) {
+          try { res.cookies.set({ name, value, ...options }) } catch {}
+        },
+        remove(name: string, options: any) {
+          try { res.cookies.delete({ name, ...options }) } catch {}
+        },
+      },
+    }
+  )
+
+  const { data: { user } } = await supabase.auth.getUser()
+  // If not logged in, still let them buy, but prefer to capture email when we can
+  const url = new URL(buyUrl)
+  const params = url.searchParams
+
+  if (user?.email) {
+    const email = user.email
+    params.set('email', email)
+    params.set('checkout[email]', email)
+    params.set('checkout[email_locked]', 'true')
+    params.set('checkout[custom][user_id]', user.id)
+    params.set('checkout[custom][source]', 'wc26_app')
+  }
+
+  const incoming = new URL(req.url)
+  const discount = incoming.searchParams.get('code') || incoming.searchParams.get('discount')
+  if (discount) {
+    params.set('discount', discount)
+    params.set('checkout[discount_code]', discount)
+  }
+
+  return NextResponse.redirect(url.toString())
+}
+

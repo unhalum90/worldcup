@@ -29,21 +29,83 @@ export async function POST(req: NextRequest) {
   try { payload = JSON.parse(rawBody) } catch { return NextResponse.json({ error: 'invalid_json' }, { status: 400 }) }
 
   const eventName: string = payload?.event_name || payload?.meta?.event_name || 'unknown'
-  const attrs = payload?.data?.attributes || {}
+  const data = payload?.data
+  const attrs = data?.attributes || {}
   const email: string | undefined = attrs?.user_email || attrs?.customer_email || attrs?.email
   const product_id: string | undefined = attrs?.first_order_item?.product_id || attrs?.product_id
+  const product_name: string | undefined = attrs?.first_order_item?.product_name || attrs?.product_name || attrs?.name
+  const ls_order_id: string | undefined = String(data?.id || attrs?.identifier || attrs?.order_id || '') || undefined
+  const priceRaw: number | undefined = attrs?.total || attrs?.subtotal || attrs?.price
+  const currency: string | undefined = (attrs?.currency || 'USD') as string
+
+  // Try to capture custom user_id passed from checkout URLs or API-created sessions
+  const custom: any =
+    (attrs && (attrs.custom || attrs.checkout_data?.custom)) ||
+    payload?.meta?.custom ||
+    data?.attributes?.custom ||
+    null
+  const customUserId: string | undefined = custom?.user_id || custom?.userId || custom?.uid
+
+  const statusMap: Record<string, string> = {
+    order_created: 'completed',
+    subscription_created: 'completed',
+    subscription_updated: 'completed',
+    refund_created: 'refunded',
+  }
+  const status = (statusMap[eventName] || 'completed') as 'pending' | 'completed' | 'refunded' | 'failed' | 'void'
 
   try {
+    // 1) Upsert purchase record for order and subscription events
+    if (email && (eventName === 'order_created' || eventName.startsWith('subscription_') || eventName === 'refund_created')) {
+      const upsertBody: any = {
+        ls_order_id,
+        email,
+        product_id,
+        product_name,
+        price: typeof priceRaw === 'number' ? Number(priceRaw) / 100 : null,
+        currency,
+        status,
+        payload,
+      }
+
+      // Try map to user_id via profiles by email
+      try {
+        if (customUserId) {
+          upsertBody.user_id = customUserId
+        } else {
+          const { data: prof } = await supabaseServer
+            .from('profiles')
+            .select('user_id')
+            .eq('email', email)
+            .maybeSingle()
+          if (prof?.user_id) upsertBody.user_id = prof.user_id
+        }
+      } catch {
+        // non-fatal
+      }
+
+      if (ls_order_id) {
+        await supabaseServer.from('purchases').upsert(upsertBody, { onConflict: 'ls_order_id' })
+      } else {
+        await supabaseServer.from('purchases').insert(upsertBody)
+      }
+    }
+
+    // 2) Update membership flags for qualifying products
     const memberIds = (process.env.LEMON_MEMBER_PRODUCT_IDS || '')
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean)
 
-    if (email && product_id && memberIds.includes(String(product_id))) {
-      await supabaseServer
+    if ((email || customUserId) && product_id && memberIds.includes(String(product_id))) {
+      const update = supabaseServer
         .from('profiles')
         .update({ is_member: true, account_level: 'member', subscription_tier: 'premium', subscription_status: 'active', updated_at: new Date().toISOString() })
-        .eq('email', email)
+      if (customUserId) {
+        await update.eq('user_id', customUserId)
+      } else if (email) {
+        await update.eq('email', email)
+      }
 
       // Add to MailerLite membership group (best-effort)
       const mlGroup = process.env.MAILERLITE_MEMBER_GROUP_ID || process.env.MAILERLITE_NEWSLETTER_GROUP_ID
