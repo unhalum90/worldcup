@@ -35,6 +35,14 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+## Deployment notes (membership)
+
+- Public checkout envs read at build time in the client. Ensure these are set in Vercel before deploying:
+  - `NEXT_PUBLIC_LS_MEMBER_BUY_URL`
+  - `NEXT_PUBLIC_LS_BUNDLE4_BUY_URL`
+  - `LEMON_PORTAL_URL` (fallback)
+- Server fallbacks are available at `/api/checkout/member` and `/api/checkout/bundle4` if envs are missing.
+
 ## Trip Builder Demo
 
 - Public demo route: `/trip_builder_demo`
