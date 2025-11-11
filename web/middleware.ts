@@ -76,7 +76,8 @@ export async function middleware(req: NextRequest) {
   }
 
   const pathname = req.nextUrl.pathname;
-  const adminEmails = (process.env.ADMIN_EMAILS || '')
+  // Allow either server-only ADMIN_EMAILS or NEXT_PUBLIC_ADMIN_EMAILS (fallback)
+  const adminEmails = (process.env.ADMIN_EMAILS || process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
     .split(',')
     .map((email) => email.trim().toLowerCase())
     .filter(Boolean);

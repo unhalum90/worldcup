@@ -6,8 +6,9 @@ import { useTranslations } from 'next-intl'
 // Simple pricing page using Tailwind to mimic “cards with features and CTAs”.
 // Copies wording from memberships.md and wires CTAs to env-based or known links.
 
-const MEMBER_CHECKOUT = process.env.NEXT_PUBLIC_LS_MEMBER_BUY_URL || '#'
-const BUNDLE4_CHECKOUT = process.env.NEXT_PUBLIC_LS_BUNDLE4_BUY_URL || '#'
+// Prefer explicit Lemon checkout links; fall back to server endpoints that redirect
+const MEMBER_CHECKOUT = process.env.NEXT_PUBLIC_LS_MEMBER_BUY_URL || '/api/checkout/member'
+const BUNDLE4_CHECKOUT = process.env.NEXT_PUBLIC_LS_BUNDLE4_BUY_URL || '/api/checkout/bundle4'
 const FREE_DALLAS_PDF = 'https://fanzonenetwork.lemonsqueezy.com/buy/fac0321c-ed0b-4e68-89d1-a01fde5b4166'
 
 export default function MembershipsPage() {
