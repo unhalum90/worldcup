@@ -675,6 +675,77 @@
   "common": {
     "separator": " • "
   },
+  "pricing": {
+    "title": "Upgrade für mehr Leistung",
+    "subtitle": "PDFs für alle verfügbar • Der Planer ist für Mitglieder",
+    "cards": {
+      "free": {
+        "title": "Kostenloser Zugang",
+        "cadence": "/ Monat",
+        "cta": "Kostenlose Inhalte ansehen",
+        "features": [
+          "Zugang zu allen Stadtgruppen-Seiten",
+          "Kostenloses Newsletter‑Abo",
+          "Fan‑Teams & Community beitreten",
+          "Ausgewählte ‘Best‑Of’‑Guides lesen",
+          "1 kostenloses Stadt‑PDF (Dallas)",
+          "Kein Zugriff auf den KI‑Reiseplaner",
+          "Keine individuellen Routen"
+        ]
+      },
+      "matchPrep": {
+        "title": "Match‑Vorbereitungs‑Pass",
+        "cadence": " / PDF pro Stadt",
+        "subPriceNote": "$9.99 / Gruppen‑Bundle",
+        "badge": "Am besten für Ein‑Stadt‑Trips",
+        "cta": "Stadt‑PDFs durchsuchen",
+        "extraCTA": "Dallas‑PDF gratis",
+        "features": [
+          "Beliebigen offiziellen Stadt‑Guide wählen",
+          "Druckbares PDF mit Unterkunftszonen",
+          "Transport‑ und Spieltags‑Tipps",
+          "Essen & Nightlife‑Empfehlungen",
+          "Geheimtipps und Sicherheitshinweise",
+          "Lebenslanger Download‑Zugang",
+          "Kostenloser Newsletter + Fan‑Team‑Zugang",
+          "Kein KI‑Reiseplaner"
+        ]
+      },
+      "bundle4": {
+        "title": "4‑Städte‑Bundle",
+        "cadence": " / 4‑Städte‑Bundle",
+        "subPriceNote": "⭐ AM BELIEBTESTEN — spare $6 ggü. vier Einzelkäufen",
+        "badge": "Am beliebtesten",
+        "cta": "4‑Städte‑Bundle holen",
+        "features": [
+          "Beliebige 4 Gastgeber‑Städte auswählen",
+          "Ideal, um einem Team durch die Gruppenphase zu folgen",
+          "Gleicher Inhalt wie Einzel‑Guides (Zonen, Transport, Spieltag)",
+          "Lebenslanger Download‑Zugang"
+        ]
+      },
+      "membership": {
+        "title": "Fan Zone+ Mitgliedschaft",
+        "cadence": " einmalige Zahlung",
+        "subPriceNote": "Preis steigt nach 4. Dez. 2025 auf $39",
+        "badge": "Voller Zugang",
+        "cta": "Fan Zone+ holen",
+        "secondaryCTA": "Schon Mitglied? Anmelden",
+        "features": [
+          "Unbegrenzter Zugriff auf den KI‑Reiseplaner",
+          "Individuelle Routen für alle Gastgeberstädte",
+          "Pläne speichern & geräteübergreifend teilen",
+          "Zugang zu Stadt‑Chats & Fan‑Teams",
+          "Stadt‑Guides für $2 je PDF",
+          "Früher Zugang zum Erlebnis‑Planer (Mai 2026)"
+        ]
+      }
+    },
+    "footer": {
+      "contactPrefix": "Team‑Tarife oder Sammelpakete?",
+      "contactLink": "Kontakt"
+    }
+  },
   "privacy": {
     "title": "Datenschutz",
     "content": "Dies ist eine vorläufige Seite zur Datenschutzrichtlinie."

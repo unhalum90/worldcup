@@ -266,6 +266,77 @@
   "common": {
     "separator": " • "
   },
+  "pricing": {
+    "title": "Mejora tu plan para más potencia",
+    "subtitle": "PDFs disponibles para todos • El Planificador es para miembros",
+    "cards": {
+      "free": {
+        "title": "Acceso Gratuito",
+        "cadence": "/ mes",
+        "cta": "Ver contenido gratis",
+        "features": [
+          "Acceso a todas las páginas de grupos de ciudades",
+          "Suscripción al boletín gratuita",
+          "Únete a Fan Teams y comunidades",
+          "Lee guías ‘Lo Mejor de’ seleccionadas",
+          "1 PDF de ciudad gratis (Dallas)",
+          "Sin acceso al Planificador de Viaje IA",
+          "Sin itinerarios personalizados"
+        ]
+      },
+      "matchPrep": {
+        "title": "Pase de Preparación de Partido",
+        "cadence": " / PDF por ciudad",
+        "subPriceNote": "$9.99 / paquete de grupo",
+        "badge": "Ideal para viajes de una sola ciudad",
+        "cta": "Ver PDFs de ciudades",
+        "extraCTA": "PDF de Dallas gratis",
+        "features": [
+          "Elige cualquier Guía oficial de Ciudad",
+          "PDF imprimible con zonas de hospedaje",
+          "Consejos de transporte y día de partido",
+          "Selección de comida local y vida nocturna",
+          "Lugares ocultos y consejos de seguridad",
+          "Acceso de descarga de por vida",
+          "Boletín gratuito + acceso a Fan Teams",
+          "Sin Planificador de Viaje IA"
+        ]
+      },
+      "bundle4": {
+        "title": "Paquete de 4 Ciudades",
+        "cadence": " / paquete de 4 ciudades",
+        "subPriceNote": "⭐ MÁS POPULAR — ahorra $6 vs cuatro individuales",
+        "badge": "Más popular",
+        "cta": "Obtener paquete de 4 ciudades",
+        "features": [
+          "Elige cualquier 4 PDFs de ciudades sede",
+          "Ideal para seguir a un equipo en fase de grupos",
+          "Mismo contenido que individuales (zonas, transporte, día de partido)",
+          "Acceso de descarga de por vida"
+        ]
+      },
+      "membership": {
+        "title": "Membresía Fan Zone+",
+        "cadence": " pago único",
+        "subPriceNote": "El precio sube a $39 después del 4 de dic. de 2025",
+        "badge": "Acceso total",
+        "cta": "Obtener Membresía Fan Zone+",
+        "secondaryCTA": "¿Ya eres miembro? Inicia sesión",
+        "features": [
+          "Acceso ilimitado al Planificador de Viaje IA",
+          "Genera itinerarios personalizados para todas las ciudades sede",
+          "Guarda y comparte itinerarios en tus dispositivos",
+          "Acceso a chats de ciudad y Fan Teams",
+          "Descarga guías de ciudad a $2 cada una",
+          "Acceso anticipado al Planificador de Experiencias (mayo 2026)"
+        ]
+      }
+    },
+    "footer": {
+      "contactPrefix": "¿Planes para equipos o paquetes grandes?",
+      "contactLink": "Contáctanos"
+    }
+  },
   "privacy": {
     "title": "Política de Privacidad",
     "content": "Política de privacidad."

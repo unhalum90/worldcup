@@ -861,6 +861,77 @@
   "common": {
     "separator": " • "
   },
+  "pricing": {
+    "title": "Améliorez votre offre pour plus de puissance",
+    "subtitle": "PDF disponibles pour tous • Le Planificateur est réservé aux membres",
+    "cards": {
+      "free": {
+        "title": "Accès Gratuit",
+        "cadence": "/ mois",
+        "cta": "Parcourir le contenu gratuit",
+        "features": [
+          "Accès à toutes les pages des groupes de villes",
+          "Abonnement newsletter gratuit",
+          "Rejoindre les Fan Teams et la communauté",
+          "Lire des guides ‘Meilleur de’ sélectionnés",
+          "1 PDF de ville gratuit (Dallas)",
+          "Pas d’accès au Planificateur IA",
+          "Pas d’itinéraires personnalisés"
+        ]
+      },
+      "matchPrep": {
+        "title": "Pass Préparation Match",
+        "cadence": " / PDF par ville",
+        "subPriceNote": "$9.99 / pack de groupe",
+        "badge": "Idéal pour un seul déplacement",
+        "cta": "Parcourir les PDFs des villes",
+        "extraCTA": "PDF Dallas gratuit",
+        "features": [
+          "Choisissez n’importe quel Guide officiel de Ville",
+          "PDF imprimable avec zones d’hébergement",
+          "Conseils transport et jour de match",
+          "Sélection de restaurants et vie nocturne",
+          "Bons plans et infos sécurité",
+          "Téléchargement à vie",
+          "Newsletter gratuite + accès Fan Teams",
+          "Sans Planificateur IA"
+        ]
+      },
+      "bundle4": {
+        "title": "Pack 4 Villes",
+        "cadence": " / pack 4 villes",
+        "subPriceNote": "⭐ LE PLUS POPULAIRE — Économisez $6 vs quatre achats séparés",
+        "badge": "Le plus populaire",
+        "cta": "Obtenir le Pack 4 Villes",
+        "features": [
+          "Choisissez 4 PDFs de villes hôtes",
+          "Idéal pour suivre une équipe en phase de groupes",
+          "Même contenu que les guides simples (zones, transport, jour de match)",
+          "Téléchargement à vie"
+        ]
+      },
+      "membership": {
+        "title": "Abonnement Fan Zone+",
+        "cadence": " paiement unique",
+        "subPriceNote": "Prix à $39 après le 4 déc. 2025",
+        "badge": "Accès complet",
+        "cta": "Obtenir Fan Zone+",
+        "secondaryCTA": "Déjà membre ? Se connecter",
+        "features": [
+          "Accès illimité au Planificateur IA",
+          "Itinéraires personnalisés pour toutes les villes hôtes",
+          "Sauvegarder et partager sur tous vos appareils",
+          "Accès aux salons par ville & Fan Teams",
+          "Guides de ville à $2 chacun",
+          "Accès anticipé au Planificateur d’Expériences (mai 2026)"
+        ]
+      }
+    },
+    "footer": {
+      "contactPrefix": "Plans d’équipe ou lots en volume ?",
+      "contactLink": "Contactez‑nous"
+    }
+  },
   "privacy": {
     "title": "Politique de Confidentialité",
     "content": "Politique de confidentialité."

@@ -9,27 +9,23 @@ export function WebVitals() {
       console.log(metric);
     }
 
-    // Send to analytics in production
+    // Send to analytics in production only if configured
     if (process.env.NODE_ENV === 'production') {
-      // Example: Send to Google Analytics
-      const body = JSON.stringify({
-        name: metric.name,
-        value: metric.value,
-        id: metric.id,
-        rating: metric.rating,
-      });
-
-      const url = 'https://example.com/analytics'; // Replace with your analytics endpoint
-
-      // Use `navigator.sendBeacon()` if available, falling back to `fetch()`
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(url, body);
-      } else {
-        fetch(url, {
-          body,
-          method: 'POST',
-          keepalive: true,
-        }).catch(console.error);
+      const endpoint = process.env.NEXT_PUBLIC_WEB_VITALS_ENDPOINT;
+      if (endpoint) {
+        const body = JSON.stringify({
+          name: metric.name,
+          value: metric.value,
+          id: metric.id,
+          rating: metric.rating,
+        });
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(endpoint, body);
+        } else {
+          fetch(endpoint, { body, method: 'POST', keepalive: true }).catch(
+            console.error
+          );
+        }
       }
     }
 

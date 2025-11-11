@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createServerClient } from '@/lib/supabaseServer';
+import { isActiveMember } from '@/lib/membership';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
 
 function normalizeToHttps(u: string): string {
@@ -204,6 +205,17 @@ export async function POST(request: NextRequest) {
       // Ignore auth lookup errors; proceed as guest
     }
 
+    // Require authenticated member for Trip Builder
+    if (!userId) {
+      return NextResponse.json({ error: 'Login required', code: 'auth_required' }, { status: 401 });
+    }
+
+    const adminSupabase = createServerClient();
+    const active = await isActiveMember(adminSupabase, userId);
+    if (!active) {
+      return NextResponse.json({ error: 'Membership required', code: 'membership_required' }, { status: 402 });
+    }
+
     const formData: TravelPlanRequestV2 = await request.json();
     
     // Detect user's locale from request headers or formData
@@ -218,7 +230,7 @@ export async function POST(request: NextRequest) {
     };
     const languageInstruction = languageInstructions[locale] || '';
     
-    const supabase = createServerClient();
+    const supabase = adminSupabase;
     let profile: UserProfile | null = null;
     try {
       if (userId) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'node:crypto'
 import { supabaseServer } from '@/lib/supabaseServer'
+import { addSubscriberToGroup } from '@/lib/mailerlite'
 
 function verifySignature(rawBody: string, signature: string | null, secret: string | undefined) {
   if (!secret) return false
@@ -99,8 +100,19 @@ export async function POST(req: NextRequest) {
     if (product_id && memberIds.includes(String(product_id)) && email) {
       await supabaseServer
         .from('profiles')
-        .update({ account_level: 'member', subscription_tier: 'premium', subscription_status: 'active' })
+        .update({ account_level: 'member', subscription_tier: 'premium', subscription_status: 'active', is_member: true, updated_at: new Date().toISOString() })
         .eq('email', email)
+
+      // Add to MailerLite membership group (best-effort)
+      const mlGroup = process.env.MAILERLITE_MEMBER_GROUP_ID || process.env.MAILERLITE_NEWSLETTER_GROUP_ID
+      if (mlGroup) {
+        try {
+          const res = await addSubscriberToGroup(email, mlGroup)
+          if (!res.ok) console.warn('MailerLite add failed', res)
+        } catch (e) {
+          console.warn('MailerLite add threw', e)
+        }
+      }
     }
   } catch (e) {
     console.error('Webhook processing error', e)

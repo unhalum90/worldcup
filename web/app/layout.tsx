@@ -16,6 +16,7 @@ import LanguageModal from '@/components/LanguageModal';
 import { WebVitals } from '@/components/WebVitals';
 import ScrollToTop from '@/components/ScrollToTop';
 import CookieConsent from "@/components/CookieConsent";
+import { createClient } from '@/lib/supabase/server';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,16 +50,37 @@ export default async function RootLayout({
   
   // Feature flag: hide first-visit language selection modal unless explicitly enabled
   const showLanguageModal = process.env.NEXT_PUBLIC_ENABLE_LANGUAGE_MODAL === 'true';
+
+  // Prefetch authenticated user and minimal profile on server for instant header render
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let initialProfile: any = null;
+  if (user) {
+    try {
+      const { data: prof } = await (supabase as any)
+        .from('user_profile')
+        .select('user_id,name,favorite_team,avatar_url')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      initialProfile = prof ?? null;
+    } catch {
+      initialProfile = null;
+    }
+  }
   
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* Beehiiv attribution / embedded forms support */}
         <Script src="https://subscribe-forms.beehiiv.com/attribution.js" strategy="lazyOnload" />
         <NextIntlClientProvider messages={messages}>
-          <AuthProvider>
+          <AuthProvider initialUser={user ?? null} initialProfile={initialProfile}>
             <WebVitals />
             {showLanguageModal && <LanguageModal />}
             <Header />

@@ -12,6 +12,16 @@ export default function SubscribeModal() {
           return; // already subscribed — don't open again
         }
       } catch {}
+      // If gating is enabled, route to memberships instead of opening newsletter modal
+      const openMembership = process.env.NEXT_PUBLIC_SUBSCRIBE_OPENS_MEMBERSHIP === 'true';
+      if (openMembership) {
+        const target =
+          process.env.NEXT_PUBLIC_SUBSCRIBE_MEMBERSHIP_URL ||
+          process.env.NEXT_PUBLIC_LS_MEMBER_BUY_URL ||
+          '/memberships';
+        window.location.href = target;
+        return;
+      }
       setOpen(true);
     };
     const markSubscribed = () => {
@@ -29,10 +39,9 @@ export default function SubscribeModal() {
     };
   }, []);
 
-  if (!open) return null;
-
   // While open, prevent background scroll and hide maps
   useEffect(() => {
+    if (!open) return;
     const root = document.documentElement;
     const body = document.body;
     root.classList.add('modal-open');
@@ -41,7 +50,9 @@ export default function SubscribeModal() {
       root.classList.remove('modal-open');
       body.classList.remove('modal-open');
     };
-  }, []);
+  }, [open]);
+
+  if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={() => setOpen(false)}>

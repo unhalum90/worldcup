@@ -117,12 +117,12 @@ export default function Header() {
                 >
                   {t('signIn')}
                 </button>
-                <button
-                  onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
+                <Link
+                  href="/memberships"
                   className="px-4 py-2 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-sm shadow-md"
                 >
                   {t('subscribeFree')}
-                </button>
+                </Link>
               </div>
             )}
 
@@ -229,12 +229,13 @@ export default function Header() {
                   >
                     {t('signIn')}
                   </button>
-                  <button
-                    onClick={() => { setIsMenuOpen(false); window.dispatchEvent(new Event('fz:open-subscribe')); }}
+                  <Link
+                    href="/memberships"
+                    onClick={() => setIsMenuOpen(false)}
                     className="px-4 py-3 rounded-lg bg-[color:var(--color-accent-red)] text-white font-semibold hover:brightness-110 transition-all text-center shadow-md"
                   >
                     {t('subscribeFree')}
-                  </button>
+                  </Link>
                 </>
               )}
 
@@ -271,15 +272,15 @@ export default function Header() {
       {/* Sticky CTA Button on Scroll */}
       {isScrolled && (
         <div className="hidden md:block fixed bottom-8 right-8 z-50">
-          <button
-            onClick={() => window.dispatchEvent(new Event('fz:open-subscribe'))}
+          <Link
+            href="/memberships"
             className="px-6 py-3 rounded-full bg-[color:var(--color-accent-red)] text-white font-bold hover:brightness-110 transition-all shadow-2xl hover:shadow-3xl flex items-center gap-2 animate-bounce-subtle"
           >
             {t('subscribeFree')}
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </button>
+          </Link>
         </div>
       )}
       {showAuth && (
