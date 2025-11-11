@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import type { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { teamColors } from '@/lib/constants/teamColors';
@@ -30,10 +30,16 @@ const AuthContext = createContext<AuthContextType>({
   profile: null,
 });
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+type AuthProviderProps = {
+  children: React.ReactNode;
+  initialUser?: User | null;
+  initialProfile?: UserProfile | null;
+};
+
+export function AuthProvider({ children, initialUser = null, initialProfile = null }: AuthProviderProps) {
+  const [user, setUser] = useState<User | null>(initialUser);
+  const [profile, setProfile] = useState<UserProfile | null>(initialProfile);
+  const [loading, setLoading] = useState<boolean>(!initialUser);
 
   const hydrateProfile = async (userId: string) => {
     try {
@@ -52,32 +58,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Apply theme immediately from initialProfile on mount (no network hop)
   useEffect(() => {
-    // Set a timeout to prevent infinite loading
-    const timeout = setTimeout(() => {
-      console.warn('[AuthContext] Session check timeout after 10s, forcing loading=false');
-      setLoading(false);
-    }, 10000);
+    if (initialProfile?.favorite_team) {
+      applyTheme(initialProfile.favorite_team);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    // Check active session
-    supabase.auth.getSession().then(async ({ data: { session } }: { data: { session: Session | null } }) => {
-      clearTimeout(timeout);
-      console.log('[AuthContext] Session loaded:', !!session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await hydrateProfile(session.user.id);
-      } else {
-        setProfile(null);
-        applyTheme(undefined);
-      }
+  useEffect(() => {
+    // If we already have an initial user from SSR, skip the initial getSession call
+    if (initialUser) {
       setLoading(false);
-    }).catch((error: unknown) => {
-      clearTimeout(timeout);
-      console.error('[AuthContext] getSession failed:', error);
-      setLoading(false);
-    });
+    } else {
+      // Fallback: check active session client-side when SSR didn't provide it
+      const timeout = setTimeout(() => {
+        console.warn('[AuthContext] Session check timeout after 10s, forcing loading=false');
+        setLoading(false);
+      }, 10000);
 
-    // Listen for auth changes
+      supabase.auth
+        .getSession()
+        .then(async ({ data: { session } }: { data: { session: Session | null } }) => {
+          clearTimeout(timeout);
+          console.log('[AuthContext] Session loaded:', !!session);
+          setUser(session?.user ?? null);
+          if (session?.user) {
+            await hydrateProfile(session.user.id);
+          } else {
+            setProfile(null);
+            applyTheme(undefined);
+          }
+          setLoading(false);
+        })
+        .catch((error: unknown) => {
+          clearTimeout(timeout);
+          console.error('[AuthContext] getSession failed:', error);
+          setLoading(false);
+        });
+    }
+
+    // Always listen for auth changes to keep state in sync
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event: AuthChangeEvent, session: Session | null) => {
@@ -91,7 +112,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+    // Only re-run if initialUser changes across navigations
+  }, [initialUser]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
