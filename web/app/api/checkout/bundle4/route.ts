@@ -61,6 +61,19 @@ export async function GET(req: NextRequest) {
     params.set('checkout[discount_code]', discount)
   }
 
+  if (incoming.searchParams.get('inspect') === '1') {
+    return NextResponse.json({
+      ok: true,
+      resolvedBuyUrl: buyUrl,
+      finalRedirect: url.toString(),
+      userEmail: user?.email || null,
+      userId: user?.id || null,
+      env: {
+        hasLSBundleBuyUrl: typeof process.env.LS_BUNDLE4_BUY_URL === 'string' && process.env.LS_BUNDLE4_BUY_URL.length > 0,
+        hasNextPublicBundleBuyUrl: typeof process.env.NEXT_PUBLIC_LS_BUNDLE4_BUY_URL === 'string' && process.env.NEXT_PUBLIC_LS_BUNDLE4_BUY_URL.length > 0,
+      }
+    })
+  }
+
   return NextResponse.redirect(url.toString())
 }
-

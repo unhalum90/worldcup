@@ -69,6 +69,20 @@ export async function GET(req: NextRequest) {
     params.set('checkout[discount_code]', discount)
   }
 
+  // Inspect mode for debugging: returns JSON instead of redirect
+  if (incoming.searchParams.get('inspect') === '1') {
+    return NextResponse.json({
+      ok: true,
+      resolvedBuyUrl: buyUrl,
+      finalRedirect: url.toString(),
+      userEmail: email,
+      userId: user.id,
+      env: {
+        hasLSMemberBuyUrl: typeof process.env.LS_MEMBER_BUY_URL === 'string' && process.env.LS_MEMBER_BUY_URL.length > 0,
+        hasNextPublicMemberBuyUrl: typeof process.env.NEXT_PUBLIC_LS_MEMBER_BUY_URL === 'string' && process.env.NEXT_PUBLIC_LS_MEMBER_BUY_URL.length > 0,
+      }
+    })
+  }
+
   return NextResponse.redirect(url.toString())
 }
-
