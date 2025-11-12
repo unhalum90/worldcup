@@ -9,6 +9,15 @@ ALTER TABLE purchases
 CREATE INDEX IF NOT EXISTS purchases_email_lower_idx ON purchases (lower(email));
 
 -- 2) Active members convenience view
+-- Ensure required columns exist on profiles across environments
+ALTER TABLE profiles
+  ADD COLUMN IF NOT EXISTS is_member boolean DEFAULT false,
+  ADD COLUMN IF NOT EXISTS account_level text DEFAULT 'free',
+  ADD COLUMN IF NOT EXISTS subscription_status text DEFAULT 'active',
+  ADD COLUMN IF NOT EXISTS subscription_renews_at timestamptz,
+  ADD COLUMN IF NOT EXISTS subscription_cancels_at timestamptz;
+
+DROP VIEW IF EXISTS public.active_members;
 CREATE OR REPLACE VIEW public.active_members AS
 SELECT
   p.user_id,
@@ -49,4 +58,3 @@ END;
 $$;
 
 GRANT EXECUTE ON FUNCTION public.attach_purchases_to_user(uuid) TO authenticated;
-
