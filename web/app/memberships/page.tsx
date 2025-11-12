@@ -13,6 +13,8 @@ const FREE_DALLAS_PDF = 'https://fanzonenetwork.lemonsqueezy.com/buy/fac0321c-ed
 
 export default function MembershipsPage() {
   const t = useTranslations('pricing');
+  // Pass through any query params (e.g., ?code=DISCOUNT or ?inspect=1) to checkout endpoints
+  const search = typeof window !== 'undefined' ? window.location.search : ''
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <header className="py-12 text-center">
@@ -55,7 +57,7 @@ export default function MembershipsPage() {
             subPriceNote={t('cards.bundle4.subPriceNote')}
             badge={t('cards.bundle4.badge')}
             highlight={false}
-            cta={{ label: t('cards.bundle4.cta'), href: BUNDLE4_CHECKOUT, variant: 'secondary' }}
+            cta={{ label: t('cards.bundle4.cta'), href: `${BUNDLE4_CHECKOUT}${search}`, variant: 'secondary' }}
             features={t.raw('cards.bundle4.features')}
           />
 
@@ -66,7 +68,7 @@ export default function MembershipsPage() {
             subPriceNote={t('cards.membership.subPriceNote')}
             badge={t('cards.membership.badge')}
             highlight
-            cta={{ label: t('cards.membership.cta'), href: MEMBER_CHECKOUT, variant: 'primary' }}
+            cta={{ label: t('cards.membership.cta'), href: `${MEMBER_CHECKOUT}${search}`, variant: 'primary' }}
             secondaryCTA={{ label: t('cards.membership.secondaryCTA'), href: '/login?redirect=/planner/trip-builder' }}
             features={t.raw('cards.membership.features')}
           />
