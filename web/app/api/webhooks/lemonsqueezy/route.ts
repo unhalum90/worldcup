@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
 
       // Add to MailerLite membership group (best-effort)
       const mlGroup = process.env.MAILERLITE_MEMBER_GROUP_ID || process.env.MAILERLITE_NEWSLETTER_GROUP_ID
-      if (mlGroup) {
+      if (mlGroup && email) {
         try {
           const res = await addSubscriberToGroup(email, mlGroup)
           if (!res.ok) console.warn('MailerLite add failed', res)
