@@ -53,6 +53,14 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'session_missing' }, { status: 400 });
       }
       await supabase.auth.setSession(session);
+      // After sign-in, reconcile any purchases made with the same email (SECURITY DEFINER function)
+      try {
+        if (session.user?.id) {
+          await supabase.rpc('attach_purchases_to_user', { p_user_id: session.user.id });
+        }
+      } catch (reconcileError) {
+        console.warn('attach_purchases_to_user failed', reconcileError);
+      }
     } else if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
       try {
         await supabase.auth.signOut();

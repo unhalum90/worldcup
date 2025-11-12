@@ -37,6 +37,12 @@ export async function POST(req: NextRequest) {
   const ls_order_id: string | undefined = String(data?.id || attrs?.identifier || attrs?.order_id || '') || undefined
   const priceRaw: number | undefined = attrs?.total || attrs?.subtotal || attrs?.price
   const currency: string | undefined = (attrs?.currency || 'USD') as string
+  const ls_customer_id: string | undefined = attrs?.customer_id || attrs?.customer || attrs?.customer_identifier
+  const ls_subscription_id: string | undefined = attrs?.subscription_id || attrs?.identifier || undefined
+  const variant_id: string | undefined = attrs?.variant_id || attrs?.first_order_item?.variant_id || attrs?.product_variant_id
+  const status_raw: string | undefined = attrs?.status
+  const renews_at: string | undefined = attrs?.renews_at || attrs?.trial_ends_at
+  const cancels_at: string | undefined = attrs?.ends_at || attrs?.cancels_at
 
   // Try to capture custom user_id passed from checkout URLs or API-created sessions
   const custom: any =
@@ -66,6 +72,8 @@ export async function POST(req: NextRequest) {
         currency,
         status,
         payload,
+        ls_customer_id: ls_customer_id ?? null,
+        ls_variant_id: variant_id ?? null,
       }
 
       // Try map to user_id via profiles by email
@@ -91,18 +99,31 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 2) Update membership flags for qualifying products
+    // 2) Update membership flags for qualifying products or subscription events
     const memberIds = (process.env.LEMON_MEMBER_PRODUCT_IDS || '')
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean)
 
-    if ((email || customUserId) && product_id && memberIds.includes(String(product_id))) {
+    const activeLike = (s?: string) => ['active', 'trialing', 'paid'].includes(String(s || '').toLowerCase())
+    const cancelledLike = (s?: string) => ['cancelled', 'canceled', 'expired'].includes(String(s || '').toLowerCase())
+
+    const shouldGrantByProduct = product_id && memberIds.includes(String(product_id))
+    const isSubscriptionEvent = eventName.startsWith('subscription_') || typeof status_raw === 'string'
+
+    if ((email || customUserId) && (shouldGrantByProduct || isSubscriptionEvent)) {
       const body: any = {
-        is_member: true,
-        account_level: 'member',
+        is_member: shouldGrantByProduct ? true : activeLike(status_raw),
+        account_level: shouldGrantByProduct ? 'member' : (activeLike(status_raw) ? 'member' : 'free'),
         subscription_tier: 'premium',
-        subscription_status: 'active',
+        subscription_status: status_raw || (shouldGrantByProduct ? 'active' : 'unknown'),
+        ls_customer_id: ls_customer_id ?? undefined,
+        ls_subscription_id: ls_subscription_id ?? undefined,
+        ls_product_id: product_id ?? undefined,
+        ls_variant_id: variant_id ?? undefined,
+        member_since: activeLike(status_raw) ? new Date().toISOString() : undefined,
+        subscription_renews_at: renews_at ?? undefined,
+        subscription_cancels_at: cancels_at ?? undefined,
         updated_at: new Date().toISOString(),
       }
       if (customUserId) body.user_id = customUserId
