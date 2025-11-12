@@ -116,10 +116,24 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
   }, [initialUser]);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
-    applyTheme(undefined);
+    try {
+      await supabase.auth.signOut();
+      // Also tell the server to clear SSR cookies immediately
+      try {
+        await fetch('/api/auth/session', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ event: 'SIGNED_OUT', session: null }),
+          credentials: 'include',
+        });
+      } catch (e) {
+        console.warn('Session sync on signOut failed', e);
+      }
+    } finally {
+      setUser(null);
+      setProfile(null);
+      applyTheme(undefined);
+    }
   };
 
   return (

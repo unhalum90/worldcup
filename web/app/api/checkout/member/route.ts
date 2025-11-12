@@ -41,11 +41,11 @@ export async function GET(req: NextRequest) {
   )
 
   const { data: { user } } = await supabase.auth.getUser()
-  // If not logged in, send to memberships page
+  // If not logged in, redirect to login preserving intended destination
   if (!user) {
-    const url = new URL('/memberships', req.url)
-    url.searchParams.set('from', 'member-checkout')
-    return NextResponse.redirect(url)
+    const loginUrl = new URL('/login', normalizeToHttps(process.env.NEXT_PUBLIC_SITE_URL || req.url))
+    loginUrl.searchParams.set('redirect', '/memberships')
+    return NextResponse.redirect(loginUrl)
   }
 
   const email = user.email || ''

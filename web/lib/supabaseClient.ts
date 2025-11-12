@@ -61,11 +61,22 @@ if (typeof window !== 'undefined' && supabase) {
 		console.log('[Client] session on mount', data?.session?.user);
 	});
 
-	const { data: listener } = supabase.auth.onAuthStateChange((event: any, session: any) => {
+	const { data: listener } = supabase.auth.onAuthStateChange(async (event: any, session: any) => {
 		console.log('[Client] auth event', event, {
 			user: session?.user?.email,
 			hasSession: !!session,
 		});
+		// Sync server cookies so SSR/middleware sees the latest state
+		try {
+			await fetch('/api/auth/session', {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify({ event, session }),
+				credentials: 'include',
+			});
+		} catch (e) {
+			console.warn('Failed to sync auth session to server', e);
+		}
 	});
 
 	window.addEventListener('beforeunload', () => {
