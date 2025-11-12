@@ -45,7 +45,7 @@ export async function isActiveMember(supabase: any, userId: string): Promise<boo
     // First, prefer explicit profile flags set by checkout/webhooks
     const { data: prof, error } = await supabase
       .from('profiles')
-      .select('is_member, account_level, subscription_tier, subscription_status')
+      .select('is_member, account_level, subscription_tier, subscription_status, email')
       .or(`user_id.eq.${userId},id.eq.${userId}`)
       .maybeSingle();
 
@@ -58,6 +58,39 @@ export async function isActiveMember(supabase: any, userId: string): Promise<boo
     }
   } catch {
     // ignore and fall back to subscriptions table
+  }
+
+  // Fallback: Check purchases by user_id or email (RLS allows email match)
+  try {
+    // Get auth session email via RPC-like trick: try reading a purchase row limited by RLS
+    // First try by user_id
+    const byUser = await supabase
+      .from('purchases')
+      .select('product_id, status')
+      .eq('user_id', userId)
+      .limit(50);
+
+    const memberIds = (process.env.NEXT_PUBLIC_MEMBER_PRODUCT_IDS || process.env.LEMON_MEMBER_PRODUCT_IDS || '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    const rows = Array.isArray(byUser?.data) ? byUser.data : [];
+    if (rows.some((r: any) => r.status !== 'refunded' && memberIds.includes(String(r.product_id)))) {
+      return true;
+    }
+
+    // If none found by user_id, try any purchase visible via email-based RLS
+    const byEmail = await supabase
+      .from('purchases')
+      .select('product_id, status')
+      .limit(50);
+    const rows2 = Array.isArray(byEmail?.data) ? byEmail.data : [];
+    if (rows2.some((r: any) => r.status !== 'refunded' && memberIds.includes(String(r.product_id)))) {
+      return true;
+    }
+  } catch {
+    // ignore
   }
 
   const sub = await getActiveSubscription(supabase, userId);

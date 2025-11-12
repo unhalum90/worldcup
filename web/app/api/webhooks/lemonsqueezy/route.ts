@@ -98,13 +98,22 @@ export async function POST(req: NextRequest) {
       .filter(Boolean)
 
     if ((email || customUserId) && product_id && memberIds.includes(String(product_id))) {
-      const update = supabaseServer
-        .from('profiles')
-        .update({ is_member: true, account_level: 'member', subscription_tier: 'premium', subscription_status: 'active', updated_at: new Date().toISOString() })
+      const body: any = {
+        is_member: true,
+        account_level: 'member',
+        subscription_tier: 'premium',
+        subscription_status: 'active',
+        updated_at: new Date().toISOString(),
+      }
+      if (customUserId) body.user_id = customUserId
+      if (email) body.email = email
+
+      // Prefer upsert to ensure profile row exists
       if (customUserId) {
-        await update.eq('user_id', customUserId)
+        await supabaseServer.from('profiles').upsert(body, { onConflict: 'user_id' })
       } else if (email) {
-        await update.eq('email', email)
+        // upsert by email requires unique index on email (added in migration 018)
+        await supabaseServer.from('profiles').upsert(body, { onConflict: 'email' })
       }
 
       // Add to MailerLite membership group (best-effort)
@@ -119,11 +128,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    if (email && (eventName === 'subscription_cancelled' || eventName === 'subscription_expired')) {
-      await supabaseServer
-        .from('profiles')
-        .update({ is_member: false, subscription_status: 'cancelled', updated_at: new Date().toISOString() })
-        .eq('email', email)
+    if ((email || customUserId) && (eventName === 'subscription_cancelled' || eventName === 'subscription_expired')) {
+      const body: any = { is_member: false, subscription_status: 'cancelled', updated_at: new Date().toISOString() }
+      if (customUserId) {
+        await supabaseServer.from('profiles').upsert({ user_id: customUserId, email, ...body }, { onConflict: 'user_id' })
+      } else if (email) {
+        await supabaseServer.from('profiles').upsert({ email, ...body }, { onConflict: 'email' })
+      }
     }
   } catch (e) {
     console.error('lemonsqueezy webhook error', e)
