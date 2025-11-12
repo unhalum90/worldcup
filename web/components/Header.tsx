@@ -254,7 +254,7 @@ export default function Header() {
                       {user.email || 'Account'}
                     </span>
                   </Link>
-                  <button onClick={() => { setIsMenuOpen(false); signOut(); }} 
+                  <button onClick={async () => { setIsMenuOpen(false); await signOut(); }} 
                           className={`px-4 py-2 rounded-lg border text-sm hover:opacity-80 transition-opacity ${!profile?.favorite_team ? 'text-gray-900 border-gray-900' : ''}`}
                           style={{ 
                             color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",

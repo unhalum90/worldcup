@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import type { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { teamColors } from '@/lib/constants/teamColors';
@@ -37,6 +38,7 @@ type AuthProviderProps = {
 };
 
 export function AuthProvider({ children, initialUser = null, initialProfile = null }: AuthProviderProps) {
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(initialUser);
   const [profile, setProfile] = useState<UserProfile | null>(initialProfile);
   const [loading, setLoading] = useState<boolean>(!initialUser);
@@ -130,9 +132,20 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
         console.warn('Session sync on signOut failed', e);
       }
     } finally {
+      // Clear any client state caches
+      try { localStorage.clear(); } catch {}
+      try { sessionStorage.clear(); } catch {}
       setUser(null);
       setProfile(null);
       applyTheme(undefined);
+      // Redirect away from gated pages and force revalidation
+      try {
+        router.push('/');
+        router.refresh();
+      } catch {
+        // Fallback if router not available
+        if (typeof window !== 'undefined') window.location.href = '/';
+      }
     }
   };
 
