@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import { VotingButtons } from '@/components/tournament/VotingButtons'
 import { ResultsBar } from '@/components/tournament/ResultsBar'
 import { CommentCTA } from '@/components/tournament/CommentCTA'
@@ -57,6 +58,9 @@ async function getMatch(slug: string) {
 }
 
 export default async function MatchPage({ params }: { params: Promise<{ slug: string }> }) {
+  if (process.env.ENABLE_TOURNAMENT !== 'true') {
+    notFound()
+  }
   const { slug } = await params
   const data = await getMatch(slug)
   if (!data) {

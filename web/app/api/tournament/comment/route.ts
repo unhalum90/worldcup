@@ -20,6 +20,9 @@ async function getClientIp(): Promise<string | null> {
 }
 
 export async function POST(req: Request) {
+  if (process.env.ENABLE_TOURNAMENT !== 'true') {
+    return new Response('Not Found', { status: 404 })
+  }
   try {
     const body = await req.json()
     const { matchSlug, text, cityId, displayName } = body as {

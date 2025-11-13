@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { MatchCard } from '@/components/tournament/MatchCard'
 import type { TournamentMatch, CityMinimal } from '@/types/tournament'
@@ -49,6 +50,9 @@ async function getActiveAndUpcomingMatches() {
 }
 
 export default async function TournamentHub() {
+  if (process.env.ENABLE_TOURNAMENT !== 'true') {
+    notFound()
+  }
   const matches = await getActiveAndUpcomingMatches()
   const cookieStore = await cookies()
   const votedSlugs = new Set(

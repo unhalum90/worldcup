@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/service'
 
 export async function POST(req: Request) {
+  if (process.env.ENABLE_TOURNAMENT !== 'true') {
+    return new Response('Not Found', { status: 404 })
+  }
   try {
     const body = await req.json()
     const { id, slug, status, winner_city_id } = body as {
@@ -25,4 +28,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: e?.message || 'Unexpected error' }, { status: 500 })
   }
 }
-

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { notFound } from 'next/navigation'
 import { AdminMatchTableClient } from './AdminMatchTableClient'
 
 export const dynamic = 'force-dynamic'
@@ -23,6 +24,9 @@ async function getMatches() {
 }
 
 async function AdminTournamentPage() {
+  if (process.env.ENABLE_TOURNAMENT !== 'true') {
+    notFound()
+  }
   const matches = await getMatches()
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
