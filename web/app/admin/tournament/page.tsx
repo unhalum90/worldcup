@@ -20,7 +20,7 @@ async function getMatches() {
     .from('cities')
     .select('id, name, slug')
     .in('id', cityIds.length ? cityIds : ['00000000-0000-0000-0000-000000000000'])
-  const cityMap: Record<string, CityRow> = (cities || []).reduce((acc, c: CityRow) => {
+  const cityMap: Record<string, CityRow> = (cities || []).reduce((acc: Record<string, CityRow>, c: CityRow) => {
     acc[c.id] = c
     return acc
   }, {} as Record<string, CityRow>)
