@@ -13,6 +13,17 @@ export interface CityGuide {
   isAvailable: boolean;
   releaseDate?: string; // ISO date string
   downloadUrl?: string; // LemonSqueezy or PDF URL
+  // Optional purchase info for paid guides (e.g., Lemon Squeezy product + variants)
+  purchase?: {
+    provider: 'lemonsqueezy';
+    productId: number; // Lemon Squeezy product ID
+    // Preferred: direct hosted checkout link (product or a default variant)
+    buyLink?: string;
+    variants: {
+      en?: number; // variant ID for English
+      es?: number; // variant ID for Spanish
+    };
+  };
   highlights: string[];
   transportation: {
     airport: string;
@@ -66,6 +77,16 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 33.7554, lng: -84.4008 },
     description: 'Atlanta\'s Mercedes-Benz Stadium is a modern architectural marvel featuring a unique retractable roof design. Located in the heart of downtown, it offers easy access to the city\'s vibrant culture and entertainment.',
     isAvailable: false,
+    // Paid guide on Lemon Squeezy with EN + ES variants
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 682982,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/e9b8ee0d-039b-4cda-9751-5dc05de27209',
+      variants: {
+        en: 1073892,
+        es: 1073894,
+      },
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'LEED Platinum certified',
@@ -95,6 +116,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 42.0909, lng: -71.2643 },
     description: 'Gillette Stadium in Foxborough offers a quintessential New England football experience. Home to the Patriots, the stadium is surrounded by Patriot Place, a premier shopping and entertainment destination.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 690860,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/797027c4-c96e-4737-ab61-7a559d62216b',
+      variants: { en: 1086756, es: 1086759 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Patriot Place shopping complex',
@@ -124,6 +151,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 29.6847, lng: -95.4107 },
     description: 'NRG Stadium is a world-class facility with a retractable roof, located in Houston\'s bustling sports and entertainment district. The venue is known for its excellent sightlines and modern amenities.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 690841,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/9b21215f-8b01-466f-9351-c1ada247b193',
+      variants: { en: 1086721, es: 1086714 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Retractable roof',
@@ -153,6 +186,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 39.0489, lng: -94.4839 },
     description: 'Arrowhead Stadium is famous for its passionate fans and record-breaking noise levels. Located in the Truman Sports Complex, it offers authentic Midwest hospitality and world-famous BBQ.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 690852,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/63dabf70-991b-4de9-9754-1f904dd33302',
+      variants: { en: 1086731, es: 1086738 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Loudest stadium record',
@@ -182,6 +221,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 33.9535, lng: -118.3392 },
     description: 'SoFi Stadium is the most expensive stadium ever built, featuring cutting-edge technology and a dramatic canopy design. Located in Inglewood, it\'s at the center of LA\'s entertainment universe.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 691395,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/f33af5f6-df57-4cfd-ad66-1348db3f1815',
+      variants: { en: 1087651, es: 1087660 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'State-of-the-art technology',
@@ -211,6 +256,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 25.958, lng: -80.2389 },
     description: 'Hard Rock Stadium in Miami Gardens offers a tropical World Cup experience with open-air seating and a unique canopy design. Perfect for enjoying soccer in Florida sunshine.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 690855,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/cac3bfec-ee75-4b4c-aad6-dccb8a38403d',
+      variants: { en: 1086741, es: 1086744 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Tropical climate',
@@ -240,6 +291,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 40.8128, lng: -74.0742 },
     description: 'MetLife Stadium in East Rutherford, NJ offers the largest capacity of all 2026 World Cup venues. With easy access from Manhattan, it puts you at the center of the world\'s greatest city.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 690862,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/72d9999b-605a-4854-b186-050a57dcfc7a',
+      variants: { en: 1086764, es: 1086770 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Largest venue capacity',
@@ -269,6 +326,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 39.9008, lng: -75.1675 },
     description: 'Lincoln Financial Field sits in Philadelphia\'s Sports Complex, offering easy access to the city\'s rich history and passionate sports culture. Experience the birthplace of American independence.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 691364,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/cee64e14-fd14-4497-ac55-ab4c6d0c7abd',
+      variants: { en: 1087581, es: 1087589 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Historic city',
@@ -298,6 +361,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 37.403, lng: -121.9698 },
     description: 'Levi\'s Stadium in Santa Clara combines Silicon Valley innovation with Bay Area culture. This tech-forward venue offers a unique blend of Northern California charm and modern amenities.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 691383,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/0c6977df-e95f-481b-9c99-a0bfe8566e4f',
+      variants: { en: 1087624, es: 1087634 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Tech-forward venue',
@@ -327,6 +396,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 47.5952, lng: -122.3316 },
     description: 'Lumen Field is known for its incredible atmosphere and the "12th Man" tradition. Located in downtown Seattle, it offers stunning views of the Puget Sound and easy access to the city\'s attractions.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 682380,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/5eb6125a-1240-4a81-a204-1c61f0e2b9bf',
+      variants: { en: 1073883, es: 1072801 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Downtown location',
@@ -356,6 +431,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 43.6333, lng: -79.4186 },
     description: 'BMO Field offers an intimate soccer experience in Canada\'s largest city. Located at Exhibition Place, it provides easy access to Toronto\'s vibrant waterfront and multicultural neighborhoods.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 691372,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/9d0da014-03a2-4f13-99d7-f38aedfb312c',
+      variants: { en: 1087598, es: 1087601 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'True soccer venue',
@@ -385,6 +466,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 49.2768, lng: -123.1119 },
     description: 'BC Place in downtown Vancouver features a retractable roof and stunning mountain backdrop. Experience world-class soccer in one of the world\'s most beautiful cities.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 691374,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/3305da18-4612-49ec-b853-a0b41dfee707',
+      variants: { en: 1087606, es: 1087617 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Retractable roof',
@@ -414,6 +501,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 20.6906, lng: -103.4619 },
     description: 'Estadio Akron is home to Club Deportivo Guadalajara (Chivas) and represents authentic Mexican soccer passion. Experience mariachi, tequila, and incredible fan atmosphere.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 691429,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/da6172f4-ed40-4bdb-9cbe-885d952371af',
+      variants: { en: 1087730, es: 1087734 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Chivas home stadium',
@@ -443,6 +536,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 19.3029, lng: -99.1506 },
     description: 'Estadio Azteca is the legendary venue of Maradona\'s "Hand of God" goal and Pele\'s World Cup final. Experience history at the only stadium to host two FIFA World Cup finals.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 691412,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/6b4e850c-cf6d-405f-b538-960acaf6a4e1',
+      variants: { en: 1087684, es: 1087705 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Legendary history',
@@ -472,6 +571,12 @@ export const cityGuides: CityGuide[] = [
     coordinates: { lat: 25.7209, lng: -100.2441 },
     description: 'Estadio BBVA is one of the most modern stadiums in the Americas, home to CF Monterrey. Set against the stunning Cerro de la Silla mountain, it offers a unique Mexican World Cup experience.',
     isAvailable: false,
+    purchase: {
+      provider: 'lemonsqueezy',
+      productId: 691426,
+      buyLink: 'https://fanzonenetwork.lemonsqueezy.com/buy/0bb18004-271f-40f8-901a-cf9e93c86d92',
+      variants: { en: 1087716, es: 1087728 }
+    },
     releaseDate: '2025-12-05',
     highlights: [
       'Ultra-modern venue',
