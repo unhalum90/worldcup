@@ -36,6 +36,12 @@ export default function Header() {
     { href: '/planner', label: t('planner') },
   ];
 
+  // Guard tournament visibility in nav; only show when explicitly enabled
+  const showTournament = process.env.NEXT_PUBLIC_ENABLE_TOURNAMENT === 'true';
+  const visibleLinks = showTournament
+    ? navLinks
+    : navLinks.filter((l) => l.href !== '/tournament');
+
   const isActive = (href: string) => {
     if (href === '/#timeline') return false;
     return pathname === href;
@@ -72,7 +78,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav aria-label="Primary" className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
+            {visibleLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -185,7 +191,7 @@ export default function Header() {
             }}
           >
             <nav className="container py-4 flex flex-col gap-3">
-              {navLinks.map((link) => (
+              {visibleLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

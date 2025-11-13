@@ -260,6 +260,17 @@ export default async function CityGuidePage({ params }: Props) {
                 </span>
               ))}
             </div>
+            {(() => {
+              const transitTop5 = new Set(['vancouver', 'toronto', 'seattle', 'houston', 'atlanta']);
+              if (!transitTop5.has(slug)) return null;
+              return (
+                <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 text-blue-900">
+                  <Link href="/blog/transit-friendly-lodging-zones-2026" className="font-semibold underline decoration-blue-400 underline-offset-4 hover:no-underline">
+                    {"Looking for car-free World Cup travel? See the top 5 no-car-needed zones across North America."}
+                  </Link>
+                </div>
+              );
+            })()}
           </div>
         </div>
 
