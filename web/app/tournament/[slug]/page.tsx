@@ -36,15 +36,22 @@ async function getMatch(slug: string) {
   if (error) throw error
   if (!match) return null
   const ids = [match.city_a_id, match.city_b_id]
+  type CityRow = { id: string; name: string; slug: string; stadium_name?: string | null; country?: string | null }
   const { data: cities } = await supabase
     .from('cities')
     .select('id, name, slug, stadium_name, country')
     .in('id', ids)
-  const map = Object.fromEntries((cities || []).map((c) => [c.id, c])) as Record<string, CityMinimal>
+  const citiesById: Record<string, CityMinimal> = (cities || []).reduce(
+    (acc: Record<string, CityMinimal>, c: CityRow) => {
+      acc[c.id] = { id: c.id, name: c.name, slug: c.slug, stadium_name: c.stadium_name || undefined, country: c.country || undefined } as any
+      return acc
+    },
+    {} as Record<string, CityMinimal>
+  )
   const withCities: TournamentMatch & { city_a?: CityMinimal; city_b?: CityMinimal } = {
     ...match,
-    city_a: map[match.city_a_id],
-    city_b: map[match.city_b_id],
+    city_a: citiesById[match.city_a_id],
+    city_b: citiesById[match.city_b_id],
   }
 
   const { data: comments } = await supabase

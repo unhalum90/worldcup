@@ -22,16 +22,22 @@ async function getActiveAndUpcomingMatches() {
   const cityIds = Array.from(
     new Set((matches || []).flatMap((m) => [m.city_a_id, m.city_b_id]).filter(Boolean) as string[])
   )
+  type CityRow = { id: string; name: string; slug: string; stadium_name?: string | null; country?: string | null }
   const { data: cities } = await supabase
     .from('cities')
     .select('id, name, slug, stadium_name, country')
     .in('id', cityIds.length ? cityIds : ['00000000-0000-0000-0000-000000000000'])
-
-  const map = Object.fromEntries((cities || []).map((c) => [c.id, c])) as Record<string, CityMinimal>
+  const citiesById: Record<string, CityMinimal> = (cities || []).reduce(
+    (acc: Record<string, CityMinimal>, c: CityRow) => {
+      acc[c.id] = { id: c.id, name: c.name, slug: c.slug, stadium_name: c.stadium_name || undefined, country: c.country || undefined } as any
+      return acc
+    },
+    {} as Record<string, CityMinimal>
+  )
   const withCities = (matches || []).map((m) => ({
     ...m,
-    city_a: map[m.city_a_id],
-    city_b: map[m.city_b_id],
+    city_a: citiesById[m.city_a_id],
+    city_b: citiesById[m.city_b_id],
   })) as (TournamentMatch & { city_a?: CityMinimal; city_b?: CityMinimal })[]
   // Bracket hint mapping: in this round, winners of 1 vs 3 and 5 vs 7 (left column), 2 vs 4 and 6 vs 8 (right column)
   const byNumber = new Map<number, any>()
