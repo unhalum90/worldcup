@@ -20,7 +20,11 @@ async function getActiveAndUpcomingMatches() {
 
   if (error) throw error
   const cityIds = Array.from(
-    new Set((matches || []).flatMap((m) => [m.city_a_id, m.city_b_id]).filter(Boolean) as string[])
+    new Set(
+      (matches || [])
+        .flatMap((m: { city_a_id?: string | null; city_b_id?: string | null }) => [m.city_a_id, m.city_b_id])
+        .filter(Boolean) as string[]
+    )
   )
   type CityRow = { id: string; name: string; slug: string; stadium_name?: string | null; country?: string | null }
   const { data: cities } = await supabase
@@ -34,7 +38,7 @@ async function getActiveAndUpcomingMatches() {
     },
     {} as Record<string, CityMinimal>
   )
-  const withCities = (matches || []).map((m) => ({
+  const withCities = (matches || []).map((m: any) => ({
     ...m,
     city_a: citiesById[m.city_a_id],
     city_b: citiesById[m.city_b_id],
