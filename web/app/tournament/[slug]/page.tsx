@@ -61,7 +61,7 @@ async function getMatch(slug: string) {
     .order('created_at', { ascending: false })
     .limit(30)
 
-  return { match: withCities, comments: comments || [], citiesMap: map }
+  return { match: withCities, comments: comments || [], citiesMap: citiesById }
 }
 
 export default async function MatchPage({ params }: { params: Promise<{ slug: string }> }) {
