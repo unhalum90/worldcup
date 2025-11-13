@@ -54,6 +54,13 @@ export default async function CityGuidePage({ params }: Props) {
   type CitySchedule = { stadium: string; matches: MatchRow[] };
   const schedule = (matchDates as unknown as Record<string, CitySchedule>)[slug];
   const mapImage = getCityMapPath(city.name);
+  // Prefer a specific variant link to avoid any store-level defaulting
+  const preferredVariantId = city.purchase?.variants?.en || city.purchase?.variants?.es;
+  const buyUrl = city.purchase?.provider === 'lemonsqueezy' && (
+    city.purchase?.buyLink
+      || (preferredVariantId && `https://fanzonenetwork.lemonsqueezy.com/checkout?variant=${preferredVariantId}`)
+      || (city.purchase?.productId && `https://fanzonenetwork.lemonsqueezy.com/checkout?product=${city.purchase.productId}`)
+  ) || undefined;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -111,20 +118,36 @@ export default async function CityGuidePage({ params }: Props) {
             </p>
           </div>
 
-          {/* Hero CTA only when downloadable; otherwise no badge */}
-          {city.isAvailable && (
-            <div className="text-center">
-              <Link
-                href={city.downloadUrl || '#'}
-                className="inline-flex items-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-xl text-lg"
+          {/* Hero CTAs */}
+          <div className="text-center space-y-3">
+            {buyUrl && (
+              <a
+                href={buyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-yellow-300 text-gray-900 px-8 py-4 rounded-lg font-extrabold hover:bg-yellow-200 transition-colors shadow-xl text-lg"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 1.343-3 3v5h6v-5c0-1.657-1.343-3-3-3z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13h14M7 21h10" />
                 </svg>
-                Download Free Guide
-              </Link>
-            </div>
-          )}
+                {`Buy ${city.name} City Guide`}
+              </a>
+            )}
+            {city.isAvailable && (
+              <div>
+                <Link
+                  href={city.downloadUrl || '#'}
+                  className="inline-flex items-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-xl text-lg"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Download Free Guide
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -258,28 +281,48 @@ export default async function CityGuidePage({ params }: Props) {
         {/* CTA Section */}
         <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl shadow-xl p-8 text-white text-center">
           <h2 className="text-3xl font-bold mb-4">
-            {city.isAvailable ? 'Download the Full Guide' : 'Subscribe to Free Newsletter'}
+            {buyUrl ? 'Get the Premium City Guide' : city.isAvailable ? 'Download the Full Guide' : 'Subscribe to Free Newsletter'}
           </h2>
           <p className="text-white/90 mb-6">
-            {city.isAvailable
-              ? `Get the complete ${city.name} travel guide with detailed maps, accommodation tips, and local insights.`
-              : `Get notified when the ${city.name} guide becomes available after the Official Draw.`}
+            {buyUrl
+              ? `Buy the ${city.name} city guide. Choose English or Spanish at checkout — packed with maps, lodging tips, transit, and matchday plans.`
+              : city.isAvailable
+                ? `Get the complete ${city.name} travel guide with detailed maps, accommodation tips, and local insights.`
+                : `Get notified when the ${city.name} guide becomes available after the Official Draw.`}
           </p>
-          {city.isAvailable ? (
-            <Link
-              href={city.downloadUrl || '#'}
-              className="inline-flex items-center gap-2 bg-white text-purple-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-lg"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download Free Guide
-            </Link>
-          ) : (
-            <SubscribeButton className="inline-flex items-center gap-2 bg-white text-purple-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-lg">
-              Subscribe Now →
-            </SubscribeButton>
-          )}
+
+          <div className="flex flex-col items-center gap-4">
+            {buyUrl && (
+              <a
+                href={buyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-white text-purple-700 px-8 py-4 rounded-lg font-extrabold hover:bg-gray-100 transition-colors shadow-lg"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 1.343-3 3v5h6v-5c0-1.657-1.343-3-3-3z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13h14M7 21h10" />
+                </svg>
+                {`Buy ${city.name} City Guide`}
+              </a>
+            )}
+
+            {city.isAvailable ? (
+              <Link
+                href={city.downloadUrl || '#'}
+                className="inline-flex items-center gap-2 bg-white/90 text-purple-700 px-8 py-3 rounded-lg font-semibold hover:bg-white transition-colors shadow"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download Free Guide
+              </Link>
+            ) : (
+              <SubscribeButton className="inline-flex items-center gap-2 bg-white/90 text-purple-700 px-8 py-3 rounded-lg font-semibold hover:bg-white transition-colors shadow">
+                Subscribe Now →
+              </SubscribeButton>
+            )}
+          </div>
         </div>
       </div>
     </div>

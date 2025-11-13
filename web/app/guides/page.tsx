@@ -122,12 +122,15 @@ export default function GuidesPage() {
                 <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                 
                 {/* Status Badge */}
-                {city.isAvailable && (
+                {city.isAvailable ? (
                   <div className="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
                     FREE DOWNLOAD
                   </div>
-                )}
-                {!city.isAvailable && (
+                ) : city.purchase ? (
+                  <div className="absolute top-3 right-3 bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                    PREMIUM GUIDE
+                  </div>
+                ) : (
                   <div className="absolute top-3 right-3 bg-yellow-500 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold">
                     COMING SOON
                   </div>
@@ -153,7 +156,7 @@ export default function GuidesPage() {
                 </p>
 
                 <div className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 group-hover:gap-3 group-hover:text-blue-700 transition-all">
-                  {city.isAvailable ? 'View Guide' : 'Learn More'}
+                  {city.purchase ? 'Buy City Guide' : city.isAvailable ? 'View Guide' : 'Learn More'}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
