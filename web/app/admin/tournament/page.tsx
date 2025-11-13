@@ -15,11 +15,15 @@ async function getMatches() {
   const matches = data || []
 
   const cityIds = Array.from(new Set(matches.flatMap((m: any) => [m.city_a_id, m.city_b_id])))
+  type CityRow = { id: string; name: string; slug: string }
   const { data: cities } = await supabase
     .from('cities')
     .select('id, name, slug')
     .in('id', cityIds.length ? cityIds : ['00000000-0000-0000-0000-000000000000'])
-  const cityMap = Object.fromEntries((cities || []).map((c) => [c.id, c]))
+  const cityMap: Record<string, CityRow> = (cities || []).reduce((acc, c: CityRow) => {
+    acc[c.id] = c
+    return acc
+  }, {} as Record<string, CityRow>)
   return matches.map((m: any) => ({ ...m, city_a: cityMap[m.city_a_id], city_b: cityMap[m.city_b_id] }))
 }
 
