@@ -1,1 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480"><rect width="640" height="480" fill="#b22234"/><g fill="#fff"><rect width="640" height="36" y="36"/><rect width="640" height="36" y="108"/><rect width="640" height="36" y="180"/><rect width="640" height="36" y="252"/><rect width="640" height="36" y="324"/></g><rect width="280" height="196" fill="#3c3b6e"/><g fill="#fff" transform="translate(20,14) scale(0.9)">{/* simplified stars */}<circle cx="20" cy="20" r="6"/><circle cx="50" cy="20" r="6"/><circle cx="80" cy="20" r="6"/><circle cx="110" cy="20" r="6"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <rect width="900" height="600" fill="#002868"/>
+  <rect width="900" height="46" y="0" fill="#BF0A30"/>
+  <rect width="900" height="46" y="92" fill="#FFFFFF"/>
+  <rect width="900" height="46" y="138" fill="#BF0A30"/>
+  <rect width="900" height="46" y="184" fill="#FFFFFF"/>
+  <rect width="900" height="46" y="230" fill="#BF0A30"/>
+  <rect width="900" height="46" y="276" fill="#FFFFFF"/>
+  <rect width="900" height="46" y="322" fill="#BF0A30"/>
+  <rect width="900" height="46" y="368" fill="#FFFFFF"/>
+  <rect width="900" height="46" y="414" fill="#BF0A30"/>
+  <rect width="900" height="46" y="460" fill="#FFFFFF"/>
+  <rect width="900" height="46" y="506" fill="#BF0A30"/>
+  <rect width="900" height="46" y="552" fill="#FFFFFF"/>
+  <rect width="360" height="315" x="0" y="0" fill="#002868"/>
+</svg>

@@ -30,6 +30,24 @@ export async function middleware(req: NextRequest) {
     request: { headers: requestHeaders },
   });
 
+  // Ensure anonymous voter cookie for tournament flows (no-login voting UX)
+  try {
+    const isTournament = req.nextUrl.pathname.startsWith('/tournament');
+    const existing = req.cookies.get('t_voter')?.value;
+    if (isTournament && !existing) {
+      const anonId = crypto.randomUUID();
+      res.cookies.set({
+        name: 't_voter',
+        value: anonId,
+        httpOnly: false, // readable client-side for optimistic UI if needed
+        sameSite: 'lax',
+        secure: req.nextUrl.protocol === 'https:' || process.env.NODE_ENV === 'production',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365 * 5, // ~5 years
+      });
+    }
+  } catch {}
+
   // Supabase client bound to request/response cookies
   let user: any = null;
   let supabase: any = null;
