@@ -74,11 +74,11 @@ export default async function TournamentHub() {
   )
   // Split matches into two columns by match_number parity to visually pair 1-3,5-7 on left and 2-4,6-8 on right
   const left = (matches as any[])
-    .filter((m) => (m.match_number ?? 0) % 2 === 1)
-    .sort((a, b) => (a.match_number || 0) - (b.match_number || 0))
+    .filter((m: any) => (m.match_number ?? 0) % 2 === 1)
+    .sort((a: any, b: any) => (a.match_number || 0) - (b.match_number || 0))
   const right = (matches as any[])
-    .filter((m) => (m.match_number ?? 0) % 2 === 0)
-    .sort((a, b) => (a.match_number || 0) - (b.match_number || 0))
+    .filter((m: any) => (m.match_number ?? 0) % 2 === 0)
+    .sort((a: any, b: any) => (a.match_number || 0) - (b.match_number || 0))
 
   const gapClass = (idx: number, total: number) => {
     // Within each column: small gap inside pairs, larger gap between pairs

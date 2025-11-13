@@ -37,7 +37,7 @@ export function AdminMatchTableClient({ matches }: { matches: any[] }) {
         </tr>
       </thead>
       <tbody>
-        {matches.map((m) => (
+        {matches.map((m: any) => (
           <tr key={m.id} className="border-t">
             <td className="p-2">{m.round_number}</td>
             <td className="p-2">{m.match_number ?? ''}</td>
@@ -75,4 +75,3 @@ export function AdminMatchTableClient({ matches }: { matches: any[] }) {
     </table>
   )
 }
-

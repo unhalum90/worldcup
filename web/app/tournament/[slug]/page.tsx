@@ -171,7 +171,9 @@ export default async function MatchPage({ params }: { params: Promise<{ slug: st
         </div>
         {/* Featured comment (score > 3) */}
         {(() => {
-          const featured = (comments as any[]).filter((c) => (c.score || 0) > 3).sort((a, b) => (b.score || 0) - (a.score || 0))[0]
+          const featured = (comments as any[])
+            .filter((c: any) => (c.score || 0) > 3)
+            .sort((a: any, b: any) => (b.score || 0) - (a.score || 0))[0]
           if (!featured) return null
           return (
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
