@@ -39,6 +39,7 @@ export async function getActiveSubscription(supabase: any, userId: string): Prom
 
 /**
  * True if user has an active subscription. Safe default is false.
+ * Fixed: 2025-11-14 - Corrected query from malformed .or() to .eq()
  */
 export async function isActiveMember(supabase: any, userId: string): Promise<boolean> {
   try {

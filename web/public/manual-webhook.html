@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Webhook Processor</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        h1 { color: #0ea5e9; }
+        textarea {
+            width: 100%;
+            min-height: 400px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            padding: 15px;
+            background: #1a1a1a;
+            color: #fff;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #1a1a1a;
+            color: #fff;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        button {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        button:hover { background: #0284c7; }
+        button:disabled {
+            background: #333;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+        }
+        .success {
+            background: #064e3b;
+            border: 1px solid #10b981;
+        }
+        .error {
+            background: #7f1d1d;
+            border: 1px solid #ef4444;
+        }
+        .instructions {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0ea5e9;
+        }
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Manual Webhook Processor</h1>
+    
+    <div class="instructions">
+        <h3>How to Use:</h3>
+        <ol>
+            <li>Go to Lemon Squeezy → Settings → Webhooks</li>
+            <li>Find your failed webhook (order 6830718 for eric@ericchamberlin.tech)</li>
+            <li>Copy the entire JSON payload</li>
+            <li>Paste it below</li>
+            <li>Enter your admin password (from ADMIN_WEBHOOK_PASSWORD env var)</li>
+            <li>Click "Process Webhook"</li>
+        </ol>
+        <p><strong>Note:</strong> This bypasses Vercel's bot protection because you're authenticated in your browser.</p>
+    </div>
+
+    <label for="password">Admin Password:</label>
+    <input type="password" id="password" placeholder="Enter ADMIN_WEBHOOK_PASSWORD">
+
+    <label for="payload">Webhook Payload (JSON):</label>
+    <textarea id="payload" placeholder='Paste the JSON from Lemon Squeezy here, e.g.:
+{
+  "data": {
+    "id": "6830718",
+    ...
+  },
+  "meta": {
+    "event_name": "order_created",
+    "custom_data": {
+      "user_id": "34ac70a2-82d6-4673-9165-29d8895d3373"
+    }
+  }
+}'></textarea>
+
+    <button onclick="processWebhook()" id="submitBtn">Process Webhook</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function processWebhook() {
+            const password = document.getElementById('password').value;
+            const payloadText = document.getElementById('payload').value;
+            const resultDiv = document.getElementById('result');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (!password) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Error: Please enter admin password';
+                return;
+            }
+
+            if (!payloadText.trim()) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Error: Please paste webhook payload';
+                return;
+            }
+
+            let payload;
+            try {
+                payload = JSON.parse(payloadText);
+            } catch (e) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Error: Invalid JSON\n\n' + e.message;
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+            resultDiv.textContent = 'Processing webhook...';
+            resultDiv.className = 'result';
+
+            try {
+                const response = await fetch('/api/admin/process-webhook', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${password}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = '✅ SUCCESS!\n\n' + JSON.stringify(result, null, 2);
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ ERROR\n\n' + JSON.stringify(result, null, 2);
+                }
+            } catch (e) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ NETWORK ERROR\n\n' + e.message;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Process Webhook';
+            }
+        }
+
+        // Allow Cmd+Enter to submit
+        document.getElementById('payload').addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                processWebhook();
+            }
+        });
+    </script>
+</body>
+</html>
