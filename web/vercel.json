@@ -1,9 +1,7 @@
 {
   "functions": {
-    "api/webhooks/lemon/route.ts": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 30,
-      "memory": 512
+    "api/webhooks/lemon/route.js": {
+      "runtime": "nodejs18.x"
     }
   }
 }
