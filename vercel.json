@@ -1,5 +1,16 @@
 {
   "routes": [
     { "src": "^/preview$", "dest": "/preview.html" }
+  ],
+  "headers": [
+    {
+      "source": "/api/webhooks/(.*)",
+      "headers": [
+        {
+          "key": "x-vercel-skip-protection",
+          "value": "1"
+        }
+      ]
+    }
   ]
 }

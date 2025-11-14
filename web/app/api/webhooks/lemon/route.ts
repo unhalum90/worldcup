@@ -7,6 +7,14 @@ import { addSubscriberToGroup } from '@/lib/mailerlite'
 export const runtime = 'nodejs'
 // Disable static optimization for webhooks
 export const dynamic = 'force-dynamic'
+// CRITICAL: Bypass Vercel bot protection for webhooks
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+// Add special headers to help bypass bot protection
+export const preferredRegion = 'auto'
 
 function verifySignature(rawBody: string, signature: string | null, secret: string | undefined) {
   if (!secret) {
@@ -75,10 +83,13 @@ export async function POST(req: NextRequest) {
   const eventName: string = payload?.meta?.event_name || payload?.event_name || 'unknown'
   const data = payload?.data
   const attrs = data?.attributes || {}
+  const meta = payload?.meta || {}
+  const customData = meta?.custom_data || {}
 
   console.log('📋 Event:', eventName)
   console.log('📋 Product ID:', attrs?.first_order_item?.product_id || attrs?.product_id)
   console.log('📋 Email:', attrs?.user_email || attrs?.customer_email)
+  console.log('📋 Custom Data:', customData)
 
   // Extract basics (best-effort, payload shape varies by event)
   const ls_order_id: string | undefined = String(data?.id || attrs?.identifier || attrs?.order_id || '') || undefined
@@ -87,6 +98,9 @@ export async function POST(req: NextRequest) {
   const product_name: string | undefined = attrs?.first_order_item?.product_name || attrs?.product_name || attrs?.name || undefined
   const price: number | undefined = attrs?.total || attrs?.subtotal || attrs?.price || undefined
   const currency: string | undefined = (attrs?.currency || 'USD') as string
+  
+  // CRITICAL: Use user_id from custom_data if available (most reliable)
+  const custom_user_id: string | undefined = customData?.user_id || undefined
 
   const statusMap: Record<string, string> = {
     order_created: 'completed',
@@ -110,9 +124,16 @@ export async function POST(req: NextRequest) {
       payload,
     }
 
-    // Try to map to user by email
+    // Try to map to user by custom_data.user_id first, then email
     let user_id: string | null = null
-    if (email) {
+    
+    // Priority 1: Use user_id from custom_data (most reliable)
+    if (custom_user_id) {
+      user_id = custom_user_id
+      console.log('👤 Using user_id from custom_data:', user_id)
+    }
+    // Priority 2: Lookup by email
+    else if (email) {
       const { data: prof, error: profileError } = await supabaseServer
         .from('profiles')
         .select('user_id')
@@ -125,7 +146,7 @@ export async function POST(req: NextRequest) {
       
       if (prof?.user_id) {
         user_id = prof.user_id
-        console.log('👤 Found user:', user_id)
+        console.log('👤 Found user by email:', user_id)
       } else {
         console.log('👤 No user found for email:', email)
       }
@@ -164,8 +185,8 @@ export async function POST(req: NextRequest) {
     console.log('🎫 Member product IDs:', memberIds)
     console.log('🎫 Current product ID:', product_id)
 
-    if (product_id && memberIds.includes(String(product_id)) && email) {
-      console.log('🎉 Updating user to member status')
+    if (product_id && memberIds.includes(String(product_id)) && user_id) {
+      console.log('🎉 Updating user to member status for user_id:', user_id)
       
       const { error: updateError } = await supabaseServer
         .from('profiles')
@@ -176,27 +197,29 @@ export async function POST(req: NextRequest) {
           is_member: true, 
           updated_at: new Date().toISOString() 
         })
-        .eq('email', email)
+        .eq('user_id', user_id)
 
       if (updateError) {
         console.error('Profile update error:', updateError)
       } else {
-        console.log('✅ Profile updated to member')
+        console.log('✅ Profile updated to member for user_id:', user_id)
       }
 
       // Add to MailerLite membership group (best-effort)
-      const mlGroup = process.env.MAILERLITE_MEMBER_GROUP_ID || process.env.MAILERLITE_NEWSLETTER_GROUP_ID
-      if (mlGroup) {
-        try {
-          console.log('📧 Adding to MailerLite group:', mlGroup)
-          const res = await addSubscriberToGroup(email, mlGroup)
-          if (!res.ok) {
-            console.warn('MailerLite add failed:', res)
-          } else {
-            console.log('✅ Added to MailerLite')
+      if (email) {
+        const mlGroup = process.env.MAILERLITE_MEMBER_GROUP_ID || process.env.MAILERLITE_NEWSLETTER_GROUP_ID
+        if (mlGroup) {
+          try {
+            console.log('📧 Adding to MailerLite group:', mlGroup)
+            const res = await addSubscriberToGroup(email, mlGroup)
+            if (!res.ok) {
+              console.warn('MailerLite add failed:', res)
+            } else {
+              console.log('✅ Added to MailerLite')
+            }
+          } catch (e) {
+            console.warn('MailerLite add threw:', e)
           }
-        } catch (e) {
-          console.warn('MailerLite add threw:', e)
         }
       }
     }
