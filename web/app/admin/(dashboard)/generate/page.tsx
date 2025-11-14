@@ -99,7 +99,16 @@ export default function GenerateArticlePage() {
 
   return (
     <div className="p-8 max-w-6xl">
-      <h1 className="text-3xl font-bold mb-2">AI Article Generator</h1>
+      <div className="flex items-center justify-between mb-2">
+        <h1 className="text-3xl font-bold">AI Article Generator</h1>
+        <a
+          href="/admin/drafts"
+          className="text-sm text-blue-600 hover:underline"
+          title="Switch to the drafts list and create a blank draft"
+        >
+          Start a blank draft →
+        </a>
+      </div>
       <p className="text-gray-600 mb-8">
         Generate SEO-optimized blog posts using AI for World Cup 2026 content
       </p>
