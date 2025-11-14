@@ -46,7 +46,7 @@ export async function isActiveMember(supabase: any, userId: string): Promise<boo
     const { data: prof, error } = await supabase
       .from('profiles')
       .select('is_member, account_level, subscription_tier, subscription_status, email')
-      .or(`user_id.eq.${userId},id.eq.${userId}`)
+      .eq('user_id', userId)
       .maybeSingle();
 
     if (!error && prof) {
