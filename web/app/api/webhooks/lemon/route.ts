@@ -3,6 +3,11 @@ import crypto from 'node:crypto'
 import { supabaseServer } from '@/lib/supabaseServer'
 import { addSubscriberToGroup } from '@/lib/mailerlite'
 
+// Tell Vercel this is a webhook endpoint that should run on Node.js runtime
+export const runtime = 'nodejs'
+// Disable static optimization for webhooks
+export const dynamic = 'force-dynamic'
+
 function verifySignature(rawBody: string, signature: string | null, secret: string | undefined) {
   if (!secret) {
     console.error('No webhook secret configured')
