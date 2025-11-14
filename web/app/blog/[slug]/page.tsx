@@ -71,7 +71,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           )}
 
           {/* Tags */}
-          {post.tags.length > 0 && (
+          {Array.isArray(post.tags) && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-gray-200">
               {post.tags.map((tag, i) => (
                 <span
