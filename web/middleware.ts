@@ -16,6 +16,10 @@ function normalizeToHttps(u: string): string {
 
 // Middleware to handle locale from cookies
 export async function middleware(req: NextRequest) {
+  // 🚨 Bypass for Lemon Squeezy webhook (must not be intercepted by middleware)
+  if (req.nextUrl.pathname.startsWith('/api/webhooks/lemon')) {
+    return NextResponse.next();
+  }
   // Get locale from cookie
   const locale = req.cookies.get('NEXT_LOCALE')?.value || defaultLocale;
   
@@ -187,3 +191,5 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 };
+
+//added
