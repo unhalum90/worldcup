@@ -44,6 +44,16 @@ export async function POST(req: Request) {
           refresh_token: body.session.refresh_token,
         })
       }
+
+      // Best-effort: attach any pre-login purchases to this user by email
+      try {
+        const userId = body?.session?.user?.id
+        if (userId) {
+          await supabase.rpc('attach_purchases_to_user', { p_user_id: userId })
+        }
+      } catch {
+        // ignore if function missing or fails; this is a soft helper
+      }
     }
 
     // When signing out, clear cookies
@@ -56,4 +66,3 @@ export async function POST(req: Request) {
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
-
