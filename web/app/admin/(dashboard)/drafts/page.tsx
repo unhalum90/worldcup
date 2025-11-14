@@ -80,16 +80,53 @@ export default function DraftsPage() {
 
   const displayPosts = activeTab === 'drafts' ? drafts : published;
 
+  async function handleNewBlankDraft() {
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      const now = new Date();
+      const baseSlug = `untitled-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${now.getHours()}${now.getMinutes()}`;
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .insert({
+          title: 'Untitled draft',
+          slug: baseSlug,
+          status: 'draft',
+          content_markdown: '',
+          excerpt: null,
+          city: null,
+          tags: [],
+          seo_keywords: [],
+          meta_description: null,
+          featured_image_url: null,
+          author_id: userData?.user?.id || null,
+        })
+        .select('id')
+        .single();
+      if (error) throw error;
+      window.location.href = `/admin/drafts/${data.id}`;
+    } catch (e: any) {
+      alert(`Failed to create draft: ${e?.message || e}`);
+    }
+  }
+
   return (
     <div className="p-8 max-w-6xl">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-8 gap-3">
         <h1 className="text-3xl font-bold">Content Management</h1>
-        <Link
-          href="/admin/generate"
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-        >
-          + New Article
-        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleNewBlankDraft}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            + New Blank Draft
+          </button>
+          <Link
+            href="/admin/generate"
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+          >
+            + AI Article
+          </Link>
+        </div>
       </div>
 
       {/* Tabs */}
