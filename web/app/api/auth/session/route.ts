@@ -1,77 +1,59 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
+import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
+import { createServerClient } from '@supabase/ssr'
 
 function normalizeToHttps(u: string): string {
-  if (!u) return '';
+  if (!u) return ''
   try {
-    const parsed = new URL(u);
-    if (parsed.protocol !== 'https:') parsed.protocol = 'https:';
-    return parsed.toString().replace(/\/$/, '');
+    const parsed = new URL(u)
+    if (parsed.protocol !== 'https:') parsed.protocol = 'https:'
+    return parsed.toString().replace(/\/$/, '')
   } catch {
-    return u.replace(/^http:\/\//i, 'https://');
+    return u.replace(/^http:\/\//i, 'https://')
   }
 }
 
-export async function POST(request: NextRequest) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('Supabase environment variables are missing for auth/session route');
-    return NextResponse.json({ error: 'server_misconfigured' }, { status: 500 });
-  }
-
-  const body = await request.json().catch(() => null);
-  if (!body) {
-    return NextResponse.json({ error: 'invalid_body' }, { status: 400 });
-  }
-
-  const { event, session } = body as { event: string; session: any };
-
-  const response = NextResponse.json({ success: true });
-
-  const supabase = createServerClient(
-    normalizeToHttps(supabaseUrl),
-    supabaseAnonKey,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
-        },
-        set(name: string, value: string, options: any) {
-          response.cookies.set({ name, value, ...options });
-        },
-        remove(name: string, options: any) {
-          response.cookies.set({ name, value: '', ...options });
-        },
-      },
-    }
-  );
-
+export async function POST(req: Request) {
   try {
-    if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
-      if (!session) {
-        return NextResponse.json({ error: 'session_missing' }, { status: 400 });
+    const body = await req.json().catch(() => ({})) as any
+    const cookieStore = await cookies()
+    const res = new NextResponse(null, { status: 200 })
+    const supabase = createServerClient(
+      normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || ''),
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+          set(name: string, value: string, options: any) {
+            res.cookies.set({ name, value, ...options })
+          },
+          remove(name: string, options: any) {
+            res.cookies.delete({ name, ...options })
+          },
+        },
       }
-      await supabase.auth.setSession(session);
-      // After sign-in, reconcile any purchases made with the same email (SECURITY DEFINER function)
-      try {
-        if (session.user?.id) {
-          await supabase.rpc('attach_purchases_to_user', { p_user_id: session.user.id });
-        }
-      } catch (reconcileError) {
-        console.warn('attach_purchases_to_user failed', reconcileError);
-      }
-    } else if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
-      try {
-        await supabase.auth.signOut();
-      } catch (signOutError) {
-        console.warn('Supabase signOut during session sync failed', signOutError);
+    )
+
+    // When signing in, refresh, or updating user, set the session cookies on the server
+    if (body?.event === 'SIGNED_IN' || body?.event === 'TOKEN_REFRESHED' || body?.event === 'USER_UPDATED') {
+      if (body?.session?.access_token && body?.session?.refresh_token) {
+        await supabase.auth.setSession({
+          access_token: body.session.access_token,
+          refresh_token: body.session.refresh_token,
+        })
       }
     }
-  } catch (error) {
-    console.error('Failed to sync Supabase auth cookies', error);
-    return NextResponse.json({ error: 'session_sync_failed' }, { status: 500 });
-  }
 
-  return response;
+    // When signing out, clear cookies
+    if (body?.event === 'SIGNED_OUT') {
+      await supabase.auth.signOut()
+    }
+
+    return res
+  } catch (e) {
+    return new NextResponse('Bad Request', { status: 400 })
+  }
 }
+
