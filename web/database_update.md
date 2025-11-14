@@ -147,6 +147,11 @@ CREATE TABLE public.profiles (
   is_member boolean DEFAULT false,
   subscription_renews_at timestamp with time zone,
   subscription_cancels_at timestamp with time zone,
+  member_since timestamp with time zone,
+  ls_customer_id text,
+  ls_subscription_id text,
+  ls_product_id text,
+  ls_variant_id text,
   CONSTRAINT profiles_pkey PRIMARY KEY (user_id)
 );
 CREATE TABLE public.purchases (
