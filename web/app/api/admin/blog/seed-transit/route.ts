@@ -121,6 +121,17 @@ export async function POST() {
       }
     )
 
+    // AuthN/AuthZ: require signed-in admin (email allowlist)
+    const { data: userData } = await supabase.auth.getUser()
+    const email = (userData?.user?.email || '').toLowerCase()
+    const adminList = (process.env.ADMIN_EMAILS || process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean)
+    if (!email || (adminList.length > 0 && !adminList.includes(email))) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const slug = 'transit-friendly-lodging-zones-2026'
     const title = 'World Cup 2026: No-Car Needed – The 5 Most Transit-Friendly Lodging Zones'
     const excerpt = 'Skip the rental car. The five most transit-friendly lodging zones across North America for World Cup 2026.'
@@ -148,4 +159,3 @@ export async function POST() {
     return NextResponse.json({ error: e?.message || 'Unexpected error' }, { status: 500 })
   }
 }
-
