@@ -33,6 +33,11 @@ async function getPost(slug: string): Promise<BlogPost | null> {
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await getPost(params.slug);
 
+  const safePublished =
+    post && post.published_at && !isNaN(Date.parse(post.published_at))
+      ? new Date(post.published_at)
+      : null;
+
   if (!post) {
     notFound();
   }
@@ -49,13 +54,15 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 {post.city}
               </span>
             )}
-            <span>
-              {new Date(post.published_at).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </span>
+            {safePublished && (
+              <span>
+                {safePublished.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </span>
+            )}
           </div>
 
           {/* Title */}
@@ -133,7 +140,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: post.title,
       description: post.meta_description || post.excerpt || post.title,
       type: 'article',
-      publishedTime: post.published_at,
+      publishedTime:
+        post.published_at && !isNaN(Date.parse(post.published_at))
+          ? post.published_at
+          : undefined,
       images: post.featured_image_url ? [post.featured_image_url] : [],
     },
   };
