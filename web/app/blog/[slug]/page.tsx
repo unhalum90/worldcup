@@ -148,4 +148,4 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     },
   };
 }
-// temporary redeploy trigger
+// temporary redeploy trigger longer
