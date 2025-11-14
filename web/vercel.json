@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/webhooks/lemon/route.js": {
+    "app/api/webhooks/lemon/route.ts": {
       "runtime": "nodejs18.x"
     }
   }
