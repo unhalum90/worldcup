@@ -119,6 +119,49 @@ async function findMembershipByEmail(email: string, opts: { apiKey: string; stor
     }
   }
 
+  // 4) Ultimate fallback: scan recent orders across store(s) by email only
+  {
+    const ordersUrl = new URL('https://api.lemonsqueezy.com/v1/orders')
+    if (storeId) ordersUrl.searchParams.set('filter[store_id]', storeId)
+    ordersUrl.searchParams.set('include', 'order-items')
+    ordersUrl.searchParams.set('page[size]', '100')
+    const ordersResp = await fetchJSON(ordersUrl, apiKey)
+    const orders: LemonOrder[] = Array.isArray(ordersResp?.data) ? ordersResp.data : []
+    const included: any[] = Array.isArray(ordersResp?.included) ? ordersResp.included : []
+    const targetEmail = email.toLowerCase()
+    const allowedOrderIds = new Set(
+      orders.filter((o) => {
+        const attrs = o?.attributes || {}
+        const oEmail = String(attrs.user_email || attrs.customer_email || '').toLowerCase()
+        return oEmail && oEmail === targetEmail
+      }).map((o) => o.id)
+    )
+    if (allowedOrderIds.size) {
+      const items: LemonOrderItem[] = included.filter((inc) => inc?.type === 'order-items')
+      const matchingItem = items.find((it) => {
+        const orderId = it?.relationships?.order?.data?.id
+        if (!orderId || !allowedOrderIds.has(orderId)) return false
+        const pid = String(it?.attributes?.product_id || it?.attributes?.product?.id || '')
+        const vid = String(it?.attributes?.variant_id || it?.attributes?.variant?.id || '')
+        const pname = String(it?.attributes?.product_name || it?.attributes?.name || '').toLowerCase()
+        const nameLooksLikeMembership = pname.includes('membership') || pname.includes('fan zone')
+        const productMatch = pid && memberProductIds.includes(pid)
+        const variantMatch = vid && memberVariantIds.includes(vid)
+        return productMatch || variantMatch || nameLooksLikeMembership
+      })
+      if (matchingItem) {
+        const orderId = matchingItem?.relationships?.order?.data?.id || Array.from(allowedOrderIds)[0] || ''
+        const relatedOrder = orders.find((o) => o.id === orderId) || orders[0]
+        const productId = String(matchingItem.attributes.product_id || '')
+        const variantId = String(matchingItem.attributes.variant_id || '')
+        const productName = String(matchingItem.attributes.product_name || matchingItem.attributes.name || '')
+        const currency = String(relatedOrder?.attributes?.currency || 'USD')
+        const priceCents = Number(relatedOrder?.attributes?.total || matchingItem.attributes?.price || 0)
+        return { found: true as const, via: 'order' as const, productId, variantId, orderId, productName, currency, price: priceCents ? priceCents / 100 : 0 }
+      }
+    }
+  }
+
   return { found: false as const, reason: 'no_order' as const }
 }
 
