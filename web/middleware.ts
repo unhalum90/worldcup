@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { defaultLocale } from './i18n';
 import { createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { isActiveMember } from './lib/membership';
 
 function normalizeToHttps(u: string): string {
@@ -120,13 +121,25 @@ export async function middleware(req: NextRequest) {
 
     // If user exists but not an active member, redirect to memberships
     try {
-      const active = await isActiveMember(supabase, user.id);
+      // Use service role client to bypass RLS when checking membership
+      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
+      const adminSupabase = serviceKey
+        ? createClient(
+            normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
+            serviceKey,
+            { auth: { persistSession: false } }
+          )
+        : supabase; // Fallback to SSR client if no service key (dev mode)
+      
+      const active = await isActiveMember(adminSupabase, user.id);
       if (!active) {
         // Add a tiny hint for diagnostics without leaking details
         redirectUrl.searchParams.set('gate', 'not_member');
         return NextResponse.redirect(redirectUrl);
       }
-    } catch {
+    } catch (err) {
+      // Log the error for debugging
+      console.error('[Middleware] Membership check error:', err);
       // If membership check fails (e.g., transient auth cookies), allow and let API enforce
       // Trip Builder API routes also gate using server-side checks.
       return res;
@@ -167,7 +180,17 @@ export async function middleware(req: NextRequest) {
         
         if (!prof) {
           // Check if they're an active member to determine onboarding source
-          const active = await isActiveMember(supabase, user.id);
+          // Use service role client for membership check
+          const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
+          const adminSupabase = serviceKey
+            ? createClient(
+                normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
+                serviceKey,
+                { auth: { persistSession: false } }
+              )
+            : supabase;
+          
+          const active = await isActiveMember(adminSupabase, user.id);
           const url = new URL('/onboarding', req.url);
           url.searchParams.set('from', active ? 'membership' : 'signup');
           url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
