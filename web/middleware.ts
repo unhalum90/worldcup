@@ -8,6 +8,17 @@ const PROTECTED_ROUTES = [
   '/planner/flights',
 ]
 
+function normalizeToHttps(u: string): string {
+  if (!u) return ''
+  try {
+    const parsed = new URL(u)
+    if (parsed.protocol !== 'https:') parsed.protocol = 'https:'
+    return parsed.toString().replace(/\/$/, '')
+  } catch {
+    return u.replace(/^http:\/\//i, 'https://')
+  }
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
@@ -21,7 +32,7 @@ export async function middleware(request: NextRequest) {
   let response = NextResponse.next()
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || ''),
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
@@ -39,7 +50,14 @@ export async function middleware(request: NextRequest) {
   )
 
   // Check auth
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
+
+  console.log('[Middleware] user check', {
+    path: pathname,
+    hasUser: !!user,
+    userError: userError?.message,
+    cookieNames: request.cookies.getAll().map(c => c.name),
+  })
 
   if (!user) {
     const redirectUrl = new URL('/membership', request.url)
@@ -48,11 +66,17 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check membership
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('is_member')
     .eq('user_id', user.id)
     .single()
+
+  console.log('[Middleware] membership check', {
+    path: pathname,
+    isMember: profile?.is_member,
+    profileError: profileError?.message,
+  })
 
   if (!profile?.is_member) {
     const redirectUrl = new URL('/membership', request.url)

@@ -4,7 +4,14 @@ import { createClient } from '@/lib/supabase/server'
 export async function POST(req: NextRequest) {
   try {
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { user }, error } = await supabase.auth.getUser()
+
+    console.log('[Checkout] auth.getUser()', {
+      hasUser: !!user,
+      email: user?.email,
+      error: error?.message,
+      cookieNames: req.cookies.getAll().map(c => c.name),
+    })
 
     if (!user?.email) {
       return NextResponse.json(
@@ -13,9 +20,9 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const storeId = process.env.LEMON_STORE_ID
-    const productId = process.env.LEMON_MEMBER_PRODUCT_IDS?.split(',')[0]
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  const storeId = process.env.LEMON_STORE_ID
+  const productId = process.env.LEMON_MEMBER_PRODUCT_IDS?.split(',')[0]
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
 
     if (!storeId || !productId) {
       return NextResponse.json(
@@ -24,8 +31,8 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Create Lemon Squeezy checkout
-    const checkoutUrl = new URL(`https://worldcup26fanzone.lemonsqueezy.com/checkout/buy/${productId}`)
+  // Create Lemon Squeezy checkout
+  const checkoutUrl = new URL(`https://worldcup26fanzone.lemonsqueezy.com/checkout/buy/${productId}`)
     
     checkoutUrl.searchParams.set('checkout[email]', user.email)
     checkoutUrl.searchParams.set('checkout[custom][user_id]', user.id)
@@ -36,9 +43,10 @@ export async function POST(req: NextRequest) {
       `${siteUrl}/membership/activate?order_id={order_id}`
     )
 
-    return NextResponse.json({ 
-      url: checkoutUrl.toString() 
-    })
+    const result = { url: checkoutUrl.toString() }
+    console.log('[Checkout] returning checkout URL', result)
+
+    return NextResponse.json(result)
   } catch (error) {
     console.error('Checkout error:', error)
     return NextResponse.json(
