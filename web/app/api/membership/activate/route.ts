@@ -31,8 +31,9 @@ async function fetchJSON(url: URL, apiKey: string) {
   return res.json()
 }
 
-async function findMembershipByEmail(email: string, opts: { apiKey: string; storeId?: string; memberProductIds: string[] }) {
+async function findMembershipByEmail(email: string, opts: { apiKey: string; storeId?: string; memberProductIds: string[]; memberVariantIds?: string[] }) {
   const { apiKey, storeId, memberProductIds } = opts
+  const memberVariantIds = opts.memberVariantIds || []
 
   // 1) Find customers by email
   const customersUrl = new URL('https://api.lemonsqueezy.com/v1/customers')
@@ -98,17 +99,23 @@ async function findMembershipByEmail(email: string, opts: { apiKey: string; stor
       const orderId = it?.relationships?.order?.data?.id
       if (!orderId || !allowedOrderIds.has(orderId)) return false
       const pid = String(it?.attributes?.product_id || it?.attributes?.product?.id || '')
-      return pid && memberProductIds.includes(pid)
+      const vid = String(it?.attributes?.variant_id || it?.attributes?.variant?.id || '')
+      const pname = String(it?.attributes?.product_name || it?.attributes?.name || '').toLowerCase()
+      const nameLooksLikeMembership = pname.includes('membership') || pname.includes('fan zone')
+      const productMatch = pid && memberProductIds.includes(pid)
+      const variantMatch = vid && memberVariantIds.includes(vid)
+      return productMatch || variantMatch || nameLooksLikeMembership
     })
 
     if (matchingItem) {
       const orderId = matchingItem?.relationships?.order?.data?.id || Array.from(allowedOrderIds)[0] || ''
       const relatedOrder = orders.find((o) => o.id === orderId) || orders[0]
       const productId = String(matchingItem.attributes.product_id || '')
+      const variantId = String(matchingItem.attributes.variant_id || '')
       const productName = String(matchingItem.attributes.product_name || matchingItem.attributes.name || '')
       const currency = String(relatedOrder?.attributes?.currency || 'USD')
       const priceCents = Number(relatedOrder?.attributes?.total || matchingItem.attributes?.price || 0)
-      return { found: true as const, via: 'order' as const, productId, orderId, productName, currency, price: priceCents ? priceCents / 100 : 0 }
+      return { found: true as const, via: 'order' as const, productId, variantId, orderId, productName, currency, price: priceCents ? priceCents / 100 : 0 }
     }
   }
 
@@ -124,6 +131,10 @@ export async function POST(req: NextRequest) {
   const apiKey = process.env.LEMON_API_KEY || ''
   const storeId = process.env.LEMON_STORE_ID || undefined
   const memberIds = (process.env.LEMON_MEMBER_PRODUCT_IDS || process.env.NEXT_PUBLIC_MEMBER_PRODUCT_IDS || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+  const memberVariantIds = (process.env.LEMON_MEMBER_VARIANT_IDS || process.env.NEXT_PUBLIC_MEMBER_VARIANT_IDS || '')
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean)
@@ -163,7 +174,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const found = await findMembershipByEmail(email, { apiKey, storeId, memberProductIds: memberIds })
+    const found = await findMembershipByEmail(email, { apiKey, storeId, memberProductIds: memberIds, memberVariantIds })
     if (!found.found) {
       return NextResponse.json({ ok: false, error: 'not_found', details: found }, { status: 404 })
     }
@@ -216,6 +227,7 @@ export async function POST(req: NextRequest) {
         price: typeof (found as any).price === 'number' ? (found as any).price : 0,
         currency: (found as any).currency || 'USD',
         status: 'completed',
+        ls_variant_id: (found as any).variantId || null,
         payload,
       }, { onConflict: 'ls_order_id' })
     } catch {}

@@ -90,7 +90,7 @@ export async function isActiveMember(supabase: any, userId: string): Promise<boo
     // First try by user_id
     const byUser = await supabase
       .from('purchases')
-      .select('product_id, status')
+      .select('product_id, ls_variant_id, status')
       .eq('user_id', userId)
       .limit(50);
 
@@ -98,19 +98,23 @@ export async function isActiveMember(supabase: any, userId: string): Promise<boo
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean);
+    const memberVariantIds = (process.env.NEXT_PUBLIC_MEMBER_VARIANT_IDS || process.env.LEMON_MEMBER_VARIANT_IDS || '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
 
     const rows = Array.isArray(byUser?.data) ? byUser.data : [];
-    if (rows.some((r: any) => r.status !== 'refunded' && memberIds.includes(String(r.product_id)))) {
+    if (rows.some((r: any) => r.status !== 'refunded' && (memberIds.includes(String(r.product_id)) || memberVariantIds.includes(String(r.ls_variant_id))))) {
       return true;
     }
 
     // If none found by user_id, try any purchase visible via email-based RLS
     const byEmail = await supabase
       .from('purchases')
-      .select('product_id, status')
+      .select('product_id, ls_variant_id, status')
       .limit(50);
     const rows2 = Array.isArray(byEmail?.data) ? byEmail.data : [];
-    if (rows2.some((r: any) => r.status !== 'refunded' && memberIds.includes(String(r.product_id)))) {
+    if (rows2.some((r: any) => r.status !== 'refunded' && (memberIds.includes(String(r.product_id)) || memberVariantIds.includes(String(r.ls_variant_id))))) {
       return true;
     }
   } catch {
