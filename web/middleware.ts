@@ -69,15 +69,19 @@ export async function middleware(req: NextRequest) {
     // ✅ Retrieve session (includes user and auto-refreshes)
     const {
       data: { session },
+      error: sessionError,
     } = await supabase.auth.getSession();
     user = session?.user ?? null;
 
     console.log('[Middleware] supabase.auth.getSession()', {
       hasSession: !!session,
+      sessionError: sessionError?.message,
       id: session?.user?.id,
       email: session?.user?.email,
+      allCookieNames: req.cookies.getAll().map(c => c.name),
     });
-  } catch {
+  } catch (err) {
+    console.error('[Middleware] Session error:', err);
     // ignore refresh errors in middleware; page-level code can still handle
   }
 
@@ -104,52 +108,13 @@ export async function middleware(req: NextRequest) {
     return res;
   }
 
-  // Premium gating — allow runtime configuration via CSV env var
-  const envPrefixes = (process.env.NEXT_PUBLIC_PAYWALLED_PREFIXES || '')
-    .split(',')
-    .map((p) => p.trim())
-    .filter(Boolean);
-  // Sensible defaults if none provided
-  const paywalledPrefixes = envPrefixes.length > 0
-    ? envPrefixes
-    : ['/planner/trip-builder', '/flight-planner', '/lodging-planner'];
-  const isPaywalled = paywalledPrefixes.some((p) => pathname === p || pathname.startsWith(p + '/'));
-  if (isPaywalled) {
-    const redirectUrl = new URL('/memberships', req.url);
-    redirectUrl.searchParams.set('from', 'planner');
-    redirectUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
-
-    // If no user, send to memberships page (public checkout) instead of login
-    if (!user) {
-      return NextResponse.redirect(redirectUrl);
-    }
-
-    // If user exists but not an active member, redirect to memberships
-    try {
-      // Use service role client to bypass RLS when checking membership
-      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
-      const adminSupabase = serviceKey
-        ? createClient(
-            normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
-            serviceKey,
-            { auth: { persistSession: false } }
-          )
-        : supabase; // Fallback to SSR client if no service key (dev mode)
-      
-      const active = await isActiveMember(adminSupabase, user.id);
-      if (!active) {
-        // Add a tiny hint for diagnostics without leaking details
-        redirectUrl.searchParams.set('gate', 'not_member');
-        return NextResponse.redirect(redirectUrl);
-      }
-    } catch (err) {
-      // Log the error for debugging
-      console.error('[Middleware] Membership check error:', err);
-      // If membership check fails (e.g., transient auth cookies), allow and let API enforce
-      // Trip Builder API routes also gate using server-side checks.
-      return res;
-    }
-  }
+  // NOTE: Premium gating removed from middleware (Nov 15, 2025)
+  // Reason: Supabase getSession() is unreliable in middleware/edge runtime
+  // All membership gating is handled at the API level where session detection works properly:
+  //   - /api/travel-planner checks membership for Trip Builder
+  //   - /api/flight-planner/generate checks membership for Flight Planner  
+  //   - /api/lodging-planner/generate checks membership for Lodging Planner
+  // This approach is more reliable and avoids false redirects for authenticated members
 
   if (pathname.startsWith('/admin')) {
     // Allow public admin auth pages to render without being redirected
