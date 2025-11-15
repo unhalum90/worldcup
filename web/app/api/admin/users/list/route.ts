@@ -50,17 +50,39 @@ export async function GET(req: NextRequest) {
 
   try {
     if (q) {
-      // Try exact email lookup
-      const byEmail = await supabaseServer.auth.admin.getUserByEmail(q)
-      if (byEmail?.data?.user) {
-        authUsers = [byEmail.data.user]
-        total = 1
-      } else {
-        // Fall back to paged list if not found
-        const { data, error } = await supabaseServer.auth.admin.listUsers({ page, perPage: limit })
+      // 1) Try to resolve by profile email -> user_id
+      let targetId: string | null = null
+      try {
+        const { data: prof } = await supabaseServer
+          .from('profiles')
+          .select('user_id')
+          .ilike('email', q)
+          .maybeSingle()
+        if (prof?.user_id) targetId = prof.user_id
+      } catch {}
+
+      if (targetId) {
+        const byId = await supabaseServer.auth.admin.getUserById(targetId)
+        if (byId?.data?.user) {
+          authUsers = [byId.data.user]
+          total = 1
+        }
+      }
+
+      // 2) If not found via profiles, scan a page of auth users and filter email
+      if (authUsers.length === 0) {
+        const { data, error } = await supabaseServer.auth.admin.listUsers({ page: 1, perPage: Math.max(limit, 200) })
         if (error) throw error
-        authUsers = data.users || []
-        total = data.total || authUsers.length
+        const list = data.users || []
+        const found = list.find((u: any) => (u.email || '').toLowerCase() === q.toLowerCase())
+        if (found) {
+          authUsers = [found]
+          total = 1
+        } else {
+          // fallback to first page if still nothing
+          authUsers = list
+          total = data.total || list.length
+        }
       }
     } else {
       const { data, error } = await supabaseServer.auth.admin.listUsers({ page, perPage: limit })
@@ -113,4 +135,3 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ users, page, perPage: limit, total })
 }
-
