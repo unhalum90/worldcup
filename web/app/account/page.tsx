@@ -12,11 +12,28 @@ export default async function AccountPage() {
 
   if (!user) redirect('/login')
 
-  const { data: profile } = await supabase
+  const { data: userProfile } = await supabase
     .from('user_profile')
     .select('*')
     .eq('user_id', user.id)
     .maybeSingle()
+
+  // Load membership flags from public.profiles to display accurate account status
+  const { data: membershipProfile } = await supabase
+    .from('profiles')
+    .select('account_level, subscription_tier, subscription_status, is_member, email')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  // Merge into a single object for the card (prefer explicit membership flags from profiles)
+  const profile = {
+    ...(userProfile || {}),
+    account_level: membershipProfile?.account_level ?? (userProfile as any)?.account_level ?? 'free',
+    subscription_tier: membershipProfile?.subscription_tier ?? (userProfile as any)?.subscription_tier ?? 'free',
+    subscription_status: membershipProfile?.subscription_status ?? (userProfile as any)?.subscription_status ?? 'active',
+    is_member: membershipProfile?.is_member ?? (userProfile as any)?.is_member ?? false,
+    email: membershipProfile?.email ?? (userProfile as any)?.email ?? user.email,
+  } as any
 
   // Load purchases (RLS restricts to this user)
   const { data: purchases } = await supabase
