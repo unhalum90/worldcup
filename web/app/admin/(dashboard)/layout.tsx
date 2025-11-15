@@ -57,8 +57,8 @@ export default function AdminLayout({
         // Some environments have public.profiles(id) and others profiles(user_id)
         const { data: profile, error } = await supabase
           .from("profiles")
-          .select("role, id, user_id")
-          .or(`user_id.eq.${user.id},id.eq.${user.id}`)
+          .select("role, user_id")
+          .eq('user_id', user.id)
           .maybeSingle();
 
         console.log("[AdminLayout] Profile role check:", profile?.role, error?.message);
@@ -140,7 +140,7 @@ export default function AdminLayout({
           </Link>
 
           <Link
-            href="/admin"
+            href="/admin/blog"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-[color:var(--color-primary)]"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
