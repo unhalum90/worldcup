@@ -94,8 +94,13 @@ export async function middleware(req: NextRequest) {
   }
 
   // Allow through if Supabase is mid-refresh (avoid redirect loop)
-  const hasAuthCookie = !!req.cookies.get('sb-access-token');
+  // Check for Supabase auth token with the correct project-specific cookie name
+  const allCookies = req.cookies.getAll();
+  const hasAuthCookie = allCookies.some(cookie => 
+    cookie.name.startsWith('sb-') && cookie.name.includes('-auth-token')
+  );
   if (!user && hasAuthCookie) {
+    console.log('[Middleware] Auth cookie present but no session yet - allowing through');
     return res;
   }
 
@@ -206,7 +211,8 @@ export async function middleware(req: NextRequest) {
     '[Middleware]',
     JSON.stringify({
       path: req.nextUrl.pathname,
-      hasAuthCookie: !!req.cookies.get('sb-access-token'),
+      hasAuthCookie: hasAuthCookie,
+      hasSession: !!user,
       user: user ? user.email || user.id : null,
       cookies: req.cookies.getAll().map(c => c.name),
     })
