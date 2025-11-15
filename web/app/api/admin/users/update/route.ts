@@ -54,10 +54,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    // Upsert to guarantee a row exists for this user_id
     const { error } = await supabaseServer
       .from('profiles')
-      .update({ ...update, updated_at: new Date().toISOString() })
-      .eq('user_id', targetId)
+      .upsert({ user_id: targetId, ...update, updated_at: new Date().toISOString() }, { onConflict: 'user_id' })
     if (error) throw error
   } catch (e) {
     return NextResponse.json({ error: 'update_failed', details: e instanceof Error ? e.message : String(e) }, { status: 500 })
@@ -65,4 +65,3 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ ok: true })
 }
-
