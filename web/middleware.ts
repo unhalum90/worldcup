@@ -2,7 +2,6 @@ import { NextResponse, NextRequest } from 'next/server';
 import { defaultLocale } from './i18n';
 import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
-import { isActiveMember } from './lib/membership';
 
 function normalizeToHttps(u: string): string {
   if (!u) return '';
@@ -108,13 +107,11 @@ export async function middleware(req: NextRequest) {
     return res;
   }
 
-  // NOTE: Premium gating removed from middleware (Nov 15, 2025)
-  // Reason: Supabase getSession() is unreliable in middleware/edge runtime
-  // All membership gating is handled at the API level where session detection works properly:
-  //   - /api/travel-planner checks membership for Trip Builder
-  //   - /api/flight-planner/generate checks membership for Flight Planner  
-  //   - /api/lodging-planner/generate checks membership for Lodging Planner
-  // This approach is more reliable and avoids false redirects for authenticated members
+  // NOTE: All membership gating has been removed (Nov 15, 2025)
+  // Trip Builder, Flight Planner, and Lodging Planner are now fully open to all users
+  // - Signed-in users will have their profile data pre-filled for convenience
+  // - Guest users can use all planners without authentication
+  // - Plans are saved to database only for authenticated users
 
   if (pathname.startsWith('/admin')) {
     // Allow public admin auth pages to render without being redirected
@@ -149,20 +146,9 @@ export async function middleware(req: NextRequest) {
           .maybeSingle();
         
         if (!prof) {
-          // Check if they're an active member to determine onboarding source
-          // Use service role client for membership check
-          const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
-          const adminSupabase = serviceKey
-            ? createClient(
-                normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
-                serviceKey,
-                { auth: { persistSession: false } }
-              )
-            : supabase;
-          
-          const active = await isActiveMember(adminSupabase, user.id);
+          // Redirect to onboarding (all users come from signup since no membership gating)
           const url = new URL('/onboarding', req.url);
-          url.searchParams.set('from', active ? 'membership' : 'signup');
+          url.searchParams.set('from', 'signup');
           url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
           return NextResponse.redirect(url);
         }

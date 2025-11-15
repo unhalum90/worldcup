@@ -3,7 +3,6 @@ import { createServerClient } from '@/lib/supabaseServer';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
-import { isActiveMember } from '@/lib/membership';
 
 function normalizeToHttps(u: string): string {
   if (!u) return '';
@@ -20,30 +19,29 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.G
 
 export async function POST(req: NextRequest) {
   try {
-    // Ensure user is authenticated
-    const supabaseAuth = createSSRClient(
-      normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return req.cookies.get(name)?.value;
+    // Public endpoint: try to read user (if logged in) but do not require auth
+    // Membership gating removed - Flight Planner is now open to all users
+    let userId: string | null = null;
+    try {
+      const supabaseAuth = createSSRClient(
+        normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          cookies: {
+            get(name: string) {
+              return req.cookies.get(name)?.value;
+            },
+            set() {},
+            remove() {},
           },
-          set() {},
-          remove() {},
-        },
+        }
+      );
+      const { data } = await supabaseAuth.auth.getUser();
+      if (data.user) {
+        userId = data.user.id;
       }
-    );
-    const { data } = await supabaseAuth.auth.getUser();
-    if (!data.user) {
-      return NextResponse.json({ error: 'Unauthorized', code: 'auth_required' }, { status: 401 });
-    }
-
-    // Membership required
-    const adminSupabase = createServerClient();
-    const active = await isActiveMember(adminSupabase, data.user.id);
-    if (!active) {
-      return NextResponse.json({ error: 'Membership required', code: 'membership_required' }, { status: 402 });
+    } catch (e) {
+      // Ignore auth lookup errors; proceed as guest
     }
 
     const body = await req.json();
@@ -57,12 +55,14 @@ export async function POST(req: NextRequest) {
     const isSpanish = locale === 'es';
 
     const adjustments = body.adjustments || {};
-    const supabase = adminSupabase;
-    const { data: profileRow } = await supabase
-      .from('user_profile')
-      .select('*')
-      .eq('user_id', data.user.id)
-      .maybeSingle();
+    const supabase = createServerClient();
+    const { data: profileRow } = userId 
+      ? await supabase
+          .from('user_profile')
+          .select('*')
+          .eq('user_id', userId)
+          .maybeSingle()
+      : { data: null };
 
     const cities = Array.from(new Set<string>([
       ...(selection.option.trip?.cityOrder || []),

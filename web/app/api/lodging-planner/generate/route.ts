@@ -3,7 +3,6 @@ import { createServerClient } from '@/lib/supabaseServer';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
-import { isActiveMember } from '@/lib/membership';
 import { loadZoneReports, type LodgingZone } from '@/lib/lodging/loadZoneReports';
 import type { LodgingPlannerPlan, LodgingPlannerPreferences, LodgingPlannerRequestBody, LodgingZoneComparison, LodgingMapMarker } from '@/types/lodging';
 import type { StoredSelection } from '@/types/trip';
@@ -53,30 +52,29 @@ function normalizeToHttps(u: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const supabaseAuth = createSSRClient(
-      normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || ''),
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
-      {
-        cookies: {
-          get(name: string) {
-            return req.cookies.get(name)?.value;
+    // Public endpoint: try to read user (if logged in) but do not require auth
+    // Membership gating removed - Lodging Planner is now open to all users
+    let userId: string | null = null;
+    try {
+      const supabaseAuth = createSSRClient(
+        normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || ''),
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+        {
+          cookies: {
+            get(name: string) {
+              return req.cookies.get(name)?.value;
+            },
+            set() {},
+            remove() {},
           },
-          set() {},
-          remove() {},
-        },
+        }
+      );
+      const { data: authData } = await supabaseAuth.auth.getUser();
+      if (authData.user) {
+        userId = authData.user.id;
       }
-    );
-    const { data: authData } = await supabaseAuth.auth.getUser();
-    const user = authData.user;
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized', code: 'auth_required' }, { status: 401 });
-    }
-
-    // Membership required
-    const adminSupabase = createServerClient();
-    const active = await isActiveMember(adminSupabase, user.id);
-    if (!active) {
-      return NextResponse.json({ error: 'Membership required', code: 'membership_required' }, { status: 402 });
+    } catch (e) {
+      // Ignore auth lookup errors; proceed as guest
     }
 
     const body = (await req.json()) as LodgingPlannerRequestBody;
@@ -93,12 +91,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unable to determine focus city from selection' }, { status: 400 });
     }
 
-    const supabase = adminSupabase;
-    const { data: profileRow } = await supabase
-      .from('user_profile')
-      .select('*')
-      .eq('user_id', user.id)
-      .maybeSingle();
+    const supabase = createServerClient();
+    const { data: profileRow } = userId
+      ? await supabase
+          .from('user_profile')
+          .select('*')
+          .eq('user_id', userId)
+          .maybeSingle()
+      : { data: null };
 
     const normalizedPreferences = normalizePreferences(body.preferences, body.selection);
     const cityContext = await loadCityContext([focusCity], normalizedPreferences.language || 'en');
@@ -138,7 +138,7 @@ export async function POST(req: NextRequest) {
 
     try {
       await supabase.from('lodging_plans').insert({
-        user_id: user.id,
+        user_id: userId,
         trip_id: null,
         city: focusCity,
         preferences: normalizedPreferences,
