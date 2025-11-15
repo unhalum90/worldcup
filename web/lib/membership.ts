@@ -42,6 +42,8 @@ export async function getActiveSubscription(supabase: any, userId: string): Prom
  * Fixed: 2025-11-14 - Corrected query from malformed .or() to .eq()
  */
 export async function isActiveMember(supabase: any, userId: string): Promise<boolean> {
+  console.log('🔍 [isActiveMember] Checking for userId:', userId);
+  
   try {
     // First, prefer explicit profile flags set by checkout/webhooks
     const { data: prof, error } = await supabase
@@ -50,15 +52,36 @@ export async function isActiveMember(supabase: any, userId: string): Promise<boo
       .eq('user_id', userId)
       .maybeSingle();
 
+    console.log('🔍 [isActiveMember] Profile query result:', { 
+      found: !!prof, 
+      error: error?.message,
+      is_member: prof?.is_member,
+      account_level: prof?.account_level,
+      subscription_tier: prof?.subscription_tier,
+      subscription_status: prof?.subscription_status,
+      email: prof?.email
+    });
+
     if (!error && prof) {
-      if ((prof as any).is_member === true) return true;
-      if (prof.account_level === 'member') return true;
+      if ((prof as any).is_member === true) {
+        console.log('✅ [isActiveMember] Granted via is_member flag');
+        return true;
+      }
+      if (prof.account_level === 'member') {
+        console.log('✅ [isActiveMember] Granted via account_level=member');
+        return true;
+      }
       if (prof.subscription_tier && ['premium', 'pro'].includes(prof.subscription_tier)) {
-        if (!prof.subscription_status || prof.subscription_status !== 'expired') return true;
+        if (!prof.subscription_status || prof.subscription_status !== 'expired') {
+          console.log('✅ [isActiveMember] Granted via subscription_tier + active status');
+          return true;
+        }
       }
     }
+    
+    console.log('❌ [isActiveMember] Profile check failed, trying fallbacks...');
   } catch {
-    // ignore and fall back to subscriptions table
+    // ignore and fall back to subscriptions/purchases table
   }
 
   // Fallback: Check purchases by user_id or email (RLS allows email match)

@@ -60,6 +60,11 @@ export async function GET(req: NextRequest) {
   params.set('checkout[custom][user_id]', user.id)
   params.set('checkout[custom][source]', 'wc26_app')
 
+  // Ensure we return to activation page to self-verify even if webhooks fail
+  const siteUrl = normalizeToHttps(process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin)
+  params.set('checkout[success_url]', `${siteUrl}/memberships/activate?from=checkout`)
+  params.set('checkout[cancel_url]', `${siteUrl}/memberships`)
+
   // Preserve known passthrough query params (e.g., ?code=XXXX for discounts)
   const incoming = new URL(req.url)
   const discount = incoming.searchParams.get('code') || incoming.searchParams.get('discount')

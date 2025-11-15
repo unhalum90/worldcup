@@ -135,6 +135,13 @@ function PlanCard({ title, price, cadence, subPriceNote, features, highlight, ba
         >
           {cta.label}
         </a>
+        {/* Already purchased? Help users activate without waiting for webhooks */}
+        <Link
+          href="/memberships/activate"
+          className="text-center text-sm text-gray-600 hover:text-gray-900 underline"
+        >
+          Already purchased? Activate access
+        </Link>
         {extraCTA && (
           <a
             href={extraCTA.href}
