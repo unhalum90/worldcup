@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { defaultLocale } from './i18n';
-import { createMiddlewareClient } from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import { isActiveMember } from './lib/membership';
 
 function normalizeToHttps(u: string): string {
@@ -38,8 +38,8 @@ export async function middleware(req: NextRequest) {
   let user: any = null;
   let supabase: any = null;
   try {
-    // Use the middleware-specific client so auth cookies are attached correctly in edge runtime
-    supabase = createMiddlewareClient(
+    // Use the SSR server client with manual cookie adapter for middleware
+    supabase = createServerClient(
       normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
