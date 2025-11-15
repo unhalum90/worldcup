@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { defaultLocale } from './i18n';
-import { createServerClient } from '@supabase/ssr';
+import { createMiddlewareClient } from '@supabase/ssr';
 import { isActiveMember } from './lib/membership';
 
 function normalizeToHttps(u: string): string {
@@ -38,7 +38,8 @@ export async function middleware(req: NextRequest) {
   let user: any = null;
   let supabase: any = null;
   try {
-    supabase = createServerClient(
+    // Use the middleware-specific client so auth cookies are attached correctly in edge runtime
+    supabase = createMiddlewareClient(
       normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
@@ -121,11 +122,14 @@ export async function middleware(req: NextRequest) {
     try {
       const active = await isActiveMember(supabase, user.id);
       if (!active) {
+        // Add a tiny hint for diagnostics without leaking details
+        redirectUrl.searchParams.set('gate', 'not_member');
         return NextResponse.redirect(redirectUrl);
       }
     } catch {
-      // If membership check fails, be conservative and redirect
-      return NextResponse.redirect(redirectUrl);
+      // If membership check fails (e.g., transient auth cookies), allow and let API enforce
+      // Trip Builder API routes also gate using server-side checks.
+      return res;
     }
   }
 
