@@ -12,6 +12,7 @@ type Profile = {
   account_level?: 'free' | 'city_bundle' | 'member'
   subscription_tier?: 'free' | 'premium' | 'pro'
   subscription_status?: 'active' | 'cancelled' | 'expired' | 'trialing'
+  is_member?: boolean | null
   // Onboarding fields
   home_airport?: { code: string; name: string; city: string; country: string } | null
   group_size?: number
@@ -45,6 +46,13 @@ export default function ProfileCard({ profile, user }: { profile: Profile | null
   const level = profile?.account_level || 'free'
   const tier = profile?.subscription_tier || 'free'
   const status = profile?.subscription_status || 'active'
+
+  // Determine membership state from explicit flags first, then tier/status
+  const isMembershipActive = (
+    profile?.is_member === true ||
+    level === 'member' ||
+    ((tier === 'premium' || tier === 'pro') && status !== 'expired' && status !== 'cancelled')
+  )
 
   // Check if user has completed onboarding
   const hasOnboardingData = profile?.home_airport && profile?.group_size
@@ -91,6 +99,19 @@ export default function ProfileCard({ profile, user }: { profile: Profile | null
           <div className="text-sm text-gray-500">{email}</div>
           <div className="mt-1 text-sm">Account: <span className="font-medium capitalize">{level}</span></div>
           <div className="text-xs text-gray-500">Tier: {tier} • Status: {status}</div>
+          <div className="mt-2">
+            {isMembershipActive ? (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>
+                Membership active
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z"/></svg>
+                Free plan
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
