@@ -66,27 +66,49 @@ async function findMembershipByEmail(email: string, opts: { apiKey: string; stor
   // 3) If no subs matched, search orders and include order-items to detect product ids
   for (const c of customers) {
     const ordersUrl = new URL('https://api.lemonsqueezy.com/v1/orders')
-    ordersUrl.searchParams.set('filter[customer_id]', c.id)
+    // Some filters/sorts are not allowed on /orders for all accounts. Keep it minimal.
+    if (storeId) ordersUrl.searchParams.set('filter[store_id]', storeId)
     ordersUrl.searchParams.set('include', 'order-items')
-    ordersUrl.searchParams.set('sort', '-created_at')
     ordersUrl.searchParams.set('page[size]', '100')
     const ordersResp = await fetchJSON(ordersUrl, apiKey)
     const orders: LemonOrder[] = Array.isArray(ordersResp?.data) ? ordersResp.data : []
     const included: any[] = Array.isArray(ordersResp?.included) ? ordersResp.included : []
 
-    // Build a map from order-items to their order if available
-    const items: LemonOrderItem[] = included.filter((inc) => inc?.type === 'order-items')
+    // Identify orders for this customer by email or relationship
+    const allowedOrderIds = new Set<string>()
+    const targetEmail = email.toLowerCase()
+    for (const o of orders) {
+      const attrs = o?.attributes || {}
+      const oEmail = String(attrs.user_email || attrs.customer_email || '').toLowerCase()
+      if (oEmail && oEmail === targetEmail) {
+        allowedOrderIds.add(o.id)
+        continue
+      }
+      const relCust = o?.relationships?.customer?.data?.id
+      if (relCust && relCust === c.id) {
+        allowedOrderIds.add(o.id)
+      }
+    }
 
-    // Quick presence check across included items
-    const matchingItem = items.find((it) => it?.attributes && memberProductIds.includes(String(it.attributes.product_id || it.attributes.product?.id || '')))
+    if (allowedOrderIds.size === 0) continue
+
+    // Build item -> order mapping; keep only items that belong to allowed orders
+    const items: LemonOrderItem[] = included.filter((inc) => inc?.type === 'order-items')
+    const matchingItem = items.find((it) => {
+      const orderId = it?.relationships?.order?.data?.id
+      if (!orderId || !allowedOrderIds.has(orderId)) return false
+      const pid = String(it?.attributes?.product_id || it?.attributes?.product?.id || '')
+      return pid && memberProductIds.includes(pid)
+    })
+
     if (matchingItem) {
-      // Try to associate with latest order, fallback to first order id
-      const latestOrderId = orders[0]?.id || ''
+      const orderId = matchingItem?.relationships?.order?.data?.id || Array.from(allowedOrderIds)[0] || ''
+      const relatedOrder = orders.find((o) => o.id === orderId) || orders[0]
       const productId = String(matchingItem.attributes.product_id || '')
       const productName = String(matchingItem.attributes.product_name || matchingItem.attributes.name || '')
-      const currency = String(orders[0]?.attributes?.currency || 'USD')
-      const priceCents = Number(orders[0]?.attributes?.total || matchingItem.attributes?.price || 0)
-      return { found: true as const, via: 'order' as const, productId, orderId: latestOrderId, productName, currency, price: priceCents ? priceCents / 100 : 0 }
+      const currency = String(relatedOrder?.attributes?.currency || 'USD')
+      const priceCents = Number(relatedOrder?.attributes?.total || matchingItem.attributes?.price || 0)
+      return { found: true as const, via: 'order' as const, productId, orderId, productName, currency, price: priceCents ? priceCents / 100 : 0 }
     }
   }
 
@@ -203,4 +225,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: 'activate_failed', details: e instanceof Error ? e.message : String(e) }, { status: 500 })
   }
 }
-
