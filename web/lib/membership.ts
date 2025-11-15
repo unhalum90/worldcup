@@ -1,126 +1,38 @@
-// Lightweight membership helpers to enable future gating without enforcing it yet.
-// These functions are safe to import in server routes or middleware.
-// They default to conservative values if the subscriptions table or fields are not present.
+import { createClient } from '@/lib/supabase/server'
 
-export type SubscriptionRecord = {
-  id: string
-  user_id: string
-  status?: string | null
-  current_period_end?: string | null
-  plan?: string | null
-  [key: string]: any
-}
+export const PROTECTED_ROUTES = [
+  '/planner/trip-builder',
+  '/planner/lodging',
+  '/planner/flights'
+]
 
-/**
- * Return the active subscription row for a user if present.
- * Looks for a `subscriptions` table with columns { user_id, status } and treats
- * status in ('active','trialing','past_due') as active-ish by default.
- */
-export async function getActiveSubscription(supabase: any, userId: string): Promise<SubscriptionRecord | null> {
+export async function checkMembership(): Promise<{
+  isMember: boolean
+  email: string | null
+  userId: string | null
+}> {
   try {
-    const { data, error } = await supabase
-      .from('subscriptions')
-      .select('*')
-      .eq('user_id', userId)
-      .in('status', ['active', 'trialing', 'past_due'])
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    if (error) {
-      // Table may not exist yet; surface no subscription rather than throwing.
-      return null;
-    }
-    return data || null;
-  } catch {
-    return null;
-  }
-}
-
-/**
- * True if user has an active subscription. Safe default is false.
- * Fixed: 2025-11-14 - Corrected query from malformed .or() to .eq()
- */
-export async function isActiveMember(supabase: any, userId: string): Promise<boolean> {
-  console.log('🔍 [isActiveMember] Checking for userId:', userId);
-  
-  try {
-    // First, prefer explicit profile flags set by checkout/webhooks
-    const { data: prof, error } = await supabase
-      .from('profiles')
-      .select('is_member, account_level, subscription_tier, subscription_status, email')
-      .eq('user_id', userId)
-      .maybeSingle();
-
-    console.log('🔍 [isActiveMember] Profile query result:', { 
-      found: !!prof, 
-      error: error?.message,
-      is_member: prof?.is_member,
-      account_level: prof?.account_level,
-      subscription_tier: prof?.subscription_tier,
-      subscription_status: prof?.subscription_status,
-      email: prof?.email
-    });
-
-    if (!error && prof) {
-      if ((prof as any).is_member === true) {
-        console.log('✅ [isActiveMember] Granted via is_member flag');
-        return true;
-      }
-      if (prof.account_level === 'member') {
-        console.log('✅ [isActiveMember] Granted via account_level=member');
-        return true;
-      }
-      if (prof.subscription_tier && ['premium', 'pro'].includes(prof.subscription_tier)) {
-        if (!prof.subscription_status || prof.subscription_status !== 'expired') {
-          console.log('✅ [isActiveMember] Granted via subscription_tier + active status');
-          return true;
-        }
-      }
+    const supabase = await createClient()
+    
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user) {
+      return { isMember: false, email: null, userId: null }
     }
     
-    console.log('❌ [isActiveMember] Profile check failed, trying fallbacks...');
-  } catch {
-    // ignore and fall back to subscriptions/purchases table
-  }
-
-  // Fallback: Check purchases by user_id or email (RLS allows email match)
-  try {
-    // Get auth session email via RPC-like trick: try reading a purchase row limited by RLS
-    // First try by user_id
-    const byUser = await supabase
-      .from('purchases')
-      .select('product_id, ls_variant_id, status')
-      .eq('user_id', userId)
-      .limit(50);
-
-    const memberIds = (process.env.NEXT_PUBLIC_MEMBER_PRODUCT_IDS || process.env.LEMON_MEMBER_PRODUCT_IDS || '')
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const memberVariantIds = (process.env.NEXT_PUBLIC_MEMBER_VARIANT_IDS || process.env.LEMON_MEMBER_VARIANT_IDS || '')
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-    const rows = Array.isArray(byUser?.data) ? byUser.data : [];
-    if (rows.some((r: any) => r.status !== 'refunded' && (memberIds.includes(String(r.product_id)) || memberVariantIds.includes(String(r.ls_variant_id))))) {
-      return true;
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('is_member, email')
+      .eq('user_id', user.id)
+      .single()
+    
+    return {
+      isMember: profile?.is_member ?? false,
+      email: profile?.email ?? user.email ?? null,
+      userId: user.id
     }
-
-    // If none found by user_id, try any purchase visible via email-based RLS
-    const byEmail = await supabase
-      .from('purchases')
-      .select('product_id, ls_variant_id, status')
-      .limit(50);
-    const rows2 = Array.isArray(byEmail?.data) ? byEmail.data : [];
-    if (rows2.some((r: any) => r.status !== 'refunded' && (memberIds.includes(String(r.product_id)) || memberVariantIds.includes(String(r.ls_variant_id))))) {
-      return true;
-    }
-  } catch {
-    // ignore
+  } catch (error) {
+    console.error('Error checking membership:', error)
+    return { isMember: false, email: null, userId: null }
   }
-
-  const sub = await getActiveSubscription(supabase, userId);
-  return !!sub;
 }
