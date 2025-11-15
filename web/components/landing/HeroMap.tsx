@@ -16,7 +16,7 @@ export default function HeroMap() {
     lat: v.lat,
     lng: v.lng,
   }));
-  const checkoutUrl = process.env.NEXT_PUBLIC_LS_MEMBER_BUY_URL || "/memberships";
+  const tripBuilderUrl = "/planner/trip-builder";
 
   return (
     <section className="relative bg-gradient-to-b from-white to-blue-50">
@@ -46,11 +46,8 @@ export default function HeroMap() {
           {/* Actions row: CTA • Countdown • Watch */}
           <div className="mt-6 sm:mt-8 flex flex-col md:flex-row items-stretch md:items-center justify-center gap-3 md:gap-4">
             <Link
-              href={checkoutUrl}
+              href={tripBuilderUrl}
               className="cta-white inline-flex items-center justify-center rounded-full bg-[color:var(--color-accent-red)] px-8 py-3 text-white hover:text-white visited:text-white focus-visible:text-white active:text-white font-bold shadow-md hover:brightness-110 transition"
-              prefetch={false}
-              target={checkoutUrl.startsWith('http') ? '_blank' : undefined}
-              rel={checkoutUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
             >
               {t('ctaPlan')}
             </Link>

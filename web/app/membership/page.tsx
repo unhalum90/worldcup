@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 export default function MembershipPage() {
   const [loading, setLoading] = useState(false)
@@ -9,9 +10,24 @@ export default function MembershipPage() {
     setLoading(true)
 
     try {
-      // Call checkout API - it will handle auth check
+      // Try to get client session and include access_token as Bearer for server fallback
+      const supabase = createClient()
+      let accessToken: string | null = null
+
+      try {
+        const { data } = await supabase.auth.getSession()
+        accessToken = data?.session?.access_token ?? null
+      } catch (e) {
+        // ignore - we'll let server respond with 401 if not authenticated
+        accessToken = null
+      }
+
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`
+
       const response = await fetch('/api/checkout', {
         method: 'POST',
+        headers,
       })
 
       const data = await response.json()

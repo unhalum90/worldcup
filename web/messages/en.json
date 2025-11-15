@@ -111,7 +111,7 @@
         "scope": "The 2026 World Cup spans <strong>16 cities, 3 countries, and 2 million square miles</strong>. We spent 200+ hours mapping every stadium, transit line, and neighborhood quirk.",
         "pitch": "Get personalized flights, lodging, and day-by-day plans in <strong>60 seconds</strong>—plans that would take you <strong>20+ hours</strong> to research."
       },
-      "ctaPrimary": "Unlock Trip Planner",
+      "ctaPrimary": "Test Trip Planner",
       "ctaSecondary": "Watch How It Works (90 sec)",
       "ctaSecondaryAria": "Watch a 90 second demo video",
       "videoFallback": "Your browser doesn't support video playback.",
@@ -141,7 +141,7 @@
         "line2": "Planned in 5 Minutes Flat."
       },
       "subtitle": "Research‑backed, AI‑fueled trip planner + logistics guides for all 16 host cities",
-      "ctaPlan": "Unlock Trip Planner",
+      "ctaPlan": "Test Trip Planner",
       "ctaWatch": "Watch How It Works (90 sec)",
       "ctaWatchAria": "Watch how it works (90 sec)"
     },

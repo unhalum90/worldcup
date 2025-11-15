@@ -77,7 +77,7 @@ export default function Footer() {
                 AI Planner
               </Link>
               <Link href="/memberships" className="text-sm text-gray-600 hover:text-[color:var(--color-primary)] transition-colors">
-                Unlock Trip Planner
+                Test Trip Planner
               </Link>
               <a
                 href="https://wc26fanzone.beehiiv.com/"

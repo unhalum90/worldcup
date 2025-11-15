@@ -13,7 +13,36 @@ export async function POST(req: NextRequest) {
       cookieNames: req.cookies.getAll().map(c => c.name),
     })
 
-    if (!user?.email) {
+    let effectiveUser = user
+
+    // If server-side cookies didn't carry a session, allow a client-provided
+    // Bearer token to validate the user via Supabase's auth v1 user endpoint.
+    if (!effectiveUser?.email) {
+      const authHeader = req.headers.get('authorization')
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const token = authHeader.split(' ')[1]
+          const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '')
+          const userResp = await fetch(`${supabaseUrl}/auth/v1/user`, {
+            headers: { Authorization: `Bearer ${token}` },
+            cache: 'no-store',
+          })
+
+          if (userResp.ok) {
+            const userJson = await userResp.json()
+            // userJson is the user object
+            effectiveUser = userJson as any
+            console.log('[Checkout] verified user via auth header', { email: effectiveUser?.email, id: effectiveUser?.id })
+          } else {
+            console.log('[Checkout] auth header verification failed', { status: userResp.status })
+          }
+        } catch (e) {
+          console.error('[Checkout] auth header verification error', e)
+        }
+      }
+    }
+
+    if (!effectiveUser?.email) {
       return NextResponse.json(
         { error: 'Must be logged in' },
         { status: 401 }
