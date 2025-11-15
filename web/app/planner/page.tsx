@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useAuth } from '@/lib/AuthContext';
 
 type PhaseKey = 'tripBuilder' | 'flightPlanner' | 'lodgingPlanner' | 'whileThere';
 
@@ -18,6 +19,7 @@ interface Phase {
 export default function PlannerPage() {
   const t = useTranslations('planner.hub');
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const { profile } = useAuth();
   // Preview video removed in favor of live demo page (/trip_builder_demo)
 
   // Auth is no longer required to access the planner hub.
@@ -106,7 +108,7 @@ export default function PlannerPage() {
       <section id="phases-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {phases.map((phase) => (
-            <PhaseCard key={phase.id} phase={phase} />
+            <PhaseCard key={phase.id} phase={phase} userProfile={profile} />
           ))}
         </div>
       </section>
@@ -146,12 +148,16 @@ export default function PlannerPage() {
   );
 }
 
-function PhaseCard({ phase }: { phase: Phase }) {
+function PhaseCard({ phase, userProfile }: { phase: Phase; userProfile: any | null }) {
   const t = useTranslations('planner.hub');
   const phaseT = useTranslations(`planner.hub.phases.${phase.key}`);
   const isLive = phase.status === 'live';
   const isMay2026 = phase.status === 'may-2026';
   const isTripBuilder = phase.key === 'tripBuilder';
+  
+  // Determine membership status
+  const isMember = userProfile?.is_member === true;
+  
   const statusBadgeText = isMay2026 ? t('statuses.may2026Badge') : t('statuses.comingSoonBadge');
   const phaseTitle = phaseT('title');
   const phaseDescription = phaseT('description');
@@ -209,8 +215,12 @@ function PhaseCard({ phase }: { phase: Phase }) {
             </div>
             <div className="mt-4 flex flex-col sm:flex-row gap-3">
               <Link
-                href={`/memberships?from=planner&redirect=${encodeURIComponent(phase.href)}`}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors"
+                href={isMember ? phase.href : `/memberships?from=planner&redirect=${encodeURIComponent(phase.href)}`}
+                className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-colors ${
+                  isMember 
+                    ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                    : 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50'
+                }`}
               >
                 {phaseT('howItWorks.cta.open')}
               </Link>
@@ -275,7 +285,10 @@ function PhaseCard({ phase }: { phase: Phase }) {
   if (isLive && !isTripBuilder) {
     const redirect = encodeURIComponent(phase.href);
     return (
-      <Link href={`/memberships?from=planner&redirect=${redirect}`} className={cardClassName}>
+      <Link 
+        href={isMember ? phase.href : `/memberships?from=planner&redirect=${redirect}`}
+        className={cardClassName}
+      >
         {cardContent}
       </Link>
     );
