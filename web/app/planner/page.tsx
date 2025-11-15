@@ -215,12 +215,8 @@ function PhaseCard({ phase, userProfile }: { phase: Phase; userProfile: any | nu
             </div>
             <div className="mt-4 flex flex-col sm:flex-row gap-3">
               <Link
-                href={isMember ? phase.href : `/memberships?from=planner&redirect=${encodeURIComponent(phase.href)}`}
-                className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-colors ${
-                  isMember 
-                    ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                    : 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50'
-                }`}
+                href={phase.href}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-colors bg-blue-600 text-white hover:bg-blue-700"
               >
                 {phaseT('howItWorks.cta.open')}
               </Link>
@@ -283,10 +279,9 @@ function PhaseCard({ phase, userProfile }: { phase: Phase; userProfile: any | nu
   const cardClassName = `group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden ${isLive ? 'cursor-pointer hover:-translate-y-1' : 'cursor-default'}`;
 
   if (isLive && !isTripBuilder) {
-    const redirect = encodeURIComponent(phase.href);
     return (
       <Link 
-        href={isMember ? phase.href : `/memberships?from=planner&redirect=${redirect}`}
+        href={phase.href}
         className={cardClassName}
       >
         {cardContent}
