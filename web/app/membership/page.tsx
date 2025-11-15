@@ -1,45 +1,39 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
 
 export default function MembershipPage() {
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
 
   const handleCheckout = async () => {
     setLoading(true)
 
     try {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-
-      if (!user) {
-        // Redirect to login
-        router.push('/login?redirect=/membership')
-        return
-      }
-
-      // Create checkout session
+      // Call checkout API - it will handle auth check
       const response = await fetch('/api/checkout', {
         method: 'POST',
       })
 
-      const { url, error } = await response.json()
+      const data = await response.json()
 
-      if (error) {
-        alert(error)
+      if (response.status === 401) {
+        // Not authenticated - redirect to login
+        window.location.href = '/login?redirect=/membership'
+        return
+      }
+
+      if (data.error) {
+        alert(data.error)
+        setLoading(false)
         return
       }
 
       // Redirect to Lemon Squeezy
-      window.location.href = url
+      window.location.href = data.url
 
     } catch (error) {
       console.error('Checkout error:', error)
       alert('Failed to start checkout')
-    } finally {
       setLoading(false)
     }
   }
