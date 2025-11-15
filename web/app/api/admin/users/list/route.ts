@@ -108,16 +108,18 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // Purchases summary
+  // Purchases summary (client-side aggregate)
   let purchasesMap: Record<string, number> = {}
   if (ids.length) {
     const { data: pRows } = await supabaseServer
       .from('purchases')
-      .select('user_id, count:id')
+      .select('user_id')
       .in('user_id', ids)
-      .group('user_id')
     if (Array.isArray(pRows)) {
-      for (const r of pRows) purchasesMap[r.user_id] = Number(r.count) || 0
+      for (const r of pRows as any[]) {
+        const uid = r.user_id as string
+        purchasesMap[uid] = (purchasesMap[uid] || 0) + 1
+      }
     }
   }
 
