@@ -46,6 +46,9 @@ function getClient() {
 			persistSession: true,
 			autoRefreshToken: true,
 			detectSessionInUrl: true,
+			// Use a unique storage key to avoid collisions with any other
+			// accidental Supabase clients in the same browser context.
+			storageKey: 'wc26fanzone-auth',
 		},
 	});
 	g.__supabase_client__ = client;
