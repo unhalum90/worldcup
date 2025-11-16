@@ -1,21 +1,62 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { CheckCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { createClient } from '@/lib/supabase/client'
+import { POST_MEMBERSHIP_ONBOARDING_PATH } from '@/lib/auth/magicLink'
 
 export default function PaywallPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const t = useTranslations('Paywall')
   const features = [t('feature1'), t('feature2'), t('feature3'), t('feature4')]
+  const supabase = useMemo(() => createClient(), [])
+
+  const redirectTarget = useMemo(() => {
+    const raw = searchParams.get('redirect')
+    if (raw && raw.startsWith('/')) {
+      return raw
+    }
+    return POST_MEMBERSHIP_ONBOARDING_PATH
+  }, [searchParams])
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function ensureMemberStatus() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!isMounted || !user?.id) return
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_member')
+        .eq('user_id', user.id)
+        .maybeSingle()
+
+      if (profile?.is_member) {
+        router.replace(redirectTarget)
+      }
+    }
+
+    ensureMemberStatus()
+
+    return () => {
+      isMounted = false
+    }
+  }, [redirectTarget, router, supabase])
 
   const handleCheckout = async () => {
     setIsLoading(true)
     try {
       const response = await fetch('/api/checkout', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ redirect: redirectTarget }),
       })
 
       if (!response.ok) {

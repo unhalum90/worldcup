@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -10,6 +10,13 @@ export default function ActivatePage() {
   const [email, setEmail] = useState('')
   const router = useRouter()
   const searchParams = useSearchParams()
+  const redirectTarget = useMemo(() => {
+    const raw = searchParams.get('redirect')
+    if (raw && raw.startsWith('/')) {
+      return raw
+    }
+    return '/planner/trip-builder'
+  }, [searchParams])
 
   useEffect(() => {
     // Auto-activate if coming from checkout
@@ -33,7 +40,7 @@ export default function ActivatePage() {
         return
       }
 
-      await activateMembership(user.email)
+  await activateMembership(user.email)
 
     } catch (error) {
       console.error('Auto-activation error:', error)
@@ -64,7 +71,7 @@ export default function ActivatePage() {
 
         // Redirect to planner
         setTimeout(() => {
-          router.push('/planner/trip-builder')
+          router.push(redirectTarget)
         }, 2000)
       } else {
         setMessage(result.message || 'No purchase found for this email')
@@ -86,7 +93,7 @@ export default function ActivatePage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-16">
-      <div className="bg-white rounded-lg shadow-lg p-8">
+  <div className="bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-3xl font-bold mb-6 text-center">
           Activate Your Membership
         </h1>

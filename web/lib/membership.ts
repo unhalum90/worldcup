@@ -4,7 +4,8 @@ import { SupabaseClient } from '@supabase/supabase-js'
 export const PROTECTED_ROUTES = [
   '/planner/trip-builder',
   '/planner/lodging',
-  '/planner/flights'
+  '/planner/flights',
+  '/onboarding'
 ]
 
 export async function checkMembership(): Promise<{

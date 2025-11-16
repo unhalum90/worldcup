@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Define protected routes
-  const protectedRoutes = ['/planner', '/flights', '/lodging']
+  const protectedRoutes = ['/planner', '/flights', '/lodging', '/onboarding']
 
   // Check if the current path is a protected route
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))

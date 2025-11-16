@@ -825,10 +825,10 @@
   "auth": {
     "modal": {
       "header": {
-        "title": "Welcome",
+        "title": "Unlock Your Trip Planning Dashboard",
         "subtitle": {
-          "line1": "Enter your email and we'll send you a magic link.",
-          "line2": "No password needed."
+          "line1": "The Trip Planner is a premium tool. Sign up to create your account.",
+          "line2": "You’ll review membership options on the next screen."
         }
       },
       "form": {
@@ -836,18 +836,18 @@
         "placeholder": "you@example.com"
       },
       "actions": {
-        "submit": "Send magic link",
+        "submit": "Sign Up to Continue",
         "sending": "Sending link…"
       },
       "success": {
-        "primary": "Check your email! We sent you a magic link to sign in.",
-        "existing": "This email is already registered — check your inbox for a magic link to sign in."
+        "primary": "Check your email for the magic link to finish setting up your account.",
+        "existing": "Already registered! Check your inbox for the latest magic link to continue."
       },
       "errors": {
         "generic": "Unable to send magic link. Please try again."
       },
       "footer": {
-        "note": "Works for new and existing accounts. Check your spam folder if you don't see the email."
+        "note": "Uses passwordless email. Look for the magic link in your inbox or spam folder."
       }
     },
     "verify": {

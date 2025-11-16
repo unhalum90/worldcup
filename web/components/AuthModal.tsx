@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { sendMagicLink } from '@/lib/auth/magicLink';
+import { MEMBERSHIP_GATE_REDIRECT, sendMagicLink } from '@/lib/auth/magicLink';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -21,7 +21,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
 
   if (!isOpen) return null;
 
-  const targetPath = redirectTo || '/onboarding';
+  const targetPath = redirectTo || MEMBERSHIP_GATE_REDIRECT;
 
   // Prevent background interaction and hide maps while modal is open
   useEffect(() => {

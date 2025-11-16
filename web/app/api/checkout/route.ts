@@ -1,8 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { createCheckout, ensureLemonSqueezyConfigured } from '@/lib/lemonsqueezy'
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const {
     data: { user },
@@ -19,6 +19,16 @@ export async function POST() {
   const variantId = process.env.LEMONSQUEEZY_MEMBERSHIP_VARIANT_ID
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL
   const apiKey = process.env.LEMONSQUEEZY_API_KEY
+
+  let redirectPath: string | undefined
+  try {
+    const body = await request.json()
+    if (typeof body?.redirect === 'string' && body.redirect.startsWith('/')) {
+      redirectPath = body.redirect
+    }
+  } catch {
+    // no body provided – fallback handled below
+  }
 
   if (!storeId || !variantId) {
     console.error('Missing Lemon Squeezy configuration: store or variant ID not set.')
@@ -47,6 +57,13 @@ export async function POST() {
   try {
     ensureLemonSqueezyConfigured()
 
+    const successUrl = new URL('/membership/activate', siteUrl)
+    const cancelUrl = new URL('/membership/paywall', siteUrl)
+    if (redirectPath) {
+      successUrl.searchParams.set('redirect', redirectPath)
+      cancelUrl.searchParams.set('redirect', redirectPath)
+    }
+
     const checkoutResponse = await createCheckout(Number(storeId), Number(variantId), {
       checkoutData: {
         custom: {
@@ -55,8 +72,8 @@ export async function POST() {
         },
       },
       checkoutOptions: {
-        successUrl: `${siteUrl}/membership/activate`,
-        cancelUrl: `${siteUrl}/membership/paywall`,
+        successUrl: successUrl.toString(),
+        cancelUrl: cancelUrl.toString(),
       } as Record<string, unknown>,
     })
 

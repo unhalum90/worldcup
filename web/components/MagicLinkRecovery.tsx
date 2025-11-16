@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { sendMagicLink } from "@/lib/auth/magicLink";
+import { MEMBERSHIP_GATE_REDIRECT, sendMagicLink } from "@/lib/auth/magicLink";
 
 export default function MagicLinkRecovery({ redirect }: { redirect?: string }) {
   const [email, setEmail] = useState("");
@@ -13,7 +13,7 @@ export default function MagicLinkRecovery({ redirect }: { redirect?: string }) {
     setLoading(true);
     setStatus(null);
     try {
-      const target = redirect && redirect.startsWith("/") ? redirect : "/planner";
+  const target = redirect && redirect.startsWith("/") ? redirect : MEMBERSHIP_GATE_REDIRECT;
       await sendMagicLink(email, target);
       setStatus("✓ Magic link sent. Open it in this browser.");
     } catch (err) {

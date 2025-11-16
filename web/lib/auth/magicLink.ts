@@ -1,5 +1,8 @@
 import { supabase } from '@/lib/supabaseClient';
 
+export const POST_MEMBERSHIP_ONBOARDING_PATH = '/onboarding?from=membership&redirect=/planner/trip-builder';
+export const MEMBERSHIP_GATE_REDIRECT = `/membership/paywall?from=auth&redirect=${encodeURIComponent(POST_MEMBERSHIP_ONBOARDING_PATH)}`;
+
 function getSiteUrl() {
   // Prefer the actual runtime origin to avoid www/non-www mismatches
   if (typeof window !== 'undefined' && window.location?.origin) {
@@ -24,7 +27,7 @@ export async function sendMagicLink(email: string, redirectPath?: string) {
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: buildAuthCallbackUrl(redirectPath),
+      emailRedirectTo: buildAuthCallbackUrl(redirectPath ?? MEMBERSHIP_GATE_REDIRECT),
     },
   });
 

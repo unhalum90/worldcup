@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { MEMBERSHIP_GATE_REDIRECT, POST_MEMBERSHIP_ONBOARDING_PATH } from "@/lib/auth/magicLink";
 
 function sanitizeCode(input: string) {
   return input.replace(/[^0-9A-Za-z]/g, "").trim();
@@ -19,7 +20,7 @@ export default function EmailOtpVerify({ redirect }: { redirect?: string }) {
     if (redirect && redirect.startsWith("/")) return redirect;
     const stored = typeof window !== "undefined" ? localStorage.getItem("pending_verification_redirect") : null;
     if (stored && stored.startsWith("/")) return stored;
-    return "/planner";
+    return MEMBERSHIP_GATE_REDIRECT;
   }, [redirect]);
 
   useEffect(() => {
@@ -40,12 +41,12 @@ export default function EmailOtpVerify({ redirect }: { redirect?: string }) {
         return;
       }
       const { data: profile } = await supabase
-        .from("user_profile")
+        .from("profiles")
         .select("user_id, home_airport")
         .eq("user_id", userId)
         .maybeSingle();
       if (!profile || !profile.home_airport) {
-        router.push("/onboarding");
+        router.push(POST_MEMBERSHIP_ONBOARDING_PATH);
         return;
       }
       router.push(target);
