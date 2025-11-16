@@ -42,10 +42,16 @@ export default function EmailOtpVerify({ redirect }: { redirect?: string }) {
       }
       const { data: profile } = await supabase
         .from("profiles")
-        .select("user_id, home_airport")
+        .select("user_id, home_airport, is_member")
         .eq("user_id", userId)
         .maybeSingle();
-      if (!profile || !profile.home_airport) {
+
+      if (!profile || profile.is_member !== true) {
+        router.push(MEMBERSHIP_GATE_REDIRECT);
+        return;
+      }
+
+      if (!profile.home_airport) {
         router.push(POST_MEMBERSHIP_ONBOARDING_PATH);
         return;
       }
