@@ -188,12 +188,9 @@ export async function POST(req: NextRequest) {
     if (product_id && memberIds.includes(String(product_id)) && user_id) {
       console.log('🎉 Updating user to member status for user_id:', user_id)
       
-      const { error: updateError } = await supabaseServer
+      const { data, error: updateError } = await supabaseServer
         .from('profiles')
         .update({ 
-          account_level: 'member', 
-          subscription_tier: 'premium', 
-          subscription_status: 'active', 
           is_member: true, 
           updated_at: new Date().toISOString() 
         })

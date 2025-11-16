@@ -1,253 +1,106 @@
-This is excellent self-correction\! You've correctly identified the potential path conflict in the file structure: using `/membership/activate/route.ts` might conflict with an existing `/memberships/activate/page.tsx` or `/api/membership/activate/route.ts` if those exist.
+# 🛠️ Comprehensive Build Plan: Frictionless Onboarding & Secure Payment
 
-Your proposal to **update the existing API route to match the new spec** is the most efficient and robust way forward. Based on the file list you previously provided, there is an existing API route here:
-
-  * `web/app/api/membership/activate/route.ts`
-
-We will proceed by **updating this file** to include the Lemon Squeezy API logic from the plan.
-
-Here is the updated and consolidated file package for your dev team. This package ensures the Activation flow is rock-solid and the Gating flow uses the secure Server Component architecture.
+This plan combines the secure Lemon Squeezy integration with the desired user experience (UX) to create a streamlined sign-up, payment, and initial travel profile setup flow.
 
 -----
 
-## 🚀 Updated Implementation Package: Consolidated Fix
+## 1\. Project Goal & Overview
 
-This package updates the existing activation endpoint and implements the secure Server Component gating.
+**Goal:** Implement a secure, server-side payment and webhook flow to gate access to the core planning tools (`Trip Builder`, `Flight Planner`, `Lodging Planner`) behind a required user sign-in and purchase. The process must be seamless and end with a quick, 3-step travel profile setup.
 
-### Phase 1: New Files and Helpers (As Planned)
+**Key Principle:** **Authentication precedes Payment.** The user's Supabase `user_id` must be available *before* the Lemon Squeezy checkout link is generated to ensure secure webhook processing.
 
-#### 1\. Create Supabase Admin Client Helper
+-----
 
-| File Path | Action |
+## 2\. Environment & Database Verification
+
+The following items are confirmed to be set up and must be used in the implementation:
+
+### 2.1. Environment Variables (Vercel)
+
+| Variable | Value/Status | Use | Source |
+| :--- | :--- | :--- | :--- |
+| `LEMON_API_KEY` | Set | Used for creating the checkout session. | |
+| `LEMON_WEBHOOK_SECRET` | `worldcup__subscriber` | **Critical** for verifying webhook signature. | |
+| `LEMON_MEMBER_PRODUCT_IDS` | `688338` (or the associated **Variant ID**) | Used to specify the product/plan in the checkout API call. | |
+| `NEXT_PUBLIC_SITE_URL` | Set | Used to construct the `redirect_url` after purchase. | (Inferred/Standard practice) |
+
+### 2.2. Webhook Configuration (Lemon Squeezy)
+
+| Configuration | Value | Status |
+| :--- | :--- | :--- |
+| **Callback URL** | `https://www.worldcup26fanzone.com/api/webhooks/lemon` | Confirmed endpoint URL. |
+| **Signing secret** | `worldcup__subscriber` | Matches ENV variable. |
+| **Events** | `order_created`, `subscription_created`, `subscription_updated`, `subscription_cancelled`, `order_refunded`, `subscription_resumed` | Confirmed essential events are checked. |
+
+### 2.3. Database Schema (Supabase)
+
+| Table | Required Fields | Purpose | Source |
+| :--- | :--- | :--- | :--- |
+| `public.profiles` | `user_id`, `is_member` (boolean), `member_since`, `ls_customer_id` | **Membership status flag** and subscription tracking. | |
+| `public.purchases` | `user_id`, `ls_order_id` (unique), `product_id`, `status`, `payload` | Audit log for completed transactions. | |
+| `public.user_profile` | `home_city`, `group_size`, `budget_level`, etc. | Stores user's initial travel details gathered during onboarding. | |
+
+-----
+
+## 3\. Backend Implementation (Next.js Route Handlers)
+
+### A. API Endpoint for Checkout Creation
+
+**File:** `app/api/checkout/route.ts`
+**Method:** `POST`
+
+| Action | Implementation Detail |
 | :--- | :--- |
-| **`web/lib/supabaseAdmin.ts`** | ➕ **NEW FILE** |
+| **1. Authenticate User** | Use Supabase server-side client (`createServerClient`) and call `await supabase.auth.getUser()`. Return a `401` if `!user`. |
+| **2. Define Passthrough** | Create a `passthroughData` object containing the secure `user.id` and `user.email`. This data is the bridge between payment and webhook. |
+| **3. Create Checkout** | Use `fetch` (or a dedicated SDK) to `POST` to `https://api.lemonsqueezy.com/v1/checkouts`. |
+| **4. Embed Passthrough** | Set `attributes.checkout_data.custom` to the `passthroughData` object. |
+| **5. Set Redirect** | Set `attributes.redirect_url` to a success-handling page on your site (e.g., `${NEXT_PUBLIC_SITE_URL}/membership/activate`). |
+| **6. Return URL** | Extract `data.data.attributes.url` from the response and return it to the client. |
+
+### B. Webhook Endpoint for Payment Processing
+
+**File:** `app/api/webhooks/lemon/route.ts` (Matches configured Callback URL)
+**Method:** `POST`
+
+| Action | Implementation Detail |
+| :--- | :--- |
+| **1. Disable Body Parser** | Set `export const config = { api: { bodyParser: false } }` to read the raw request body. |
+| **2. Verify Signature** | **CRITICAL SECURITY STEP.** Use Node's `crypto` module to verify the `X-Signature` header against the raw body and the `LEMON_WEBHOOK_SECRET` using `sha256` and `crypto.timingSafeEqual` (as shown in previous step). Return `401` if verification fails. |
+| **3. Filter Events** | Parse the JSON payload. Only process `order_created` and `subscription_created` events. Return `200` for all other events to acknowledge receipt without action. |
+| **4. Extract Passthrough** | Get the Supabase `user_id` from `payload.meta.custom`. |
+| **5. Update Database** | **MUST use a Supabase client with the Service Role Key (`isAdmin: true`).** |
+| | a. **Insert into `purchases`**: Log the transaction (`user_id`, `ls_order_id`, `product_id`, `status`). |
+| | b. **Update `profiles`**: Set `is_member: true`, `member_since: now()`, and save `ls_customer_id` for future reference. |
+| **6. Acknowledge Success** | Return a `200 OK` response. |
+
+-----
+
+## 4\. Frontend Implementation (UX/UI Flow)
+
+### A. Access Gating Logic
+
+All gated features (`Trip Builder`, `Flight Planner`, `Lodging Planner`) must check the user's status:
 
 ```typescript
-// web/lib/supabaseAdmin.ts
-import { createClient } from '@supabase/supabase-js'
-
-// Utility function to ensure HTTPS protocol
-function normalizeToHttps(u: string): string {
-  if (!u) return '';
-  try {
-    const parsed = new URL(u);
-    if (parsed.protocol !== 'https:') parsed.protocol = 'https:';
-    return parsed.toString().replace(/\/$/, '');
-  } catch {
-    return u.replace(/^http:\/\//i, 'https://');
-  }
-}
-
-const supabaseUrl = normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!)
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
-/**
- * Supabase client initialized with the Service Role Key.
- * This client bypasses RLS for server-to-server operations.
- * USE ONLY IN SERVER COMPONENTS, API ROUTES, OR ROUTE HANDLERS.
- */
-export const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-})
+const isGated = !isAuthenticated || !isMember; // isAuthenticated from Supabase, isMember from profiles table
 ```
 
-#### 2\. Update Existing Membership Activation Route (Critical Step)
+### B. The 4-Phase User Journey
 
-This updates the existing API route to perform the server-side Lemon Squeezy verification and database update.
+| Phase | User Action | System State | Frontend Action / UI |
+| :--- | :--- | :--- | :--- |
+| **1. Pre-Auth (Visitor)** | Clicks a gated feature (`Open Trip Builder`, `Start Planning`). | `!isAuthenticated` | **Display an Interstitial Modal:** "**Unlock Your Trip Planner**" with a clear **"Sign In"** button. |
+| **2. Authentication** | Completes Magic Link Sign-In/Sign-Up. | `isAuthenticated`, `!isMember` | **Redirect to Paywall:** After auth, redirect to the new dedicated paywall page: `/membership/paywall`. |
+| **3. Payment** | On `/membership/paywall`, clicks **"Get Full Access"**. | `isAuthenticated`, `!isMember` | **Client-Side:** Call `POST /api/checkout`. Receive `checkoutUrl`. Redirect user to the `checkoutUrl` immediately. |
+| **4. Onboarding** | Completes payment & is redirected back to `/membership/activate`. | `isAuthenticated`, `isMember` (Set by webhook) | **Display 3-Step Onboarding Modal/Bar:** "Welcome\! Let's build your trip in 3 quick steps." The steps should capture data for the `user_profile` table. |
 
-| File Path | Action |
-| :--- | :--- |
-| **`web/app/api/membership/activate/route.ts`** | ✏️ **UPDATE EXISTING FILE** |
+### C. Onboarding Implementation (Step 4 UI)
 
-```typescript
-// web/app/api/membership/activate/route.ts
-// NOTE: This file is an API Route handler, not a page.
-import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabaseAdmin' // Service Role client
-
-const LEMON_API_KEY = process.env.LEMON_API_KEY!
-const MEMBERSHIP_PRODUCT_ID = Number(process.env.NEXT_PUBLIC_LS_MEMBER_PRODUCT_ID || '0')
-const DEFAULT_REDIRECT = process.env.NEXT_PUBLIC_MEMBER_DEFAULT_REDIRECT || '/planner/trip-builder'
-
-// Types for Lemon Squeezy API response structure
-type LemonOrder = {
-  id: string
-  type: string
-  attributes: {
-    status: string
-    user_email: string | null
-    email: string | null
-  }
-}
-
-type LemonOrderItem = {
-  id: string
-  type: string
-  attributes: {
-    product_id: number
-    variant_id: number
-  }
-}
-
-export async function GET(req: NextRequest) {
-  const url = new URL(req.url)
-  const orderId = url.searchParams.get('order_id')
-  const emailFromQuery = url.searchParams.get('email')
-  const redirectPath = url.searchParams.get('redirect') || DEFAULT_REDIRECT
-  
-  // NOTE: Lemon Squeezy must be configured to redirect here with these params.
-  if (!orderId) {
-    return NextResponse.redirect(new URL(`/memberships?error=missing-order`, req.url))
-  }
-
-  try {
-    // 1. Fetch order from Lemon Squeezy (includes order-items for verification)
-    const orderRes = await fetch(
-      `https://api.lemonsqueezy.com/v1/orders/${orderId}?include=order-items`,
-      {
-        headers: {
-          Authorization: `Bearer ${LEMON_API_KEY}`,
-          Accept: 'application/vnd.api+json'
-        },
-        cache: 'no-store'
-      }
-    )
-
-    if (!orderRes.ok) {
-      console.error('Lemon order fetch failed', orderRes.status)
-      return NextResponse.redirect(new URL(`/memberships?error=order-failed`, req.url))
-    }
-
-    const orderJson = await orderRes.json()
-    const order = orderJson.data as LemonOrder
-    const orderEmail =
-      (order.attributes.user_email || order.attributes.email || emailFromQuery || '')
-        .trim()
-        .toLowerCase()
-
-    if (order.attributes.status !== 'paid' || !orderEmail) {
-      return NextResponse.redirect(new URL(`/memberships?error=not-paid`, req.url))
-    }
-
-    // 2. Extract and verify product_id from included order items
-    // Lemon Squeezy API response includes related resources in the 'included' array
-    const orderItems = (orderJson.included as (LemonOrderItem | LemonOrder)[]) // Handle heterogeneous types
-      .filter(item => item.type === 'order-items') as LemonOrderItem[]; 
-
-    const isMembershipProduct = orderItems.some(item =>
-        item.attributes.product_id === MEMBERSHIP_PRODUCT_ID
-    );
-
-    if (MEMBERSHIP_PRODUCT_ID && !isMembershipProduct) {
-      return NextResponse.redirect(new URL(`/memberships?error=wrong-product`, req.url))
-    }
-
-    // 3. Update Supabase profile using admin client (Service Role)
-    const updateData = {
-      is_member: true,
-      account_level: 'member',
-      member_since: new Date().toISOString()
-    };
-    
-    const { error: updateErr } = await supabaseAdmin
-      .from('profiles')
-      .update(updateData)
-      .eq('email', orderEmail) // Match on email, which should be present from initial login/profile creation
-
-    if (updateErr) {
-      console.error('Supabase profile update/insert error', updateErr)
-      // Log the error but continue to redirect the user to prevent a bad UX
-    }
-
-    // 4. Redirect user into the app
-    const safeRedirect = redirectPath.startsWith('/') ? redirectPath : DEFAULT_REDIRECT
-    // Use /memberships/page as an intermediate confirmation page if you have one, or direct to planner
-    return NextResponse.redirect(new URL(safeRedirect, req.url)) 
-  } catch (err) {
-    console.error('Membership activation exception', err)
-    return NextResponse.redirect(new URL(`/memberships?error=exception`, req.url))
-  }
-}
-```
-
-### Phase 2: Secure Server Component Gating
-
-#### 3\. Rename Client Component
-
-| File Path | Action |
-| :--- | :--- |
-| **`web/app/planner/trip-builder/page.tsx`** | ➡️ **RENAME TO:** `web/app/planner/trip-builder/trip-builder-client.tsx` |
-
-#### 4\. Create Server Component Gate
-
-| File Path | Action |
-| :--- | :--- |
-| **`web/app/planner/trip-builder/page.tsx`** | ➕ **NEW FILE** |
-
-```typescript
-// web/app/planner/trip-builder/page.tsx - Server Component Gate
-import { redirect } from 'next/navigation';
-import { createClient as createSSRClient } from '@/lib/supabase/server'; 
-import { supabaseAdmin } from '@/lib/supabaseAdmin'; // New Service Role client
-import { isActiveMember } from '@/lib/membership';
-import TripBuilderClient from './trip-builder-client'; // The renamed client component
-
-export default async function TripBuilderGate() {
-  const supabase = await createSSRClient(); 
-
-  // 1. Check Authentication (must use SSR client to read cookies)
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    // Redirect unauthenticated user to login
-    return redirect(`/login?redirect=/planner/trip-builder`);
-  }
-
-  // 2. Check Membership Status (reliably, using Service Role to bypass RLS)
-  const isMember = await isActiveMember(supabaseAdmin, user.id); 
-
-  if (!isMember) {
-    // If authenticated but not a member, redirect to the memberships page
-    return redirect(`/memberships?from=planner&redirect=/planner/trip-builder`);
-  }
-
-  // 3. Success: User is authenticated and a member. Render the client component.
-  return <TripBuilderClient />;
-}
-```
-
-#### 5\. Clean Up Middleware
-
-| File Path | Action |
-| :--- | :--- |
-| **`web/middleware.ts`** | ✏️ **MODIFY** |
-
-**Action:** Ensure no logic performs a redirect based on `/planner` routes or membership status. **Specifically, remove the entire "Optional onboarding gate" block** (the `if (gateEnabled && user?.id && supabase)` block around line 97) to eliminate all known sources of unpredictable Edge Runtime failure.
-
-#### 6\. Clean Up Planner Hub Link
-
-| File Path | Action |
-| :--- | :--- |
-| **`web/app/planner/page.tsx`** | ✏️ **MODIFY** |
-
-**Action:** In the `PhaseCard` component, remove the now-redundant client-side conditional logic and link directly to the target page.
-
-```typescript
-// web/app/planner/page.tsx (Fragment in PhaseCard)
-// ...
-            <div className="mt-4 flex flex-col sm:flex-row gap-3">
-              <Link
-                href={phase.href} // <-- FIXED: Link directly to the protected page
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-              >
-                {phaseT('howItWorks.cta.open')}
-              </Link>
-              {/* ... (demo link) */}
-            </div>
-// ...
-```
+  * **Logic:** The 3-Step UI is only shown once. After completion, a flag (e.g., `user_profile.setup_complete`) should be set.
+  * **Data Capture:** The three steps should collect and immediately persist essential data to the `public.user_profile` table:
+    1.  **Travelers:** `group_size`, `children`, `seniors`, `mobility_issues`.
+    2.  **Logistics:** `home_city`, `home_airport`, `preferred_transport`.
+    3.  **Preferences:** `budget_level`, `food_preference`, `nightlife_preference`.
+  * **Final Action:** Upon clicking **"Finish Setup"**, redirect the user to the main planning page (`/planner`) with their data pre-loaded.

@@ -1,12 +1,8 @@
 -- Migration 007: User Settings — extend profiles and add purchases
 -- Run with service role (or Supabase SQL editor)
 
--- 1) Extend profiles with email, name, account_level, updated_at
-ALTER TABLE profiles
-ADD COLUMN IF NOT EXISTS email TEXT,
-ADD COLUMN IF NOT EXISTS name TEXT,
-ADD COLUMN IF NOT EXISTS account_level TEXT DEFAULT 'free' CHECK (account_level IN ('free','city_bundle','member')),
-ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT now();
+-- This migration is obsolete and has been superseded by 021_drop_legacy_membership_columns.sql
+
 
 -- Optional: backfill email from auth.users if available (requires service role)
 -- NOTE: Supabase REST cannot query auth schema with anon key; run in SQL editor or via admin API.

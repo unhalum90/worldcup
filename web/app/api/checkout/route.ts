@@ -1,86 +1,80 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { NextResponse } from 'next/server'
+import { createCheckout, ensureLemonSqueezyConfigured } from '@/lib/lemonsqueezy'
 
-export async function POST(req: NextRequest) {
+export async function POST() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return new NextResponse(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const storeId = process.env.LEMONSQUEEZY_STORE_ID
+  const variantId = process.env.LEMONSQUEEZY_MEMBERSHIP_VARIANT_ID
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL
+  const apiKey = process.env.LEMONSQUEEZY_API_KEY
+
+  if (!storeId || !variantId) {
+    console.error('Missing Lemon Squeezy configuration: store or variant ID not set.')
+    return new NextResponse(JSON.stringify({ error: 'Configuration error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  if (!siteUrl) {
+    console.error('Missing NEXT_PUBLIC_SITE_URL (or NEXT_PUBLIC_BASE_URL) environment variable.')
+    return new NextResponse(JSON.stringify({ error: 'Configuration error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  if (!apiKey) {
+    console.error('Missing LEMONSQUEEZY_API_KEY environment variable.')
+    return new NextResponse(JSON.stringify({ error: 'Configuration error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
   try {
-    const supabase = await createClient()
-    const { data: { user }, error } = await supabase.auth.getUser()
+    ensureLemonSqueezyConfigured()
 
-    console.log('[Checkout] auth.getUser()', {
-      hasUser: !!user,
-      email: user?.email,
-      error: error?.message,
-      cookieNames: req.cookies.getAll().map(c => c.name),
+    const checkoutResponse = await createCheckout(Number(storeId), Number(variantId), {
+      checkoutData: {
+        custom: {
+          user_id: user.id,
+          user_email: user.email,
+        },
+      },
+      checkoutOptions: {
+        successUrl: `${siteUrl}/membership/activate`,
+        cancelUrl: `${siteUrl}/membership/paywall`,
+      } as Record<string, unknown>,
     })
 
-    let effectiveUser = user
-
-    // If server-side cookies didn't carry a session, allow a client-provided
-    // Bearer token to validate the user via Supabase's auth v1 user endpoint.
-    if (!effectiveUser?.email) {
-      const authHeader = req.headers.get('authorization')
-      if (authHeader && authHeader.startsWith('Bearer ')) {
-        try {
-          const token = authHeader.split(' ')[1]
-          const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '')
-          const userResp = await fetch(`${supabaseUrl}/auth/v1/user`, {
-            headers: { Authorization: `Bearer ${token}` },
-            cache: 'no-store',
-          })
-
-          if (userResp.ok) {
-            const userJson = await userResp.json()
-            // userJson is the user object
-            effectiveUser = userJson as any
-            console.log('[Checkout] verified user via auth header', { email: effectiveUser?.email, id: effectiveUser?.id })
-          } else {
-            console.log('[Checkout] auth header verification failed', { status: userResp.status })
-          }
-        } catch (e) {
-          console.error('[Checkout] auth header verification error', e)
-        }
-      }
+    if (checkoutResponse.error || !checkoutResponse.data) {
+      throw checkoutResponse.error ?? new Error('Failed to create checkout session')
     }
 
-    if (!effectiveUser?.email) {
-      return NextResponse.json(
-        { error: 'Must be logged in' },
-        { status: 401 }
-      )
-    }
+    const url = checkoutResponse.data.data.attributes.url
 
-  const storeId = process.env.LEMON_STORE_ID
-  const productId = process.env.LEMON_MEMBER_PRODUCT_IDS?.split(',')[0]
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-
-    if (!storeId || !productId) {
-      return NextResponse.json(
-        { error: 'Store not configured' },
-        { status: 500 }
-      )
-    }
-
-  // Create Lemon Squeezy checkout
-  const checkoutUrl = new URL(`https://worldcup26fanzone.lemonsqueezy.com/checkout/buy/${productId}`)
-    
-    checkoutUrl.searchParams.set('checkout[email]', user.email)
-    checkoutUrl.searchParams.set('checkout[custom][user_id]', user.id)
-    
-    // Success URL goes to activation page
-    checkoutUrl.searchParams.set(
-      'checkout[success_url]',
-      `${siteUrl}/membership/activate?order_id={order_id}`
-    )
-
-    const result = { url: checkoutUrl.toString() }
-    console.log('[Checkout] returning checkout URL', result)
-
-    return NextResponse.json(result)
+    return new NextResponse(JSON.stringify({ url }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
   } catch (error) {
-    console.error('Checkout error:', error)
-    return NextResponse.json(
-      { error: 'Failed to create checkout' },
-      { status: 500 }
-    )
+    console.error('Error creating checkout:', error)
+    return new NextResponse(JSON.stringify({ error: 'Failed to create checkout session' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 }
