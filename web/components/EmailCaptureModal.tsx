@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { MEMBERSHIP_GATE_REDIRECT, sendMagicLink } from "@/lib/auth/magicLink";
+import { DEFAULT_AUTH_REDIRECT, sendMagicLink } from "@/lib/auth/magicLink";
 
 interface EmailCaptureModalProps {
   isOpen: boolean;
@@ -34,14 +34,15 @@ export default function EmailCaptureModal({ isOpen, onClose }: EmailCaptureModal
     e.preventDefault();
     setLoading(true);
     setError("");
+    const targetPath = DEFAULT_AUTH_REDIRECT;
 
     try {
       // Send Magic Link for authentication
-  await sendMagicLink(email, MEMBERSHIP_GATE_REDIRECT);
+  await sendMagicLink(email, targetPath);
 
       // Store email for resend functionality and verification page
       localStorage.setItem("pending_verification_email", email);
-  localStorage.setItem("pending_verification_redirect", MEMBERSHIP_GATE_REDIRECT);
+  localStorage.setItem("pending_verification_redirect", targetPath);
 
       // Send newsletter opt-in if checked
       if (optIn) {
@@ -67,7 +68,7 @@ export default function EmailCaptureModal({ isOpen, onClose }: EmailCaptureModal
       if (e.message?.includes('already registered') || e.message?.includes('user_already_exists')) {
         // Still redirect to verify page for existing users
         localStorage.setItem("pending_verification_email", email);
-  localStorage.setItem("pending_verification_redirect", MEMBERSHIP_GATE_REDIRECT);
+  localStorage.setItem("pending_verification_redirect", targetPath);
         router.push("/verify-email");
       } else {
         setError(e.message || "Something went wrong. Please try again.");

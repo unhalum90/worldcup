@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-import { MEMBERSHIP_GATE_REDIRECT, POST_MEMBERSHIP_ONBOARDING_PATH } from "@/lib/auth/magicLink";
+import { DEFAULT_AUTH_REDIRECT, MEMBERSHIP_GATE_REDIRECT, POST_MEMBERSHIP_ONBOARDING_PATH } from "@/lib/auth/magicLink";
 
 function sanitizeCode(input: string) {
   return input.replace(/[^0-9A-Za-z]/g, "").trim();
@@ -20,7 +20,7 @@ export default function EmailOtpVerify({ redirect }: { redirect?: string }) {
     if (redirect && redirect.startsWith("/")) return redirect;
     const stored = typeof window !== "undefined" ? localStorage.getItem("pending_verification_redirect") : null;
     if (stored && stored.startsWith("/")) return stored;
-    return MEMBERSHIP_GATE_REDIRECT;
+    return DEFAULT_AUTH_REDIRECT;
   }, [redirect]);
 
   useEffect(() => {
