@@ -87,7 +87,12 @@ serve(async (req) => {
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')
-    const serviceRole = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || Deno.env.get('SUPABASE_SERVICE_ROLE')
+    // Service key must NOT use the SUPABASE_ prefix in Secrets UI; support common names
+    const serviceRole =
+      Deno.env.get('SERVICE_ROLE_KEY') ||
+      Deno.env.get('SERVICE_ROLE') ||
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ||
+      Deno.env.get('SUPABASE_SERVICE_ROLE')
     if (!supabaseUrl || !serviceRole) {
       console.error('[lemon-webhook] Missing Supabase service credentials')
       return new Response(JSON.stringify({ message: 'server misconfigured' }), { status: 500 })
@@ -153,4 +158,3 @@ serve(async (req) => {
     return new Response(JSON.stringify({ error: 'processing_failed' }), { status: 500 })
   }
 })
-
