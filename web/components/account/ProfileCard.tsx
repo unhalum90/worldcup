@@ -98,7 +98,6 @@ export default function ProfileCard({ profile, user }: { profile: Profile | null
           <div className="text-base font-medium">{name || 'Anonymous'}</div>
           <div className="text-sm text-gray-500">{email}</div>
           <div className="mt-1 text-sm">Account: <span className="font-medium capitalize">{level}</span></div>
-          <div className="text-xs text-gray-500">Tier: {tier} • Status: {status}</div>
           <div className="mt-2">
             {isMembershipActive ? (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">

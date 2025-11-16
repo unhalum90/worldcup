@@ -124,15 +124,15 @@ export default function Header() {
                     {user.email?.split('@')[0] || 'Account'}
                   </span>
                 </Link>
-                <button onClick={signOut} 
-                        className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow text-gray-900 border-gray-900 bg-white/80'}`}
-                        style={{ 
-                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
-                          borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
-                          backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"
-                        }}>
+                <Link href="/logout" 
+                      className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow text-gray-900 border-gray-900 bg-white/80'}`}
+                      style={{ 
+                        color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
+                        borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                        backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"
+                      }}>
                   Sign out
-                </button>
+                </Link>
               </div>
             )}
           </nav>
@@ -217,14 +217,14 @@ export default function Header() {
                       {user.email || 'Account'}
                     </span>
                   </Link>
-                  <button onClick={async () => { setIsMenuOpen(false); await signOut(); }} 
-                          className={`px-4 py-2 rounded-lg border text-sm hover:opacity-80 transition-opacity ${!profile?.favorite_team ? 'text-gray-900 border-gray-900' : ''}`}
-                          style={{ 
-                            color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
-                            borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827"
-                          }}>
+                  <Link href="/logout" onClick={() => setIsMenuOpen(false)}
+                        className={`px-4 py-2 rounded-lg border text-sm hover:opacity-80 transition-opacity ${!profile?.favorite_team ? 'text-gray-900 border-gray-900' : ''}`}
+                        style={{ 
+                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                          borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827"
+                        }}>
                     Sign out
-                  </button>
+                  </Link>
                 </div>
               )}
             </nav>
