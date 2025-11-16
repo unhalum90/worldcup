@@ -1,6 +1,5 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import * as crypto from 'https://deno.land/std@0.177.0/crypto/mod.ts'
 
 function stripPrefix(sig: string): string {
   const s = sig.trim()
@@ -113,20 +112,74 @@ serve(async (req) => {
     // Activate membership for successful purchase events
     const activateEvents = new Set(['order_created', 'subscription_created', 'subscription_updated'])
     if (activateEvents.has(event)) {
-      const { error: upErr } = await supabase
+      // Coerce LS values to strings for text columns
+      const lsCustomerId = customerId != null ? String(customerId) : undefined
+
+      // Try update by user_id first
+      const { data: updatedById, error: upErrById } = await supabase
         .from('profiles')
         .update({
           is_member: true,
           account_level: 'member',
           member_since: new Date().toISOString(),
-          ls_customer_id: customerId ?? undefined,
+          ls_customer_id: lsCustomerId,
           updated_at: new Date().toISOString(),
         })
         .eq('user_id', userId)
+        .select('user_id')
 
-      if (upErr) {
-        console.error('[lemon-webhook] Profile update error', upErr)
-        return new Response(JSON.stringify({ error: 'profile_update_failed' }), { status: 500 })
+      if (upErrById) {
+        console.error('[lemon-webhook] Profile update (by user_id) error', upErrById)
+        // Do not surface 500 to Lemon; log and continue
+      }
+
+      // If no row matched, fall back to email match
+      let matched = Array.isArray(updatedById) && updatedById.length > 0
+
+      if (!matched) {
+        if (userEmail) {
+          const { data: updatedByEmail, error: upErrByEmail } = await supabase
+            .from('profiles')
+            .update({
+              is_member: true,
+              account_level: 'member',
+              member_since: new Date().toISOString(),
+              ls_customer_id: lsCustomerId,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('email', userEmail)
+            .select('user_id')
+
+          if (upErrByEmail) {
+            console.error('[lemon-webhook] Profile update (by email) error', upErrByEmail)
+            // Continue; don't block LS webhook retries if email path fails
+          }
+          matched = Array.isArray(updatedByEmail) && updatedByEmail.length > 0
+        } else {
+          console.warn('[lemon-webhook] No matching profile by user_id and no userEmail provided; skipping profile update')
+        }
+      }
+
+      // If still not matched, create or upsert a profile row
+      if (!matched) {
+        try {
+          await supabase
+            .from('profiles')
+            .upsert(
+              {
+                user_id: userId,
+                email: userEmail ?? null,
+                is_member: true,
+                account_level: 'member',
+                member_since: new Date().toISOString(),
+                ls_customer_id: lsCustomerId,
+                updated_at: new Date().toISOString(),
+              },
+              { onConflict: 'user_id' }
+            )
+        } catch (e) {
+          console.error('[lemon-webhook] Profile upsert failed', e)
+        }
       }
 
       // Best-effort purchase upsert
@@ -140,7 +193,7 @@ serve(async (req) => {
               ls_order_id: lsOrderId || null,
               product_id: productId || null,
               product_name: productName || null,
-              price: priceCents ? priceCents / 100 : null,
+              price: priceCents / 100,
               currency,
               status: 'completed',
               payload: payload as unknown as Record<string, unknown>,
@@ -155,6 +208,7 @@ serve(async (req) => {
     return new Response(JSON.stringify({ ok: true }), { status: 200 })
   } catch (e) {
     console.error('[lemon-webhook] Exception:', e)
-    return new Response(JSON.stringify({ error: 'processing_failed' }), { status: 500 })
+    // Avoid 500 loops from Lemon retries; log and ack
+    return new Response(JSON.stringify({ ok: false, error: 'processing_failed' }), { status: 200 })
   }
 })
