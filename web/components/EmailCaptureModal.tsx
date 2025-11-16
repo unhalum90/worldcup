@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { DEFAULT_AUTH_REDIRECT, sendMagicLink } from "@/lib/auth/magicLink";
+import { MEMBERSHIP_GATE_REDIRECT, sendMagicLink } from "@/lib/auth/magicLink";
 
 interface EmailCaptureModalProps {
   isOpen: boolean;
@@ -34,7 +34,8 @@ export default function EmailCaptureModal({ isOpen, onClose }: EmailCaptureModal
     e.preventDefault();
     setLoading(true);
     setError("");
-    const targetPath = DEFAULT_AUTH_REDIRECT;
+    // Force new sign-ups through the membership gate
+    const targetPath = MEMBERSHIP_GATE_REDIRECT;
 
     try {
       // Send Magic Link for authentication

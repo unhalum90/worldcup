@@ -20,7 +20,8 @@ export default function EmailOtpVerify({ redirect }: { redirect?: string }) {
     if (redirect && redirect.startsWith("/")) return redirect;
     const stored = typeof window !== "undefined" ? localStorage.getItem("pending_verification_redirect") : null;
     if (stored && stored.startsWith("/")) return stored;
-    return DEFAULT_AUTH_REDIRECT;
+    // Default to membership gate so new users are always gated
+    return MEMBERSHIP_GATE_REDIRECT;
   }, [redirect]);
 
   useEffect(() => {
@@ -134,4 +135,3 @@ export default function EmailOtpVerify({ redirect }: { redirect?: string }) {
     </div>
   );
 }
-

@@ -89,8 +89,10 @@ export async function GET(req: Request) {
   const session = data.session;
   const userId = session.user?.id;
   let destination = resolveRedirectPath(redirectParam);
+  const isPaywallRedirect = destination.startsWith('/membership/paywall');
 
-  if (userId) {
+  // Only override destination to onboarding when not explicitly heading to the paywall
+  if (userId && !isPaywallRedirect) {
     try {
       const { data: profile, error: profileError } = await supabase
         .from("user_profile")
