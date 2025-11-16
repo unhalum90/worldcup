@@ -64,7 +64,13 @@ serve(async (req) => {
 
   const body = await req.text()
 
-  const valid = await verifySignature(req, body)
+  let valid = false
+  try {
+    valid = await verifySignature(req, body)
+  } catch (e) {
+    console.error('[lemon-webhook] Signature verification threw:', e)
+    return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 })
+  }
   if (!valid) {
     console.warn('[lemon-webhook] Signature verification failed')
     return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 })
@@ -94,7 +100,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE')
     if (!supabaseUrl || !serviceRole) {
       console.error('[lemon-webhook] Missing Supabase service credentials')
-      return new Response(JSON.stringify({ message: 'server misconfigured' }), { status: 500 })
+      return new Response(JSON.stringify({ ok: false, error: 'server_misconfigured' }), { status: 200 })
     }
 
     const supabase = createClient(supabaseUrl, serviceRole, { auth: { persistSession: false, autoRefreshToken: false } })
