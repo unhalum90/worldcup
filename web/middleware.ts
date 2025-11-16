@@ -7,6 +7,14 @@ type CookieOptions = Partial<SerializeOptions>
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Canonical host: ensure cookies originate from apex domain
+  const host = request.headers.get('host') || ''
+  if (host.startsWith('www.')) {
+    const url = new URL(request.url)
+    url.host = host.replace(/^www\./, '')
+    return NextResponse.redirect(url)
+  }
+
   // Define protected routes (keep planner hub public; guard tool pages)
   const protectedRoutes = ['/planner/trip-builder', '/flight-planner', '/lodging-planner', '/onboarding']
 
