@@ -3,8 +3,12 @@ import { SupabaseClient } from '@supabase/supabase-js'
 
 export const PROTECTED_ROUTES = [
   '/planner/trip-builder',
-  '/planner/lodging',
-  '/planner/flights',
+  // Actual app routes
+  '/lodging-planner',
+  '/flight-planner',
+  // Future/alias paths (covered just in case)
+  '/planner/lodging-planner',
+  '/planner/flight-planner',
   '/onboarding'
 ]
 

@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
   // If not logged in, redirect to login preserving intended destination
   if (!user) {
     const loginUrl = new URL('/login', normalizeToHttps(process.env.NEXT_PUBLIC_SITE_URL || req.url))
-    loginUrl.searchParams.set('redirect', '/memberships')
+    loginUrl.searchParams.set('redirect', '/membership/paywall')
     return NextResponse.redirect(loginUrl)
   }
 
@@ -62,8 +62,9 @@ export async function GET(req: NextRequest) {
 
   // Ensure we return to activation page to self-verify even if webhooks fail
   const siteUrl = normalizeToHttps(process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin)
-  params.set('checkout[success_url]', `${siteUrl}/memberships/activate?from=checkout`)
-  params.set('checkout[cancel_url]', `${siteUrl}/memberships`)
+  // Land on onboarding after activation
+  params.set('checkout[success_url]', `${siteUrl}/membership/activate?from=checkout&redirect=/onboarding`)
+  params.set('checkout[cancel_url]', `${siteUrl}/membership/paywall`)
 
   // Preserve known passthrough query params (e.g., ?code=XXXX for discounts)
   const incoming = new URL(req.url)

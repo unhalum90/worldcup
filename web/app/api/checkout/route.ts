@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   const storeId = process.env.LEMONSQUEEZY_STORE_ID
   const variantId = process.env.LEMONSQUEEZY_MEMBERSHIP_VARIANT_ID
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_BASE_URL
-  const apiKey = process.env.LEMONSQUEEZY_API_KEY
+  const apiKey = process.env.LEMONSQUEEZY_API_KEY || process.env.LEMON_API_KEY
 
   let redirectPath: string | undefined
   try {
@@ -59,10 +59,8 @@ export async function POST(request: NextRequest) {
 
     const successUrl = new URL('/membership/activate', siteUrl)
     const cancelUrl = new URL('/membership/paywall', siteUrl)
-    if (redirectPath) {
-      successUrl.searchParams.set('redirect', redirectPath)
-      cancelUrl.searchParams.set('redirect', redirectPath)
-    }
+    // Always land users on onboarding after activation
+    successUrl.searchParams.set('redirect', '/onboarding')
 
     const checkoutResponse = await createCheckout(Number(storeId), Number(variantId), {
       checkoutData: {

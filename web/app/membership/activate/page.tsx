@@ -15,7 +15,8 @@ export default function ActivatePage() {
     if (raw && raw.startsWith('/')) {
       return raw
     }
-    return '/planner/trip-builder'
+    // Default to onboarding to complete profile before accessing tools
+    return '/onboarding'
   }, [searchParams])
 
   useEffect(() => {

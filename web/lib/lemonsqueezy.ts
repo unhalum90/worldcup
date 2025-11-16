@@ -5,10 +5,10 @@ let isConfigured = false
 export function ensureLemonSqueezyConfigured() {
   if (isConfigured) return
 
-  const apiKey = process.env.LEMONSQUEEZY_API_KEY
+  const apiKey = process.env.LEMONSQUEEZY_API_KEY || process.env.LEMON_API_KEY
 
   if (!apiKey) {
-    throw new Error('LEMONSQUEEZY_API_KEY is not set')
+    throw new Error('LEMONSQUEEZY_API_KEY (or LEMON_API_KEY) is not set')
   }
 
   lemonSqueezySetup({ apiKey })
