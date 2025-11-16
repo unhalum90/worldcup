@@ -1,6 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import { checkMembership } from './lib/membership'
 import type { SerializeOptions } from 'cookie'
 
 type CookieOptions = Partial<SerializeOptions>
@@ -8,8 +7,8 @@ type CookieOptions = Partial<SerializeOptions>
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Define protected routes
-  const protectedRoutes = ['/planner', '/flights', '/lodging', '/onboarding']
+  // Define protected routes (keep planner hub public; guard tool pages)
+  const protectedRoutes = ['/planner/trip-builder', '/flight-planner', '/lodging-planner', '/onboarding']
 
   // Check if the current path is a protected route
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
@@ -42,10 +41,18 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    const { isMember } = await checkMembership()
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_member')
+        .eq('user_id', user.id)
+        .maybeSingle()
 
-    if (!isMember) {
-      // Redirect to paywall if not a member
+      if (!profile?.is_member) {
+        return NextResponse.redirect(new URL('/membership/paywall', request.url))
+      }
+    } catch (e) {
+      // Fail-closed to paywall on unexpected errors
       return NextResponse.redirect(new URL('/membership/paywall', request.url))
     }
   }
@@ -65,4 +72,3 @@ export const config = {
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 }
-
