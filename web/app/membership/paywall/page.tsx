@@ -53,22 +53,11 @@ export default function PaywallPage() {
   const handleCheckout = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ redirect: redirectTarget }),
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session')
-      }
-
-      const { url } = await response.json()
-      router.push(url)
+      // Use direct buy URL endpoint; it handles auth and success/cancel URLs
+      router.push('/api/checkout/member')
     } catch (error) {
       console.error(error)
       setIsLoading(false)
-      // TODO: Show an error message to the user
     }
   }
 
@@ -107,4 +96,3 @@ export default function PaywallPage() {
     </div>
   )
 }
-
