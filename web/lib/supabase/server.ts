@@ -16,11 +16,17 @@ export async function createClient() {
   const cookieStore = await cookies()
   try {
     const names = cookieStore.getAll().map(c => c.name)
-    const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
+    const h = await nextHeaders();
+    const rid = h?.get('x-fz-req-id') || null
     console.log('[SSR2] createClient()', { rid, cookieNames: names })
   } catch (e) {
-    const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
-    console.log('[SSR2] createClient cookie introspection failed', { rid, error: String(e) })
+    try {
+      const h = await nextHeaders();
+      const rid = h?.get('x-fz-req-id') || null
+      console.log('[SSR2] createClient cookie introspection failed', { rid, error: String(e) })
+    } catch {
+      console.log('[SSR2] createClient cookie introspection failed', { rid: null, error: String(e) })
+    }
   }
 
   return createServerClient(
@@ -30,10 +36,7 @@ export async function createClient() {
       cookies: {
         get(name: string) {
           const v = cookieStore.get(name)?.value
-          if (name.includes('sb')) {
-            const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
-            console.log('[SSR2] cookies.get', { rid, name, present: Boolean(v) })
-          }
+          if (name.includes('sb')) console.log('[SSR2] cookies.get', { rid: null, name, present: Boolean(v) })
           return v
         },
         getAll() {
@@ -42,14 +45,10 @@ export async function createClient() {
         set(name: string, value: string, options: any) {
           try {
             cookieStore.set(name, value, options)
-            if (name.includes('sb')) {
-              const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
-              console.log('[SSR2] cookies.set', { rid, name })
-            }
+            if (name.includes('sb')) console.log('[SSR2] cookies.set', { rid: null, name })
           } catch (e) {
             // read-only cookie store in some server contexts
-            const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
-            console.log('[SSR2] cookies.set failed (read-only store?)', { rid, name })
+            console.log('[SSR2] cookies.set failed (read-only store?)', { rid: null, name })
           }
         },
         setAll(cookiesToSet: Array<{ name: string; value: string; options?: any }>) {
@@ -64,14 +63,10 @@ export async function createClient() {
         remove(name: string, options: any) {
           try {
             cookieStore.delete(name)
-            if (name.includes('sb')) {
-              const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
-              console.log('[SSR2] cookies.remove', { rid, name })
-            }
+            if (name.includes('sb')) console.log('[SSR2] cookies.remove', { rid: null, name })
           } catch (e) {
             // ignore when read-only
-            const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
-            console.log('[SSR2] cookies.remove failed (read-only store?)', { rid, name })
+            console.log('[SSR2] cookies.remove failed (read-only store?)', { rid: null, name })
           }
         },
       },

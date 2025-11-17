@@ -17,7 +17,11 @@ export default async function TripBuilderLayout({
 }: {
   children: React.ReactNode
 }) {
-  const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
+  let rid: string | null = null;
+  try {
+    const h = await nextHeaders();
+    rid = h.get('x-fz-req-id');
+  } catch {}
   console.log('[TB] layout invoked - checking membership', { rid })
   const { isMember, userId } = await checkMembership()
   console.log('[TB] layout membership result', { rid, userId, isMember })

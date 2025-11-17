@@ -19,7 +19,8 @@ export async function checkMembership(): Promise<{
   userId: string | null
 }> {
   try {
-    const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
+    let rid: string | null = null;
+    try { const h = await nextHeaders(); rid = h?.get('x-fz-req-id') || null } catch {}
     console.log('[MEM] checkMembership() start', { rid });
     const supabase = await createClient()
     
@@ -44,8 +45,8 @@ export async function checkMembership(): Promise<{
       userId: user.id
     }
   } catch (error) {
-    const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
-    console.error('[MEM] Error checking membership:', { rid, error })
+    let rid2: string | null = null; try { const h = await nextHeaders(); rid2 = h?.get('x-fz-req-id') || null } catch {}
+    console.error('[MEM] Error checking membership:', { rid: rid2, error })
     return { isMember: false, email: null, userId: null }
   }
 }
