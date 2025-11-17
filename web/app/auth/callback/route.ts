@@ -130,6 +130,9 @@ export async function GET(req: Request) {
     }
   }
 
+  // Prepare redirect response now so we can attach cookies to it
+  const response = NextResponse.redirect(new URL(destination, req.url));
+
   // Fallback: explicitly set sb-* cookies so SSR sees session on next request
   try {
     const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || '').startsWith('http') ? process.env.NEXT_PUBLIC_SITE_URL! : ''
@@ -154,7 +157,6 @@ export async function GET(req: Request) {
   }
 
   console.log("[CB] Auth session established, redirecting to:", destination);
-  const response = NextResponse.redirect(new URL(destination, req.url));
   applyCookieUpdates(response, cookieUpdates);
   try {
     console.log('[CB] Applied cookie updates', cookieUpdates.map(u => ({ action: u.action, name: u.name })));
