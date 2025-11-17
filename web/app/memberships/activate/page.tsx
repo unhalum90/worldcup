@@ -82,7 +82,7 @@ export default function ActivateMembershipPage() {
 
           {status === 'success' && (
             <div className="mt-4 flex gap-2">
-              <Link href="/planner/trip-builder" className="inline-flex items-center justify-center rounded-full px-5 py-3 font-semibold bg-green-600 text-white hover:bg-green-700">
+              <Link href="/planner/trip-builder" prefetch={false} className="inline-flex items-center justify-center rounded-full px-5 py-3 font-semibold bg-green-600 text-white hover:bg-green-700">
                 Go to Trip Builder
               </Link>
               <Link href="/" className="inline-flex items-center justify-center rounded-full px-5 py-3 font-semibold bg-white text-gray-900 border border-gray-200 hover:bg-gray-50">
@@ -95,4 +95,3 @@ export default function ActivateMembershipPage() {
     </div>
   );
 }
-

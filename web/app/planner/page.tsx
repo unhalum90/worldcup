@@ -216,6 +216,7 @@ function PhaseCard({ phase, userProfile }: { phase: Phase; userProfile: any | nu
             <div className="mt-4 flex flex-col sm:flex-row gap-3">
               <Link
                 href={phase.href}
+                prefetch={false}
                 className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-colors bg-blue-600 text-white hover:bg-blue-700"
               >
                 {phaseT('howItWorks.cta.open')}

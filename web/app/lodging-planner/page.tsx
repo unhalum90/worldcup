@@ -130,6 +130,7 @@ export default function LodgingPlannerPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-3">
             <Link
               href="/planner/trip-builder"
+              prefetch={false}
               className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-rose-600 text-white font-semibold hover:bg-rose-700"
             >
               Open Trip Builder

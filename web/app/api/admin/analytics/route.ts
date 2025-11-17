@@ -45,6 +45,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    // Ensure service role client is available
+    if (!supabaseServer) {
+      console.error('SUPABASE_SERVICE_ROLE_KEY is not configured');
+      return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 });
+    }
+
     // Role check via service client (profiles.role === 'admin')
     try {
       const svc = supabaseServer;
@@ -79,4 +85,3 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unexpected server error' }, { status: 500 });
   }
 }
-

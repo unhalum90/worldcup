@@ -7,6 +7,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const svc = supabaseServer!;
     const body = await req.json();
     const { threadId } = body;
     if (!threadId) return NextResponse.json({ error: 'threadId required' }, { status: 400 });
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest) {
     const cookie = req.headers.get('cookie') || '';
 
     // Use the server client to get the user from the cookie/session
-    const { data: sessionData } = await supabaseServer.auth.getSession();
+    const { data: sessionData } = await svc.auth.getSession();
     // When using service role client, auth.getSession() won't read the cookie; instead, parse the cookie for access token if present
     // As a fallback require an X-Admin-Secret header (for scripted/admin requests)
 
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
       if (authHeader && authHeader.startsWith('Bearer ')) {
         const token = authHeader.replace('Bearer ', '');
         // create a transient client to get user
-        const client = supabaseServer;
+        const client = svc;
         const { data: ud } = await client.auth.getUser(token);
         userId = ud.user?.id ?? null;
       }
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
       }
 
       // check roles in profiles
-      const { data: profiles } = await supabaseServer
+      const { data: profiles } = await svc
         .from('profiles')
         .select('role')
         .eq('id', userId)
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Perform delete using service role client (supabaseServer has the service key)
-    const { error } = await supabaseServer.from('threads').delete().eq('id', threadId);
+    const { error } = await svc.from('threads').delete().eq('id', threadId);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
     return NextResponse.json({ success: true });

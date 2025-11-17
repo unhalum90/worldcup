@@ -113,6 +113,11 @@ export async function POST(req: NextRequest) {
 
   // Insert/Upsert purchase
   try {
+    if (!supabaseServer) {
+      console.error('SUPABASE_SERVICE_ROLE_KEY is not configured')
+      return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
+    }
+    const svc = supabaseServer
     const upsertBody: any = {
       ls_order_id,
       email,
@@ -134,7 +139,7 @@ export async function POST(req: NextRequest) {
     }
     // Priority 2: Lookup by email
     else if (email) {
-      const { data: prof, error: profileError } = await supabaseServer
+      const { data: prof, error: profileError } = await svc
         .from('profiles')
         .select('user_id')
         .eq('email', email)
@@ -155,7 +160,7 @@ export async function POST(req: NextRequest) {
     if (user_id) upsertBody.user_id = user_id
 
     if (ls_order_id) {
-      const { error: upsertError } = await supabaseServer
+      const { error: upsertError } = await svc
         .from('purchases')
         .upsert(upsertBody, { onConflict: 'ls_order_id' })
       
@@ -165,7 +170,7 @@ export async function POST(req: NextRequest) {
       }
       console.log('💾 Purchase upserted:', ls_order_id)
     } else {
-      const { error: insertError } = await supabaseServer
+      const { error: insertError } = await svc
         .from('purchases')
         .insert(upsertBody)
       
@@ -188,7 +193,7 @@ export async function POST(req: NextRequest) {
     if (product_id && memberIds.includes(String(product_id)) && user_id) {
       console.log('🎉 Updating user to member status for user_id:', user_id)
       
-      const { data, error: updateError } = await supabaseServer
+      const { data, error: updateError } = await svc
         .from('profiles')
         .update({ 
           is_member: true, 
@@ -228,5 +233,4 @@ export async function POST(req: NextRequest) {
   console.log('✅ Webhook processed successfully')
   return NextResponse.json({ ok: true })
 }
-
 

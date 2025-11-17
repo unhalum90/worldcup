@@ -120,7 +120,7 @@ Return ONLY valid JSON in this exact structure:
 ${formData.personalContext ? `- Special Context: ${formData.personalContext}` : ''}
 
 **Cities & Stadiums:**
-${cities?.map(city => `
+${cities?.map((city: any) => `
 - ${city.name}, ${city.country}
   - Stadium: ${city.stadium_name}
   - Fan Festival: ${city.fan_fest_location}

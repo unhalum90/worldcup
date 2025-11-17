@@ -295,7 +295,7 @@ ${mergedForm.climatePreference ? `- Climate: ${mergedForm.climatePreference}` : 
 ${profileSummary}
 
 Cities & Stadiums:
-${cities?.map(city => `
+${cities?.map((city: any) => `
 - ${city.name}, ${city.country}
   - Stadium: ${city.stadium_name} (${city.stadium_lat}, ${city.stadium_long})
   - Fan Festival: ${city.fan_fest_location} (${city.fan_fest_lat}, ${city.fan_fest_long})

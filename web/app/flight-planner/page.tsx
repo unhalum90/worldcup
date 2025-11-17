@@ -314,6 +314,7 @@ export default function FlightPlannerPage() {
           </p>
           <Link
             href="/planner/trip-builder"
+            prefetch={false}
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700"
           >
             Return to Trip Builder
@@ -525,6 +526,7 @@ export default function FlightPlannerPage() {
                 </Link>
                 <Link 
                   href="/planner/trip-builder"
+                  prefetch={false}
                   className="px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
                 >
                   Back to Trip Builder

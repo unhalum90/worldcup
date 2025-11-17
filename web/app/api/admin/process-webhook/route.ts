@@ -62,6 +62,11 @@ export async function POST(req: NextRequest) {
   let user_id: string | null = null
 
   try {
+    if (!supabaseServer) {
+      console.error('SUPABASE_SERVICE_ROLE_KEY is not configured')
+      return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
+    }
+    const svc = supabaseServer
     const upsertBody: any = {
       ls_order_id,
       email,
@@ -77,7 +82,7 @@ export async function POST(req: NextRequest) {
       user_id = custom_user_id
       console.log('👤 Using user_id from custom_data:', user_id)
     } else if (email) {
-      const { data: prof, error: profileError } = await supabaseServer
+      const { data: prof, error: profileError } = await svc
         .from('profiles')
         .select('user_id')
         .eq('email', email)
@@ -98,7 +103,7 @@ export async function POST(req: NextRequest) {
     if (user_id) upsertBody.user_id = user_id
 
     if (ls_order_id) {
-      const { error: upsertError } = await supabaseServer
+      const { error: upsertError } = await svc
         .from('purchases')
         .upsert(upsertBody, { onConflict: 'ls_order_id' })
       
@@ -108,7 +113,7 @@ export async function POST(req: NextRequest) {
       }
       console.log('💾 Purchase upserted:', ls_order_id)
     } else {
-      const { error: insertError } = await supabaseServer
+      const { error: insertError } = await svc
         .from('purchases')
         .insert(upsertBody)
       
@@ -130,7 +135,7 @@ export async function POST(req: NextRequest) {
     if (product_id && memberIds.includes(String(product_id)) && user_id) {
       console.log('🎉 Updating user to member status for user_id:', user_id)
       
-      const { error: updateError } = await supabaseServer
+      const { error: updateError } = await svc
         .from('profiles')
         .update({ 
           account_level: 'member', 

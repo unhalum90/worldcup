@@ -24,6 +24,7 @@ async function ensureAdmin(req: NextRequest) {
   const allow = (process.env.ADMIN_EMAILS || process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
     .split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
   if (allow.length > 0 && !allow.includes((user.email || '').toLowerCase())) return null
+  if (!supabaseServer) return null
   try {
     const { data: prof } = await supabaseServer.from('profiles').select('role').eq('user_id', user.id).maybeSingle()
     if (allow.length === 0 && (!prof || (prof.role !== 'admin' && prof.role !== 'superadmin' && prof.role !== 'moderator'))) return null
@@ -34,6 +35,7 @@ async function ensureAdmin(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const user = await ensureAdmin(req)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!supabaseServer) return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
 
   let body: any = {}
   try { body = await req.json() } catch {}

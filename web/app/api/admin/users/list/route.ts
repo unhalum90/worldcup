@@ -27,6 +27,7 @@ async function ensureAdmin(req: NextRequest) {
     .split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
   if (allow.length > 0 && !allow.includes((user.email || '').toLowerCase())) return null
 
+  if (!supabaseServer) return null
   try {
     const { data: prof } = await supabaseServer.from('profiles').select('role').eq('user_id', user.id).maybeSingle()
     if (allow.length === 0 && (!prof || (prof.role !== 'admin' && prof.role !== 'superadmin' && prof.role !== 'moderator'))) return null
@@ -38,6 +39,7 @@ async function ensureAdmin(req: NextRequest) {
 export async function GET(req: NextRequest) {
   const user = await ensureAdmin(req)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!supabaseServer) return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
 
   const url = new URL(req.url)
   const q = (url.searchParams.get('q') || '').trim()
