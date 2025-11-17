@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { createServerClient } from '@/lib/supabaseServer';
+import { getSupabaseServerClient } from '@/lib/supabaseServer';
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
 
 // Initialize Gemini
@@ -29,7 +29,7 @@ interface OverviewRequest {
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const supabase = createServerClient();
+    const supabase = await getSupabaseServerClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
     if (authError || !user) {

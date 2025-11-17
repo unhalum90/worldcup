@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabaseServer';
+import { getSupabaseServerClient } from '@/lib/supabaseServer';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
 import type { UserProfile } from '@/lib/profile/types';
 
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     const formData: TravelPlanRequestV2 = await request.json();
     const locale = formData.locale || 'en';
     
-    const supabase = createServerClient();
+    const supabase = await getSupabaseServerClient();
     
     // Fetch cities and profile in parallel
     const [citiesResult, profileResult] = await Promise.all([

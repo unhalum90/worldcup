@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { getSupabaseServerClient } from '@/lib/supabaseServer';
 import ProfileCard from '@/components/account/ProfileCard'
 import SavedTripsCard from '@/components/account/SavedTripsCard'
 import PurchasesTable from '@/components/account/PurchasesTable'
 
 export default async function AccountPage() {
-  const supabase = await createClient()
+  const supabase = await getSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser()

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { createServerClient } from '@/lib/supabaseServer';
+import { getSupabaseServerClient } from '@/lib/supabaseServer';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
 
 function normalizeToHttps(u: string): string {
@@ -219,7 +219,7 @@ export async function POST(request: NextRequest) {
     };
     const languageInstruction = languageInstructions[locale] || '';
     
-    const supabase = createServerClient();
+    const supabase = await getSupabaseServerClient();
     let profile: UserProfile | null = null;
     try {
       if (userId) {

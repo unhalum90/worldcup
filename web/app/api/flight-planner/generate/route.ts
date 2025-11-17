@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabaseServer';
+import { getSupabaseServerClient } from '@/lib/supabaseServer';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { loadCityContext, formatCityContextForPrompt } from '@/lib/loadCityContext';
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     const isSpanish = locale === 'es';
 
     const adjustments = body.adjustments || {};
-    const supabase = createServerClient();
+    const supabase = await getSupabaseServerClient();
     const { data: profileRow } = userId 
       ? await supabase
           .from('user_profile')

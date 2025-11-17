@@ -1,4 +1,4 @@
-import { createServerClient } from '@/lib/supabaseServer';
+import { getSupabaseServerClient } from '@/lib/supabaseServer';
 
 const MAILERLITE_API_KEY = process.env.MAILERLITE_API_KEY;
 const MAILERLITE_WEBSITE_GROUP_ID = process.env.MAILERLITE_WEBSITE_GROUP_ID;
@@ -94,7 +94,7 @@ export async function syncMailingList(options: MailingListSyncOptions): Promise<
 
   let serviceClient;
   try {
-    serviceClient = createServerClient();
+    serviceClient = await getSupabaseServerClient();
   } catch (error) {
     console.warn('[MailerLite] Service client unavailable', error);
     return { ok: false, error: 'supabase_service_unavailable' };

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient as createSSRClient } from '@supabase/ssr';
-import { createServerClient, supabaseServer } from '@/lib/supabaseServer';
+import { getSupabaseServerClient, supabaseServer } from '@/lib/supabaseServer';
 
 function normalizeToHttps(u: string): string {
   if (!u) return '';

@@ -1,9 +1,9 @@
-import { createClient } from '@/lib/supabase/server'
+import { getSupabaseServerClient } from '@/lib/supabaseServer';
 import { NextRequest, NextResponse } from 'next/server'
 import { createCheckout, ensureLemonSqueezyConfigured } from '@/lib/lemonsqueezy'
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient()
+  const supabase = await getSupabaseServerClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()

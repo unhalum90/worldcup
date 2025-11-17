@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createServerClientInstance } from '@/lib/supabaseServer'
 import { headers as nextHeaders } from 'next/headers'
 import { SupabaseClient } from '@supabase/supabase-js'
 
@@ -22,7 +22,7 @@ export async function checkMembership(): Promise<{
     let rid: string | null = null;
     try { const h = await nextHeaders(); rid = h?.get('x-fz-req-id') || null } catch {}
     console.log('[MEM] checkMembership() start', { rid });
-    const supabase = await createClient()
+    const supabase = await createServerClientInstance()
     
     const { data: { user } } = await supabase.auth.getUser()
     

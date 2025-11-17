@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabaseServer';
 
 type SaveTripBody = {
   tripInput?: unknown;
@@ -59,7 +59,7 @@ function normalizeSelectedIndex(value: unknown): number | null {
 }
 
 export async function GET(_req: NextRequest) {
-  const supabase = await createClient();
+  const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
   const user = auth?.user;
 
@@ -81,7 +81,7 @@ export async function GET(_req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = await createClient();
+  const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
   const user = auth?.user;
 

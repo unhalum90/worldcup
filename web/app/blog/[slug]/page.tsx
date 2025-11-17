@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabaseServer';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
@@ -17,7 +17,7 @@ interface BlogPost {
 }
 
 async function getPost(slug: string): Promise<BlogPost | null> {
-  const supabase = await createClient();
+  const supabase = await getSupabaseServerClient();
   const { data, error } = await supabase
     .from('blog_posts')
     .select('*')
