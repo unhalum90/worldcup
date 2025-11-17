@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { MatchCard } from '@/components/tournament/MatchCard'
 import type { TournamentMatch, CityMinimal } from '@/types/tournament'
 import { SimpleBracket } from '@/components/tournament/SimpleBracket'
+import RoundIntroModal from '@/components/tournament/RoundIntroModal'
 import { countryTextToCode } from '@/lib/flags'
 import { cookies } from 'next/headers'
 
@@ -60,9 +61,6 @@ async function getActiveAndUpcomingMatches() {
 }
 
 export default async function TournamentHub() {
-  if (process.env.ENABLE_TOURNAMENT !== 'true') {
-    notFound()
-  }
   const matches = await getActiveAndUpcomingMatches()
   const cookieStore = await cookies()
   const votedSlugs = new Set(
@@ -89,6 +87,8 @@ export default async function TournamentHub() {
   }
   return (
     <div className="max-w-6xl mx-auto px-4 pt-[30px] pb-10">
+      {/* Intro modal for first-time tournament visitors (client component) */}
+      <RoundIntroModal roundNumber={1} />
       {/* Hero */}
       <div className="text-center mb-4">
         <h1 className="text-4xl md:text-5xl font-extrabold">Fan Zone City Cup</h1>

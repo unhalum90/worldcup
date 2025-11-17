@@ -209,7 +209,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
             </div>
             <div className="mt-4 flex flex-col sm:flex-row gap-3">
               <Link
-                href={`/memberships?from=planner&redirect=${encodeURIComponent(phase.href)}`}
+                href={phase.href}
                 className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors"
               >
                 {phaseT('howItWorks.cta.open')}
@@ -256,7 +256,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
           </div>
         ) : !isTripBuilder && isMay2026 ? (
           <Link
-            href={`/memberships?from=planner&redirect=${encodeURIComponent('/planner')}`}
+            href={phase.href || '/planner'}
             className="w-full inline-flex items-center justify-center bg-gray-100 text-gray-700 font-semibold py-3 rounded-lg hover:bg-gray-200 transition-colors"
           >
             {t('statuses.may2026Button')}
@@ -273,9 +273,8 @@ function PhaseCard({ phase }: { phase: Phase }) {
   const cardClassName = `group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden ${isLive ? 'cursor-pointer hover:-translate-y-1' : 'cursor-default'}`;
 
   if (isLive && !isTripBuilder) {
-    const redirect = encodeURIComponent(phase.href);
     return (
-      <Link href={`/memberships?from=planner&redirect=${redirect}`} className={cardClassName}>
+      <Link href={phase.href} className={cardClassName}>
         {cardContent}
       </Link>
     );

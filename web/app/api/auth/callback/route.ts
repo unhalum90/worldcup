@@ -63,27 +63,25 @@ export async function GET(req: Request) {
   });
 
   if (!code) {
-    console.error("[Callback] Missing code in auth callback");
-    const response = NextResponse.redirect(
-      new URL(buildErrorRedirect("missing_code", redirectParam), req.url),
-    );
-    applyCookieUpdates(response, cookieUpdates);
-    return response;
+    // No `code` present — this can be the case for magic-link flows which return
+    // tokens in the URL fragment (after `#`). Fragments are not sent to the
+    // server, so respond with 204 to indicate nothing to do. The client-side
+    // page at /auth/callback will parse fragments and sync the session.
+    console.log('[Callback API] No code present — nothing to exchange on server');
+    return new NextResponse(null, { status: 204 });
   }
 
-  console.log("[Callback] Exchanging code for session...");
+  console.log("[Callback API] Exchanging code for session...");
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error || !data?.session) {
-    console.error("[Callback] Auth exchange failed:", error);
-    const response = NextResponse.redirect(
+    console.error("[Callback API] Auth exchange failed:", error);
+    return NextResponse.redirect(
       new URL(
         buildErrorRedirect(error?.message || "session_exchange_failed", redirectParam),
         req.url,
       ),
     );
-    applyCookieUpdates(response, cookieUpdates);
-    return response;
   }
 
   const session = data.session;
@@ -99,38 +97,26 @@ export async function GET(req: Request) {
         .maybeSingle();
 
       if (profileError) {
-        console.warn("[Callback] Profile lookup error:", profileError);
+        console.warn("[Callback API] Profile lookup error:", profileError);
       }
 
       if (!profile || !profile.home_airport) {
         destination = "/onboarding";
       }
     } catch (profileLookupError) {
-      console.warn("[Callback] Failed to evaluate onboarding redirect:", profileLookupError);
+      console.warn("[Callback API] Failed to evaluate onboarding redirect:", profileLookupError);
     }
   }
 
-  console.log("[Callback] Auth session established, redirecting to:", destination);
+  console.log("[Callback API] Auth session established, redirecting to:", destination);
+  // Set any cookies accumulated during the server-client exchange
   const response = NextResponse.redirect(new URL(destination, req.url));
-  applyCookieUpdates(response, cookieUpdates);
-  return response;
-}
-
-function applyCookieUpdates(response: NextResponse, updates: CookieUpdate[]) {
-  for (const update of updates) {
+  for (const update of cookieUpdates) {
     if (update.action === "set") {
-      response.cookies.set({
-        name: update.name,
-        value: update.value,
-        ...(update.options ?? {}),
-      });
+      response.cookies.set({ name: update.name, value: update.value, ...(update.options ?? {}) });
     } else {
-      response.cookies.set({
-        name: update.name,
-        value: "",
-        ...(update.options ?? {}),
-        maxAge: 0,
-      });
+      response.cookies.set({ name: update.name, value: "", ...(update.options ?? {}), maxAge: 0 });
     }
   }
+  return response;
 }

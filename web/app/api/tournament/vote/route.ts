@@ -11,9 +11,8 @@ async function getClientIp(): Promise<string | null> {
 }
 
 export async function POST(req: Request) {
-  if (process.env.ENABLE_TOURNAMENT !== 'true') {
-    return new Response('Not Found', { status: 404 })
-  }
+  // Tournament feature gate removed for development and testing.
+  // Previously this returned 404 when ENABLE_TOURNAMENT !== 'true'.
   try {
     const body = await req.json()
     const { matchSlug, cityId } = body as { matchSlug?: string; cityId?: string }

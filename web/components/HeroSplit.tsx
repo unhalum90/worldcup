@@ -78,7 +78,7 @@ export default function HeroSplit() {
             {/* Primary CTA with pulse animation */}
             <div className="mb-3 sm:mb-4">
               <a
-                href="/memberships"
+                href="/planner"
                 className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-white bg-[color:var(--color-accent-red)] hover:brightness-110 transition-all animate-subtle-pulse hover:animate-none text-base sm:text-lg w-full sm:w-auto"
               >
                 {t("ctaPrimary")}

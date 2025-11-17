@@ -112,16 +112,19 @@ export async function middleware(req: NextRequest) {
   }
 
   // Premium gating — allow runtime configuration via CSV env var
-  const envPrefixes = (process.env.NEXT_PUBLIC_PAYWALLED_PREFIXES || '')
-    .split(',')
-    .map((p) => p.trim())
-    .filter(Boolean);
-  // Sensible defaults if none provided
-  const paywalledPrefixes = envPrefixes.length > 0
-    ? envPrefixes
-    : ['/planner/trip-builder', '/flight-planner', '/lodging-planner'];
-  const isPaywalled = paywalledPrefixes.some((p) => pathname === p || pathname.startsWith(p + '/'));
-  if (isPaywalled) {
+  // Premium gating — only active when NEXT_PUBLIC_ENABLE_PAYWALL is 'true'
+  const paywallEnabled = process.env.NEXT_PUBLIC_ENABLE_PAYWALL === 'true';
+  if (paywallEnabled) {
+    const envPrefixes = (process.env.NEXT_PUBLIC_PAYWALLED_PREFIXES || '')
+      .split(',')
+      .map((p) => p.trim())
+      .filter(Boolean);
+    // Sensible defaults if none provided
+    const paywalledPrefixes = envPrefixes.length > 0
+      ? envPrefixes
+      : ['/planner/trip-builder', '/flight-planner', '/lodging-planner'];
+    const isPaywalled = paywalledPrefixes.some((p) => pathname === p || pathname.startsWith(p + '/'));
+    if (isPaywalled) {
     const redirectUrl = new URL('/memberships', req.url);
     redirectUrl.searchParams.set('from', 'planner');
     redirectUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
@@ -140,6 +143,7 @@ export async function middleware(req: NextRequest) {
     } catch {
       // If membership check fails, be conservative and redirect
       return NextResponse.redirect(redirectUrl);
+    }
     }
   }
 

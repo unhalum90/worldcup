@@ -65,9 +65,6 @@ async function getMatch(slug: string) {
 }
 
 export default async function MatchPage({ params }: { params: Promise<{ slug: string }> }) {
-  if (process.env.ENABLE_TOURNAMENT !== 'true') {
-    notFound()
-  }
   const { slug } = await params
   const data = await getMatch(slug)
   if (!data) {
@@ -85,18 +82,18 @@ export default async function MatchPage({ params }: { params: Promise<{ slug: st
   const theme = themeByRound[match.round_number] || { title: '', prompt: '' }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-[30px] pb-10">
+    <div className="max-w-5xl mx-auto px-4 pt-[22px] pb-10">
       {/* Breadcrumb back to tournament */}
-      <div className="mb-2">
+      <div className="mb-1">
         <Link href="/tournament" className="text-sm text-blue-600 hover:underline">← Back to Tournament</Link>
       </div>
       <div className="max-w-2xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-3">
+        <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-2">
           <span>🏆</span>
           <span>Round {match.round_number} of 4 • Closes in <MatchCountdown closesAt={match.voting_closes_at} /></span>
         </div>
         <h1 className="text-3xl font-extrabold">{match.city_a?.name} vs {match.city_b?.name}</h1>
-        <p className="text-gray-700 mt-2 text-xl md:text-2xl font-semibold">Round {match.round_number} • {theme.title}</p>
+        <p className="text-gray-700 mt-1 text-xl md:text-2xl font-semibold">Round {match.round_number} • {theme.title}</p>
         {theme.prompt && <p className="text-gray-500 text-sm">{theme.prompt}</p>}
       </div>
 
@@ -157,11 +154,8 @@ export default async function MatchPage({ params }: { params: Promise<{ slug: st
         </div>
       </div>
 
-      {/* Share buttons (secondary) */}
-      <ShareButtons slug={match.slug} cityA={match.city_a?.name || 'City A'} cityB={match.city_b?.name || 'City B'} votesA={match.votes_a} votesB={match.votes_b} compact />
-
       {/* Comments */}
-      <div className="mt-6 pt-5 border-t-2 border-gray-200">
+      <div className="mt-4 pt-4 border-t-2 border-gray-200">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-3">
           <div>
             <h2 className="text-2xl font-bold">Fan Stories & Tips</h2>
@@ -190,6 +184,10 @@ export default async function MatchPage({ params }: { params: Promise<{ slug: st
         })()}
         <div className="mt-6">
           <CommentsList comments={comments as any} citiesById={citiesMap} />
+        </div>
+        {/* Social share buttons moved below comments to increase visibility of community content */}
+        <div className="mt-6">
+          <ShareButtons slug={match.slug} cityA={match.city_a?.name || 'City A'} cityB={match.city_b?.name || 'City B'} votesA={match.votes_a} votesB={match.votes_b} compact />
         </div>
       </div>
     </div>
