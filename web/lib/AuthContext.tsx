@@ -1,9 +1,8 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabaseClient';
-import type { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { teamColors } from '@/lib/constants/teamColors';
 import type { UserProfile } from '@/lib/profile/types';
 
@@ -19,92 +18,77 @@ function applyTheme(favoriteTeam?: string | null) {
 
 interface AuthContextType {
   user: User | null;
+  session: Session | null;
   loading: boolean;
-  signOut: () => Promise<void>;
   profile: UserProfile | null;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  session: null,
   loading: true,
-  signOut: async () => {},
   profile: null,
+  signOut: async () => {},
 });
 
-type AuthProviderProps = {
-  children: React.ReactNode;
-  initialUser?: User | null;
-  initialProfile?: UserProfile | null;
-};
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export function AuthProvider({ children, initialUser = null, initialProfile = null }: AuthProviderProps) {
-  const router = useRouter();
-  const [user, setUser] = useState<User | null>(initialUser);
-  const [profile, setProfile] = useState<UserProfile | null>(initialProfile);
-  const [loading, setLoading] = useState<boolean>(!initialUser);
-
-  const hydrateProfile = async (userId: string) => {
+  async function hydrateProfile(userId: string) {
     try {
-      const { data, error } = await (supabase as any)
+      const { data } = await supabase
         .from('user_profile')
         .select('*')
         .eq('user_id', userId)
         .maybeSingle();
-      if (error) throw error;
+
       setProfile(data ?? null);
       applyTheme(data?.favorite_team);
-    } catch (err) {
-      console.warn('Failed to load profile for theming', err);
+    } catch {
       setProfile(null);
       applyTheme(undefined);
     }
-  };
+  }
 
-  // Apply theme immediately from initialProfile on mount (no network hop)
+  // Load session once on mount
   useEffect(() => {
-    if (initialProfile?.favorite_team) {
-      applyTheme(initialProfile.favorite_team);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    let isMounted = true;
 
-  useEffect(() => {
-    // If we already have an initial user from SSR, skip the initial getSession call
-    if (initialUser) {
-      setLoading(false);
-    } else {
-      // Fallback: check active session client-side when SSR didn't provide it
-      const timeout = setTimeout(() => {
-        console.warn('[AuthContext] Session check timeout after 10s, forcing loading=false');
+    async function load() {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (!isMounted) return;
+
+      if (error) {
+        console.warn('[AuthContext] getSession error:', error);
         setLoading(false);
-      }, 10000);
+        return;
+      }
 
-      supabase.auth
-        .getSession()
-        .then(async ({ data: { session } }: { data: { session: Session | null } }) => {
-          clearTimeout(timeout);
-          console.log('[AuthContext] Session loaded:', !!session);
-          setUser(session?.user ?? null);
-          if (session?.user) {
-            await hydrateProfile(session.user.id);
-          } else {
-            setProfile(null);
-            applyTheme(undefined);
-          }
-          setLoading(false);
-        })
-        .catch((error: unknown) => {
-          clearTimeout(timeout);
-          console.error('[AuthContext] getSession failed:', error);
-          setLoading(false);
-        });
+      setSession(data.session ?? null);
+      setUser(data.session?.user ?? null);
+
+      if (data.session?.user) {
+        await hydrateProfile(data.session.user.id);
+      } else {
+        applyTheme(undefined);
+      }
+
+      setLoading(false);
     }
 
-    // Always listen for auth changes to keep state in sync
+    load();
+
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event: AuthChangeEvent, session: Session | null) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session ?? null);
       setUser(session?.user ?? null);
+
       if (session?.user) {
         await hydrateProfile(session.user.id);
       } else {
@@ -113,53 +97,36 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
       }
     });
 
-    return () => subscription.unsubscribe();
-    // Only re-run if initialUser changes across navigations
-  }, [initialUser]);
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
 
-  const signOut = async () => {
-    try {
-      await supabase.auth.signOut();
-      // Also tell the server to clear SSR cookies immediately
-      try {
-        await fetch('/api/auth/session', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ event: 'SIGNED_OUT', session: null }),
-          credentials: 'include',
-        });
-      } catch (e) {
-        console.warn('Session sync on signOut failed', e);
-      }
-    } finally {
-      // Clear any client state caches
-      try { localStorage.clear(); } catch {}
-      try { sessionStorage.clear(); } catch {}
-      setUser(null);
-      setProfile(null);
-      applyTheme(undefined);
-      // Redirect away from gated pages and force revalidation
-      try {
-        router.push('/');
-        router.refresh();
-      } catch {
-        // Fallback if router not available
-        if (typeof window !== 'undefined') window.location.href = '/';
-      }
-    }
-  };
+  async function signOut() {
+    await supabase.auth.signOut();
+    setSession(null);
+    setUser(null);
+    setProfile(null);
+    applyTheme(undefined);
+    if (typeof window !== 'undefined') window.location.href = '/';
+  }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signOut, profile }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        loading,
+        profile,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 }
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-  return context;
-};
+export function useAuth() {
+  return useContext(AuthContext);
+}

@@ -80,7 +80,7 @@ export default async function RootLayout({
         {/* Beehiiv attribution / embedded forms support */}
         <Script src="https://subscribe-forms.beehiiv.com/attribution.js" strategy="lazyOnload" />
         <NextIntlClientProvider messages={messages}>
-          <AuthProvider initialUser={user ?? null} initialProfile={initialProfile}>
+          <AuthProvider>
             <WebVitals />
             {showLanguageModal && <LanguageModal />}
             <Header />
