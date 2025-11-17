@@ -16,6 +16,11 @@ export async function GET(req: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
   const buyUrl = process.env.LS_MEMBER_BUY_URL || process.env.NEXT_PUBLIC_LS_MEMBER_BUY_URL
+  console.log('[CHK] /api/checkout/member called', {
+    hasBuyUrl: Boolean(buyUrl),
+    origin: req.headers.get('origin') || null,
+    referer: req.headers.get('referer') || null,
+  })
 
   if (!buyUrl) {
     return NextResponse.json({ error: 'missing_buy_url' }, { status: 500 })
@@ -41,6 +46,7 @@ export async function GET(req: NextRequest) {
   )
 
   const { data: { user } } = await supabase.auth.getUser()
+  console.log('[CHK] getUser', { userId: user?.id, email: user?.email })
   // If not logged in, redirect to login preserving intended destination
   if (!user) {
     const loginUrl = new URL('/login', normalizeToHttps(process.env.NEXT_PUBLIC_SITE_URL || req.url))
@@ -90,5 +96,6 @@ export async function GET(req: NextRequest) {
     })
   }
 
+  console.log('[CHK] redirecting to Lemon', { url: url.toString() })
   return NextResponse.redirect(url.toString())
 }

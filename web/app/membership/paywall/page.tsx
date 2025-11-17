@@ -27,18 +27,22 @@ export default function PaywallPage() {
     let isMounted = true
 
     async function ensureMemberStatus() {
+      console.log('[Paywall] checking current user')
       const {
         data: { user },
       } = await supabase.auth.getUser()
+      console.log('[Paywall] getUser result', { userId: user?.id, email: user?.email })
       if (!isMounted || !user?.id) return
 
-      const { data: profile } = await supabase
+      const { data: profile, error } = await supabase
         .from('profiles')
         .select('is_member')
         .eq('user_id', user.id)
         .maybeSingle()
+      console.log('[Paywall] profile check', { userId: user.id, profile, error })
 
       if (profile?.is_member) {
+        console.log('[Paywall] user is member, redirecting', { redirectTarget })
         router.replace(redirectTarget)
       }
     }

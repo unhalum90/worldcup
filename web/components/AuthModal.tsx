@@ -43,6 +43,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
     setSuccess('');
 
     try {
+      console.log('[AuthModal] sending magic link', { email, targetPath })
       await sendMagicLink(email, targetPath);
       
       // Store email for verification page
@@ -51,6 +52,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
 
       // Show success message
       setSuccess(t('success.primary'));
+      console.log('[AuthModal] magic link sent')
       
       // Redirect to verification page after brief delay
       setTimeout(() => {
@@ -58,6 +60,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
         router.push('/verify-email');
       }, 1500);
     } catch (err) {
+      console.log('[AuthModal] send magic link error', String(err))
       const message =
         err instanceof Error
           ? err.message
@@ -74,6 +77,7 @@ export default function AuthModal({ isOpen, onClose, redirectTo }: AuthModalProp
         setError(t('errors.generic'));
       }
     } finally {
+      console.log('[AuthModal] submit finished')
       setLoading(false);
     }
   };

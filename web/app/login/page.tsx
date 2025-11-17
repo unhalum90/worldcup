@@ -14,7 +14,10 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!loading && user) {
+      console.log('[Login] user present, redirecting', { redirectTarget, userId: user.id })
       window.location.replace(redirectTarget);
+    } else if (!loading && !user) {
+      console.log('[Login] no user - waiting for sign-in')
     }
   }, [loading, user, redirectTarget]);
 

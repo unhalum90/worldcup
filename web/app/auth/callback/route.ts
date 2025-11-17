@@ -36,6 +36,13 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   const redirectParam = url.searchParams.get("redirect");
+  console.log('[CB] /auth/callback hit', {
+    codePresent: Boolean(code),
+    redirectParam,
+    referer: (req as any).headers?.get?.('referer') || null,
+    ua: (req as any).headers?.get?.('user-agent') || null,
+    ip: (req as any).headers?.get?.('x-forwarded-for') || null,
+  });
 
   const cookieStore = await cookies();
   const cookieUpdates: CookieUpdate[] = [];
@@ -51,13 +58,17 @@ export async function GET(req: Request) {
   const supabase = createServerClient(supabaseUrl, supabaseKey, {
     cookies: {
       get(name: string) {
-        return cookieStore.get(name)?.value;
+        const v = cookieStore.get(name)?.value;
+        if (name.includes('sb')) console.log('[CB] cookies.get', { name, present: Boolean(v) })
+        return v;
       },
       set(name: string, value: string, options: any) {
         cookieUpdates.push({ action: "set", name, value, options });
+        if (name.includes('sb')) console.log('[CB] cookies.set queued', { name })
       },
       remove(name: string, options: any) {
         cookieUpdates.push({ action: "remove", name, options });
+        if (name.includes('sb')) console.log('[CB] cookies.remove queued', { name })
       },
     },
   });
@@ -73,6 +84,12 @@ export async function GET(req: Request) {
 
   console.log("[Callback] Exchanging code for session...");
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+  console.log('[CB] exchangeCodeForSession result', {
+    ok: !error && Boolean(data?.session),
+    error: error?.message || null,
+    userId: data?.session?.user?.id,
+    expiresAt: data?.session?.expires_at || null,
+  })
 
   if (error || !data?.session) {
     console.error("[Callback] Auth exchange failed:", error);
@@ -101,20 +118,23 @@ export async function GET(req: Request) {
         .maybeSingle();
 
       if (profileError) {
-        console.warn("[Callback] Profile lookup error:", profileError);
+        console.warn("[CB] Profile lookup error:", profileError);
       }
 
       if (!profile || !profile.home_airport) {
         destination = "/onboarding";
       }
     } catch (profileLookupError) {
-      console.warn("[Callback] Failed to evaluate onboarding redirect:", profileLookupError);
+      console.warn("[CB] Failed to evaluate onboarding redirect:", profileLookupError);
     }
   }
 
-  console.log("[Callback] Auth session established, redirecting to:", destination);
+  console.log("[CB] Auth session established, redirecting to:", destination);
   const response = NextResponse.redirect(new URL(destination, req.url));
   applyCookieUpdates(response, cookieUpdates);
+  try {
+    console.log('[CB] Applied cookie updates', cookieUpdates.map(u => ({ action: u.action, name: u.name })));
+  } catch {}
   return response;
 }
 

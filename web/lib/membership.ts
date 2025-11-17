@@ -18,27 +18,31 @@ export async function checkMembership(): Promise<{
   userId: string | null
 }> {
   try {
+    console.log('[MEM] checkMembership() start');
     const supabase = await createClient()
     
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user) {
+      console.log('[MEM] No user in checkMembership');
       return { isMember: false, email: null, userId: null }
     }
     
-    const { data: profile } = await supabase
+    const { data: profile, error: profErr } = await supabase
       .from('profiles')
       .select('is_member, email')
       .eq('user_id', user.id)
       .single()
-    
+
+    console.log('[MEM] Profile fetch', { userId: user.id, profile, profErr })
+
     return {
       isMember: profile?.is_member ?? false,
       email: profile?.email ?? user.email ?? null,
       userId: user.id
     }
   } catch (error) {
-    console.error('Error checking membership:', error)
+    console.error('[MEM] Error checking membership:', error)
     return { isMember: false, email: null, userId: null }
   }
 }

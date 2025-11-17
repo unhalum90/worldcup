@@ -59,7 +59,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let isMounted = true;
 
     async function load() {
+      console.log('[AuthContext] mount: getSession() start');
       const { data, error } = await supabase.auth.getSession();
+      console.log('[AuthContext] mount: getSession() result', {
+        hasSession: Boolean(data?.session),
+        userId: data?.session?.user?.id,
+        error: error?.message || null,
+      });
 
       if (!isMounted) return;
 
@@ -71,6 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setSession(data.session ?? null);
       setUser(data.session?.user ?? null);
+      console.log('[AuthContext] mount: set session/user', { userId: data.session?.user?.id })
 
       if (data.session?.user) {
         await hydrateProfile(data.session.user.id);
@@ -86,6 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event: AuthChangeEvent, session: Session | null) => {
+      console.log('[AuthContext] onAuthStateChange', { event: _event, hasSession: Boolean(session), userId: session?.user?.id })
       setSession(session ?? null);
       setUser(session?.user ?? null);
 
@@ -100,11 +108,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       isMounted = false;
       subscription.unsubscribe();
+      console.log('[AuthContext] cleanup: unsubscribed auth listener')
     };
   }, []);
 
   async function signOut() {
     await supabase.auth.signOut();
+    console.log('[AuthContext] signOut called');
     setSession(null);
     setUser(null);
     setProfile(null);

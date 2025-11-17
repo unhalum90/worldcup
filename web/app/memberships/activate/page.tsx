@@ -15,12 +15,14 @@ export default function ActivateMembershipPage() {
     setStatus('loading');
     setMessage('Checking your purchase and activating your membership...');
     try {
+      console.log('[Activate] calling /api/membership/activate', { targetEmail: !!targetEmail })
       const res = await fetch('/api/membership/activate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(targetEmail ? { email: targetEmail } : {}),
       });
       const data = await res.json();
+      console.log('[Activate] response', { status: res.status, data })
       if (!res.ok) {
         setStatus('error');
         setMessage(data?.error === 'not_found' ? 'We could not find a purchase for this email. If you used a different email at checkout, enter it below and try again.' : (data?.details || data?.error || 'Activation failed.'))

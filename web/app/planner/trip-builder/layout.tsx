@@ -16,15 +16,20 @@ export default async function TripBuilderLayout({
 }: {
   children: React.ReactNode
 }) {
+  console.log('[TB] layout invoked - checking membership')
   const { isMember, userId } = await checkMembership()
+  console.log('[TB] layout membership result', { userId, isMember })
 
   if (!userId) {
+    console.log('[TB] No userId - redirecting to /login')
     redirect('/login?redirect=/planner/trip-builder')
   }
 
   if (!isMember) {
+    console.log('[TB] Not a member - redirecting to paywall', { userId })
     redirect('/membership/paywall?redirect=/planner/trip-builder')
   }
 
+  console.log('[TB] Access granted', { userId })
   return children
 }
