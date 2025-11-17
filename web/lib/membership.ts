@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { headers as nextHeaders } from 'next/headers'
 import { SupabaseClient } from '@supabase/supabase-js'
 
 export const PROTECTED_ROUTES = [
@@ -18,13 +19,14 @@ export async function checkMembership(): Promise<{
   userId: string | null
 }> {
   try {
-    console.log('[MEM] checkMembership() start');
+    const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
+    console.log('[MEM] checkMembership() start', { rid });
     const supabase = await createClient()
     
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user) {
-      console.log('[MEM] No user in checkMembership');
+      console.log('[MEM] No user in checkMembership', { rid });
       return { isMember: false, email: null, userId: null }
     }
     
@@ -34,7 +36,7 @@ export async function checkMembership(): Promise<{
       .eq('user_id', user.id)
       .single()
 
-    console.log('[MEM] Profile fetch', { userId: user.id, profile, profErr })
+    console.log('[MEM] Profile fetch', { rid, userId: user.id, profile, profErr })
 
     return {
       isMember: profile?.is_member ?? false,
@@ -42,7 +44,8 @@ export async function checkMembership(): Promise<{
       userId: user.id
     }
   } catch (error) {
-    console.error('[MEM] Error checking membership:', error)
+    const rid = (() => { try { return nextHeaders().get('x-fz-req-id') } catch { return null } })();
+    console.error('[MEM] Error checking membership:', { rid, error })
     return { isMember: false, email: null, userId: null }
   }
 }

@@ -37,6 +37,7 @@ export async function GET(req: Request) {
   const code = url.searchParams.get("code");
   const redirectParam = url.searchParams.get("redirect");
   console.log('[CB] /auth/callback hit', {
+    rid: (req as any).headers?.get?.('x-fz-req-id') || null,
     codePresent: Boolean(code),
     redirectParam,
     referer: (req as any).headers?.get?.('referer') || null,

@@ -6,6 +6,9 @@ type CookieOptions = Partial<SerializeOptions>
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const reqId = (globalThis as any).crypto?.randomUUID ? (globalThis as any).crypto.randomUUID() : `${Date.now()}-${Math.random()}`
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-fz-req-id', reqId)
 
   // NOTE: Do not force host rewrites here. Vercel domain settings may
   // redirect apex<->www and cause loops if we alter host at the edge.
@@ -22,6 +25,7 @@ export async function middleware(request: NextRequest) {
       const ua = request.headers.get('user-agent') || 'unknown';
       const cookieNames = request.cookies.getAll().map(c => c.name);
       console.log('[MW] Incoming request', {
+        rid: reqId,
         path: pathname,
         protected: true,
         ip,
@@ -29,7 +33,7 @@ export async function middleware(request: NextRequest) {
         cookieNames,
       });
     } catch (e) {
-      console.log('[MW] Failed to introspect request headers/cookies', String(e));
+      console.log('[MW] Failed to introspect request headers/cookies', { rid: reqId, error: String(e) });
     }
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -54,6 +58,7 @@ export async function middleware(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     console.log('[MW] Auth getUser() result', {
+      rid: reqId,
       hasUser: Boolean(user),
       userId: user?.id,
       email: user?.email,
@@ -61,8 +66,10 @@ export async function middleware(request: NextRequest) {
 
     if (!user) {
       // Redirect to sign-in page if not authenticated
-      console.log('[MW] No user, redirecting to /login', { path: pathname })
-      return NextResponse.redirect(new URL('/login', request.url))
+      console.log('[MW] No user, redirecting to /login', { rid: reqId, path: pathname })
+      const res = NextResponse.redirect(new URL('/login', request.url))
+      res.headers.set('x-fz-req-id', reqId)
+      return res
     }
 
     try {
@@ -73,23 +80,30 @@ export async function middleware(request: NextRequest) {
         .maybeSingle()
 
       console.log('[MW] Profile membership check', {
+        rid: reqId,
         userId: user.id,
         profile, profileErr,
       })
 
       if (!profile?.is_member) {
-        console.log('[MW] Not a member, redirecting to paywall', { userId: user.id, path: pathname })
-        return NextResponse.redirect(new URL('/membership/paywall', request.url))
+        console.log('[MW] Not a member, redirecting to paywall', { rid: reqId, userId: user.id, path: pathname })
+        const res = NextResponse.redirect(new URL('/membership/paywall', request.url))
+        res.headers.set('x-fz-req-id', reqId)
+        return res
       }
     } catch (e) {
       // Fail-closed to paywall on unexpected errors
-      console.log('[MW] Exception during profile check, redirecting to paywall', { error: String(e) })
-      return NextResponse.redirect(new URL('/membership/paywall', request.url))
+      console.log('[MW] Exception during profile check, redirecting to paywall', { rid: reqId, error: String(e) })
+      const res = NextResponse.redirect(new URL('/membership/paywall', request.url))
+      res.headers.set('x-fz-req-id', reqId)
+      return res
     }
   }
 
-  console.log('[MW] Allowing request to continue', { path: pathname })
-  return NextResponse.next()
+  console.log('[MW] Allowing request to continue', { rid: reqId, path: pathname })
+  const response = NextResponse.next({ request: { headers: requestHeaders } })
+  response.headers.set('x-fz-req-id', reqId)
+  return response
 }
 
 export const config = {
