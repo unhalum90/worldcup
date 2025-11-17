@@ -18,6 +18,38 @@ export async function POST(req: Request) {
     const body = await req.json().catch(() => ({})) as any
     const cookieStore = await cookies()
     const res = new NextResponse(null, { status: 200 })
+    
+    // Resolve cookie domain to cover apex + subdomains
+    const siteUrl = normalizeToHttps(process.env.NEXT_PUBLIC_SITE_URL || '')
+    const host = siteUrl ? new URL(siteUrl).hostname : undefined
+    const bareHost = host?.startsWith('www.') ? host.slice(4) : host
+    const cookieDomain = (process.env.SUPABASE_COOKIE_DOMAIN || (bareHost ? `.${bareHost}` : undefined)) as string | undefined
+    
+    function setHttpOnlyCookie(name: string, value: string, opts?: { maxAge?: number }) {
+      try {
+        res.cookies.set({
+          name,
+          value,
+          httpOnly: true,
+          secure: true,
+          sameSite: 'lax',
+          path: '/',
+          ...(cookieDomain ? { domain: cookieDomain } : {}),
+          ...(opts?.maxAge ? { maxAge: opts.maxAge } : {}),
+        } as any)
+        console.log('[AUTH/SESSION] set cookie', { name, domain: cookieDomain })
+      } catch (e) {
+        console.warn('[AUTH/SESSION] failed set cookie', { name, error: String(e) })
+      }
+    }
+    function clearHttpOnlyCookie(name: string) {
+      try {
+        res.cookies.set({ name, value: '', maxAge: 0, path: '/', ...(cookieDomain ? { domain: cookieDomain } : {}) } as any)
+        console.log('[AUTH/SESSION] clear cookie', { name, domain: cookieDomain })
+      } catch (e) {
+        console.warn('[AUTH/SESSION] failed clear cookie', { name, error: String(e) })
+      }
+    }
     const supabase = createServerClient(
       normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || ''),
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
@@ -27,10 +59,11 @@ export async function POST(req: Request) {
             return cookieStore.get(name)?.value
           },
           set(name: string, value: string, options: any) {
-            res.cookies.set({ name, value, ...options })
+            // Ensure cookies written by SDK also get our domain/path attributes
+            res.cookies.set({ name, value, path: '/', ...(cookieDomain ? { domain: cookieDomain } : {}), ...options } as any)
           },
           remove(name: string, options: any) {
-            res.cookies.delete({ name, ...options })
+            res.cookies.set({ name, value: '', maxAge: 0, path: '/', ...(cookieDomain ? { domain: cookieDomain } : {}), ...options } as any)
           },
         },
       }
@@ -43,6 +76,22 @@ export async function POST(req: Request) {
           access_token: body.session.access_token,
           refresh_token: body.session.refresh_token,
         })
+
+        // Additionally set the standard sb-* cookies explicitly to ensure
+        // SSR/middleware sees them on the very next request.
+        try {
+          const ref = new URL(normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || '')).hostname.split('.')[0]
+          const accessName = `sb-${ref}-auth-token`
+          const refreshName = `sb-${ref}-refresh-token`
+          // Write base names
+          setHttpOnlyCookie(accessName, body.session.access_token, { maxAge: 60 * 60 })
+          setHttpOnlyCookie(refreshName, body.session.refresh_token, { maxAge: 60 * 60 * 24 * 365 })
+          // Also write the dot-suffixed variant some SDK versions query (e.g., .4)
+          setHttpOnlyCookie(accessName + '.4', body.session.access_token, { maxAge: 60 * 60 })
+          setHttpOnlyCookie(refreshName + '.4', body.session.refresh_token, { maxAge: 60 * 60 * 24 * 365 })
+        } catch (e) {
+          console.warn('[AUTH/SESSION] explicit cookie set failed', String(e))
+        }
       }
 
       // Best-effort: attach any pre-login purchases to this user by email
@@ -59,6 +108,14 @@ export async function POST(req: Request) {
     // When signing out, clear cookies
     if (body?.event === 'SIGNED_OUT') {
       await supabase.auth.signOut()
+      // Proactively clear sb-* cookies we may have written
+      try {
+        const ref = new URL(normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || '')).hostname.split('.')[0]
+        clearHttpOnlyCookie(`sb-${ref}-auth-token`)
+        clearHttpOnlyCookie(`sb-${ref}-refresh-token`)
+        clearHttpOnlyCookie(`sb-${ref}-auth-token.4`)
+        clearHttpOnlyCookie(`sb-${ref}-refresh-token.4`)
+      } catch {}
     }
 
     return res

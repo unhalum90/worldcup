@@ -130,6 +130,29 @@ export async function GET(req: Request) {
     }
   }
 
+  // Fallback: explicitly set sb-* cookies so SSR sees session on next request
+  try {
+    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || '').startsWith('http') ? process.env.NEXT_PUBLIC_SITE_URL! : ''
+    const host = siteUrl ? new URL(siteUrl).hostname : undefined
+    const bareHost = host?.startsWith('www.') ? host.slice(4) : host
+    const cookieDomain = (process.env.SUPABASE_COOKIE_DOMAIN || (bareHost ? `.${bareHost}` : undefined)) as string | undefined
+    const ref = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || '').hostname.split('.')[0]
+    const accessName = `sb-${ref}-auth-token`
+    const refreshName = `sb-${ref}-refresh-token`
+    const access = data.session?.access_token || ''
+    const refresh = data.session?.refresh_token || ''
+    if (access && refresh) {
+      response.cookies.set({ name: accessName, value: access, httpOnly: true, secure: true, sameSite: 'lax', path: '/', ...(cookieDomain ? { domain: cookieDomain } : {}), maxAge: 60 * 60 } as any)
+      response.cookies.set({ name: refreshName, value: refresh, httpOnly: true, secure: true, sameSite: 'lax', path: '/', ...(cookieDomain ? { domain: cookieDomain } : {}), maxAge: 60 * 60 * 24 * 365 } as any)
+      // also write .4 variants
+      response.cookies.set({ name: accessName + '.4', value: access, httpOnly: true, secure: true, sameSite: 'lax', path: '/', ...(cookieDomain ? { domain: cookieDomain } : {}), maxAge: 60 * 60 } as any)
+      response.cookies.set({ name: refreshName + '.4', value: refresh, httpOnly: true, secure: true, sameSite: 'lax', path: '/', ...(cookieDomain ? { domain: cookieDomain } : {}), maxAge: 60 * 60 * 24 * 365 } as any)
+      console.log('[CB] explicitly wrote sb-* cookies', { domain: cookieDomain })
+    }
+  } catch (e) {
+    console.warn('[CB] explicit sb-* cookie write failed', String(e))
+  }
+
   console.log("[CB] Auth session established, redirecting to:", destination);
   const response = NextResponse.redirect(new URL(destination, req.url));
   applyCookieUpdates(response, cookieUpdates);
