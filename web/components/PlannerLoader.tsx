@@ -177,7 +177,7 @@ export default function PlannerLoader({
   progressOverride,
   messageOverride,
 }: PlannerLoaderProps) {
-  const t = useTranslations('planner.tripBuilder.loader');
+  const t = useTranslations('planner.tripBuilder.page.loader');
   const formatter = useFormatter();
   const simulatedProgress = useSimulatedProgress(duration);
   const progress = typeof progressOverride === 'number'

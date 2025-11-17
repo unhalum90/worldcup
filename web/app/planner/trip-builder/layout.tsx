@@ -17,6 +17,8 @@ export default async function TripBuilderLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Membership gating is temporarily disabled.
+  /*
   let rid: string | null = null;
   try {
     const h = await nextHeaders();
@@ -37,5 +39,6 @@ export default async function TripBuilderLayout({
   }
 
   console.log('[TB] Access granted', { rid, userId })
+  */
   return children
 }

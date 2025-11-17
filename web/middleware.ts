@@ -20,6 +20,9 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
 
   if (isProtectedRoute) {
+    // Membership gating is temporarily disabled.
+    // The code below can be uncommented to re-enable it.
+    /*
     try {
       const ip = request.headers.get('x-forwarded-for') || 'unknown';
       const ua = request.headers.get('user-agent') || 'unknown';
@@ -98,6 +101,7 @@ export async function middleware(request: NextRequest) {
       res.headers.set('x-fz-req-id', reqId)
       return res
     }
+    */
   }
 
   console.log('[MW] Allowing request to continue', { rid: reqId, path: pathname })
