@@ -60,11 +60,11 @@ export function VotingButtons({
 
   return (
     <div>
-      <div className="flex items-center justify-center gap-6 my-8">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-4 my-6">
         <button
         onClick={() => cast(cityA.id)}
         disabled={disabled}
-        className="relative flex-1 max-w-xs px-[18px] py-[14px] border-4 border-blue-500 rounded-xl hover:bg-blue-50 transition disabled:opacity-60"
+        className="relative w-full md:flex-1 md:max-w-xs px-6 py-4 min-h-[56px] border-4 border-blue-500 rounded-xl hover:bg-blue-50 transition disabled:opacity-60"
       >
         <Badge count={aCount} />
         <div className="text-2xl font-bold mb-1 inline-flex items-center gap-2">
@@ -73,11 +73,11 @@ export function VotingButtons({
         </div>
         <div className="text-blue-700 font-semibold">Vote for {cityA.name}</div>
         </button>
-        <div className="text-3xl font-extrabold text-gray-300">VS</div>
+  <div className="text-3xl font-extrabold text-gray-300 md:mx-2 my-2 md:my-0">VS</div>
         <button
         onClick={() => cast(cityB.id)}
         disabled={disabled}
-        className="relative flex-1 max-w-xs px-[18px] py-[14px] border-4 border-red-500 rounded-xl hover:bg-red-50 transition disabled:opacity-60"
+        className="relative w-full md:flex-1 md:max-w-xs px-6 py-4 min-h-[56px] border-4 border-red-500 rounded-xl hover:bg-red-50 transition disabled:opacity-60"
       >
         <Badge count={bCount} />
         <div className="text-2xl font-bold mb-1 inline-flex items-center gap-2">

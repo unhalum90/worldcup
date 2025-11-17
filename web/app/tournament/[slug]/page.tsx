@@ -82,7 +82,7 @@ export default async function MatchPage({ params }: { params: Promise<{ slug: st
   const theme = themeByRound[match.round_number] || { title: '', prompt: '' }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-[22px] pb-10">
+    <div className="max-w-5xl mx-auto px-4 pt-[22px] pb-10 overflow-x-hidden">
       {/* Breadcrumb back to tournament */}
       <div className="mb-1">
         <Link href="/tournament" className="text-sm text-blue-600 hover:underline">← Back to Tournament</Link>

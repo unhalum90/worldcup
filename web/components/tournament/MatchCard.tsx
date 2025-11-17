@@ -15,14 +15,14 @@ export function MatchCard({ match, voted }: MatchCardProps) {
   const THRESHOLD = 100
 
   return (
-    <Link href={`/tournament/${match.slug}`} className="block group">
-  <div className="border rounded-xl p-4 bg-white/70 hover:shadow-lg transition relative">
+    <Link href={`/tournament/${match.slug}`} className="block group w-full">
+  <div className="border rounded-xl p-4 bg-white/70 hover:shadow-lg transition relative w-full min-w-0 overflow-hidden">
         {voted && (
           <div className="absolute top-2 right-2 bg-green-50 text-green-700 px-2 py-1 rounded text-xs font-semibold">✓ You voted</div>
         )}
         {/* Round shown in page header; removing per-card pill to save vertical space */}
-        <div className="flex items-center justify-between gap-3 mb-2">
-          <div className="flex-1 text-center">
+  <div className="flex flex-col md:flex-row items-center justify-between gap-3 mb-2">
+          <div className="flex-1 text-center min-w-0">
             <div className="inline-flex items-center gap-2 text-lg font-bold">
               {match.city_a?.name || 'City A'}
               {match.city_a?.country && (
@@ -38,8 +38,8 @@ export function MatchCard({ match, voted }: MatchCardProps) {
               <div className="text-[11px] text-gray-500">{match.city_a.stadium_name}</div>
             )}
           </div>
-          <div className="text-2xl font-extrabold text-gray-300">VS</div>
-          <div className="flex-1 text-center">
+          <div className="text-2xl font-extrabold text-gray-300 my-2 sm:my-0">VS</div>
+          <div className="flex-1 text-center min-w-0">
             <div className="inline-flex items-center gap-2 text-lg font-bold">
               {match.city_b?.name || 'City B'}
               {match.city_b?.country && (
@@ -58,7 +58,7 @@ export function MatchCard({ match, voted }: MatchCardProps) {
         </div>
 
         {match.status === 'active' && (total >= THRESHOLD) && (
-          <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden mb-2">
+          <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden mb-2 w-full">
             <div
               className="absolute left-0 top-0 bottom-0 bg-blue-500/50 text-blue-800 text-[11px] font-bold flex items-center pl-2"
               style={{ width: `${aPct}%` }}

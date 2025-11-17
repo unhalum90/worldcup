@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
 
         // Step 2: Process all cities in parallel
         const cityPromises = formData.citiesVisiting.map(async (cityName, index) => {
-          const cityData = cities.find(c => c.name === cityName);
+          const cityData = cities.find((c: any) => c.name === cityName);
           if (!cityData) {
             throw new Error(`City data not found for ${cityName}`);
           }

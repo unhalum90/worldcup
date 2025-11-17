@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
 
     for (const m of mailing) {
       // Insert if missing
-      await supabaseServer.from('mailing_list').insert({ email: m.email, confirmed: m.confirmed, source: m.source, tags: m.tags as any }).select('id').single().then(async (res) => {
+      await supabaseServer.from('mailing_list').insert({ email: m.email, confirmed: m.confirmed, source: m.source, tags: m.tags as any }).select('id').single().then(async (res: any) => {
         if (res.error && !String(res.error.message).includes('duplicate')) {
           // If duplicate or exists, fall through to update
           return
