@@ -14,10 +14,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!loading && user) {
-      // If already signed in, go straight to account
-      window.location.replace("/account");
+      window.location.replace(redirectTarget);
     }
-  }, [loading, user]);
+  }, [loading, user, redirectTarget]);
 
   return (
     <div className="mx-auto max-w-md px-4 py-16">
