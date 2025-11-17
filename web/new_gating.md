@@ -1,5 +1,7 @@
 # Complete Paywall System - From Scratch
 
+Note: Redeploy trigger to pick up updated environment variables.
+
 ## Step 1: Supabase Utilities
 
 ### `lib/supabase/server.ts`
