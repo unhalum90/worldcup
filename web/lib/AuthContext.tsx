@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import type { User, Session } from '@supabase/supabase-js';
+import type { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabaseClient';
 import { teamColors } from '@/lib/constants/teamColors';
 import type { UserProfile } from '@/lib/profile/types';
@@ -85,7 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event: AuthChangeEvent, session: Session | null) => {
       setSession(session ?? null);
       setUser(session?.user ?? null);
 
