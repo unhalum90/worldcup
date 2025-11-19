@@ -26,6 +26,8 @@ export function VotingButtons({
   const [isPending, startTransition] = useTransition()
   const [aCount, setACount] = useState<number>(initialVotesA || 0)
   const [bCount, setBCount] = useState<number>(initialVotesB || 0)
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  const [toastTimer, setToastTimer] = useState<number | null>(null)
 
   async function cast(cityId: string) {
     setSubmitting(cityId)
@@ -112,19 +114,23 @@ export function VotingButtons({
                 }
                 if (!res.ok) {
                   const msg = (data && (data.error || data.message)) || `Request failed (${res.status})`
-                  alert(`Subscription failed: ${msg}`)
+                  setToast({ type: 'error', message: `Subscription failed: ${msg}` })
+                  continueToastTimer()
                   return
                 }
                 if (data && data.ok === false) {
                   // API returned 200 but indicated failure (e.g., DB/RLS error)
                   const msg = data.message || data.error || 'Subscription failed'
-                  alert(`Subscription failed: ${msg}`)
+                  setToast({ type: 'error', message: `Subscription failed: ${msg}` })
+                  continueToastTimer()
                   return
                 }
-                alert('Thanks for subscribing!')
+                setToast({ type: 'success', message: 'Thanks for subscribing!' })
+                continueToastTimer()
                 ;(e.currentTarget as HTMLFormElement).reset()
               } catch {
-                alert('Subscription failed. Please try again later.')
+                setToast({ type: 'error', message: 'Subscription failed. Please try again later.' })
+                continueToastTimer()
               }
             }}
             className="flex gap-2 max-w-md mx-auto"
@@ -134,6 +140,19 @@ export function VotingButtons({
           </form>
         </div>
       )}
+        {toast && (
+          <div className={`fixed left-1/2 transform -translate-x-1/2 bottom-6 z-50 px-4 py-2 rounded-lg text-white ${toast.type === 'success' ? 'bg-green-600' : 'bg-red-600'}`}>
+            {toast.message}
+          </div>
+        )}
     </div>
   )
+
+    function continueToastTimer() {
+      if (toastTimer) {
+        window.clearTimeout(toastTimer)
+      }
+      const id = window.setTimeout(() => setToast(null), 4500)
+      setToastTimer(id)
+    }
 }
