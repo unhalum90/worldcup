@@ -28,9 +28,14 @@ export function VotingButtons({
   const [bCount, setBCount] = useState<number>(initialVotesB || 0)
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [toastTimer, setToastTimer] = useState<number | null>(null)
+  const [subscribed, setSubscribed] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false
+    return localStorage.getItem('tournament_subscribed') === 'true'
+  })
 
   async function cast(cityId: string) {
     setSubmitting(cityId)
+    console.log('[Vote] casting vote', { matchSlug, cityId })
     try {
       const res = await fetch('/api/tournament/vote', {
         method: 'POST',
@@ -38,18 +43,24 @@ export function VotingButtons({
         body: JSON.stringify({ matchSlug, cityId }),
       })
       const data = (await res.json()) as VoteResponse
+      console.log('[Vote] vote response', { status: res.status, data })
       setResult(data)
       if (data?.success) {
         if (typeof data.votes_a === 'number') setACount(data.votes_a)
         if (typeof data.votes_b === 'number') setBCount(data.votes_b)
+        console.log('[Vote] vote succeeded, updated counts', { votes_a: data.votes_a, votes_b: data.votes_b })
+      } else {
+        console.warn('[Vote] vote failed', data)
       }
+    } catch (err) {
+      console.error('[Vote] vote error', err)
     } finally {
       setSubmitting(null)
       startTransition(() => {})
     }
   }
 
-  const disabled = Boolean(submitting || (result && result.success === false))
+  const disabled = Boolean(submitting)
 
   const Badge = ({ count }: { count: number }) => (
     <span
@@ -90,7 +101,7 @@ export function VotingButtons({
         </button>
       </div>
 
-      {showCTAAfterVote && result?.success && (
+      {showCTAAfterVote && result?.success && !subscribed && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-4 text-center">
           <h3 className="font-bold text-lg mb-2">Get Round 2 matchups in your inbox</h3>
           <p className="text-gray-600 text-sm mb-4">Plus: exclusive city tips and draw day analysis (Dec 5)</p>
@@ -131,6 +142,8 @@ export function VotingButtons({
                   return
                 }
                 console.log('[Newsletter] subscribe success')
+                localStorage.setItem('tournament_subscribed', 'true')
+                setSubscribed(true)
                 setToast({ type: 'success', message: 'Thanks for subscribing!' })
                 continueToastTimer()
                 form.reset()
