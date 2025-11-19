@@ -1,3 +1,4 @@
+'use client';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -10,29 +11,6 @@ import SubscribeButton from '@/components/SubscribeButton';
 type Props = {
   params: Promise<{ slug: string }>;
 };
-
-export async function generateStaticParams() {
-  return cityGuides.map((city) => ({
-    slug: city.slug,
-  }));
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const city = getCityGuideBySlug(slug);
-
-  if (!city) {
-    return {
-      title: 'City Guide Not Found',
-    };
-  }
-
-  return {
-    title: `${city.name} Travel Guide - 2026 World Cup | WC26 Fan Zone`,
-    description: `Complete travel guide for ${city.name}, ${city.country}. ${city.stadium} logistics, transportation, lodging, and fan tips for World Cup 2026.`,
-    keywords: [`${city.name}`, `${city.stadium}`, 'World Cup 2026', city.country, 'travel guide', 'FIFA'],
-  };
-}
 
 export default async function CityGuidePage({ params }: Props) {
   const { slug } = await params;
@@ -58,8 +36,9 @@ export default async function CityGuidePage({ params }: Props) {
   const preferredVariantId = city.purchase?.variants?.en || city.purchase?.variants?.es;
   const buyUrl = city.purchase?.provider === 'lemonsqueezy' && (
     city.purchase?.buyLink
-      || (preferredVariantId && `https://fanzonenetwork.lemonsqueezy.com/checkout?variant=${preferredVariantId}`)
-      || (city.purchase?.productId && `https://fanzonenetwork.lemonsqueezy.com/checkout?product=${city.purchase.productId}`)
+      ? `${city.purchase.buyLink}${city.purchase.buyLink.includes('?') ? '&' : '?'}redirect_url=${window.location.origin}/waiting?redirect=${window.location.pathname}`
+      : (preferredVariantId && `https://fanzonenetwork.lemonsqueezy.com/checkout?variant=${preferredVariantId}&redirect_url=${window.location.origin}/waiting?redirect=${window.location.pathname}`)
+      || (city.purchase?.productId && `https://fanzonenetwork.lemonsqueezy.com/checkout?product=${city.purchase.productId}&redirect_url=${window.location.origin}/waiting?redirect=${window.location.pathname}`)
   ) || undefined;
 
   return (

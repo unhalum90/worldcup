@@ -13,6 +13,43 @@ function normalizeToHttps(u: string): string {
   }
 }
 
+export async function GET(_req: Request) {
+  try {
+    const cookieStore = await cookies()
+    const supabase = createServerClient(
+      normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || ''),
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+          set() {
+            // Read-only in this handler; no-op
+          },
+          remove() {
+            // Read-only in this handler; no-op
+          },
+        },
+      }
+    )
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+
+    return NextResponse.json({
+      user: session?.user ?? null,
+    })
+  } catch (e) {
+    console.error('GET /api/auth/session failed', e)
+    return new NextResponse(JSON.stringify({ user: null, error: 'Internal Server Error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({})) as any
@@ -56,4 +93,3 @@ export async function POST(req: Request) {
     return new NextResponse('Bad Request', { status: 400 })
   }
 }
-

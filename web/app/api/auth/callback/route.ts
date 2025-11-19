@@ -86,6 +86,15 @@ export async function GET(req: Request) {
 
   const session = data.session;
   const userId = session.user?.id;
+  if (userId) {
+    try {
+      await supabase.rpc('attach_purchases_to_user', { p_user_id: userId });
+      console.log('[Callback API] attach_purchases_to_user invoked', { userId });
+    } catch (e) {
+      console.warn('[Callback API] attach_purchases_to_user failed', String(e));
+    }
+  }
+
   let destination = resolveRedirectPath(redirectParam);
 
   if (userId) {
