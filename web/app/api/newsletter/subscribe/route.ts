@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 
 export async function POST(req: Request) {
   try {
@@ -7,11 +8,20 @@ export async function POST(req: Request) {
     if (!email || !/.+@.+\..+/.test(email)) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
     }
-    const supabase = await createClient()
+
+    // Prefer service-role client for inserts so RLS does not block server-side subscriptions
+    let supabase
+    try {
+      supabase = await createServiceClient()
+    } catch (err) {
+      // Fallback to request-scoped server client (may be RLS-restricted)
+      supabase = await createClient()
+    }
+
     const { error } = await supabase.from('mailing_list').insert({ email, source: source || 'tournament_cta', tags: ['tournament'] })
     if (error) {
-      // Even if RLS blocks, respond 200 to keep UX smooth; log server-side only in real deployment
-      return NextResponse.json({ ok: false, message: error.message }, { status: 200 })
+      // Return detailed message so UI can display useful diagnostics (safe in non-production)
+      return NextResponse.json({ ok: false, message: error.message || 'Database insert failed' }, { status: 200 })
     }
     return NextResponse.json({ ok: true })
   } catch (e: any) {
