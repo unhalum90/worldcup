@@ -97,7 +97,8 @@ export function VotingButtons({
           <form
             onSubmit={async (e) => {
               e.preventDefault()
-              const fd = new FormData(e.currentTarget as HTMLFormElement)
+              const form = e.currentTarget as HTMLFormElement
+              const fd = new FormData(form)
               const email = String(fd.get('email') || '')
               if (!email) return
               try {
@@ -132,7 +133,7 @@ export function VotingButtons({
                 console.log('[Newsletter] subscribe success')
                 setToast({ type: 'success', message: 'Thanks for subscribing!' })
                 continueToastTimer()
-                ;(e.currentTarget as HTMLFormElement).reset()
+                form.reset()
               } catch {
                 console.error('[Newsletter] subscribe: unexpected error')
                 setToast({ type: 'error', message: 'Subscription failed. Please try again later.' })
