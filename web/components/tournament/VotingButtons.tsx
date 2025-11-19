@@ -99,11 +99,28 @@ export function VotingButtons({
               const email = String(fd.get('email') || '')
               if (!email) return
               try {
-                await fetch('/api/newsletter/subscribe', {
+                const res = await fetch('/api/newsletter/subscribe', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ email, source: 'tournament_cta' }),
                 })
+                let data: any = null
+                try {
+                  data = await res.json()
+                } catch (err) {
+                  // non-JSON response
+                }
+                if (!res.ok) {
+                  const msg = (data && (data.error || data.message)) || `Request failed (${res.status})`
+                  alert(`Subscription failed: ${msg}`)
+                  return
+                }
+                if (data && data.ok === false) {
+                  // API returned 200 but indicated failure (e.g., DB/RLS error)
+                  const msg = data.message || data.error || 'Subscription failed'
+                  alert(`Subscription failed: ${msg}`)
+                  return
+                }
                 alert('Thanks for subscribing!')
                 ;(e.currentTarget as HTMLFormElement).reset()
               } catch {
