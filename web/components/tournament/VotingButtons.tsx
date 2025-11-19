@@ -101,6 +101,7 @@ export function VotingButtons({
               const email = String(fd.get('email') || '')
               if (!email) return
               try {
+                console.log('[Newsletter] submitting subscribe request', { email, source: 'tournament_cta' })
                 const res = await fetch('/api/newsletter/subscribe', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
@@ -112,8 +113,10 @@ export function VotingButtons({
                 } catch (err) {
                   // non-JSON response
                 }
+                console.log('[Newsletter] subscribe response', { status: res.status, ok: res.ok, data })
                 if (!res.ok) {
                   const msg = (data && (data.error || data.message)) || `Request failed (${res.status})`
+                  console.warn('[Newsletter] HTTP error on subscribe', msg)
                   setToast({ type: 'error', message: `Subscription failed: ${msg}` })
                   continueToastTimer()
                   return
@@ -121,14 +124,17 @@ export function VotingButtons({
                 if (data && data.ok === false) {
                   // API returned 200 but indicated failure (e.g., DB/RLS error)
                   const msg = data.message || data.error || 'Subscription failed'
+                  console.warn('[Newsletter] API returned ok:false', msg, data)
                   setToast({ type: 'error', message: `Subscription failed: ${msg}` })
                   continueToastTimer()
                   return
                 }
+                console.log('[Newsletter] subscribe success')
                 setToast({ type: 'success', message: 'Thanks for subscribing!' })
                 continueToastTimer()
                 ;(e.currentTarget as HTMLFormElement).reset()
               } catch {
+                console.error('[Newsletter] subscribe: unexpected error')
                 setToast({ type: 'error', message: 'Subscription failed. Please try again later.' })
                 continueToastTimer()
               }
