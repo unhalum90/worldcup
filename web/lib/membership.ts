@@ -60,10 +60,11 @@ export async function isActiveMember(supabase: any, userId: string): Promise<boo
     // ignore and fall back to subscriptions table
   }
 
-  // Fallback: Check purchases by user_id or email (RLS allows email match)
+  // Fallback: Check purchases by user_id only.
+  // We intentionally do NOT scan all purchases without a filter because that
+  // would treat any membership purchase in the system as applying to every
+  // user when using a service-role client.
   try {
-    // Get auth session email via RPC-like trick: try reading a purchase row limited by RLS
-    // First try by user_id
     const byUser = await supabase
       .from('purchases')
       .select('product_id, status')
@@ -77,16 +78,6 @@ export async function isActiveMember(supabase: any, userId: string): Promise<boo
 
     const rows = Array.isArray(byUser?.data) ? byUser.data : [];
     if (rows.some((r: any) => r.status !== 'refunded' && memberIds.includes(String(r.product_id)))) {
-      return true;
-    }
-
-    // If none found by user_id, try any purchase visible via email-based RLS
-    const byEmail = await supabase
-      .from('purchases')
-      .select('product_id, status')
-      .limit(50);
-    const rows2 = Array.isArray(byEmail?.data) ? byEmail.data : [];
-    if (rows2.some((r: any) => r.status !== 'refunded' && memberIds.includes(String(r.product_id)))) {
       return true;
     }
   } catch {
