@@ -1,10 +1,7 @@
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
-// Membership helpers are available in `@/lib/membership` but gating is
-// currently disabled for testing. Keep the import commented until we
-// re-enable gating to avoid build-time type errors.
-// import { checkMembership } from '@/lib/membership'
-import { headers as nextHeaders } from 'next/headers'
+import { createClient } from '@/lib/supabase/server'
+import { isActiveMember } from '@/lib/membership'
 
 // Ensure this route is treated as dynamic, since it reads cookies/session
 export const dynamic = 'force-dynamic'
@@ -20,28 +17,30 @@ export default async function TripBuilderLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Membership gating is temporarily disabled.
-  /*
-  let rid: string | null = null;
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const redirectTarget = '/planner/trip-builder'
+
+  // If not logged in, send to memberships page (which will in turn route
+  // through the login + checkout flow).
+  if (!user) {
+    redirect(`/memberships?from=planner&redirect=${encodeURIComponent(redirectTarget)}`)
+  }
+
+  // If logged in but not an active member, send to waiting page while webhooks
+  // or reconciliation attach their purchases.
   try {
-    const h = await nextHeaders();
-    rid = h.get('x-fz-req-id');
-  } catch {}
-  console.log('[TB] layout invoked - checking membership', { rid })
-  const { isMember, userId } = await checkMembership()
-  console.log('[TB] layout membership result', { rid, userId, isMember })
-
-  if (!userId) {
-    console.log('[TB] No userId - redirecting to /login', { rid })
-    redirect('/login?redirect=/planner/trip-builder')
+    const active = await isActiveMember(supabase, user.id)
+    if (!active) {
+      redirect(`/waiting?redirect=${encodeURIComponent(redirectTarget)}`)
+    }
+  } catch {
+    // On any unexpected error, be conservative and send to waiting as well.
+    redirect(`/waiting?redirect=${encodeURIComponent(redirectTarget)}`)
   }
 
-  if (!isMember) {
-    console.log('[TB] Not a member - redirecting to paywall', { rid, userId })
-    redirect('/membership/paywall?redirect=/planner/trip-builder')
-  }
-
-  console.log('[TB] Access granted', { rid, userId })
-  */
   return children
 }
