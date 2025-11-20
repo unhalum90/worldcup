@@ -825,10 +825,10 @@
   "auth": {
     "modal": {
       "header": {
-        "title": "Welcome",
+        "title": "Unlock Your Trip Planning Dashboard",
         "subtitle": {
-          "line1": "Enter your email and we'll send you a magic link.",
-          "line2": "No password needed."
+          "line1": "The Trip Planner is a premium tool. Sign up to create your account.",
+          "line2": "You’ll review membership options on the next screen."
         }
       },
       "form": {
