@@ -52,4 +52,10 @@ if (!serviceKey) {
     })
 }
 
+// Backwards-compatible helper used by older routes. Prefer createServerClient()
+// when you need a fresh instance.
+export function getSupabaseServerClient() {
+  return createServerClient()
+}
+
 export { supabaseServer, createServerClient }
