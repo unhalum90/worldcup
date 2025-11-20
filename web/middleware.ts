@@ -134,19 +134,22 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(redirectUrl);
       }
 
-      // If user exists but not an active member, redirect to waiting page
+      // If user exists but not an active member, redirect to memberships hero
+      // so they can purchase or upgrade.
       try {
         const active = await isActiveMember(supabase, user.id);
         if (!active) {
-          const waitingUrl = new URL('/waiting', req.url);
-          waitingUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
-          return NextResponse.redirect(waitingUrl);
+          const upgradeUrl = new URL('/memberships', req.url);
+          upgradeUrl.searchParams.set('from', 'planner');
+          upgradeUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+          return NextResponse.redirect(upgradeUrl);
         }
       } catch {
-        // If membership check fails, be conservative and redirect
-        const waitingUrl = new URL('/waiting', req.url);
-        waitingUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
-        return NextResponse.redirect(waitingUrl);
+        // If membership check fails, be conservative and send to memberships.
+        const upgradeUrl = new URL('/memberships', req.url);
+        upgradeUrl.searchParams.set('from', 'planner');
+        upgradeUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+        return NextResponse.redirect(upgradeUrl);
       }
     }
   }

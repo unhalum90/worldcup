@@ -30,16 +30,16 @@ export default async function TripBuilderLayout({
     redirect(`/memberships?from=planner&redirect=${encodeURIComponent(redirectTarget)}`)
   }
 
-  // If logged in but not an active member, send to waiting page while webhooks
-  // or reconciliation attach their purchases.
+  // If logged in but not an active member, send to memberships so they can
+  // purchase or upgrade. Waiting page is reserved for post-checkout flows.
   try {
     const active = await isActiveMember(supabase, user.id)
     if (!active) {
-      redirect(`/waiting?redirect=${encodeURIComponent(redirectTarget)}`)
+      redirect(`/memberships?from=planner&redirect=${encodeURIComponent(redirectTarget)}`)
     }
   } catch {
-    // On any unexpected error, be conservative and send to waiting as well.
-    redirect(`/waiting?redirect=${encodeURIComponent(redirectTarget)}`)
+    // On any unexpected error, be conservative and send to memberships as well.
+    redirect(`/memberships?from=planner&redirect=${encodeURIComponent(redirectTarget)}`)
   }
 
   return children
