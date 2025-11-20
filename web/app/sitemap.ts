@@ -29,6 +29,8 @@ const staticRoutes: Array<{
   { path: '/teams', changeFrequency: 'weekly', priority: 0.9, lastModified: now },
   { path: '/forums', changeFrequency: 'daily', priority: 0.8, lastModified: now },
   { path: '/blog', changeFrequency: 'weekly', priority: 0.7, lastModified: now },
+  // Blog posts (manually added static entries)
+  { path: '/blog/transit-friendly-lodging-zones-2026', changeFrequency: 'weekly', priority: 0.75, lastModified: now },
   { path: '/contact', changeFrequency: 'monthly', priority: 0.5, lastModified: now },
   { path: '/terms', changeFrequency: 'yearly', priority: 0.3, lastModified: now },
   { path: '/privacy', changeFrequency: 'yearly', priority: 0.3, lastModified: now },

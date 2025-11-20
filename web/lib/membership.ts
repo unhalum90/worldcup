@@ -1,74 +1,89 @@
-import { createServerClientInstance } from '@/lib/supabaseServer'
-import { headers as nextHeaders } from 'next/headers'
-import { SupabaseClient } from '@supabase/supabase-js'
+// Lightweight membership helpers to enable future gating without enforcing it yet.
+// These functions are safe to import in server routes or middleware.
+// They default to conservative values if the subscriptions table or fields are not present.
 
-export const PROTECTED_ROUTES = [
-  '/planner/trip-builder',
-  // Actual app routes
-  '/lodging-planner',
-  '/flight-planner',
-  // Future/alias paths (covered just in case)
-  '/planner/lodging-planner',
-  '/planner/flight-planner',
-  '/onboarding'
-]
+export type SubscriptionRecord = {
+  id: string
+  user_id: string
+  status?: string | null
+  current_period_end?: string | null
+  plan?: string | null
+  [key: string]: any
+}
 
-export async function checkMembership(): Promise<{
-  isMember: boolean
-  email: string | null
-  userId: string | null
-}> {
+/**
+ * Return the active subscription row for a user if present.
+ * Looks for a `subscriptions` table with columns { user_id, status } and treats
+ * status in ('active','trialing','past_due') as active-ish by default.
+ */
+export async function getActiveSubscription(supabase: any, userId: string): Promise<SubscriptionRecord | null> {
   try {
-    let rid: string | null = null;
-    try { const h = await nextHeaders(); rid = h?.get('x-fz-req-id') || null } catch {}
-    console.log('[MEM] checkMembership() start', { rid });
-    const supabase = await createServerClientInstance()
-    
-    const { data: { user } } = await supabase.auth.getUser()
-    
-    if (!user) {
-      console.log('[MEM] No user in checkMembership', { rid });
-      return { isMember: false, email: null, userId: null }
-    }
-    
-    const { data: profile, error: profErr } = await supabase
-      .from('profiles')
-      .select('is_member, email')
-      .eq('user_id', user.id)
-      .single()
+    const { data, error } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', userId)
+      .in('status', ['active', 'trialing', 'past_due'])
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-    console.log('[MEM] Profile fetch', { rid, userId: user.id, profile, profErr })
-
-    return {
-      isMember: profile?.is_member ?? false,
-      email: profile?.email ?? user.email ?? null,
-      userId: user.id
+    if (error) {
+      // Table may not exist yet; surface no subscription rather than throwing.
+      return null;
     }
-  } catch (error) {
-    let rid2: string | null = null; try { const h = await nextHeaders(); rid2 = h?.get('x-fz-req-id') || null } catch {}
-    console.error('[MEM] Error checking membership:', { rid: rid2, error })
-    return { isMember: false, email: null, userId: null }
+    return data || null;
+  } catch {
+    return null;
   }
 }
 
 /**
- * Check if a user is an active member using a Supabase client (typically Service Role).
- * This function bypasses RLS when using supabaseAdmin.
+ * True if user has an active subscription. Safe default is false.
  */
-export async function isActiveMember(
-  supabase: SupabaseClient,
-  userId: string
-): Promise<boolean> {
+export async function isActiveMember(supabase: any, userId: string): Promise<boolean> {
   try {
-    const { data: profile } = await supabase
+    // First, prefer explicit profile flags set by checkout/webhooks
+    const { data: prof, error } = await supabase
       .from('profiles')
-      .select('is_member')
-      .eq('user_id', userId)
-      .single()
-    
-    return profile?.is_member ?? false
-  } catch (error) {
-    console.error('Error checking active membership:', error)
-    return false
+      .select('is_member, account_level, subscription_tier, subscription_status, email')
+      .or(`user_id.eq.${userId},id.eq.${userId}`)
+      .maybeSingle();
+
+    if (!error && prof) {
+      if ((prof as any).is_member === true) return true;
+      if (prof.account_level === 'member') return true;
+      if (prof.subscription_tier && ['premium', 'pro'].includes(prof.subscription_tier)) {
+        if (!prof.subscription_status || prof.subscription_status !== 'expired') return true;
+      }
+    }
+  } catch {
+    // ignore and fall back to subscriptions table
   }
+
+  // Fallback: Check purchases by user_id only.
+  // We intentionally do NOT scan all purchases without a filter because that
+  // would treat any membership purchase in the system as applying to every
+  // user when using a service-role client.
+  try {
+    const byUser = await supabase
+      .from('purchases')
+      .select('product_id, status')
+      .eq('user_id', userId)
+      .limit(50);
+
+    const memberIds = (process.env.NEXT_PUBLIC_MEMBER_PRODUCT_IDS || process.env.LEMON_MEMBER_PRODUCT_IDS || '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    const rows = Array.isArray(byUser?.data) ? byUser.data : [];
+    if (rows.some((r: any) => r.status !== 'refunded' && memberIds.includes(String(r.product_id)))) {
+      return true;
+    }
+  } catch {
+    // ignore
+  }
+
+  const sub = await getActiveSubscription(supabase, userId);
+  return !!sub;
 }

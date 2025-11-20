@@ -1,125 +1,218 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
-import type { SerializeOptions } from 'cookie'
+import { NextResponse, NextRequest } from 'next/server';
+import { defaultLocale } from './i18n';
+import { createServerClient } from '@supabase/ssr';
+import { isActiveMember } from './lib/membership';
 
-type CookieOptions = Partial<SerializeOptions>
+function normalizeToHttps(u: string): string {
+  if (!u) return '';
+  try {
+    const parsed = new URL(u);
+    if (parsed.protocol !== 'https:') parsed.protocol = 'https:';
+    return parsed.toString().replace(/\/$/, '');
+  } catch {
+    return u.replace(/^http:\/\//i, 'https://');
+  }
+}
 
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
-  const reqId = (globalThis as any).crypto?.randomUUID ? (globalThis as any).crypto.randomUUID() : `${Date.now()}-${Math.random()}`
-  const requestHeaders = new Headers(request.headers)
-  requestHeaders.set('x-fz-req-id', reqId)
+// Middleware to handle locale from cookies
+export async function middleware(req: NextRequest) {
+  // Get locale from cookie
+  const locale = req.cookies.get('NEXT_LOCALE')?.value || defaultLocale;
+  
+  // Clone the request headers
+  const requestHeaders = new Headers(req.headers);
+  
+  // Set the locale header so next-intl can pick it up
+  requestHeaders.set('x-next-intl-locale', locale);
 
-  // NOTE: Do not force host rewrites here. Vercel domain settings may
-  // redirect apex<->www and cause loops if we alter host at the edge.
+  // Prepare response so we can set cookies (for Supabase session refresh)
+  const res = NextResponse.next({
+    request: { headers: requestHeaders },
+  });
 
-  // Define protected routes (keep planner hub public; guard tool pages)
-  const protectedRoutes = ['/planner/trip-builder', '/flight-planner', '/lodging-planner', '/onboarding']
-
-  // Check if the current path is a protected route
-  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
-
-  if (isProtectedRoute) {
-    // Membership gating is temporarily disabled.
-    // The code below can be uncommented to re-enable it.
-    /*
-    try {
-      const ip = request.headers.get('x-forwarded-for') || 'unknown';
-      const ua = request.headers.get('user-agent') || 'unknown';
-      const cookieNames = request.cookies.getAll().map(c => c.name);
-      console.log('[MW] Incoming request', {
-        rid: reqId,
-        path: pathname,
-        protected: true,
-        ip,
-        ua: ua.slice(0, 80),
-        cookieNames,
+  // Ensure anonymous voter cookie for tournament flows (no-login voting UX)
+  try {
+    const isTournament = req.nextUrl.pathname.startsWith('/tournament');
+    const existing = req.cookies.get('t_voter')?.value;
+    if (isTournament && !existing) {
+      const anonId = crypto.randomUUID();
+      res.cookies.set({
+        name: 't_voter',
+        value: anonId,
+        httpOnly: false, // readable client-side for optimistic UI if needed
+        sameSite: 'lax',
+        secure: req.nextUrl.protocol === 'https:' || process.env.NODE_ENV === 'production',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365 * 5, // ~5 years
       });
-    } catch (e) {
-      console.log('[MW] Failed to introspect request headers/cookies', { rid: reqId, error: String(e) });
     }
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  } catch {}
+
+  // Supabase client bound to request/response cookies
+  let user: any = null;
+  let supabase: any = null;
+  try {
+    supabase = createServerClient(
+      normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL!),
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {
           get(name: string) {
-            return request.cookies.get(name)?.value
+            return req.cookies.get(name)?.value;
           },
-          set(name: string, value: string, options: CookieOptions) {
-            request.cookies.set({ name, value, ...options })
+          set(name: string, value: string, options: any) {
+            try {
+              res.cookies.set({ name, value, ...options });
+            } catch (e) {
+              console.warn('⚠️ Failed to set cookie in middleware', e);
+            }
           },
-          remove(name: string, options: CookieOptions) {
-            request.cookies.set({ name, value: '', ...options })
+          remove(name: string, options: any) {
+            try {
+              res.cookies.delete({ name, ...options });
+            } catch (e) {
+              console.warn('⚠️ Failed to delete cookie in middleware', e);
+            }
           },
         },
       }
-    )
+    );
 
+    // ✅ Retrieve session (includes user and auto-refreshes)
     const {
-      data: { user },
-    } = await supabase.auth.getUser()
+      data: { session },
+    } = await supabase.auth.getSession();
+    user = session?.user ?? null;
 
-    console.log('[MW] Auth getUser() result', {
-      rid: reqId,
-      hasUser: Boolean(user),
-      userId: user?.id,
-      email: user?.email,
-    })
-
-    if (!user) {
-      // Redirect to sign-in page if not authenticated
-      console.log('[MW] No user, redirecting to /login', { rid: reqId, path: pathname })
-      const res = NextResponse.redirect(new URL('/login', request.url))
-      res.headers.set('x-fz-req-id', reqId)
-      return res
-    }
-
-    try {
-      const { data: profile, error: profileErr } = await supabase
-        .from('profiles')
-        .select('is_member')
-        .eq('user_id', user.id)
-        .maybeSingle()
-
-      console.log('[MW] Profile membership check', {
-        rid: reqId,
-        userId: user.id,
-        profile, profileErr,
-      })
-
-      if (!profile?.is_member) {
-        console.log('[MW] Not a member, redirecting to paywall', { rid: reqId, userId: user.id, path: pathname })
-        const res = NextResponse.redirect(new URL('/membership/paywall', request.url))
-        res.headers.set('x-fz-req-id', reqId)
-        return res
-      }
-    } catch (e) {
-      // Fail-closed to paywall on unexpected errors
-      console.log('[MW] Exception during profile check, redirecting to paywall', { rid: reqId, error: String(e) })
-      const res = NextResponse.redirect(new URL('/membership/paywall', request.url))
-      res.headers.set('x-fz-req-id', reqId)
-      return res
-    }
-    */
+    console.log('[Middleware] supabase.auth.getSession()', {
+      hasSession: !!session,
+      id: session?.user?.id,
+      email: session?.user?.email,
+    });
+  } catch {
+    // ignore refresh errors in middleware; page-level code can still handle
   }
 
-  console.log('[MW] Allowing request to continue', { rid: reqId, path: pathname })
-  const response = NextResponse.next({ request: { headers: requestHeaders } })
-  response.headers.set('x-fz-req-id', reqId)
-  return response
+  const pathname = req.nextUrl.pathname;
+  // Allow either server-only ADMIN_EMAILS or NEXT_PUBLIC_ADMIN_EMAILS (fallback)
+  const adminEmails = (process.env.ADMIN_EMAILS || process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
+    .split(',')
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+
+  // 🚧 Bypass middleware during Supabase auth callback or immediate post-login refresh
+  if (pathname.startsWith('/auth/callback')) {
+    return res;
+  }
+
+  // Allow through if Supabase is mid-refresh (avoid redirect loop)
+  const hasAuthCookie = !!req.cookies.get('sb-access-token');
+  if (!user && hasAuthCookie) {
+    return res;
+  }
+
+  // Premium gating — allow runtime configuration via CSV env var
+  // Premium gating — only active when NEXT_PUBLIC_ENABLE_PAYWALL is 'true'
+  const paywallEnabled = process.env.NEXT_PUBLIC_ENABLE_PAYWALL === 'true';
+  if (paywallEnabled) {
+    const envPrefixes = (process.env.NEXT_PUBLIC_PAYWALLED_PREFIXES || '')
+      .split(',')
+      .map((p) => p.trim())
+      .filter(Boolean);
+    // Sensible defaults if none provided
+    const paywalledPrefixes = envPrefixes.length > 0
+      ? envPrefixes
+      : ['/planner/trip-builder', '/flight-planner', '/lodging-planner'];
+    const isPaywalled = paywalledPrefixes.some((p) => pathname === p || pathname.startsWith(p + '/'));
+    if (isPaywalled) {
+      const redirectUrl = new URL('/memberships', req.url);
+      redirectUrl.searchParams.set('from', 'planner');
+      redirectUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+
+      // If no user, send to memberships page (public checkout) instead of login
+      if (!user) {
+        return NextResponse.redirect(redirectUrl);
+      }
+
+      // If user exists but not an active member, redirect to memberships hero
+      // so they can purchase or upgrade.
+      try {
+        const active = await isActiveMember(supabase, user.id);
+        if (!active) {
+          const upgradeUrl = new URL('/memberships', req.url);
+          upgradeUrl.searchParams.set('from', 'planner');
+          upgradeUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+          return NextResponse.redirect(upgradeUrl);
+        }
+      } catch {
+        // If membership check fails, be conservative and send to memberships.
+        const upgradeUrl = new URL('/memberships', req.url);
+        upgradeUrl.searchParams.set('from', 'planner');
+        upgradeUrl.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+        return NextResponse.redirect(upgradeUrl);
+      }
+    }
+  }
+
+  if (pathname.startsWith('/admin')) {
+    // Allow public admin auth pages to render without being redirected
+    const publicAdminPages = ['/admin/login', '/admin/forgot-password', '/admin/reset-password'];
+    if (publicAdminPages.some((p) => pathname === p || pathname.startsWith(p))) {
+      return res;
+    }
+    const email = typeof user?.email === 'string' ? user.email.toLowerCase() : null;
+    if (!email || (adminEmails.length > 0 && !adminEmails.includes(email))) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
+  }
+
+  // Optional onboarding gate (disabled by default). When enabled, if a user is authenticated
+  // but has not completed onboarding/profile, gently route them to onboarding and then back.
+  const gateEnabled = process.env.NEXT_PUBLIC_ENABLE_ONBOARDING_GATE === 'true';
+  if (gateEnabled && user?.id && supabase) {
+    const cookieOnboarded = req.cookies.get('wc26-onboarded')?.value === 'true';
+    const inOnboarding = pathname.startsWith('/onboarding');
+    const isLogin = pathname.startsWith('/login');
+    const isApi = pathname.startsWith('/api');
+    const isStaticAsset = pathname.includes('.');
+    
+    // Skip onboarding redirect for API routes, static assets, login, and onboarding itself
+    if (!cookieOnboarded && !inOnboarding && !isLogin && !isApi && !isStaticAsset) {
+      try {
+        // Check if user has completed profile - if not, redirect to onboarding
+        const { data: prof } = await supabase
+          .from('user_profile')
+          .select('user_id')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        if (!prof) {
+          // Check if they're an active member to determine onboarding source
+          const active = await isActiveMember(supabase, user.id);
+          const url = new URL('/onboarding', req.url);
+          url.searchParams.set('from', active ? 'membership' : 'signup');
+          url.searchParams.set('redirect', pathname + (req.nextUrl.search || ''));
+          return NextResponse.redirect(url);
+        }
+      } catch {
+        // If profile table missing, do nothing.
+      }
+    }
+  }
+
+  console.log(
+    '[Middleware]',
+    JSON.stringify({
+      path: req.nextUrl.pathname,
+      hasAuthCookie: !!req.cookies.get('sb-access-token'),
+      user: user ? user.email || user.id : null,
+      cookies: req.cookies.getAll().map(c => c.name),
+    })
+  );
+
+  return res;
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
-}
-//added
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
+};

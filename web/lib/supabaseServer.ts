@@ -1,53 +1,55 @@
-import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
-import { createClient as createSupabaseAdminClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-/**
- * Cookie‑aware Supabase client for authenticated user requests
- */
-export async function createServerClientInstance() {
-  // Resolve cookie store (handles runtimes where cookies() is async)
-  const cookieStore = (await cookies()) as any;
-
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      get(name: string) {
-        return cookieStore.get(name)?.value;
-      },
-      set(name: string, value: string, options: any) {
-        try {
-          // Ensure path is set for consistency
-          cookieStore.set({ name, value, ...(options ?? {}), path: '/' });
-        } catch {
-          /* ignore read-only cookie errors */
-        }
-      },
-      remove(name: string, options: any) {
-        try {
-          cookieStore.set({ name, value: '', maxAge: 0, ...(options ?? {}), path: '/' });
-        } catch {
-          /* ignore */
-        }
-      },
-    },
-  });
+function normalizeToHttps(u: string): string {
+  if (!u) return '';
+  try {
+    const parsed = new URL(u);
+    if (parsed.protocol !== 'https:') parsed.protocol = 'https:';
+    return parsed.toString().replace(/\/$/, '');
+  } catch {
+    return u.replace(/^http:\/\//i, 'https://');
+  }
 }
 
-/**
- * Backward‑compatible alias for older imports
- */
-export const getSupabaseServerClient = createServerClientInstance;
+const url = normalizeToHttps(process.env.NEXT_PUBLIC_SUPABASE_URL || '');
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
 
-/**
- * Admin-only Supabase client (service role key)
- * Never exposed to the client.
- */
-export const supabaseServer = serviceRoleKey
-  ? createSupabaseAdminClient(supabaseUrl, serviceRoleKey, {
+let supabaseServer: any
+let createServerClient: any
+
+if (!serviceKey) {
+  // It's okay in dev, but admin routes will fail without a service role key.
+  // Avoid constructing a Supabase client with an empty key because the
+  // library will throw during module initialization which breaks builds.
+  console.warn('No SUPABASE_SERVICE_ROLE_KEY set - server admin routes will be disabled');
+
+  // Lightweight stub that throws when methods are invoked. This defers
+  // the error to runtime when the admin route actually tries to use it.
+  const throwing = new Proxy(
+    {},
+    {
+      get() {
+        return () => {
+          throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set in the environment; server admin routes are disabled');
+        };
+      },
+    }
+  ) as any;
+
+  supabaseServer = throwing
+  createServerClient = () => {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set in the environment; createServerClient() is disabled')
+  }
+} else {
+  supabaseServer = createClient(url, serviceKey, {
+    auth: { persistSession: false },
+  })
+
+  // Export a function to create a new client instance
+  createServerClient = () =>
+    createClient(url, serviceKey, {
       auth: { persistSession: false },
     })
-  : null;
+}
+
+export { supabaseServer, createServerClient }

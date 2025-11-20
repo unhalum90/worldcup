@@ -14,14 +14,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    if (!supabaseServer) {
-      console.error('SUPABASE_SERVICE_ROLE_KEY is not configured')
-      return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
-    }
-    const svc = supabaseServer
     // Upsert profiles
     for (const u of TEST_USERS) {
-      await svc
+      await supabaseServer
         .from('profiles')
         .upsert({
           user_id: u.user_id,
@@ -82,7 +77,7 @@ export async function POST(req: NextRequest) {
     ]
 
     for (const p of purchases) {
-      await svc.from('purchases').upsert(p, { onConflict: 'ls_order_id' })
+      await supabaseServer.from('purchases').upsert(p, { onConflict: 'ls_order_id' })
     }
 
     // Seed mailing list
@@ -94,17 +89,17 @@ export async function POST(req: NextRequest) {
 
     for (const m of mailing) {
       // Insert if missing
-      await svc.from('mailing_list').insert({ email: m.email, confirmed: m.confirmed, source: m.source, tags: m.tags as any }).select('id').single().then(async (res) => {
+      await supabaseServer.from('mailing_list').insert({ email: m.email, confirmed: m.confirmed, source: m.source, tags: m.tags as any }).select('id').single().then(async (res: any) => {
         if (res.error && !String(res.error.message).includes('duplicate')) {
           // If duplicate or exists, fall through to update
           return
         }
         if (res.error) {
           // try update
-          await svc.from('mailing_list').update({ confirmed: m.confirmed, tags: m.tags as any }).eq('email', m.email)
+          await supabaseServer.from('mailing_list').update({ confirmed: m.confirmed, tags: m.tags as any }).eq('email', m.email)
         } else {
           // inserted ok; also ensure state
-          await svc.from('mailing_list').update({ confirmed: m.confirmed, tags: m.tags as any }).eq('email', m.email)
+          await supabaseServer.from('mailing_list').update({ confirmed: m.confirmed, tags: m.tags as any }).eq('email', m.email)
         }
       })
     }

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { useAuth } from '@/lib/AuthContext'
 
 // Simple pricing page using Tailwind to mimic “cards with features and CTAs”.
 // Copies wording from memberships.md and wires CTAs to env-based or known links.
@@ -13,8 +15,114 @@ const FREE_DALLAS_PDF = 'https://fanzonenetwork.lemonsqueezy.com/buy/fac0321c-ed
 
 export default function MembershipsPage() {
   const t = useTranslations('pricing');
+  const { user } = useAuth();
+  const [isMember, setIsMember] = useState<boolean | null>(null);
+  const [fromParam, setFromParam] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setFromParam(params.get('from'));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setIsMember(false);
+      return;
+    }
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/check-membership');
+        if (!res.ok) {
+          if (!ignore) setIsMember(false);
+          return;
+        }
+        const data = await res.json();
+        if (!ignore) setIsMember(!!data.isMember);
+      } catch {
+        if (!ignore) setIsMember(false);
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, [user]);
+
   // Pass through any query params (e.g., ?code=DISCOUNT or ?inspect=1) to checkout endpoints
   const search = typeof window !== 'undefined' ? window.location.search : ''
+
+  // Membership-focused hero variant when coming from planner/auth flows
+  const showMembershipHero = fromParam === 'auth' || fromParam === 'planner';
+  const MEMBER_ONLY_CHECKOUT_HREF = `${MEMBER_CHECKOUT}${search}`;
+
+  if (showMembershipHero) {
+    const alreadyMember = !!user && isMember === true;
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-50 flex items-center justify-center px-4 py-16">
+        <div className="max-w-3xl w-full bg-slate-900/80 border border-slate-700 rounded-3xl px-8 py-10 shadow-2xl">
+          <div className="mb-6">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+              Unlock Your Ultimate World Cup 2026 Experience
+            </h1>
+            <p className="text-slate-300 text-sm sm:text-base">
+              Become a member to get instant access to our AI-powered travel planning tools for all 16 host cities.
+            </p>
+          </div>
+
+          <div className="border border-slate-700 rounded-2xl p-6 bg-slate-900/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div>
+              <div className="text-sm uppercase tracking-wide text-slate-400 mb-1">Fan Zone+ Membership</div>
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-3xl font-extrabold text-slate-50">$29</span>
+                <span className="text-slate-400 text-sm">one-time payment</span>
+              </div>
+              <ul className="text-sm text-slate-200 space-y-1.5">
+                <li>✓ AI-Powered Trip Builder</li>
+                <li>✓ Flight Planner & Price Tracker</li>
+                <li>✓ Lodging & Accommodation Assistant</li>
+                <li>✓ Personalized multi-city itineraries</li>
+              </ul>
+            </div>
+            <div className="w-full sm:w-auto flex flex-col gap-2">
+              {alreadyMember ? (
+                <>
+                  <div className="text-sm text-emerald-300 font-medium text-center sm:text-left">
+                    You&apos;re already a Fan Zone+ member.
+                  </div>
+                  <Link
+                    href="/planner/trip-builder"
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-semibold transition-colors"
+                  >
+                    Open Trip Builder
+                  </Link>
+                </>
+              ) : (
+                <a
+                  href={MEMBER_ONLY_CHECKOUT_HREF}
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-blue-500 hover:bg-blue-400 text-slate-900 font-semibold transition-colors"
+                >
+                  Get Full Access Now for $29
+                </a>
+              )}
+              <p className="text-xs text-slate-400 text-center sm:text-left">
+                One payment covers your entire 2026 planning. No recurring subscription.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 text-xs text-slate-500 text-center sm:text-left">
+            Looking for city PDFs only?{' '}
+            <Link href="/guides" className="underline underline-offset-2">
+              Browse city guides
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <header className="py-12 text-center">

@@ -12,38 +12,50 @@ ALTER TABLE profiles
   ADD COLUMN IF NOT EXISTS created_at timestamptz DEFAULT now(),
   ADD COLUMN IF NOT EXISTS updated_at timestamptz DEFAULT now();
 
--- Backfill user_id with primary key if the table was created with a different column name
+-- Backfill user_id with the existing `id` column if present
 DO $$
+DECLARE has_id boolean;
 BEGIN
-  IF EXISTS (
+  SELECT EXISTS (
     SELECT 1
     FROM information_schema.columns
     WHERE table_schema = 'public'
       AND table_name = 'profiles'
       AND column_name = 'id'
-  ) THEN
-    UPDATE profiles SET user_id = COALESCE(user_id, (profiles).id)
-    WHERE user_id IS NULL;
+  ) INTO has_id;
+
+  IF has_id THEN
+    EXECUTE 'UPDATE profiles SET user_id = COALESCE(user_id, id) WHERE user_id IS NULL';
   END IF;
-EXCEPTION WHEN undefined_column THEN
-  -- ignore
 END $$;
 
--- Make user_id the primary key if not already
+-- Ensure profiles has a stable unique identifier without breaking existing FKs
 DO $$
+DECLARE pk_on_user_id boolean;
+DECLARE has_pk boolean;
 BEGIN
-  -- Drop any existing primary key named profiles_pkey and re-create on user_id
-  IF EXISTS (
-    SELECT 1 FROM pg_constraint
-    WHERE conrelid = 'public.profiles'::regclass AND contype = 'p'
-  ) THEN
-    ALTER TABLE profiles DROP CONSTRAINT IF EXISTS profiles_pkey;
-  END IF;
-  -- If user_id has nulls, leave as-is; otherwise set PK
-  IF NOT EXISTS (
-    SELECT 1 FROM profiles WHERE user_id IS NULL
-  ) THEN
+  SELECT EXISTS (
+    SELECT 1 FROM pg_constraint c
+    WHERE c.conrelid = 'public.profiles'::regclass AND c.contype = 'p'
+  ) INTO has_pk;
+
+  -- Detect if current PK already includes user_id
+  SELECT EXISTS (
+    SELECT 1
+    FROM pg_constraint c
+    JOIN unnest(c.conkey) WITH ORDINALITY AS cols(attnum, ord) ON TRUE
+    JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = cols.attnum
+    WHERE c.conrelid = 'public.profiles'::regclass
+      AND c.contype = 'p'
+      AND a.attname = 'user_id'
+  ) INTO pk_on_user_id;
+
+  IF NOT has_pk THEN
+    -- No PK yet; safe to add on user_id
     ALTER TABLE profiles ADD CONSTRAINT profiles_pkey PRIMARY KEY (user_id);
+  ELSIF NOT pk_on_user_id THEN
+    -- PK exists on a different column; do NOT drop (other FKs may depend). Ensure user_id is unique for upserts.
+    CREATE UNIQUE INDEX IF NOT EXISTS profiles_user_id_unique ON profiles(user_id);
   END IF;
 END $$;
 
@@ -99,4 +111,3 @@ CREATE TRIGGER on_auth_user_created
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 COMMENT ON FUNCTION public.handle_new_user IS 'Create or sync public.profiles row when a new auth user is created.';
-

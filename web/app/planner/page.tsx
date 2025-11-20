@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
+import AuthModal from '@/components/AuthModal';
 
 type PhaseKey = 'tripBuilder' | 'flightPlanner' | 'lodgingPlanner' | 'whileThere';
 
@@ -18,8 +20,9 @@ interface Phase {
 
 export default function PlannerPage() {
   const t = useTranslations('planner.hub');
+  const { user } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const { profile } = useAuth();
+  const [authRedirect, setAuthRedirect] = useState<string | undefined>(undefined);
   // Preview video removed in favor of live demo page (/trip_builder_demo)
 
   // Auth is no longer required to access the planner hub.
@@ -61,8 +64,15 @@ export default function PlannerPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
-      {/* Auth Modal removed for public access */}
-  {/* Preview video removed; use the demo page instead */}
+      {/* Membership-specific magic link modal */}
+      {showAuthModal && (
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          redirectTo={authRedirect}
+        />
+      )}
+      {/* Preview video removed; use the demo page instead */}
       
       {/* Hero Section */}
       <section className="bg-white border-b border-gray-200">
@@ -108,7 +118,15 @@ export default function PlannerPage() {
       <section id="phases-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {phases.map((phase) => (
-            <PhaseCard key={phase.id} phase={phase} userProfile={profile} />
+            <PhaseCard
+              key={phase.id}
+              phase={phase}
+              user={user}
+              onRequireAuth={(redirectPath) => {
+                setAuthRedirect(redirectPath);
+                setShowAuthModal(true);
+              }}
+            />
           ))}
         </div>
       </section>
@@ -148,16 +166,21 @@ export default function PlannerPage() {
   );
 }
 
-function PhaseCard({ phase, userProfile }: { phase: Phase; userProfile: any | null }) {
+function PhaseCard({
+  phase,
+  user,
+  onRequireAuth,
+}: {
+  phase: Phase;
+  user: any;
+  onRequireAuth: (redirectPath: string) => void;
+}) {
   const t = useTranslations('planner.hub');
   const phaseT = useTranslations(`planner.hub.phases.${phase.key}`);
+  const router = useRouter();
   const isLive = phase.status === 'live';
   const isMay2026 = phase.status === 'may-2026';
   const isTripBuilder = phase.key === 'tripBuilder';
-  
-  // Determine membership status
-  const isMember = userProfile?.is_member === true;
-  
   const statusBadgeText = isMay2026 ? t('statuses.may2026Badge') : t('statuses.comingSoonBadge');
   const phaseTitle = phaseT('title');
   const phaseDescription = phaseT('description');
@@ -214,13 +237,21 @@ function PhaseCard({ phase, userProfile }: { phase: Phase; userProfile: any | nu
               ))}
             </div>
             <div className="mt-4 flex flex-col sm:flex-row gap-3">
-              <Link
-                href={phase.href}
-                prefetch={false}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-colors bg-blue-600 text-white hover:bg-blue-700"
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (user) {
+                    router.push(phase.href);
+                  } else {
+                    onRequireAuth('/memberships?from=auth&redirect=/planner/trip-builder');
+                  }
+                }}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors"
               >
                 {phaseT('howItWorks.cta.open')}
-              </Link>
+              </button>
               <Link
                 href="/trip_builder_demo"
                 onClick={(e) => { e.stopPropagation(); }}
@@ -263,7 +294,7 @@ function PhaseCard({ phase, userProfile }: { phase: Phase; userProfile: any | nu
           </div>
         ) : !isTripBuilder && isMay2026 ? (
           <Link
-            href={`/memberships?from=planner&redirect=${encodeURIComponent('/planner')}`}
+            href={phase.href || '/planner'}
             className="w-full inline-flex items-center justify-center bg-gray-100 text-gray-700 font-semibold py-3 rounded-lg hover:bg-gray-200 transition-colors"
           >
             {t('statuses.may2026Button')}
@@ -281,10 +312,7 @@ function PhaseCard({ phase, userProfile }: { phase: Phase; userProfile: any | nu
 
   if (isLive && !isTripBuilder) {
     return (
-      <Link 
-        href={phase.href}
-        className={cardClassName}
-      >
+      <Link href={phase.href} className={cardClassName}>
         {cardContent}
       </Link>
     );

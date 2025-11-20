@@ -111,11 +111,11 @@
         "scope": "The 2026 World Cup spans <strong>16 cities, 3 countries, and 2 million square miles</strong>. We spent 200+ hours mapping every stadium, transit line, and neighborhood quirk.",
         "pitch": "Get personalized flights, lodging, and day-by-day plans in <strong>60 seconds</strong>—plans that would take you <strong>20+ hours</strong> to research."
       },
-      "ctaPrimary": "Test Trip Planner",
+  "ctaPrimary": "Test Trip Builder",
       "ctaSecondary": "Watch How It Works (90 sec)",
       "ctaSecondaryAria": "Watch a 90 second demo video",
       "videoFallback": "Your browser doesn't support video playback.",
-      "ctaSupplement": "No credit card required",
+  "ctaSupplement": "Free during beta",
       "stats": {
         "fans": "<strong>500+ fans</strong> from <strong>15+ countries</strong>",
         "languagesLabel": "Available in 5 languages:",
@@ -141,7 +141,7 @@
         "line2": "Planned in 5 Minutes Flat."
       },
       "subtitle": "Research‑backed, AI‑fueled trip planner + logistics guides for all 16 host cities",
-      "ctaPlan": "Test Trip Planner",
+      "ctaPlan": "Test Trip Builder",
       "ctaWatch": "Watch How It Works (90 sec)",
       "ctaWatchAria": "Watch how it works (90 sec)"
     },
@@ -836,18 +836,18 @@
         "placeholder": "you@example.com"
       },
       "actions": {
-        "submit": "Sign Up to Continue",
+        "submit": "Send magic link",
         "sending": "Sending link…"
       },
       "success": {
-        "primary": "Check your email for the magic link to finish setting up your account.",
-        "existing": "Already registered! Check your inbox for the latest magic link to continue."
+        "primary": "Check your email! We sent you a magic link to sign in.",
+        "existing": "This email is already registered — check your inbox for a magic link to sign in."
       },
       "errors": {
         "generic": "Unable to send magic link. Please try again."
       },
       "footer": {
-        "note": "Uses passwordless email. Look for the magic link in your inbox or spam folder."
+        "note": "Works for new and existing accounts. Check your spam folder if you don't see the email."
       }
     },
     "verify": {
@@ -1040,85 +1040,75 @@
       "saving": "Saving…"
     }
   },
-  "Paywall": {
-    "title": "Unlock Your Ultimate World Cup 2026 Experience",
-    "description": "Become a member to get instant access to our powerful AI-powered travel planning tools.",
-    "feature1": "AI-Powered Trip Builder",
-    "feature2": "Flight Planner & Price Tracker",
-    "feature3": "Lodging & Accommodation Assistant",
-    "feature4": "Personalized Itineraries",
-    "cta": "Get Full Access Now for $29",
-    "loading": "Redirecting to checkout..."
-  },
   "pricing": {
-    "title": "Upgrade your plan for more power",
-    "subtitle": "PDFs available to everyone • Trip Planner for members",
-    "cards": {
-      "free": {
-        "title": "Free Fan Access",
-        "cadence": "/ month",
-        "cta": "Browse free content",
-        "features": [
-          "Access to all city group pages",
-          "Free newsletter subscription",
-          "Join Fan Teams & Communities",
-          "Read select ‘Best Of’ guides",
-          "1 free city PDF sample (Dallas)",
-          "No AI Travel Planner access",
-          "No custom itineraries"
-        ]
-      },
-      "matchPrep": {
-        "title": "Match Prep Pass",
-        "cadence": " / city PDF",
-        "subPriceNote": "$9.99 / group bundle",
-        "badge": "Best for single-city trips",
-        "cta": "Browse city PDFs",
-        "extraCTA": "Free Dallas PDF",
-        "features": [
-          "Choose any official World Cup City Guide",
-          "Printable PDF with lodging zones",
-          "Transport and match-day tips",
-          "Local dining and nightlife picks",
-          "Hidden gems and safety info",
-          "Lifetime download access",
-          "Free newsletter + Fan Team access",
-          "No AI Trip Planner"
-        ]
-      },
-      "bundle4": {
-        "title": "4‑City Bundle",
-        "cadence": " / 4‑city bundle",
-        "subPriceNote": "⭐ MOST POPULAR — save $6 vs four singles",
-        "badge": "Most popular",
-        "cta": "Get 4‑City Bundle",
-        "features": [
-          "Choose any 4 host city PDFs",
-          "Best for fans following one team through group stage",
-          "Same content as single guides (zones, transport, match‑day)",
-          "Lifetime download access"
-        ]
-      },
-      "membership": {
-        "title": "Fan Zone+ Membership",
-        "cadence": " one-time",
-        "subPriceNote": "Price increases to $39 after Dec 4, 2025",
-        "badge": "Full access",
-        "cta": "Get Fan Zone+ Membership",
-        "secondaryCTA": "Already a member? Sign in",
-        "features": [
-          "Unlimited AI Travel Planner access",
-          "Generate custom itineraries for all host cities",
-          "Save and share itineraries across devices",
-          "Access all city group chats & Fan Teams",
-          "Download city guides at $2 each",
-          "Early access to Game‑Day / City Experience Planner (May 2026)"
-        ]
-      }
+  "title": "Upgrade your plan for more power",
+  "subtitle": "PDFs available to everyone • Trip Planner for members",
+  "cards": {
+    "free": {
+      "title": "Free Fan Access",
+      "cadence": "/ month",
+      "cta": "Browse free content",
+      "features": [
+        "Access to all city group pages",
+        "Free newsletter subscription",
+        "Join Fan Teams & Communities",
+        "Read select ‘Best Of’ guides",
+        "1 free city PDF sample (Dallas)",
+        "No AI Travel Planner access",
+        "No custom itineraries"
+      ]
     },
-    "footer": {
-      "contactPrefix": "Team plans or bulk bundles?",
-      "contactLink": "Contact us"
+    "matchPrep": {
+      "title": "Match Prep Pass",
+      "cadence": " / city PDF",
+      "subPriceNote": "$9.99 / group bundle",
+      "badge": "Best for single-city trips",
+      "cta": "Browse city PDFs",
+      "extraCTA": "Free Dallas PDF",
+      "features": [
+        "Choose any official World Cup City Guide",
+        "Printable PDF with lodging zones",
+        "Transport and match-day tips",
+        "Local dining and nightlife picks",
+        "Hidden gems and safety info",
+        "Lifetime download access",
+        "Free newsletter + Fan Team access",
+        "No AI Trip Planner"
+      ]
+    },
+    "bundle4": {
+      "title": "4‑City Bundle",
+      "cadence": " / 4‑city bundle",
+      "subPriceNote": "⭐ MOST POPULAR — save $6 vs four singles",
+      "badge": "Most popular",
+      "cta": "Get 4‑City Bundle",
+      "features": [
+        "Choose any 4 host city PDFs",
+        "Best for fans following one team through group stage",
+        "Same content as single guides (zones, transport, match‑day)",
+        "Lifetime download access"
+      ]
+    },
+    "membership": {
+      "title": "Fan Zone+ Membership",
+      "cadence": " one-time",
+      "subPriceNote": "Price increases to $39 after Dec 4, 2025",
+      "badge": "Full access",
+      "cta": "Get Fan Zone+ Membership",
+      "secondaryCTA": "Already a member? Sign in",
+      "features": [
+        "Unlimited AI Travel Planner access",
+        "Generate custom itineraries for all host cities",
+        "Save and share itineraries across devices",
+        "Access all city group chats & Fan Teams",
+        "Download city guides at $2 each",
+        "Early access to Game‑Day / City Experience Planner (May 2026)"
+      ]
     }
+  },
+  "footer": {
+    "contactPrefix": "Team plans or bulk bundles?",
+    "contactLink": "Contact us"
   }
+}
 }

@@ -106,11 +106,22 @@ export async function GET(req: Request) {
 
   const session = data.session;
   const userId = session.user?.id;
-  let destination = resolveRedirectPath(redirectParam);
-  const isPaywallRedirect = destination.startsWith('/membership/paywall');
+  if (userId) {
+    try {
+      await supabase.rpc('attach_purchases_to_user', { p_user_id: userId });
+      console.log('[CB] attach_purchases_to_user invoked', { userId });
+    } catch (e) {
+      console.warn('[CB] attach_purchases_to_user failed', String(e));
+    }
+  }
 
-  // Only override destination to onboarding when not explicitly heading to the paywall
-  if (userId && !isPaywallRedirect) {
+  let destination = resolveRedirectPath(redirectParam);
+  const isMembershipFlow =
+    destination.startsWith('/membership/paywall') ||
+    destination.startsWith('/memberships');
+
+  // Only override destination to onboarding when not explicitly heading to a membership flow
+  if (userId && !isMembershipFlow) {
     try {
       const { data: profile, error: profileError } = await supabase
         .from("user_profile")

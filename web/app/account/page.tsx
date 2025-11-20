@@ -3,6 +3,7 @@ import { getSupabaseServerClient } from '@/lib/supabaseServer';
 import ProfileCard from '@/components/account/ProfileCard'
 import SavedTripsCard from '@/components/account/SavedTripsCard'
 import PurchasesTable from '@/components/account/PurchasesTable'
+import { isActiveMember } from '@/lib/membership'
 
 export default async function AccountPage() {
   const supabase = await getSupabaseServerClient();
@@ -41,13 +42,29 @@ export default async function AccountPage() {
     .select('id, product_id, product_name, price, currency, status, purchase_date')
     .order('purchase_date', { ascending: false })
 
+  // Derive effective membership for display using the same logic as gating.
+  let displayProfile: any = profile ?? null
+  try {
+    const active = await isActiveMember(supabase, user.id)
+    if (active) {
+      displayProfile = {
+        ...(profile ?? { user_id: user.id, email: user.email }),
+        account_level: 'member',
+        subscription_tier: (profile as any)?.subscription_tier || 'premium',
+        subscription_status: (profile as any)?.subscription_status || 'active',
+      }
+    }
+  } catch {
+    // If membership check fails, fall back to raw profile data.
+  }
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="text-2xl font-semibold mb-6">My Account</h1>
 
       <div className="space-y-6">
         <div className="rounded-lg border bg-white/5 p-4">
-          <ProfileCard profile={profile} user={user} />
+          <ProfileCard profile={displayProfile} user={user} />
         </div>
         <SavedTripsCard />
         <div className="rounded-lg border bg-white/5 p-4">

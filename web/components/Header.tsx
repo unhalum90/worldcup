@@ -29,6 +29,7 @@ export default function Header() {
   }, []);
 
   const navLinks = [
+    { href: '/tournament', label: 'Tournament' },
     { href: '/teams', label: t('teams') },
     { href: '/groups', label: t('groups') },
     { href: '/guides', label: t('guides') },
@@ -89,21 +90,36 @@ export default function Header() {
               </Link>
             ))}
             
+            <a
+              href="https://wc26fanzone.beehiiv.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-sm font-bold hover:underline underline-offset-4 opacity-100 hover:opacity-90 transition-opacity ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow'}`}
+              style={{ 
+                color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined
+              }}
+            >
+              {t('newsletter')}
+            </a>
+            
             <LanguageSwitcher />
 
             {/* Auth area (desktop) */}
             {!loading && !user && (
-              <button
-                onClick={() => setShowAuth(true)}
-                className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow text-gray-900 border-gray-900 bg-white/80'}`}
-                style={{ 
-                  color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
-                  borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
-                  backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"
-                }}
-              >
-                {t('signIn')}
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowAuth(true)}
+                  className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow text-gray-900 border-gray-900 bg-white/80'}`}
+                  style={{ 
+                    color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
+                    borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                    backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"
+                  }}
+                >
+                  {t('signIn')}
+                </button>
+                {/* membership CTA removed per design request */}
+              </div>
             )}
 
             {!loading && user && (
@@ -124,15 +140,15 @@ export default function Header() {
                     {user.email?.split('@')[0] || 'Account'}
                   </span>
                 </Link>
-                <Link href="/logout" 
-                      className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow text-gray-900 border-gray-900 bg-white/80'}`}
-                      style={{ 
-                        color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
-                        borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
-                        backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"
-                      }}>
+                <button onClick={signOut} 
+                        className={`px-3 py-2 rounded-lg border text-sm font-bold opacity-100 hover:opacity-90 transition-all hover:shadow-sm ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow text-gray-900 border-gray-900 bg-white/80'}`}
+                        style={{ 
+                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined,
+                          borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                          backgroundColor: profile?.favorite_team ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"
+                        }}>
                   Sign out
-                </Link>
+                </button>
               </div>
             )}
           </nav>
@@ -181,25 +197,36 @@ export default function Header() {
                 </Link>
               ))}
               
+              <button
+                onClick={() => { setIsMenuOpen(false); window.dispatchEvent(new Event('fz:open-subscribe')); }}
+                className={`text-sm font-medium py-2 px-3 rounded-lg hover:opacity-80 text-left transition-opacity ${!profile?.favorite_team ? 'text-gray-900' : ''}`}
+                style={{ color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827" }}
+              >
+                {t('newsletter')}
+              </button>
+              
               <div className="py-2 px-3">
                 <LanguageSwitcher />
               </div>
 
               {/* Auth area (mobile) */}
               {!loading && !user && (
-                <button
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setShowAuth(true);
-                  }}
-                  className={`px-4 py-3 rounded-lg border font-semibold hover:opacity-80 text-center transition-opacity ${!profile?.favorite_team ? 'text-gray-900 border-gray-900' : ''}`}
-                  style={{ 
-                    color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
-                    borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827"
-                  }}
-                >
-                  {t('signIn')}
-                </button>
+                <>
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      setShowAuth(true);
+                    }}
+                    className={`px-4 py-3 rounded-lg border font-semibold hover:opacity-80 text-center transition-opacity ${!profile?.favorite_team ? 'text-gray-900 border-gray-900' : ''}`}
+                    style={{ 
+                      color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                      borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827"
+                    }}
+                  >
+                    {t('signIn')}
+                  </button>
+                  {/* membership CTA removed from mobile menu */}
+                </>
               )}
 
               {!loading && user && (
@@ -217,14 +244,14 @@ export default function Header() {
                       {user.email || 'Account'}
                     </span>
                   </Link>
-                  <Link href="/logout" onClick={() => setIsMenuOpen(false)}
-                        className={`px-4 py-2 rounded-lg border text-sm hover:opacity-80 transition-opacity ${!profile?.favorite_team ? 'text-gray-900 border-gray-900' : ''}`}
-                        style={{ 
-                          color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
-                          borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827"
-                        }}>
+                  <button onClick={async () => { setIsMenuOpen(false); await signOut(); }} 
+                          className={`px-4 py-2 rounded-lg border text-sm hover:opacity-80 transition-opacity ${!profile?.favorite_team ? 'text-gray-900 border-gray-900' : ''}`}
+                          style={{ 
+                            color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827",
+                            borderColor: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827"
+                          }}>
                     Sign out
-                  </Link>
+                  </button>
                 </div>
               )}
             </nav>
@@ -232,6 +259,8 @@ export default function Header() {
         )}
       </header>
 
+      {/* Sticky CTA Button on Scroll */}
+      {/* sticky CTA removed per design request */}
       {showAuth && (
         <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} redirectTo="/account" />
       )}
