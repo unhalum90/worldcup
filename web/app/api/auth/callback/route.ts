@@ -96,8 +96,11 @@ export async function GET(req: Request) {
   }
 
   let destination = resolveRedirectPath(redirectParam);
+  const isMembershipFlow =
+    destination.startsWith('/membership/paywall') ||
+    destination.startsWith('/memberships');
 
-  if (userId) {
+  if (userId && !isMembershipFlow) {
     try {
       const { data: profile, error: profileError } = await supabase
         .from("user_profile")
