@@ -96,8 +96,8 @@ export default async function TournamentHub() {
       </div>
       {/* Round title under hero */}
       <div className="text-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold">Round 1 — Best First Impression</h2>
-        <p className="text-gray-600">Nov 18–21 · Vote in all eight opening matchups. Winners advance to Round 2.</p>
+        <h2 className="text-2xl md:text-3xl font-bold">Round 2 — Best Match Day Experience</h2>
+        <p className="text-gray-600">Nov 22–24 · Vote in all four quarterfinal matchups. Voting ends Nov 24.</p>
       </div>
 
       <div className="flex items-center justify-between mb-4">

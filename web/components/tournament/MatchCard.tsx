@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import type { TournamentMatch, CityMinimal } from '@/types/tournament'
 import { countryTextToCode } from '@/lib/flags'
-import { MatchCountdown } from './MatchCountdown'
 
 export interface MatchCardProps {
   match: TournamentMatch & { city_a?: CityMinimal; city_b?: CityMinimal; pairHint?: string }
@@ -82,9 +81,7 @@ export function MatchCard({ match, voted }: MatchCardProps) {
           <span className="rounded-full px-2 py-0.5 border bg-gray-50 text-[11px]">{match.status}</span>
         </div>
 
-        {match.voting_closes_at && (
-          <div className="text-xs text-gray-500 mt-1">Closes in <MatchCountdown closesAt={match.voting_closes_at} /></div>
-        )}
+        <div className="text-xs text-gray-500 mt-1">Voting ends Nov 24</div>
 
         {match.status === 'closed' && match.winner_city_id && (
           <div className="mt-2 text-center text-green-700 font-semibold">
