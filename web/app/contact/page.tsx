@@ -28,11 +28,11 @@ export default function ContactPage() {
             <p className="text-gray-600 text-sm mb-4">
               Questions about our platform, features, or how to use the site
             </p>
-            <a 
-              href="mailto:info@wc26fanzone.com" 
+            <a
+              href="#contact-form"
               className="text-blue-600 hover:underline font-semibold text-sm"
             >
-              info@wc26fanzone.com
+              Use contact form
             </a>
           </div>
 
@@ -43,11 +43,11 @@ export default function ContactPage() {
             <p className="text-gray-600 text-sm mb-4">
               Having technical issues or need help with your account?
             </p>
-            <a 
-              href="mailto:support@wc26fanzone.com" 
+            <a
+              href="#contact-form"
               className="text-blue-600 hover:underline font-semibold text-sm"
             >
-              support@wc26fanzone.com
+              Get support
             </a>
           </div>
 
@@ -58,11 +58,11 @@ export default function ContactPage() {
             <p className="text-gray-600 text-sm mb-4">
               Interested in collaborating or business opportunities?
             </p>
-            <a 
-              href="mailto:partnerships@wc26fanzone.com" 
+            <a
+              href="#contact-form"
               className="text-blue-600 hover:underline font-semibold text-sm"
             >
-              partnerships@wc26fanzone.com
+              Share details
             </a>
           </div>
 
@@ -73,17 +73,17 @@ export default function ContactPage() {
             <p className="text-gray-600 text-sm mb-4">
               Press, journalists, or content creators
             </p>
-            <a 
-              href="mailto:media@wc26fanzone.com" 
+            <a
+              href="#contact-form"
               className="text-blue-600 hover:underline font-semibold text-sm"
             >
-              media@wc26fanzone.com
+              Reach out
             </a>
           </div>
         </div>
 
         {/* Contact Form */}
-        <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+        <div id="contact-form" className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
           <h2 className="text-3xl font-bold mb-6">Send Us a Message</h2>
           
           <form className="space-y-6">

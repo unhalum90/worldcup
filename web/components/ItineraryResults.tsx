@@ -262,12 +262,9 @@ export default function ItineraryResults({
         <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} redirectTo="/planner/trip-builder" />
       )}
       {/* Branded header for share/print */}
-      <div className="flex items-center justify-between text-sm text-gray-500 print:text-gray-700">
-        <div className="flex items-center gap-2">
-          <span className="text-lg">⚽</span>
-          <span className="font-semibold text-gray-700">WC26 Fan Zone</span>
-        </div>
-        <a href="https://wc26fanzone.com" className="hover:underline" target="_blank" rel="noopener noreferrer">wc26fanzone.com</a>
+      <div className="flex items-center gap-2 text-sm text-gray-500 print:text-gray-700">
+        <span className="text-lg">⚽</span>
+        <span className="font-semibold text-gray-700">WC26 Fan Zone</span>
       </div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-blue-100 bg-blue-50/60 px-5 py-4 print:hidden">
         <div>

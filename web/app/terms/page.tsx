@@ -107,11 +107,8 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold mb-4">11. Contact Information</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              If you have questions about these Terms of Service, please contact us at:
-            </p>
-            <p className="text-gray-700 leading-relaxed">
-              Email: legal@wc26fanzone.com<br />
-              Website: <a href="/contact" className="text-blue-600 hover:underline">Contact Form</a>
+              If you have questions about these Terms of Service, please contact us through our{' '}
+              <a href="/contact" className="text-blue-600 hover:underline">contact form</a>.
             </p>
           </section>
         </div>

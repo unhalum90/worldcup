@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 const MAILERLITE_KEY = process.env.MAILERLITE_API_KEY;
 const CONTACT_FORWARD_EMAIL =
   process.env.CONTACT_FORWARD_EMAIL || process.env.CONTACT_FORM_FORWARD_EMAIL;
-const CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'info@wc26fanzone.com';
+const CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'no-reply@example.com';
 const CONTACT_FROM_NAME = process.env.CONTACT_FROM_NAME || 'WC26 Fan Zone';
 
 function escapeHtml(value: string) {
