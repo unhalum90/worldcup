@@ -30,6 +30,11 @@ export async function middleware(req: NextRequest) {
     request: { headers: requestHeaders },
   });
 
+  // Hard-disable tournament pages/APIs for end users; keep data intact.
+  if (req.nextUrl.pathname.startsWith('/tournament') || req.nextUrl.pathname.startsWith('/api/tournament')) {
+    return NextResponse.redirect(new URL('/404', req.url));
+  }
+
   // Ensure anonymous voter cookie for tournament flows (no-login voting UX)
   try {
     const isTournament = req.nextUrl.pathname.startsWith('/tournament');
