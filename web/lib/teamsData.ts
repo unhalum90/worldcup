@@ -376,6 +376,76 @@ export const teams: Team[] = [
     ]
   },
 
+  {
+    slug: 'curacao',
+    name: 'Curaçao',
+    confederation: 'CONCACAF',
+    isProvisional: false,
+    fifaRanking: 85,
+    appearances: 0,
+    bestFinish: 'Debut',
+    primaryColor: '#0033A0',
+    secondaryColor: '#FFD100',
+    flagEmoji: '🇨🇼',
+    coach: 'Dick Advocaat',
+    nickname: 'The Blue Legion',
+    starPlayers: [
+      { name: 'Leandro Bacuna', position: 'Midfielder', club: 'Watford', number: 8, age: 33 },
+      { name: 'Cuco Martina', position: 'Defender', club: 'NAC Breda', number: 2, age: 34 },
+      { name: 'Kenji Gorré', position: 'Winger', club: 'Zulte Waregem', number: 11, age: 30 }
+    ],
+    funFacts: [
+      'Curaçao is the smallest nation by population to reach the 2026 finals.',
+      'Many squad members developed in the Dutch system thanks to historic ties.'
+    ]
+  },
+  {
+    slug: 'haiti',
+    name: 'Haiti',
+    confederation: 'CONCACAF',
+    isProvisional: false,
+    fifaRanking: 90,
+    appearances: 2,
+    bestFinish: 'Group Stage (1974)',
+    primaryColor: '#00209F',
+    secondaryColor: '#D21034',
+    flagEmoji: '🇭🇹',
+    coach: 'Jean-Jacques Pierre',
+    nickname: 'Les Grenadiers',
+    starPlayers: [
+      { name: 'Duckens Nazon', position: 'Forward', club: 'CSKA Sofia', number: 9, age: 30 },
+      { name: 'Frantzdy Pierrot', position: 'Forward', club: 'Maccabi Haifa', number: 20, age: 29 },
+      { name: 'Derrick Étienne Jr.', position: 'Winger', club: 'FC Cincinnati', number: 7, age: 28 }
+    ],
+    funFacts: [
+      'Haiti returns to the World Cup for the first time since 1974.',
+      'The team is powered by a passionate diaspora fanbase across North America.'
+    ]
+  },
+  {
+    slug: 'panama',
+    name: 'Panama',
+    confederation: 'CONCACAF',
+    isProvisional: false,
+    fifaRanking: 45,
+    appearances: 2,
+    bestFinish: 'Group Stage (2018)',
+    primaryColor: '#D21034',
+    secondaryColor: '#002B7F',
+    flagEmoji: '🇵🇦',
+    coach: 'Thomas Christiansen',
+    nickname: 'Los Canaleros',
+    starPlayers: [
+      { name: 'Aníbal Godoy', position: 'Midfielder', club: 'Nashville SC', number: 20, age: 34 },
+      { name: 'Michael Murillo', position: 'Defender', club: 'Olympique Marseille', number: 2, age: 28 },
+      { name: 'Ismael Díaz', position: 'Forward', club: 'Feirense', number: 10, age: 27 }
+    ],
+    funFacts: [
+      'Panama scored its first World Cup goal against England in 2018.',
+      'A national holiday was declared when Panama qualified for its first World Cup.'
+    ]
+  },
+
   // ASIA (AFC) - 8 teams
   {
     slug: 'australia',
@@ -2022,12 +2092,43 @@ export const teams: Team[] = [
     ]
   },
 
+  // EUROPE (UEFA) ADDITIONS
+  {
+    slug: 'scotland',
+    name: 'Scotland',
+    confederation: 'UEFA',
+    isProvisional: false,
+    fifaRanking: 39,
+    appearances: 8,
+    bestFinish: 'Group Stage',
+    primaryColor: '#002F6C',
+    secondaryColor: '#FFD700',
+    flagEmoji: '🏴',
+    coach: 'Steve Clarke',
+    nickname: 'The Tartan Army',
+    starPlayers: [
+      { name: 'Andrew Robertson', position: 'Defender', club: 'Liverpool', number: 3, age: 30 },
+      { name: 'Scott McTominay', position: 'Midfielder', club: 'Manchester United', number: 4, age: 27 },
+      { name: 'John McGinn', position: 'Midfielder', club: 'Aston Villa', number: 7, age: 29 }
+    ],
+    historicalTimeline: [
+      { year: 1872, event: 'Played in the first international match (vs England).', category: 'first_appearance' },
+      { year: 1978, event: 'Qualified for a third straight World Cup (Argentina).', category: 'notable_performance' },
+      { year: 1982, event: 'Unbeaten in the group but eliminated on goal difference.', category: 'notable_performance' },
+      { year: 2024, event: 'Reached back-to-back European Championships under Steve Clarke.', category: 'notable_performance' }
+    ],
+    funFacts: [
+      'Scotland has yet to advance past the World Cup group stage despite eight appearances.',
+      'The Tartan Army is famed for its traveling support and friendly reputation.'
+    ]
+  },
+
   // PROVISIONAL EUROPEAN TEAMS
   {
     slug: 'austria',
     name: 'Austria',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 24,
     appearances: 7,
     bestFinish: 'Third Place (1954)',
@@ -2125,7 +2226,7 @@ export const teams: Team[] = [
     slug: 'belgium',
     name: 'Belgium',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 6,
     appearances: 14,
     bestFinish: 'Third Place (2018)',
@@ -2230,7 +2331,7 @@ export const teams: Team[] = [
     slug: 'croatia',
     name: 'Croatia',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 11,
     appearances: 6,
     bestFinish: 'Runners-up (2018)',
@@ -2412,7 +2513,7 @@ export const teams: Team[] = [
     slug: 'france',
     name: 'France',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 2,
     appearances: 16,
     bestFinish: 'Champions (2x)',
@@ -2522,7 +2623,7 @@ export const teams: Team[] = [
     slug: 'germany',
     name: 'Germany',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 10,
     appearances: 20,
     bestFinish: 'Champions (4x)',
@@ -2632,7 +2733,7 @@ export const teams: Team[] = [
     slug: 'netherlands',
     name: 'Netherlands',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 8,
     appearances: 11,
     bestFinish: 'Runners-up (3x)',
@@ -2737,7 +2838,7 @@ export const teams: Team[] = [
     slug: 'norway',
     name: 'Norway',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 44,
     appearances: 3,
     bestFinish: 'Round of 16 (1998)',
@@ -2903,7 +3004,7 @@ export const teams: Team[] = [
     slug: 'portugal',
     name: 'Portugal',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 7,
     appearances: 8,
     bestFinish: 'Third Place (1966)',
@@ -3008,7 +3109,7 @@ export const teams: Team[] = [
     slug: 'spain',
     name: 'Spain',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 3,
     appearances: 16,
     bestFinish: 'Champions (2010)',
@@ -3118,7 +3219,7 @@ export const teams: Team[] = [
     slug: 'switzerland',
     name: 'Switzerland',
     confederation: 'UEFA',
-    isProvisional: true,
+    isProvisional: false,
     fifaRanking: 17,
     appearances: 12,
     bestFinish: 'Quarter-finals',
