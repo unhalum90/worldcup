@@ -177,7 +177,7 @@ export default function DrawAdminClient({
       {previewMode && (
         <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Preview ({{"{A1}"}} → team names)</h2>
+            <h2 className="text-lg font-semibold">{"Preview ({{A1}} → team names)"}</h2>
             <span className="text-xs text-gray-500">12 groups · live from form state</span>
           </div>
           <div className="mt-4 grid gap-4 text-sm md:grid-cols-3">
@@ -205,3 +205,4 @@ export default function DrawAdminClient({
     </div>
   );
 }
+//ADDED NOTE
