@@ -3,13 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from '@/lib/AuthContext';
 
-/**
- * ExitIntentModal
- * - Shows once per user on desktop when the cursor moves toward the top edge (exit intent)
- * - Uses localStorage flag 'fz_exit_seen' to avoid repeat prompts
- * - Skips on touch devices and very small screens
- * - CTA: "Subscribe Free" linking to Beehiiv (can be replaced with an embedded form)
- */
+// Exit intent promo modal. Shows once on desktop exit intent for non-signed-in users.
 export default function ExitIntentModal() {
   const [open, setOpen] = useState(false);
   const [armed, setArmed] = useState(false);
@@ -70,7 +64,7 @@ export default function ExitIntentModal() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="px-6 py-5 border-b flex items-center justify-between">
-          <h3 className="text-xl font-bold text-gray-900">Join Fan Zone Insider</h3>
+          <h3 className="text-xl font-bold text-gray-900">Draw Friday Sale</h3>
           <button
             className="text-gray-400 hover:text-gray-600"
             aria-label="Close"
@@ -81,20 +75,27 @@ export default function ExitIntentModal() {
         </div>
         <div className="p-6">
           <p className="text-gray-700 mb-4">
-            Our free weekly newsletter for World Cup 2026 fans. Get city updates, travel tips, and early access to new guides as they launch.
+            Lock in your Fan Zone membership before the Draw on Friday, Dec 5. Price increases to $39 on Dec 6. Access trip tools, guides, and member perks at the current rate.
           </p>
 
           <button
-            onClick={() => { setOpen(false); window.dispatchEvent(new Event('fz:open-subscribe')); }}
+            onClick={() => {
+              try {
+                localStorage.setItem('fz_exit_seen', '1');
+              } catch {}
+              setOpen(false);
+              const target = process.env.NEXT_PUBLIC_LS_MEMBER_BUY_URL || '/memberships';
+              window.location.href = target;
+            }}
             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-md w-full"
           >
-            Subscribe Free
+            Lock in membership
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </button>
 
-          <div className="mt-3 text-xs text-gray-500 text-center">No spam. Unsubscribe anytime.</div>
+          <div className="mt-3 text-xs text-gray-500 text-center">Sale ends Dec 5 — price rises to $39 on Dec 6.</div>
         </div>
       </div>
     </div>
