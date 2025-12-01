@@ -150,6 +150,16 @@ export default function AdminLayout({
           </Link>
 
           <Link
+            href="/admin/draw"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-[color:var(--color-primary)]"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 1.79-3 4s1.343 4 3 4 3-1.79 3-4-1.343-4-3-4zm0-4a1 1 0 011 1v1.07a7.002 7.002 0 015.938 5.938H20a1 1 0 110 2h-1.062A7.002 7.002 0 0113 17.93V19a1 1 0 11-2 0v-1.07A7.002 7.002 0 015.062 12H4a1 1 0 110-2h1.062A7.002 7.002 0 0111 6.07V5a1 1 0 011-1z" />
+            </svg>
+            Draw
+          </Link>
+
+          <Link
             href="/admin/keywords"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-[color:var(--color-primary)]"
           >
