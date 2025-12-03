@@ -31,6 +31,7 @@ export default function DraftEditorPage() {
 
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [tagInput, setTagInput] = useState('');
@@ -69,26 +70,33 @@ export default function DraftEditorPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [post]);
 
-  useEffect(() => {
-    if (postId) {
-      fetchPost();
-    }
-  }, [postId]);
-
   async function fetchPost() {
-    try {
-      const { data, error } = await supabase
-        .from('blog_posts')
-        .select('*')
-        .eq('id', postId)
-        .single();
+    if (!postId) return;
+    console.log('[DraftEditor] Fetching post via API route', postId);
+    setLoading(true);
+    setLoadError(null);
 
-      if (error) throw error;
-      setPost(data);
-    } catch (error) {
-      console.error('Error fetching post:', error);
-      alert('Failed to load post');
-      router.push('/admin/drafts');
+    try {
+      const response = await fetch(`/api/admin/drafts/${postId}`, {
+        cache: 'no-store',
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload?.error || `Failed to load post (status ${response.status})`);
+      }
+
+      const payload = await response.json();
+      setPost(payload.data);
+      if (payload?.data?.updated_at) {
+        setLastSaved(new Date(payload.data.updated_at));
+      }
+      console.log('[DraftEditor] Post loaded successfully');
+    } catch (error: any) {
+      console.error('[DraftEditor] Error fetching post:', error);
+      setLoadError(error?.message || 'Failed to load post');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -241,10 +249,44 @@ export default function DraftEditorPage() {
     setPost({ ...post, seo_keywords: post.seo_keywords.filter(k => k !== keyword) });
   }
 
-  if (!post) {
+  if (loadError) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen gap-4">
+        <div className="text-red-600 font-semibold">{loadError}</div>
+        <button
+          onClick={fetchPost}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Retry Loading Post
+        </button>
+        <button
+          onClick={() => router.push('/admin/drafts')}
+          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+        >
+          Back to Drafts
+        </button>
+      </div>
+    );
+  }
+
+  if (loading && !post) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-gray-600">Loading post...</div>
+      </div>
+    );
+  }
+
+  if (!post) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen gap-4">
+        <div className="text-gray-600">Post not found</div>
+        <button
+          onClick={() => router.push('/admin/drafts')}
+          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+        >
+          Back to Drafts
+        </button>
       </div>
     );
   }
