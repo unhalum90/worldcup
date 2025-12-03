@@ -66,6 +66,120 @@ body {
   transition: background 0.6s ease;
 }
 
+/* Blog article typography (applies to markdown-rendered travel guides) */
+.blog-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+  line-height: 1.8;
+  font-size: 1.125rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  color: #1f2937;
+}
+
+.blog-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.blog-content h2 {
+  font-size: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.blog-content h3 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
+}
+
+.blog-content li {
+  margin-bottom: 0.75rem;
+}
+
+.blog-content blockquote {
+  background: #f3f4f6;
+  border-left: 4px solid #3b82f6;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 0.5rem;
+}
+
+.blog-content blockquote p {
+  margin: 0;
+}
+
+.blog-content a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.blog-content a:hover {
+  color: #2563eb;
+}
+
+.blog-content hr {
+  margin: 2.5rem 0;
+  border-color: #e5e7eb;
+}
+
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 1rem;
+}
+
+.blog-content th,
+.blog-content td {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.blog-content th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+.blog-content .stars {
+  color: #fbbf24;
+  font-size: 1.2em;
+}
+
+.blog-content em {
+  color: #4b5563;
+}
+
+@media (max-width: 768px) {
+  .blog-content {
+    padding: 1rem 0;
+    font-size: 1rem;
+  }
+
+  .blog-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .blog-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .blog-content table {
+    font-size: 0.9rem;
+  }
+}
+
 /* When a modal is open, stop scrolling and hide interactive maps behind it */
 html.modal-open, body.modal-open { overflow: hidden; }
 .modal-open .leaflet-container { opacity: 0 !important; pointer-events: none !important; z-index: 0 !important; }
