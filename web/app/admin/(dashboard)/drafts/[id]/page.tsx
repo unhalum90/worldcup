@@ -63,8 +63,15 @@ export default function DraftEditorPage() {
   async function handleSave() {
     if (!post) return;
 
+    // Basic validation
+    if (!post.title || !post.title.trim()) {
+      alert('Please enter a title.');
+      return;
+    }
+
     setSaving(true);
     try {
+      console.log('[DraftEditor] Saving post:', postId);
       const { error } = await supabase
         .from('blog_posts')
         .update({
@@ -81,9 +88,10 @@ export default function DraftEditorPage() {
         .eq('id', postId);
 
       if (error) throw error;
+      console.log('[DraftEditor] Saved successfully');
       alert('Saved successfully!');
     } catch (error: any) {
-      console.error('Error saving post:', error);
+      console.error('[DraftEditor] Error saving post:', error);
       alert('Failed to save: ' + error.message);
     } finally {
       setSaving(false);
@@ -93,13 +101,36 @@ export default function DraftEditorPage() {
   async function handlePublish() {
     if (!post) return;
 
+    // Validate required fields
+    if (!post.title || !post.title.trim()) {
+      alert('Please enter a title before publishing.');
+      return;
+    }
+
+    if (!post.content_markdown || !post.content_markdown.trim()) {
+      alert('Please add content before publishing.');
+      return;
+    }
+
     if (!confirm('Are you sure you want to publish this post?')) return;
 
     setSaving(true);
     try {
+      console.log('[DraftEditor] Publishing post:', postId);
+      
+      // CRITICAL: Save all content AND publish status in one update
       const { error } = await supabase
         .from('blog_posts')
         .update({
+          title: post.title,
+          slug: post.slug,
+          content_markdown: post.content_markdown,
+          excerpt: post.excerpt,
+          city: post.city,
+          tags: post.tags,
+          seo_keywords: post.seo_keywords,
+          meta_description: post.meta_description,
+          featured_image_url: post.featured_image_url,
           status: 'published',
           published_at: new Date().toISOString(),
         })
@@ -107,10 +138,11 @@ export default function DraftEditorPage() {
 
       if (error) throw error;
       
+      console.log('[DraftEditor] Published successfully');
       alert('Published successfully!');
-      router.push('/admin/drafts');
+      router.push('/admin/published');
     } catch (error: any) {
-      console.error('Error publishing post:', error);
+      console.error('[DraftEditor] Error publishing post:', error);
       alert('Failed to publish: ' + error.message);
     } finally {
       setSaving(false);

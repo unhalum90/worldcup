@@ -27,11 +27,25 @@ export default function AdminLoginPage() {
       return;
     }
 
-    console.log("Login successful, user:", data.user?.email);
+    console.log("[AdminLogin] Login successful, user:", data.user?.email);
     
-    // Wait a moment for session to be set, then redirect
-    await new Promise(resolve => setTimeout(resolve, 500));
-    window.location.href = "/admin";
+    // Ensure session is synced to server before redirecting
+    try {
+      console.log("[AdminLogin] Syncing session to server...");
+      const syncRes = await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ event: 'SIGNED_IN', session: data.session }),
+        credentials: 'include',
+      });
+      console.log("[AdminLogin] Session sync response:", syncRes.status);
+    } catch (e) {
+      console.warn('[AdminLogin] Failed to sync session, but continuing:', e);
+    }
+    
+    // Use router.push for proper Next.js navigation
+    console.log("[AdminLogin] Navigating to /admin...");
+    router.push("/admin");
   }
 
   async function handleGoogleLogin() {

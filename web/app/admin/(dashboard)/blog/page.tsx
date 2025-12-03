@@ -27,6 +27,7 @@ export default function BlogDashboard() {
     recentPosts: [],
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchDashboardStats();
@@ -34,24 +35,35 @@ export default function BlogDashboard() {
 
   async function fetchDashboardStats() {
     try {
-      const { data: allPosts } = await supabase
+      setError(null);
+      console.log('[BlogDashboard] Fetching dashboard stats...');\n      \n      const { data: allPosts, error: postsError } = await supabase
         .from('blog_posts')
-        .select('id, status');
+        .select('id, status');\n\n      console.log('[BlogDashboard] Posts query result:', { \n        count: allPosts?.length, \n        error: postsError?.message \n      });\n\n      if (postsError) {
+        console.error('[BlogDashboard] Error fetching posts:', postsError);
+        setError(postsError.message);
+        return;
+      }
 
       const list = Array.isArray(allPosts) ? allPosts : [];
       const totalPosts = list.length;
       const draftPosts = list.filter((p: any) => p.status === 'draft').length;
-      const publishedPosts = list.filter((p: any) => p.status === 'published').length;
-
-      const { count: keywordCount } = await supabase
+      const publishedPosts = list.filter((p: any) => p.status === 'published').length;\n\n      console.log('[BlogDashboard] Post counts:', { totalPosts, draftPosts, publishedPosts });\n\n      const { count: keywordCount, error: keywordsError } = await supabase
         .from('keywords')
         .select('*', { count: 'exact', head: true });
 
-      const { data: recentPosts } = await supabase
+      if (keywordsError) {
+        console.warn('[BlogDashboard] Error fetching keywords:', keywordsError);
+      }
+
+      const { data: recentPosts, error: recentError } = await supabase
         .from('blog_posts')
         .select('id, title, status, city, created_at')
         .order('created_at', { ascending: false })
         .limit(5);
+
+      if (recentError) {
+        console.warn('[BlogDashboard] Error fetching recent posts:', recentError);
+      }
 
       setStats({
         totalPosts,
@@ -59,7 +71,10 @@ export default function BlogDashboard() {
         publishedPosts,
         totalKeywords: keywordCount || 0,
         recentPosts: recentPosts || [],
-      });
+      });\n      \n      console.log('[BlogDashboard] Dashboard stats loaded successfully');
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -69,6 +84,26 @@ export default function BlogDashboard() {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-gray-600">Loading blog dashboard...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-8">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+          <h3 className="text-red-800 font-semibold mb-2">Error loading dashboard</h3>
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+        <button
+          onClick={() => {
+            setLoading(true);
+            fetchDashboardStats();
+          }}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Retry
+        </button>
       </div>
     );
   }

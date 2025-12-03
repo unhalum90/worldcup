@@ -18,6 +18,7 @@ export default function DraftsPage() {
   const [drafts, setDrafts] = useState<BlogPost[]>([]);
   const [published, setPublished] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'drafts' | 'published'>('drafts');
 
   useEffect(() => {
@@ -26,24 +27,33 @@ export default function DraftsPage() {
 
   async function fetchPosts() {
     try {
-      // Fetch drafts
-      const { data: draftData } = await supabase
+      setError(null);
+      console.log('[DraftsPage] Fetching posts...');\n      \n      // Fetch drafts
+      const { data: draftData, error: draftError } = await supabase
         .from('blog_posts')
         .select('id, title, status, city, tags, created_at, updated_at')
         .eq('status', 'draft')
-        .order('updated_at', { ascending: false });
+        .order('updated_at', { ascending: false });\n\n      console.log('[DraftsPage] Drafts query result:', { \n        count: draftData?.length, \n        error: draftError?.message \n      });\n\n      if (draftError) {
+        console.error('[DraftsPage] Error fetching drafts:', draftError);
+        setError(draftError.message);
+        return;
+      }
 
       // Fetch published
-      const { data: publishedData } = await supabase
+      const { data: publishedData, error: publishedError } = await supabase
         .from('blog_posts')
         .select('id, title, status, city, tags, created_at, updated_at')
         .eq('status', 'published')
-        .order('published_at', { ascending: false });
+        .order('published_at', { ascending: false });\n\n      console.log('[DraftsPage] Published query result:', { \n        count: publishedData?.length, \n        error: publishedError?.message \n      });\n\n      if (publishedError) {
+        console.warn('[DraftsPage] Error fetching published posts:', publishedError);
+        // Don't fail completely if only published fetch fails
+      }
 
       setDrafts(draftData || []);
-      setPublished(publishedData || []);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
+      setPublished(publishedData || []);\n      \n      console.log('[DraftsPage] Posts loaded successfully');
+    } catch (err) {
+      console.error('Unexpected error fetching posts:', err);
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -74,6 +84,26 @@ export default function DraftsPage() {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-gray-600">Loading posts...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-8">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+          <h3 className="text-red-800 font-semibold mb-2">Error loading posts</h3>
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+        <button
+          onClick={() => {
+            setLoading(true);
+            fetchPosts();
+          }}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Retry
+        </button>
       </div>
     );
   }
