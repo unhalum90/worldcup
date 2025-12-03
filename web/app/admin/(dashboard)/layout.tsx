@@ -21,10 +21,7 @@ export default function AdminLayout({
       try {
         console.log("[AdminLayout] Checking auth...");
 
-        // Wait a moment for auth to initialize
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        // First check if we have a session (faster than getUser)
+        // Check session immediately - no delay needed
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         console.log("[AdminLayout] Session check:", { 
@@ -32,32 +29,6 @@ export default function AdminLayout({
           email: session?.user?.email,
           error: sessionError?.message 
         });
-        
-        if (!session?.user) {
-          console.log("[AdminLayout] No session, checking getUser...");
-          // Fallback to getUser with a reasonable timeout
-          const timeout = new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("auth-timeout")), 8000)
-          );
-
-          const getUserPromise = supabase.auth.getUser();
-          try {
-            const { data: { user }, error: userError } = await Promise.race([getUserPromise, timeout]);
-            console.log("[AdminLayout] getUser result:", { hasUser: !!user, error: userError?.message });
-            
-            if (!user) {
-              console.log("[AdminLayout] No user, redirecting to /admin/login");
-              if (!cancelled) setLoading(false);
-              router.push("/admin/login");
-              return;
-            }
-          } catch (timeoutError) {
-            console.warn("[AdminLayout] getUser timed out, redirecting to login");
-            if (!cancelled) setLoading(false);
-            router.push("/admin/login");
-            return;
-          }
-        }
         
         const user = session?.user;
         if (!user) {

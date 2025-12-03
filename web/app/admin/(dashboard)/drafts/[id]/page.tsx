@@ -245,11 +245,23 @@ export default function DraftEditorPage() {
             <input
               type="text"
               value={post.slug}
-              onChange={(e) => setPost({ ...post, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+              onChange={(e) => {
+                // Remove ALL slashes and sanitize properly
+                const sanitized = e.target.value
+                  .toLowerCase()
+                  .replace(/\//g, '-')  // Replace slashes with hyphens
+                  .replace(/[^a-z0-9-]/g, '-')  // Only allow letters, numbers, hyphens
+                  .replace(/-+/g, '-')  // Collapse multiple hyphens
+                  .replace(/^-|-$/g, '');  // Remove leading/trailing hyphens
+                setPost({ ...post, slug: sanitized });
+              }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
             />
             <p className="text-xs text-gray-500 mt-1">
               URL: /blog/{post.slug}
+            </p>
+            <p className="text-xs text-orange-600 mt-1">
+              ⚠️ No slashes allowed - they'll be converted to hyphens
             </p>
           </div>
 
