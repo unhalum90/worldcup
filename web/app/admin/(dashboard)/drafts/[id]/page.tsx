@@ -70,7 +70,16 @@ export default function DraftEditorPage() {
     setSaving(true);
     try {
       console.log('[DraftEditor] Saving post:', postId);
-      const { error } = await supabase
+      console.log('[DraftEditor] Current post state:', {
+        title: post.title,
+        slug: post.slug,
+        content_length: post.content_markdown?.length || 0,
+        excerpt_length: post.excerpt?.length || 0,
+        city: post.city,
+        tags: post.tags,
+      });
+      
+      const { data, error } = await supabase
         .from('blog_posts')
         .update({
           title: post.title,
@@ -83,9 +92,15 @@ export default function DraftEditorPage() {
           meta_description: post.meta_description,
           featured_image_url: post.featured_image_url,
         })
-        .eq('id', postId);
+        .eq('id', postId)
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('[DraftEditor] Supabase error:', error);
+        throw error;
+      }
+      
+      console.log('[DraftEditor] Save response:', data);
       console.log('[DraftEditor] Saved successfully');
       alert('Saved successfully!');
     } catch (error: any) {
@@ -115,9 +130,15 @@ export default function DraftEditorPage() {
     setSaving(true);
     try {
       console.log('[DraftEditor] Publishing post:', postId);
+      console.log('[DraftEditor] Post data:', {
+        title: post.title,
+        slug: post.slug,
+        content_length: post.content_markdown?.length || 0,
+        has_content: !!post.content_markdown,
+      });
       
       // CRITICAL: Save all content AND publish status in one update
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('blog_posts')
         .update({
           title: post.title,
@@ -132,13 +153,21 @@ export default function DraftEditorPage() {
           status: 'published',
           published_at: new Date().toISOString(),
         })
-        .eq('id', postId);
+        .eq('id', postId)
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('[DraftEditor] Supabase error:', error);
+        throw error;
+      }
       
+      console.log('[DraftEditor] Update response:', data);
       console.log('[DraftEditor] Published successfully');
       alert('Published successfully!');
-      router.push('/admin/published');
+      
+      // Wait a moment before navigation
+      await new Promise(resolve => setTimeout(resolve, 500));
+      router.push('/admin/drafts');
     } catch (error: any) {
       console.error('[DraftEditor] Error publishing post:', error);
       alert('Failed to publish: ' + error.message);
