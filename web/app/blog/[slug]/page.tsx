@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
         {/* Content */}
         <div className="bg-white rounded-lg shadow-sm p-8">
-          <div className="prose prose-lg max-w-none">
+          <div className="prose prose-lg max-w-none prose-headings:mt-8 prose-headings:mb-4 prose-p:mb-4 prose-ul:my-4 prose-li:my-2">
             <ReactMarkdown>{post.content_markdown}</ReactMarkdown>
           </div>
         </div>
