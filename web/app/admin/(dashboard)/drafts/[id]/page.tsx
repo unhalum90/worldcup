@@ -32,8 +32,42 @@ export default function DraftEditorPage() {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [tagInput, setTagInput] = useState('');
   const [keywordInput, setKeywordInput] = useState('');
+
+  useEffect(() => {
+    if (postId) {
+      fetchPost();
+    }
+  }, [postId]);
+
+  // Auto-save every 30 seconds if there are changes
+  useEffect(() => {
+    if (!post || saving) return;
+    
+    const autoSaveInterval = setInterval(() => {
+      if (post.title && post.content_markdown) {
+        console.log('[DraftEditor] Auto-saving...');
+        handleSave(true); // Silent save
+      }
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(autoSaveInterval);
+  }, [post, saving]);
+
+  // Keyboard shortcut: Cmd+S / Ctrl+S to save
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+        e.preventDefault();
+        handleSave();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [post]);
 
   useEffect(() => {
     if (postId) {
@@ -58,18 +92,18 @@ export default function DraftEditorPage() {
     }
   }
 
-  async function handleSave() {
+  async function handleSave(silent = false) {
     if (!post) return;
 
     // Basic validation
     if (!post.title || !post.title.trim()) {
-      alert('Please enter a title.');
+      if (!silent) alert('Please enter a title.');
       return;
     }
 
     setSaving(true);
     try {
-      console.log('[DraftEditor] Saving post:', postId);
+      if (!silent) console.log('[DraftEditor] Saving post:', postId);
       console.log('[DraftEditor] Current post state:', {
         title: post.title,
         slug: post.slug,
@@ -102,7 +136,8 @@ export default function DraftEditorPage() {
       
       console.log('[DraftEditor] Save response:', data);
       console.log('[DraftEditor] Saved successfully');
-      alert('Saved successfully!');
+      setLastSaved(new Date());
+      if (!silent) alert('Saved successfully!');
     } catch (error: any) {
       console.error('[DraftEditor] Error saving post:', error);
       alert('Failed to save: ' + error.message);
@@ -217,7 +252,14 @@ export default function DraftEditorPage() {
   return (
     <div className="p-8 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Edit Post</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Edit Post</h1>
+          {lastSaved && (
+            <p className="text-sm text-gray-500 mt-1">
+              Last saved: {lastSaved.toLocaleTimeString()}
+            </p>
+          )}
+        </div>
         <div className="flex gap-2">
           <button
             onClick={() => router.push('/admin/drafts')}
