@@ -30,7 +30,7 @@ export default function DraftEditorPage() {
   const postId = params.id as string;
 
   const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [tagInput, setTagInput] = useState('');
   const [keywordInput, setKeywordInput] = useState('');
@@ -55,8 +55,6 @@ export default function DraftEditorPage() {
       console.error('Error fetching post:', error);
       alert('Failed to load post');
       router.push('/admin/drafts');
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -179,18 +177,10 @@ export default function DraftEditorPage() {
     setPost({ ...post, seo_keywords: post.seo_keywords.filter(k => k !== keyword) });
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-gray-600">Loading post...</div>
-      </div>
-    );
-  }
-
   if (!post) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-red-600">Post not found</div>
+        <div className="text-gray-600">Loading post...</div>
       </div>
     );
   }

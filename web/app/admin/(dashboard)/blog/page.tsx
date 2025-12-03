@@ -26,7 +26,7 @@ export default function BlogDashboard() {
     totalKeywords: 0,
     recentPosts: [],
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -90,17 +90,7 @@ export default function BlogDashboard() {
     } catch (err) {
       console.error('Unexpected error:', err);
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
-    } finally {
-      setLoading(false);
     }
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-gray-600">Loading blog dashboard...</div>
-      </div>
-    );
   }
 
   if (error) {

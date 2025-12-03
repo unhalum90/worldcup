@@ -17,7 +17,7 @@ interface BlogPost {
 export default function DraftsPage() {
   const [drafts, setDrafts] = useState<BlogPost[]>([]);
   const [published, setPublished] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'drafts' | 'published'>('drafts');
 
@@ -72,8 +72,6 @@ export default function DraftsPage() {
     } catch (err) {
       console.error('Unexpected error fetching posts:', err);
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -98,14 +96,6 @@ export default function DraftsPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-gray-600">Loading posts...</div>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="p-8">
@@ -115,7 +105,7 @@ export default function DraftsPage() {
         </div>
         <button
           onClick={() => {
-            setLoading(true);
+            setError(null);
             fetchPosts();
           }}
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
