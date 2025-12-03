@@ -211,7 +211,7 @@ export default function DraftEditorPage() {
             disabled={saving}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition"
           >
-            {saving ? 'Saving...' : '💾 Save Draft'}
+            {saving ? 'Saving...' : (post.status === 'published' ? '💾 Update' : '💾 Save Draft')}
           </button>
           {post.status === 'draft' && (
             <button
@@ -427,7 +427,7 @@ export default function DraftEditorPage() {
           disabled={saving}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition"
         >
-          {saving ? 'Saving...' : '💾 Save Draft'}
+          {saving ? 'Saving...' : (post.status === 'published' ? '💾 Update' : '💾 Save Draft')}
         </button>
         {post.status === 'draft' && (
           <button

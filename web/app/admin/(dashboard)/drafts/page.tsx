@@ -130,7 +130,6 @@ export default function DraftsPage() {
 
   async function handleNewBlankDraft() {
     try {
-      const { data: userData } = await supabase.auth.getUser();
       const now = new Date();
       const baseSlug = `untitled-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${now.getHours()}${now.getMinutes()}`;
       const { data, error } = await supabase
@@ -146,7 +145,7 @@ export default function DraftsPage() {
           seo_keywords: [],
           meta_description: null,
           featured_image_url: null,
-          author_id: userData?.user?.id || null,
+          author_id: null,
         })
         .select('id')
         .single();

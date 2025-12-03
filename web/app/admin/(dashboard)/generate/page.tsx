@@ -66,8 +66,6 @@ export default function GenerateArticlePage() {
     if (!article) return;
 
     try {
-      const { data: userData } = await supabase.auth.getUser();
-      
       const { error: saveError } = await supabase
         .from('blog_posts')
         .insert({
@@ -75,7 +73,7 @@ export default function GenerateArticlePage() {
           content_markdown: article.content,
           city: selectedCity || null,
           status: 'draft',
-          author_id: userData?.user?.id || null,
+          author_id: null,
         });
 
       if (saveError) throw saveError;
