@@ -1,121 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { supabase } from "@/lib/supabaseClient";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const checkAuth = async () => {
-      try {
-        console.log("[AdminLayout] Checking auth...");
-
-        // Check session immediately - no delay needed
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        console.log("[AdminLayout] Session check:", { 
-          hasSession: !!session, 
-          email: session?.user?.email,
-          error: sessionError?.message 
-        });
-        
-        const user = session?.user;
-        if (!user) {
-          console.log("[AdminLayout] No user, redirecting to /admin/login");
-          if (!cancelled) setLoading(false);
-          router.push("/admin/login");
-          return;
-        }
-
-        // First: allow via public allowlist (mirrors server middleware behavior)
-        const allowlist = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "")
-          .split(",")
-          .map((e) => e.trim().toLowerCase())
-          .filter(Boolean);
-        const email = (user.email || "").toLowerCase();
-        if (allowlist.length > 0 && allowlist.includes(email)) {
-          console.log("[AdminLayout] Allowed via NEXT_PUBLIC_ADMIN_EMAILS");
-          if (!cancelled) {
-            setIsAdmin(true);
-            setLoading(false);
-          }
-          return;
-        }
-
-        // Fallback: check a role in either profiles schema variant (id or user_id)
-        // Some environments have public.profiles(id) and others profiles(user_id)
-        const { data: profile, error } = await supabase
-          .from("profiles")
-          .select("role, user_id")
-          .eq('user_id', user.id)
-          .maybeSingle();
-
-        console.log("[AdminLayout] Profile role check:", profile?.role, error?.message);
-
-        const role = (profile as any)?.role;
-        const isPrivileged = role === "admin" || role === "superadmin" || role === "moderator";
-        if (isPrivileged || allowlist.length === 0) {
-          // If no allowlist is configured, treat any signed-in user as ok (server middleware still gates /admin)
-          if (!cancelled) {
-            setIsAdmin(true);
-            setLoading(false);
-          }
-          return;
-        }
-
-        console.warn("[AdminLayout] Not authorized for admin. Redirecting to home.");
-        if (!cancelled) setLoading(false);
-        router.push("/");
-      } catch (e: any) {
-        console.warn("[AdminLayout] Auth check failed:", e?.message || e);
-        // Fail open to avoid trapping the user on a spinner. Server middleware still protects routes.
-        if (!cancelled) {
-          setIsAdmin(true);
-          setLoading(false);
-        }
-      }
-    };
-
-    checkAuth();
-
-    // Listen for auth changes and re-check
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
-      checkAuth();
-    });
-
-    return () => {
-      cancelled = true;
-      subscription.unsubscribe();
-    };
-  }, [router]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[color:var(--color-primary)] mx-auto mb-4"></div>
-          <p className="text-[color:var(--color-neutral-700)]">Loading admin panel...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return null;
-  }
+  // NO AUTH CHECKS - Just render the dashboard
+  // Middleware handles initial login gate
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
