@@ -268,7 +268,7 @@ export default function DraftEditorPage() {
             Cancel
           </button>
           <button
-            onClick={handleSave}
+            onClick={() => handleSave()}
             disabled={saving}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition"
           >
@@ -484,7 +484,7 @@ export default function DraftEditorPage() {
           Cancel
         </button>
         <button
-          onClick={handleSave}
+          onClick={() => handleSave()}
           disabled={saving}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition"
         >
