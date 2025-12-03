@@ -28,12 +28,21 @@ export default function DraftsPage() {
   async function fetchPosts() {
     try {
       setError(null);
-      console.log('[DraftsPage] Fetching posts...');\n      \n      // Fetch drafts
+      console.log('[DraftsPage] Fetching posts...');
+      
+      // Fetch drafts
       const { data: draftData, error: draftError } = await supabase
         .from('blog_posts')
         .select('id, title, status, city, tags, created_at, updated_at')
         .eq('status', 'draft')
-        .order('updated_at', { ascending: false });\n\n      console.log('[DraftsPage] Drafts query result:', { \n        count: draftData?.length, \n        error: draftError?.message \n      });\n\n      if (draftError) {
+        .order('updated_at', { ascending: false });
+
+      console.log('[DraftsPage] Drafts query result:', { 
+        count: draftData?.length, 
+        error: draftError?.message 
+      });
+
+      if (draftError) {
         console.error('[DraftsPage] Error fetching drafts:', draftError);
         setError(draftError.message);
         return;
@@ -44,13 +53,22 @@ export default function DraftsPage() {
         .from('blog_posts')
         .select('id, title, status, city, tags, created_at, updated_at')
         .eq('status', 'published')
-        .order('published_at', { ascending: false });\n\n      console.log('[DraftsPage] Published query result:', { \n        count: publishedData?.length, \n        error: publishedError?.message \n      });\n\n      if (publishedError) {
+        .order('published_at', { ascending: false });
+
+      console.log('[DraftsPage] Published query result:', { 
+        count: publishedData?.length, 
+        error: publishedError?.message 
+      });
+
+      if (publishedError) {
         console.warn('[DraftsPage] Error fetching published posts:', publishedError);
         // Don't fail completely if only published fetch fails
       }
 
       setDrafts(draftData || []);
-      setPublished(publishedData || []);\n      \n      console.log('[DraftsPage] Posts loaded successfully');
+      setPublished(publishedData || []);
+      
+      console.log('[DraftsPage] Posts loaded successfully');
     } catch (err) {
       console.error('Unexpected error fetching posts:', err);
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');

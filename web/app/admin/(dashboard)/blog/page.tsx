@@ -36,9 +36,18 @@ export default function BlogDashboard() {
   async function fetchDashboardStats() {
     try {
       setError(null);
-      console.log('[BlogDashboard] Fetching dashboard stats...');\n      \n      const { data: allPosts, error: postsError } = await supabase
+      console.log('[BlogDashboard] Fetching dashboard stats...');
+      
+      const { data: allPosts, error: postsError } = await supabase
         .from('blog_posts')
-        .select('id, status');\n\n      console.log('[BlogDashboard] Posts query result:', { \n        count: allPosts?.length, \n        error: postsError?.message \n      });\n\n      if (postsError) {
+        .select('id, status');
+
+      console.log('[BlogDashboard] Posts query result:', { 
+        count: allPosts?.length, 
+        error: postsError?.message 
+      });
+
+      if (postsError) {
         console.error('[BlogDashboard] Error fetching posts:', postsError);
         setError(postsError.message);
         return;
@@ -47,7 +56,11 @@ export default function BlogDashboard() {
       const list = Array.isArray(allPosts) ? allPosts : [];
       const totalPosts = list.length;
       const draftPosts = list.filter((p: any) => p.status === 'draft').length;
-      const publishedPosts = list.filter((p: any) => p.status === 'published').length;\n\n      console.log('[BlogDashboard] Post counts:', { totalPosts, draftPosts, publishedPosts });\n\n      const { count: keywordCount, error: keywordsError } = await supabase
+      const publishedPosts = list.filter((p: any) => p.status === 'published').length;
+
+      console.log('[BlogDashboard] Post counts:', { totalPosts, draftPosts, publishedPosts });
+
+      const { count: keywordCount, error: keywordsError } = await supabase
         .from('keywords')
         .select('*', { count: 'exact', head: true });
 
@@ -71,7 +84,9 @@ export default function BlogDashboard() {
         publishedPosts,
         totalKeywords: keywordCount || 0,
         recentPosts: recentPosts || [],
-      });\n      \n      console.log('[BlogDashboard] Dashboard stats loaded successfully');
+      });
+      
+      console.log('[BlogDashboard] Dashboard stats loaded successfully');
     } catch (err) {
       console.error('Unexpected error:', err);
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
