@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { teams, getQualifiedTeams, getProvisionalTeams } from '@/lib/teamsData';
+import { getTeamsWithGroups } from '@/lib/teamsData';
+import { getTeamToGroupMap } from '@/lib/drawLookup';
 
 export const metadata: Metadata = {
   title: 'Qualified Teams - FIFA World Cup 2026 | WC26 Fan Zone',
@@ -22,9 +23,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function TeamsPage() {
-  const qualifiedTeams = getQualifiedTeams().sort((a, b) => a.name.localeCompare(b.name));
-  // const provisionalTeams = getProvisionalTeams().sort((a, b) => a.name.localeCompare(b.name));
+export const dynamic = 'force-dynamic';
+
+export default async function TeamsPage() {
+  const teamToGroupMap = await getTeamToGroupMap();
+  const qualifiedTeams = getTeamsWithGroups(teamToGroupMap).sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -91,9 +94,18 @@ export default function TeamsPage() {
                     >
                       {team.confederation}
                     </span>
-                    <span className="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800">
-                      QUALIFIED
-                    </span>
+                    {team.group ? (
+                      <Link
+                        href={`/groups/${team.group.toLowerCase()}`}
+                        className="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors"
+                      >
+                        GROUP {team.group}
+                      </Link>
+                    ) : (
+                      <span className="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800">
+                        QUALIFIED
+                      </span>
+                    )}
                   </div>
                 </div>
 

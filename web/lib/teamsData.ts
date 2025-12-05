@@ -56,6 +56,8 @@ export interface Team {
   fanCulture?: FanCulture;
   travelCulture?: TravelCulture;
   funFacts?: string[];
+  /** Assigned at runtime from Supabase draw_groups after the draw */
+  group?: string;
 }
 
 export const teams: Team[] = [
@@ -3271,6 +3273,19 @@ export function getProvisionalTeams() {
 // Helper function to get team by slug
 export function getTeamBySlug(slug: string) {
   return teams.find(team => team.slug === slug);
+}
+
+/**
+ * Returns qualified teams with group assignments merged from a lookup map.
+ * Pass the result of getTeamToGroupMap() from lib/drawLookup.ts.
+ */
+export function getTeamsWithGroups(teamToGroupMap: Record<string, string>): Team[] {
+  return teams
+    .filter(team => !team.isProvisional)
+    .map(team => ({
+      ...team,
+      group: teamToGroupMap[team.slug] ?? undefined,
+    }));
 }
 
 // Confederation names and colors

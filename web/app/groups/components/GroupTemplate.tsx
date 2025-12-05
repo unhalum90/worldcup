@@ -6,11 +6,13 @@ import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/Map";
 import type { GroupData } from "@/data/groups";
 import { venues } from "@/data/venues";
+import type { DrawEntry } from "@/lib/drawLookup";
 
 const Map = dynamic(() => import("@/components/Map"), { ssr: false });
 
 interface GroupTemplateProps {
   data: GroupData;
+  teams?: DrawEntry[];
 }
 
 const ratingConfig = {
@@ -35,7 +37,7 @@ const complexityLabel = (rating: number) => {
   return "Extreme complexity";
 };
 
-const GroupTemplate = ({ data }: GroupTemplateProps) => {
+const GroupTemplate = ({ data, teams }: GroupTemplateProps) => {
   const cityNames = useMemo(
     () => data.stadium_access.map((stadium) => stadium.city),
     [data.stadium_access]
@@ -106,6 +108,43 @@ const GroupTemplate = ({ data }: GroupTemplateProps) => {
               </span>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Teams in this group */}
+      <section>
+        <h2 className="text-2xl font-bold text-neutral-900">Teams in Group {data.id}</h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {teams && teams.length > 0 ? (
+            teams.map((entry) => (
+              <div
+                key={entry.slot}
+                className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:shadow-md"
+              >
+                <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+                  Slot {entry.slot}
+                </p>
+                {entry.team_slug && !entry.is_placeholder ? (
+                  <Link
+                    href={`/teams/${entry.team_slug}`}
+                    className="mt-2 block text-lg font-bold text-blue-900 hover:text-blue-700"
+                  >
+                    {entry.team_name}
+                  </Link>
+                ) : (
+                  <p className="mt-2 text-lg font-semibold text-neutral-400">
+                    {entry.team_name || "TBD"}
+                  </p>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 p-6 text-center">
+              <p className="text-neutral-500">
+                Teams have not been drawn yet. Check back after the official FIFA draw.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

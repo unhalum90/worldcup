@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import GroupTemplate from "@/app/groups/components/GroupTemplate";
 import { groups } from "@/data/groups";
+import { getTeamsInGroup } from "@/lib/drawLookup";
 
 interface GroupPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export const dynamicParams = false;
+export const revalidate = 60; // Revalidate every 60 seconds to pick up draw changes
 
 const getGroup = (slug: string) => {
   const lookup = slug.toUpperCase();
@@ -21,7 +23,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: GroupPageProps): Promise<Metadata> {
-  const group = getGroup(params.slug);
+  const { slug } = await params;
+  const group = getGroup(slug);
 
   if (!group) {
     return {};
@@ -43,17 +46,21 @@ export async function generateMetadata({ params }: GroupPageProps): Promise<Meta
   };
 }
 
-const GroupPage = ({ params }: GroupPageProps) => {
-  const group = getGroup(params.slug);
+const GroupPage = async ({ params }: GroupPageProps) => {
+  const { slug } = await params;
+  const group = getGroup(slug);
 
   if (!group) {
     notFound();
   }
 
+  // Fetch teams assigned to this group from Supabase draw
+  const groupTeams = await getTeamsInGroup(group.id);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-white">
       <div className="mx-auto max-w-6xl px-4 pb-20 pt-16 sm:px-6 lg:px-8">
-        <GroupTemplate data={group} />
+        <GroupTemplate data={group} teams={groupTeams} />
       </div>
     </div>
   );

@@ -1,13 +1,16 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getTeamBySlug, teams } from '@/lib/teamsData';
+import { getTeamBySlug, teams, Team } from '@/lib/teamsData';
+import { getTeamToGroupMap } from '@/lib/drawLookup';
 import MiniCountdown from '@/components/MiniCountdown';
 import SubscribeButton from '@/components/SubscribeButton';
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   return teams.map((team) => ({
@@ -33,11 +36,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TeamPage({ params }: Props) {
   const { slug } = await params;
-  const team = getTeamBySlug(slug);
+  const baseTeam = getTeamBySlug(slug);
 
-  if (!team) {
+  if (!baseTeam) {
     notFound();
   }
+
+  // Fetch group assignment from Supabase
+  const teamToGroupMap = await getTeamToGroupMap();
+  const team: Team = {
+    ...baseTeam,
+    group: teamToGroupMap[baseTeam.slug] ?? undefined,
+  };
 
   // Schema.org structured data for SEO
   const teamSchema = {
@@ -133,15 +143,24 @@ export default async function TeamPage({ params }: Props) {
                 >
                   {team.confederation}
                 </span>
-                <span 
-                  className={`text-xs font-bold px-3 py-1 rounded-full ${
-                    team.isProvisional 
-                      ? 'bg-yellow-500 text-yellow-900' 
-                      : 'bg-green-500 text-green-900'
-                  }`}
-                >
-                  {team.isProvisional ? 'PROVISIONAL' : 'QUALIFIED'}
-                </span>
+                {team.group ? (
+                  <Link
+                    href={`/groups/${team.group.toLowerCase()}`}
+                    className="text-xs font-bold px-3 py-1 rounded-full bg-blue-500 text-white hover:bg-blue-400 transition-colors"
+                  >
+                    GROUP {team.group}
+                  </Link>
+                ) : (
+                  <span 
+                    className={`text-xs font-bold px-3 py-1 rounded-full ${
+                      team.isProvisional 
+                        ? 'bg-yellow-500 text-yellow-900' 
+                        : 'bg-green-500 text-green-900'
+                    }`}
+                  >
+                    {team.isProvisional ? 'PROVISIONAL' : 'QUALIFIED'}
+                  </span>
+                )}
               </div>
               <h1 className="text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
                 Follow {team.name} to the 2026 World Cup
