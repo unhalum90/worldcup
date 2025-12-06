@@ -2,59 +2,61 @@
   "mexico-city": {
     "stadium": "Estadio Azteca",
     "matches": [
-      { "date": "2026-06-11", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-17", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-24", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-30", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-11", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Mexico", "South Africa"] },
+      { "date": "2026-06-17", "kickoff": "12:00 AM ET", "stage": "Group Stage", "teams": ["Uzbekistan", "Colombia"] },
+      { "date": "2026-06-24", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["UEFA Playoff Winner D", "Mexico"] },
+      { "date": "2026-06-30", "stage": "Round of 32", "teams": [null, null] },
       { "date": "2026-07-05", "stage": "Round of 16", "teams": [null, null] }
     ]
   },
   "guadalajara": {
     "stadium": "Estadio Akron",
     "matches": [
-      { "date": "2026-06-11", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-23", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] }
+      { "date": "2026-06-11", "kickoff": "10:00 PM ET", "stage": "Group Stage", "teams": ["South Korea", "UEFA Playoff Winner D"] },
+      { "date": "2026-06-18", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["Mexico", "South Korea"] },
+      { "date": "2026-06-23", "kickoff": "12:00 AM ET", "stage": "Group Stage", "teams": ["Colombia", "FIFA Playoff Winner 1"] },
+      { "date": "2026-06-26", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["Cape Verde", "Saudi Arabia"] }
     ]
   },
   "monterrey": {
     "stadium": "Estadio BBVA",
     "matches": [
-      { "date": "2026-06-14", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-20", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-29", "stage": "Group Stage", "teams": [null, null] }
+      { "date": "2026-06-14", "kickoff": "10:00 PM ET", "stage": "Group Stage", "teams": ["UEFA Playoff Winner B", "Tunisia"] },
+      { "date": "2026-06-20", "kickoff": "10:00 PM ET", "stage": "Group Stage", "teams": ["Tunisia", "Japan"] },
+      { "date": "2026-06-24", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["South Africa", "South Korea"] },
+      { "date": "2026-06-29", "stage": "Round of 32", "teams": [null, null] }
     ]
   },
   "toronto": {
     "stadium": "BMO Field",
     "matches": [
-      { "date": "2026-06-12", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-17", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-20", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-23", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-12", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Canada", "UEFA Playoff Winner A"] },
+      { "date": "2026-06-17", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["England", "Croatia"] },
+      { "date": "2026-06-20", "kickoff": "1:00 PM ET", "stage": "Group Stage", "teams": ["Germany", "Ivory Coast"] },
+      { "date": "2026-06-23", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Panama", "Croatia"] },
+      { "date": "2026-06-26", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Senegal", "FIFA Playoff Winner 2"] },
       { "date": "2026-07-02", "stage": "Round of 32", "teams": [null, null] }
     ]
   },
   "vancouver": {
     "stadium": "BC Place",
     "matches": [
-      { "date": "2026-06-13", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-24", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-13", "kickoff": "12:00 AM ET", "stage": "Group Stage", "teams": ["Australia", "UEFA Playoff Winner C"] },
+      { "date": "2026-06-18", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Canada", "Qatar"] },
+      { "date": "2026-06-21", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["New Zealand", "Egypt"] },
+      { "date": "2026-06-24", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Switzerland", "Canada"] },
+      { "date": "2026-06-26", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Egypt", "Iran"] },
       { "date": "2026-07-07", "stage": "Round of 16", "teams": [null, null] }
     ]
   },
   "atlanta": {
     "stadium": "Mercedes-Benz Stadium",
     "matches": [
-      { "date": "2026-06-15", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-24", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-15", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Spain", "Cape Verde"] },
+      { "date": "2026-06-18", "kickoff": "12:00 PM ET", "stage": "Group Stage", "teams": ["UEFA Playoff Winner D", "South Africa"] },
+      { "date": "2026-06-21", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Spain", "Saudi Arabia"] },
+      { "date": "2026-06-24", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Morocco", "Haiti"] },
+      { "date": "2026-06-27", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["FIFA Playoff Winner 1", "Uzbekistan"] },
       { "date": "2026-07-01", "stage": "Round of 32", "teams": [null, null] },
       { "date": "2026-07-07", "stage": "Round of 16", "teams": [null, null] },
       { "date": "2026-07-15", "stage": "Semifinal", "teams": [null, null] }
@@ -63,11 +65,11 @@
   "boston": {
     "stadium": "Gillette Stadium",
     "matches": [
-      { "date": "2026-06-13", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-16", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-19", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-23", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-13", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Haiti", "Scotland"] },
+      { "date": "2026-06-16", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["FIFA Playoff Winner 2", "Norway"] },
+      { "date": "2026-06-19", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Scotland", "Morocco"] },
+      { "date": "2026-06-23", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["England", "Ghana"] },
+      { "date": "2026-06-26", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Norway", "France"] },
       { "date": "2026-06-29", "stage": "Round of 32", "teams": [null, null] },
       { "date": "2026-07-09", "stage": "Quarterfinal", "teams": [null, null] }
     ]
@@ -75,11 +77,11 @@
   "dallas": {
     "stadium": "AT&T Stadium",
     "matches": [
-      { "date": "2026-06-14", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-17", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-22", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-30", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-14", "kickoff": "7:00 PM ET", "stage": "Group Stage", "teams": ["Netherlands", "Japan"] },
+      { "date": "2026-06-17", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Ghana", "Panama"] },
+      { "date": "2026-06-22", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["Argentina", "Austria"] },
+      { "date": "2026-06-25", "kickoff": "7:00 PM ET", "stage": "Group Stage", "teams": ["Japan", "UEFA Playoff Winner B"] },
+      { "date": "2026-06-27", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Algeria", "Austria"] },
       { "date": "2026-07-06", "stage": "Round of 16", "teams": [null, null] },
       { "date": "2026-07-14", "stage": "Semifinal", "teams": [null, null] }
     ]
@@ -87,11 +89,11 @@
   "houston": {
     "stadium": "NRG Stadium",
     "matches": [
-      { "date": "2026-06-14", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-17", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-20", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-23", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-14", "kickoff": "4:00 PM ET", "stage": "Group Stage", "teams": ["Germany", "Curaçao"] },
+      { "date": "2026-06-17", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["Portugal", "FIFA Playoff Winner 1"] },
+      { "date": "2026-06-20", "kickoff": "7:00 PM ET", "stage": "Group Stage", "teams": ["Netherlands", "UEFA Playoff Winner B"] },
+      { "date": "2026-06-23", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["Portugal", "Uzbekistan"] },
+      { "date": "2026-06-26", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["Uruguay", "Spain"] },
       { "date": "2026-06-29", "stage": "Round of 32", "teams": [null, null] },
       { "date": "2026-07-04", "stage": "Round of 16", "teams": [null, null] }
     ]
@@ -99,10 +101,10 @@
   "kansas-city": {
     "stadium": "Arrowhead Stadium",
     "matches": [
-      { "date": "2026-06-16", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-20", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-16", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["Argentina", "Algeria"] },
+      { "date": "2026-06-20", "kickoff": "4:00 PM ET", "stage": "Group Stage", "teams": ["Ecuador", "Curaçao"] },
+      { "date": "2026-06-25", "kickoff": "7:00 PM ET", "stage": "Group Stage", "teams": ["Tunisia", "Netherlands"] },
+      { "date": "2026-06-27", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Jordan", "Argentina"] },
       { "date": "2026-07-03", "stage": "Round of 32", "teams": [null, null] },
       { "date": "2026-07-11", "stage": "Quarterfinal", "teams": [null, null] }
     ]
@@ -110,11 +112,11 @@
   "los-angeles": {
     "stadium": "SoFi Stadium",
     "matches": [
-      { "date": "2026-06-12", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-15", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-21", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-12", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["USA", "Paraguay"] },
+      { "date": "2026-06-15", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Iran", "New Zealand"] },
+      { "date": "2026-06-18", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Switzerland", "UEFA Playoff Winner A"] },
+      { "date": "2026-06-21", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Belgium", "Iran"] },
+      { "date": "2026-06-25", "kickoff": "10:00 PM ET", "stage": "Group Stage", "teams": ["UEFA Playoff Winner C", "USA"] },
       { "date": "2026-07-02", "stage": "Round of 32", "teams": [null, null] },
       { "date": "2026-07-10", "stage": "Quarterfinal", "teams": [null, null] }
     ]
@@ -122,9 +124,10 @@
   "miami": {
     "stadium": "Hard Rock Stadium",
     "matches": [
-      { "date": "2026-06-15", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-24", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-15", "kickoff": "12:00 PM ET", "stage": "Group Stage", "teams": ["Saudi Arabia", "Uruguay"] },
+      { "date": "2026-06-21", "kickoff": "12:00 PM ET", "stage": "Group Stage", "teams": ["Uruguay", "Cape Verde"] },
+      { "date": "2026-06-24", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Scotland", "Brazil"] },
+      { "date": "2026-06-27", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["Colombia", "Portugal"] },
       { "date": "2026-07-03", "stage": "Round of 32", "teams": [null, null] },
       { "date": "2026-07-11", "stage": "Quarterfinal", "teams": [null, null] },
       { "date": "2026-07-18", "stage": "Third Place", "teams": [null, null] }
@@ -133,11 +136,11 @@
   "new-york": {
     "stadium": "MetLife Stadium",
     "matches": [
-      { "date": "2026-06-13", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-16", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-22", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-13", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["Brazil", "Morocco"] },
+      { "date": "2026-06-16", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["France", "Senegal"] },
+      { "date": "2026-06-22", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Norway", "Senegal"] },
+      { "date": "2026-06-25", "kickoff": "4:00 PM ET", "stage": "Group Stage", "teams": ["Ecuador", "Germany"] },
+      { "date": "2026-06-27", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Panama", "England"] },
       { "date": "2026-06-30", "stage": "Round of 32", "teams": [null, null] },
       { "date": "2026-07-05", "stage": "Round of 16", "teams": [null, null] },
       { "date": "2026-07-19", "stage": "Final", "teams": [null, null] }
@@ -146,32 +149,32 @@
   "philadelphia": {
     "stadium": "Lincoln Financial Field",
     "matches": [
-      { "date": "2026-06-14", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-19", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-22", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-27", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-14", "kickoff": "1:00 PM ET", "stage": "Group Stage", "teams": ["Ivory Coast", "Ecuador"] },
+      { "date": "2026-06-19", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Brazil", "Haiti"] },
+      { "date": "2026-06-22", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["France", "FIFA Playoff Winner 2"] },
+      { "date": "2026-06-25", "kickoff": "4:00 PM ET", "stage": "Group Stage", "teams": ["Curaçao", "Ivory Coast"] },
+      { "date": "2026-06-27", "kickoff": "3:00 PM ET", "stage": "Group Stage", "teams": ["Croatia", "Ghana"] },
       { "date": "2026-07-04", "stage": "Round of 16", "teams": [null, null] }
     ]
   },
   "san-francisco": {
     "stadium": "Levi's Stadium",
     "matches": [
-      { "date": "2026-06-13", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-16", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-19", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-22", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-13", "kickoff": "4:00 PM ET", "stage": "Group Stage", "teams": ["Qatar", "Switzerland"] },
+      { "date": "2026-06-16", "kickoff": "12:00 AM ET", "stage": "Group Stage", "teams": ["Austria", "Jordan"] },
+      { "date": "2026-06-19", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["UEFA Playoff Winner C", "Paraguay"] },
+      { "date": "2026-06-22", "kickoff": "12:00 AM ET", "stage": "Group Stage", "teams": ["Jordan", "Algeria"] },
+      { "date": "2026-06-25", "kickoff": "10:00 PM ET", "stage": "Group Stage", "teams": ["Paraguay", "Australia"] },
       { "date": "2026-07-01", "stage": "Round of 32", "teams": [null, null] }
     ]
   },
   "seattle": {
     "stadium": "Lumen Field",
     "matches": [
-      { "date": "2026-06-15", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-18", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-25", "stage": "Group Stage", "teams": [null, null] },
-      { "date": "2026-06-26", "stage": "Group Stage", "teams": [null, null] },
+      { "date": "2026-06-15", "kickoff": "9:00 PM ET", "stage": "Group Stage", "teams": ["Belgium", "Egypt"] },
+      { "date": "2026-06-19", "kickoff": "12:00 AM ET", "stage": "Group Stage", "teams": ["USA", "Australia"] },
+      { "date": "2026-06-24", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["UEFA Playoff Winner A", "Qatar"] },
+      { "date": "2026-06-26", "kickoff": "6:00 PM ET", "stage": "Group Stage", "teams": ["New Zealand", "Belgium"] },
       { "date": "2026-07-06", "stage": "Round of 16", "teams": [null, null] }
     ]
   }

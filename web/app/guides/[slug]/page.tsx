@@ -139,11 +139,13 @@ export default async function CityGuidePage({ params }: Props) {
             <div className="overflow-x-auto">
               {(() => {
                 const hasTeams = Array.isArray(schedule.matches) && schedule.matches.some((m: any) => (Array.isArray(m.teams) && (m.teams[0] || m.teams[1])) || m.homeTeam || m.awayTeam);
+                const hasKickoff = Array.isArray(schedule.matches) && schedule.matches.some((m: any) => m.kickoff);
                 return (
                   <table className="w-full text-left text-sm border-collapse">
                     <thead>
                       <tr className="bg-gray-50">
                         <th className="p-3">Date</th>
+                        {hasKickoff && <th className="p-3">Kickoff</th>}
                         <th className="p-3">Stage</th>
                         {hasTeams && <th className="p-3">Match</th>}
                       </tr>
@@ -156,8 +158,9 @@ export default async function CityGuidePage({ params }: Props) {
                             <td className="p-3">
                               <time>{m.date}</time>
                             </td>
+                            {hasKickoff && <td className="p-3 font-medium text-blue-600">{m.kickoff || 'TBD'}</td>}
                             <td className="p-3">{m.stage || 'TBD'}</td>
-                            {hasTeams && <td className="p-3">{teams}</td>}
+                            {hasTeams && <td className="p-3 font-medium">{teams || 'TBD'}</td>}
                           </tr>
                         );
                       })}

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTeamBySlug, teams, Team } from '@/lib/teamsData';
 import { getTeamToGroupMap } from '@/lib/drawLookup';
+import { groupStageMatches, type Match } from '@/lib/matchesData';
 import MiniCountdown from '@/components/MiniCountdown';
 import SubscribeButton from '@/components/SubscribeButton';
 
@@ -221,73 +222,97 @@ export default async function TeamPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Tournament Status Block */}
+      {/* Tournament Schedule */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-r-lg shadow-sm mb-12">
-          <div className="flex items-start">
-            <div className="flex-shrink-0">
-              <svg className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-lg font-semibold text-yellow-800 mb-2">
-                📅 Awaiting Group Draw
-              </h3>
-              <p className="text-yellow-700">
-                FIFA will announce final fixtures and host cities on <strong>December 5, 2025</strong>. 
-                Bookmark this page — it will automatically update the moment details are confirmed.
-              </p>
-              <div className="mt-3">
-                <MiniCountdown 
-                  target={"2025-12-05T17:00:00Z"}
-                  label="Group Draw"
-                />
+        {(() => {
+          // Find matches for this team
+          const teamMatches = groupStageMatches.filter(m => {
+            const t1 = m.team1.toLowerCase();
+            const t2 = m.team2.toLowerCase();
+            const teamNameLower = team.name.toLowerCase();
+            return t1.includes(teamNameLower) || teamNameLower.includes(t1) ||
+                   t2.includes(teamNameLower) || teamNameLower.includes(t2);
+          }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+          
+          if (teamMatches.length === 0) {
+            // Show awaiting draw message for teams not yet in draw
+            return (
+              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-r-lg shadow-sm mb-12">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <svg className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-lg font-semibold text-yellow-800 mb-2">
+                      📅 Fixtures Pending
+                    </h3>
+                    <p className="text-yellow-700">
+                      {team.name}&apos;s group stage schedule will be confirmed after remaining qualifiers are complete.
+                      Bookmark this page — it will automatically update.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div className="bg-white rounded-xl shadow-md p-8 mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                <span className="text-4xl mr-3">🗓️</span>
+                Group Stage Schedule
+              </h2>
+              
+              <div className="overflow-x-auto">
+                <table className="min-w-full">
+                  <thead>
+                    <tr className="border-b-2 border-gray-200">
+                      <th className="text-left py-3 px-4 text-gray-700 font-semibold">Date</th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-semibold">Kickoff (ET)</th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-semibold">Opponent</th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-semibold">City</th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-semibold">Stadium</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {teamMatches.map((match, idx) => {
+                      const opponent = match.team1.toLowerCase().includes(team.name.toLowerCase()) ||
+                                       team.name.toLowerCase().includes(match.team1.toLowerCase())
+                        ? match.team2 
+                        : match.team1;
+                      const citySlug = match.city.toLowerCase()
+                        .replace(/\s+/g, '-')
+                        .replace(/[^a-z0-9-]/g, '')
+                        .replace('new-yorknew-jersey', 'new-york')
+                        .replace('san-francisco-bay-area', 'san-francisco');
+                      return (
+                        <tr key={match.matchNumber} className={idx < teamMatches.length - 1 ? "border-b border-gray-100" : ""}>
+                          <td className="py-4 px-4 font-semibold">{match.date}</td>
+                          <td className="py-4 px-4 text-blue-600 font-medium">{match.time}</td>
+                          <td className="py-4 px-4 font-medium">{opponent}</td>
+                          <td className="py-4 px-4">
+                            <Link href={`/guides/${citySlug}`} className="text-blue-600 hover:underline">
+                              {match.city}
+                            </Link>
+                          </td>
+                          <td className="py-4 px-4 text-gray-600">{match.stadium}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>💡 Travel Tip:</strong> Click on any city above to view our comprehensive city guide with transit info, lodging recommendations, and local tips.
+                </p>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Group Stage Placeholder */}
-        <div className="bg-white rounded-xl shadow-md p-8 mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-            <span className="text-4xl mr-3">🗓️</span>
-            Tournament Schedule
-          </h2>
-          
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead>
-                <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">Match</th>
-                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">Opponent</th>
-                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">City</th>
-                  <th className="text-left py-3 px-4 text-gray-700 font-semibold">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-gray-100">
-                  <td className="py-4 px-4 font-semibold">Match 1</td>
-                  <td className="py-4 px-4 text-gray-500">TBD</td>
-                  <td className="py-4 px-4 text-gray-500">TBD</td>
-                  <td className="py-4 px-4 text-gray-500">TBD</td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="py-4 px-4 font-semibold">Match 2</td>
-                  <td className="py-4 px-4 text-gray-500">TBD</td>
-                  <td className="py-4 px-4 text-gray-500">TBD</td>
-                  <td className="py-4 px-4 text-gray-500">TBD</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-4 font-semibold">Match 3</td>
-                  <td className="py-4 px-4 text-gray-500">TBD</td>
-                  <td className="py-4 px-4 text-gray-500">TBD</td>
-                  <td className="py-4 px-4 text-gray-500">TBD</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+          );
+        })()}
 
         {/* Team Snapshot */}
         <div className="bg-white rounded-xl shadow-md p-8 mb-12">
