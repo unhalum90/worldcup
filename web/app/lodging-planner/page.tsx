@@ -7,6 +7,8 @@ import type { LodgingPlannerPlan, LodgingPlannerPreferences, LodgingMapMarker } 
 import { usePlannerTheme } from '@/hooks/usePlannerTheme';
 import PlannerLoader from '@/components/PlannerLoader';
 import LodgingZoneMap from '@/components/lodging/LodgingZoneMap';
+import { useAuth } from '@/lib/AuthContext';
+import { createSavedTrip } from '@/lib/travel-plans/api';
 
 const STORAGE_KEY = 'fz_selected_trip_option';
 
@@ -38,6 +40,7 @@ export default function LodgingPlannerPage() {
   // Apply lodging planner theme
   usePlannerTheme('lodging');
 
+  const { user } = useAuth();
   const [selection, setSelection] = useState<StoredSelection | null>(null);
   const [loadingSelection, setLoadingSelection] = useState(true);
   const [preferences, setPreferences] = useState<LodgingPlannerPreferences>(DEFAULT_PREFERENCES);
@@ -45,6 +48,41 @@ export default function LodgingPlannerPage() {
   const [loadingPlan, setLoadingPlan] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showAllZones, setShowAllZones] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSavePlan = async () => {
+    if (!plan || !selection) return;
+    
+    if (!user) {
+      alert('Please sign in to save your lodging plan.');
+      return;
+    }
+
+    setSaving(true);
+    setSaveStatus('idle');
+    
+    try {
+      const cityName = plan.cityName || cityList[0] || 'Unknown City';
+      await createSavedTrip({
+        tripInput: selection.tripInput ?? null,
+        itinerary: {
+          type: 'lodging-plan',
+          lodgingPlan: plan,
+          preferences,
+          options: selection.option ? [selection.option] : [],
+        },
+        title: `${cityName} Lodging Plan`,
+      });
+      setSaveStatus('success');
+      setTimeout(() => setSaveStatus('idle'), 3000);
+    } catch (err) {
+      console.error('Failed to save lodging plan:', err);
+      setSaveStatus('error');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -442,10 +480,17 @@ export default function LodgingPlannerPage() {
                   Print / PDF
                 </button>
                 <button
-                  onClick={() => alert('Save to Supabase profile coming soon!')}
-                  className="px-4 py-2 rounded-full bg-white text-gray-700 font-semibold"
+                  onClick={handleSavePlan}
+                  disabled={saving || saveStatus === 'success'}
+                  className={`px-4 py-2 rounded-full font-semibold transition-colors ${
+                    saveStatus === 'success' 
+                      ? 'bg-green-500 text-white' 
+                      : saveStatus === 'error'
+                      ? 'bg-red-500 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                  }`}
                 >
-                  Save plan (beta)
+                  {saving ? 'Saving...' : saveStatus === 'success' ? '✓ Saved!' : saveStatus === 'error' ? 'Error - retry' : 'Save plan'}
                 </button>
                 <Link
                   href="/flight-planner"
