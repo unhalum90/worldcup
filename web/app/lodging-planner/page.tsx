@@ -63,7 +63,7 @@ export default function LodgingPlannerPage() {
     setSaveStatus('idle');
     
     try {
-      const cityName = plan.cityName || cityList[0] || 'Unknown City';
+      const cityName = plan.city || cityList[0] || 'Unknown City';
       await createSavedTrip({
         tripInput: selection.tripInput ?? null,
         itinerary: {

@@ -1,5 +1,7 @@
-import HeroMap from "@/components/landing/HeroMap";
-import FeatureShowcase from "@/components/landing/FeatureShowcase";
+import HeroDecisionPoint from "@/components/landing/HeroDecisionPoint";
+import PainPointCarousel from "@/components/landing/PainPointCarousel";
+import SocialProof from "@/components/landing/SocialProof";
+import FeatureComparison from "@/components/landing/FeatureComparison";
 import DemoSection from "@/components/landing/DemoSection";
 import WorldCupTimeline from "@/components/landing/WorldCupTimeline";
 import QualifiedTeamsSection from "@/components/landing/QualifiedTeamsSection";
@@ -47,24 +49,36 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <HeroMap />
-      {/* Alternating backgrounds with subtle dividers for better rhythm */}
-      <section className="bg-white">
-        <FeatureShowcase />
-      </section>
+      {/* SECTION 1: Hero & Decision Point */}
+      <HeroDecisionPoint />
+      
+      {/* SECTION 2: Pain-Point Carousel */}
+      <PainPointCarousel />
+      
+      {/* SECTION 3: Social Proof & Authority */}
+      <SocialProof />
+      
+      {/* SECTION 4: Feature Comparison Chart */}
+      <FeatureComparison />
+      
       <SectionDivider />
+      
+      {/* Existing: How It Works / Demo Video */}
       <section className="bg-gray-50" id="how-it-works">
         <DemoSection />
       </section>
+      
+      {/* Countdown Timer / Timeline */}
       <SectionDivider />
       <section className="bg-white">
         <WorldCupTimeline />
       </section>
+      
       <SectionDivider />
       <section className="bg-gray-50">
         <QualifiedTeamsSection />
       </section>
-      {/* One more divider to separate the last section from the footer */}
+      
       <SectionDivider className="mt-8" />
     </>
   );
