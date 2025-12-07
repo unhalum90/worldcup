@@ -1,0 +1,145 @@
+{
+  "generatedAt": "2025-12-07T12:00:00Z",
+  "summary": {
+    "travelerProfile": "Family of 4 (2 adults, 2 children) from Boston flying to World Cup matches in Dallas and Houston",
+    "note": "Multi-city routing with consideration for family-friendly layovers and timing"
+  },
+  "options": [
+    {
+      "label": "Smartest Option",
+      "tagline": "Best balance of cost, timing, and convenience for families",
+      "suitability": "Ideal for families who want reasonable prices with manageable layovers and kid-friendly timing.",
+      "keyBenefits": [
+        "Morning departures avoid early wake-ups",
+        "2-hour layover allows time for meals without rushing",
+        "Direct return flight minimizes travel fatigue"
+      ],
+      "flights": [
+        {
+          "route": "Boston (BOS) → Dallas (DFW)",
+          "airlines": ["American Airlines", "United"],
+          "duration": "5h 45m (1 stop)",
+          "estPrice": "$380–$520 per person",
+          "layover": "2h in Charlotte (CLT)",
+          "bookingTips": "Book 6-8 weeks ahead for best family fares",
+          "exampleFlight": "AA 1234 dep 9:15 → arr 14:00 CT"
+        },
+        {
+          "route": "Dallas (DFW) → Houston (IAH)",
+          "airlines": ["Southwest", "United"],
+          "duration": "1h 10m direct",
+          "estPrice": "$89–$150 per person",
+          "bookingTips": "Southwest bags fly free — great for families",
+          "exampleFlight": "WN 567 dep 10:30 → arr 11:40 CT"
+        },
+        {
+          "route": "Houston (IAH) → Boston (BOS)",
+          "airlines": ["United", "JetBlue"],
+          "duration": "3h 50m direct",
+          "estPrice": "$290–$420 per person",
+          "bookingTips": "United flies direct; JetBlue requires connection",
+          "exampleFlight": "UA 890 dep 15:00 → arr 21:50 ET"
+        }
+      ],
+      "alternateAirports": ["Dallas Love Field (DAL) for Southwest", "Houston Hobby (HOU) for Southwest"],
+      "groundTransport": ["Uber/Lyft available at all airports", "DART rail from DFW to downtown Dallas"],
+      "connectionCity": "Charlotte, NC",
+      "reliabilityNote": "American has strong on-time performance on this route",
+      "familyTip": "Request bulkhead seats for extra legroom with kids"
+    },
+    {
+      "label": "Budget Option",
+      "tagline": "Lowest total cost with flexible timing",
+      "suitability": "Best for travelers prioritizing savings over convenience. Longer layovers but significant cost savings.",
+      "keyBenefits": [
+        "Save $400+ per person vs premium options",
+        "Southwest's free bags add value",
+        "Red-eye return lets you maximize trip time"
+      ],
+      "flights": [
+        {
+          "route": "Boston (BOS) → Dallas (DAL)",
+          "airlines": ["Southwest"],
+          "duration": "6h 30m (1 stop)",
+          "estPrice": "$240–$320 per person",
+          "layover": "3h 15m in Baltimore (BWI)",
+          "bookingTips": "Book on Tuesday for best Southwest prices",
+          "exampleFlight": "WN 2345 dep 6:00 → arr 12:30 CT"
+        },
+        {
+          "route": "Dallas (DAL) → Houston (HOU)",
+          "airlines": ["Southwest"],
+          "duration": "1h 05m direct",
+          "estPrice": "$69–$110 per person",
+          "bookingTips": "Wanna Get Away fares are non-refundable but cheapest",
+          "exampleFlight": "WN 678 dep 11:00 → arr 12:05 CT"
+        },
+        {
+          "route": "Houston (HOU) → Boston (BOS)",
+          "airlines": ["Southwest", "Spirit"],
+          "duration": "5h 20m (1 stop)",
+          "estPrice": "$180–$260 per person",
+          "layover": "1h 45m in Nashville (BNA)",
+          "bookingTips": "Avoid Spirit if you have luggage — fees add up",
+          "exampleFlight": "WN 901 dep 22:00 → arr 06:20+1 ET"
+        }
+      ],
+      "alternateAirports": ["Providence (PVD) sometimes cheaper from New England"],
+      "groundTransport": ["Dallas Love Field is closer to downtown than DFW", "Hobby is 20 min closer to Houston center than IAH"],
+      "reliabilityNote": "Southwest has good rebooking policies if plans change",
+      "familyTip": "Early boarding (A1-15) costs $15-25 but helps families sit together"
+    },
+    {
+      "label": "Fastest Option",
+      "tagline": "Minimum travel time with direct flights",
+      "suitability": "Perfect for those who value time over cost. All direct flights mean less hassle and more trip time.",
+      "keyBenefits": [
+        "No layovers — arrive refreshed",
+        "Flexible timing with multiple daily departures",
+        "Premium cabin options available"
+      ],
+      "flights": [
+        {
+          "route": "Boston (BOS) → Dallas (DFW)",
+          "airlines": ["American Airlines"],
+          "duration": "4h 15m direct",
+          "estPrice": "$480–$680 per person",
+          "bookingTips": "First class upgrades often available day-of for $150-200",
+          "exampleFlight": "AA 1456 dep 8:00 → arr 11:15 CT"
+        },
+        {
+          "route": "Dallas (DFW) → Houston (IAH)",
+          "airlines": ["United"],
+          "duration": "1h 05m direct",
+          "estPrice": "$120–$180 per person",
+          "bookingTips": "Economy Plus worth it for legroom on short hop",
+          "exampleFlight": "UA 234 dep 10:00 → arr 11:05 CT"
+        },
+        {
+          "route": "Houston (IAH) → Boston (BOS)",
+          "airlines": ["United"],
+          "duration": "3h 45m direct",
+          "estPrice": "$380–$520 per person",
+          "bookingTips": "Polaris business class excellent for overnight return",
+          "exampleFlight": "UA 567 dep 14:30 → arr 21:15 ET"
+        }
+      ],
+      "alternateAirports": ["None needed — direct routes available from primary airports"],
+      "groundTransport": ["Priority airport pickup available", "Private car services recommended"],
+      "reliabilityNote": "Direct flights have 95%+ on-time arrival rates",
+      "familyTip": "Consider booking adjacent seats in economy plus for comfort"
+    }
+  ],
+  "reminders": [
+    "Check TSA PreCheck/Global Entry status — saves 30+ minutes at security",
+    "Download airline apps for mobile boarding passes",
+    "Arrive 2.5 hours early for domestic flights during World Cup period",
+    "Pack entertainment and snacks for kids in carry-on",
+    "Consider travel insurance for expensive multi-leg trips"
+  ],
+  "sharedGroundNotes": [
+    "All Texas airports have excellent rideshare availability",
+    "DART rail connects DFW to downtown Dallas ($2.50, 45 min)",
+    "Houston's Metro rail serves IAH with connection at Downtown Transit Center"
+  ]
+}

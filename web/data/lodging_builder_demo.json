@@ -1,0 +1,148 @@
+{
+  "generatedAt": "2025-12-07T12:00:00Z",
+  "city": "Dallas",
+  "preferences": {
+    "nightlyBudget": 250,
+    "nights": 4,
+    "carRental": false,
+    "multipleMatches": false,
+    "travelingWithFamily": true,
+    "weights": {
+      "stadiumProximity": 70,
+      "localCulture": 65,
+      "walkability": 75,
+      "nightlife": 40,
+      "budgetSensitivity": 60
+    }
+  },
+  "plan": {
+    "city": "Dallas",
+    "stadium": {
+      "name": "AT&T Stadium",
+      "neighborhood": "Arlington",
+      "coordinates": { "lat": 32.7473, "lng": -97.0945 }
+    },
+    "fanFest": {
+      "location": "Klyde Warren Park",
+      "coordinates": { "lat": 32.7894, "lng": -96.8016 }
+    },
+    "topZone": {
+      "zoneName": "Uptown Dallas",
+      "score": 88,
+      "whyTopPick": "Best balance of walkability, dining options, and transit access for families. Easy DART connection to downtown and reasonable Uber distance to Arlington.",
+      "estimatedNightlyRate": "$220–$320",
+      "transitToStadium": "Uber/Lyft ~35 min ($35-50) or shuttle from designated pickup points",
+      "transitToFanFest": "DART Red Line + walk, 15-20 min total",
+      "topHotels": [
+        {
+          "name": "Hotel Crescent Court",
+          "priceRange": "$280–$380/night",
+          "highlights": ["Pool", "Family suites", "Walkable restaurants"]
+        },
+        {
+          "name": "The Ritz-Carlton Dallas",
+          "priceRange": "$350–$450/night",
+          "highlights": ["Luxury", "Concierge service", "Central location"]
+        },
+        {
+          "name": "Hampton Inn Dallas/Uptown",
+          "priceRange": "$180–$240/night",
+          "highlights": ["Free breakfast", "Budget-friendly", "Clean rooms"]
+        }
+      ],
+      "diningHighlights": ["State & Allen Kitchen + Bar", "Meso Maya Comida y Copas", "Malai Kitchen"],
+      "safetyNotes": "Very safe, well-lit streets, active police presence during events"
+    },
+    "alternativeZones": [
+      {
+        "zoneName": "Downtown Dallas",
+        "score": 82,
+        "whyConsider": "Direct DART access, close to Fan Fest at Klyde Warren Park, iconic skyline views.",
+        "estimatedNightlyRate": "$200–$300",
+        "transitToStadium": "Uber/Lyft ~30 min ($30-45)",
+        "transitToFanFest": "Walk 10-15 min to Klyde Warren Park",
+        "topHotels": [
+          {
+            "name": "The Joule Dallas",
+            "priceRange": "$260–$340/night",
+            "highlights": ["Rooftop pool", "Art collection", "Central"]
+          },
+          {
+            "name": "Hyatt Regency Dallas",
+            "priceRange": "$180–$250/night",
+            "highlights": ["Reunion Tower views", "Family rooms", "Convention center"]
+          }
+        ],
+        "tradeOffs": ["Less neighborhood feel", "Business district quieter on weekends"]
+      },
+      {
+        "zoneName": "Deep Ellum",
+        "score": 75,
+        "whyConsider": "Vibrant arts district, live music venues, eclectic dining — great for groups seeking nightlife.",
+        "estimatedNightlyRate": "$150–$220",
+        "transitToStadium": "Uber/Lyft ~35 min ($35-50)",
+        "transitToFanFest": "DART Green Line + walk, 20 min",
+        "topHotels": [
+          {
+            "name": "The Canvas Hotel Dallas",
+            "priceRange": "$160–$220/night",
+            "highlights": ["Boutique", "Rooftop bar", "Walkable nightlife"]
+          },
+          {
+            "name": "Courtyard by Marriott Deep Ellum",
+            "priceRange": "$140–$190/night",
+            "highlights": ["New construction", "Central Deep Ellum", "Reliable chain"]
+          }
+        ],
+        "tradeOffs": ["Louder at night", "Less family-oriented", "Street parking limited"]
+      },
+      {
+        "zoneName": "Arlington (Stadium Adjacent)",
+        "score": 70,
+        "whyConsider": "Walk to AT&T Stadium, avoid match-day traffic entirely, budget-friendly options.",
+        "estimatedNightlyRate": "$130–$200",
+        "transitToStadium": "Walk 10-20 min",
+        "transitToFanFest": "Uber/Lyft ~25 min ($25-35) — no direct transit",
+        "topHotels": [
+          {
+            "name": "Live! by Loews - Arlington",
+            "priceRange": "$200–$280/night",
+            "highlights": ["Entertainment district", "Walk to stadium", "Restaurants on-site"]
+          },
+          {
+            "name": "Sheraton Arlington Hotel",
+            "priceRange": "$140–$190/night",
+            "highlights": ["Convention center", "Free parking", "Shuttle to stadium"]
+          }
+        ],
+        "tradeOffs": ["Far from Dallas attractions", "Car-dependent area", "Less walkable overall"]
+      }
+    ],
+    "matchDayLogistics": {
+      "stadium": "AT&T Stadium",
+      "arrivalTip": "Arrive 2.5-3 hours before kickoff. Parking opens 4 hours early.",
+      "parkingInfo": "Official lots $50-75. Consider AT&T Stadium Parking Pass app for reservations.",
+      "publicTransit": "No direct rail. Use TRE to CentrePort then shuttle, or rideshare.",
+      "rideshareZones": "Designated pickup/dropoff at Lot 4 and Lot 15. Expect 45-60 min surge pricing post-match.",
+      "familyTips": [
+        "Bring ear protection for young children — stadium is LOUD",
+        "Kids under 2 free if sitting on lap",
+        "Family restrooms available at sections 101, 201, 301"
+      ]
+    },
+    "fanFestInfo": {
+      "location": "Klyde Warren Park",
+      "hours": "10 AM – 10 PM on match days",
+      "activities": ["Giant screens", "Food trucks", "Team merchandise", "Kids zone", "Live entertainment"],
+      "gettingThere": "DART St. Paul Station or Akard Station (10 min walk). Street parking limited — use garage at 2000 Ross Ave.",
+      "tips": ["Free entry", "Bring blankets for lawn seating", "Alcohol sold in designated areas"]
+    },
+    "insiderTips": [
+      "DART Day Pass ($6) gives unlimited rides — best value for exploring",
+      "Download the DART GoPass app for mobile tickets",
+      "Dallas summers are HOT — plan indoor activities during 12-4 PM",
+      "Tex-Mex is a must: try Mi Cocina or Mia's for authentic flavors",
+      "AT&T Stadium tours available on non-match days ($25/adult)"
+    ]
+  }
+}

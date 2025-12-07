@@ -45,7 +45,7 @@ export default function HeroMap() {
           {/* Actions row: CTA • Countdown • Watch */}
           <div className="mt-6 sm:mt-8 flex flex-col md:flex-row items-stretch md:items-center justify-center gap-3 md:gap-4">
             <Link
-              href="/planner"
+              href="/trip_builder_demo"
               className="cta-white inline-flex items-center justify-center rounded-full bg-[color:var(--color-accent-red)] px-8 py-3 text-white hover:text-white visited:text-white focus-visible:text-white active:text-white font-bold shadow-md hover:brightness-110 transition"
             >
               {t('ctaPlan')}
