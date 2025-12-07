@@ -1106,6 +1106,15 @@
       ]
     }
   },
+  "Paywall": {
+    "title": "Unlock Full Access",
+    "description": "Get unlimited access to the AI Travel Planner and all premium features",
+    "feature1": "Unlimited AI Travel Planner access",
+    "feature2": "Custom itineraries for all host cities",
+    "feature3": "Access to city group chats & Fan Teams",
+    "feature4": "Early access to Game-Day Planner",
+    "cta": "Get Fan Zone+ Membership"
+  },
   "footer": {
     "contactPrefix": "Team plans or bulk bundles?",
     "contactLink": "Contact us"

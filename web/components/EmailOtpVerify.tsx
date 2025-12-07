@@ -32,32 +32,56 @@ export default function EmailOtpVerify({ redirect }: { redirect?: string }) {
   }, []);
 
   async function postLoginRedirect() {
+    console.log('[OtpVerify] postLoginRedirect start');
     try {
       const {
         data: { session },
       } = await supabase.auth.getSession();
       const userId = session?.user?.id;
+      console.log('[OtpVerify] session check', { hasSession: Boolean(session), userId });
+      
       if (!userId) {
+        console.log('[OtpVerify] no userId, redirecting to target:', target);
         router.push(target);
         return;
       }
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("user_id, home_airport, is_member")
-        .eq("user_id", userId)
-        .maybeSingle();
+      
+      // Check membership status via API (bypasses RLS)
+      let isMember = false;
+      try {
+        const memberRes = await fetch('/api/membership/check');
+        const memberData = await memberRes.json();
+        isMember = memberData?.isMember === true;
+        console.log('[OtpVerify] membership check via API', { isMember, memberData });
+      } catch (e) {
+        console.error('[OtpVerify] membership API check failed', e);
+      }
 
-      if (!profile || profile.is_member !== true) {
+      if (!isMember) {
+        console.log('[OtpVerify] not a member, redirecting to membership gate');
         router.push(MEMBERSHIP_GATE_REDIRECT);
         return;
       }
 
-      if (!profile.home_airport) {
+      // Check if onboarding is complete (home_airport in user_profile)
+      // user_profile should have RLS allowing users to read their own profile
+      const { data: userProfile, error: profileError } = await supabase
+        .from("user_profile")
+        .select("user_id, home_airport")
+        .eq("user_id", userId)
+        .maybeSingle();
+      
+      console.log('[OtpVerify] user_profile check', { userProfile, profileError: profileError?.message });
+
+      if (!userProfile?.home_airport) {
+        console.log('[OtpVerify] no home_airport, redirecting to onboarding');
         router.push(POST_MEMBERSHIP_ONBOARDING_PATH);
         return;
       }
+      console.log('[OtpVerify] all checks passed, redirecting to target:', target);
       router.push(target);
-    } catch {
+    } catch (err) {
+      console.error('[OtpVerify] postLoginRedirect error:', err);
       router.push(target);
     }
   }

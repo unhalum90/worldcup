@@ -34,16 +34,18 @@ export default function PaywallPage() {
       console.log('[Paywall] getUser result', { userId: user?.id, email: user?.email })
       if (!isMounted || !user?.id) return
 
-      const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('is_member')
-        .eq('user_id', user.id)
-        .maybeSingle()
-      console.log('[Paywall] profile check', { userId: user.id, profile, error })
+      // Use API endpoint to check membership (bypasses RLS)
+      try {
+        const res = await fetch('/api/membership/check')
+        const data = await res.json()
+        console.log('[Paywall] membership check via API', { userId: user.id, data })
 
-      if (profile?.is_member) {
-        console.log('[Paywall] user is member, redirecting', { redirectTarget })
-        router.replace(redirectTarget)
+        if (data?.isMember) {
+          console.log('[Paywall] user is member, redirecting', { redirectTarget })
+          router.replace(redirectTarget)
+        }
+      } catch (error) {
+        console.error('[Paywall] membership check error', error)
       }
     }
 

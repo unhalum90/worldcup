@@ -1,16 +1,19 @@
 import { NextResponse } from 'next/server'
-import { getSupabaseServerClient } from '@/lib/supabaseServer'
+import { createClient } from '@/lib/supabase/server'
+import { supabaseServer } from '@/lib/supabaseServer'
 
 export async function GET() {
   try {
-    const supabase = await getSupabaseServerClient()
+    // First get the authenticated user from the session (cookie-based)
+    const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
       return NextResponse.json({ isMember: false })
     }
 
-    const { data: profile } = await supabase
+    // Use service role to bypass RLS and check membership
+    const { data: profile } = await supabaseServer
       .from('profiles')
       .select('is_member, member_since')
       .eq('user_id', user.id)
