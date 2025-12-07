@@ -1,12 +1,14 @@
 import { redirect } from 'next/navigation'
-import { getSupabaseServerClient } from '@/lib/supabaseServer';
+import { createClient } from '@/lib/supabase/server'
+import { supabaseServer } from '@/lib/supabaseServer'
 import ProfileCard from '@/components/account/ProfileCard'
 import SavedTripsCard from '@/components/account/SavedTripsCard'
 import PurchasesTable from '@/components/account/PurchasesTable'
 import { isActiveMember } from '@/lib/membership'
 
 export default async function AccountPage() {
-  const supabase = await getSupabaseServerClient();
+  // Use cookie-aware client for auth
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -19,8 +21,8 @@ export default async function AccountPage() {
     .eq('user_id', user.id)
     .maybeSingle()
 
-  // Load membership flags from public.profiles to display accurate account status
-  const { data: membershipProfile } = await supabase
+  // Load membership flags from public.profiles (use service role to bypass RLS)
+  const { data: membershipProfile } = await supabaseServer
     .from('profiles')
     .select('account_level, subscription_tier, subscription_status, is_member, email')
     .eq('user_id', user.id)

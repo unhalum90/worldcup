@@ -16,7 +16,7 @@ import LanguageModal from '@/components/LanguageModal';
 import { WebVitals } from '@/components/WebVitals';
 import ScrollToTop from '@/components/ScrollToTop';
 import CookieConsent from "@/components/CookieConsent";
-import { getSupabaseServerClient } from '@/lib/supabaseServer';
+import { createClient } from '@/lib/supabase/server';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,7 +52,8 @@ export default async function RootLayout({
   const showLanguageModal = process.env.NEXT_PUBLIC_ENABLE_LANGUAGE_MODAL === 'true';
 
   // Prefetch authenticated user and minimal profile on server for instant header render
-  const supabase = await getSupabaseServerClient();
+  // Use cookie-aware client to read session from request cookies
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

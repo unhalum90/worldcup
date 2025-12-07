@@ -111,7 +111,9 @@ export async function middleware(req: NextRequest) {
   }
 
   // Allow through if Supabase is mid-refresh (avoid redirect loop)
-  const hasAuthCookie = !!req.cookies.get('sb-access-token');
+  // Supabase SSR cookies follow pattern: sb-<project-ref>-auth-token
+  const allCookies = req.cookies.getAll();
+  const hasAuthCookie = allCookies.some(c => c.name.startsWith('sb-') && c.name.includes('-auth-token'));
   if (!user && hasAuthCookie) {
     return res;
   }
@@ -205,13 +207,15 @@ export async function middleware(req: NextRequest) {
     }
   }
 
+  const cookieNames = req.cookies.getAll().map(c => c.name);
+  const hasSupabaseCookie = cookieNames.some(n => n.startsWith('sb-') && n.includes('-auth-token'));
   console.log(
     '[Middleware]',
     JSON.stringify({
       path: req.nextUrl.pathname,
-      hasAuthCookie: !!req.cookies.get('sb-access-token'),
+      hasAuthCookie: hasSupabaseCookie,
       user: user ? user.email || user.id : null,
-      cookies: req.cookies.getAll().map(c => c.name),
+      cookies: cookieNames,
     })
   );
 
