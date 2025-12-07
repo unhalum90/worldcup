@@ -9,6 +9,29 @@ function sanitizeCode(input: string) {
   return input.replace(/[^0-9A-Za-z]/g, "").trim();
 }
 
+// Extract the final destination from a potentially nested redirect chain
+function extractFinalDestination(url: string): string {
+  try {
+    // If URL contains a redirect param, extract it recursively
+    const urlObj = new URL(url, 'http://dummy');
+    const redirect = urlObj.searchParams.get('redirect');
+    if (redirect && redirect.startsWith('/')) {
+      // Decode and recurse to get the innermost redirect
+      const decoded = decodeURIComponent(redirect);
+      return extractFinalDestination(decoded);
+    }
+    // Return the path without query params if it's a gating page
+    const path = urlObj.pathname;
+    if (path === '/membership/paywall' || path === '/onboarding') {
+      // These are intermediate pages, try to get redirect or return default
+      return redirect ? decodeURIComponent(redirect) : DEFAULT_AUTH_REDIRECT;
+    }
+    return url;
+  } catch {
+    return url;
+  }
+}
+
 export default function EmailOtpVerify({ redirect }: { redirect?: string }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -75,14 +98,20 @@ export default function EmailOtpVerify({ redirect }: { redirect?: string }) {
 
       if (!userProfile?.home_airport) {
         console.log('[OtpVerify] no home_airport, redirecting to onboarding');
-        router.push(POST_MEMBERSHIP_ONBOARDING_PATH);
+        // Pass along the final destination so user ends up there after onboarding
+        const finalDest = extractFinalDestination(target);
+        const onboardingUrl = `${POST_MEMBERSHIP_ONBOARDING_PATH}?redirect=${encodeURIComponent(finalDest)}`;
+        router.push(onboardingUrl);
         return;
       }
-      console.log('[OtpVerify] all checks passed, redirecting to target:', target);
-      router.push(target);
+      
+      // User is a member with completed profile - go to final destination
+      const finalDestination = extractFinalDestination(target);
+      console.log('[OtpVerify] all checks passed, redirecting to final destination:', finalDestination);
+      router.push(finalDestination);
     } catch (err) {
       console.error('[OtpVerify] postLoginRedirect error:', err);
-      router.push(target);
+      router.push(extractFinalDestination(target));
     }
   }
 

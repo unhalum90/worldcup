@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/lib/supabaseServer';
+import { createClient } from '@/lib/supabase/server';
 
 type RouteParams =
   | { params: { id: string } }
@@ -44,7 +44,7 @@ function missingIdResponse() {
 }
 
 async function ensureUser() {
-  const supabase = await getSupabaseServerClient();
+  const supabase = await createClient();
   const { data: auth } = await supabase.auth.getUser();
   const user = auth?.user;
   if (!user) {
