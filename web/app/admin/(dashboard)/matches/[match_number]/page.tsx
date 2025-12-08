@@ -147,6 +147,8 @@ export default function MatchEditorPage() {
         body: JSON.stringify({
           team1: match.team1,
           team2: match.team2,
+          city: match.city,
+          stadium: match.stadium,
         }),
       });
 
