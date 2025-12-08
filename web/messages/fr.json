@@ -194,6 +194,135 @@
       "subtitle": "{count} équipes ont officiellement obtenu leur place à la Coupe du Monde 2026",
       "counts": "{count} équipes qualifiées",
       "viewAll": "Voir les {count} équipes"
+    },
+    "heroDecisionPoint": {
+      "title": "Choisissez Comment Planifier Votre",
+      "titleHighlight": "Voyage Coupe du Monde 2026",
+      "subtitle": "Tout ce dont les fans ont besoin : guides de villes d'initiés, itinéraires personnalisés et mises à jour de transport en temps réel pour juin/juillet.",
+      "cityGuides": {
+        "question": "Besoin Juste d'Infos Privilégiées sur Chaque Ville Hôte ?",
+        "description": "Achetez nos guides de villes premium—écrits par des fans, pour des fans. Évitez les pièges à touristes et les maux de tête logistiques du jour du match.",
+        "features": [
+          "Meilleures zones hôtelières pour un transit rapide le jour du match",
+          "Emplacements des fan fests, sécurité et étiquette locale",
+          "Où vont vraiment les supporters avant et après le match",
+          "Logistique du stade que vous ne trouverez pas sur Google Maps"
+        ],
+        "cta": "Acheter les Guides de Villes Premium",
+        "price": "À partir de 3,99 $ par ville"
+      },
+      "tripBuilder": {
+        "badge": "Le Plus Populaire",
+        "question": "Besoin d'un Itinéraire Personnalisé qui se Met à Jour Automatiquement ?",
+        "description": "Le Planificateur de Voyage Personnalisé crée votre itinéraire complet et optimisé en une minute—et <strong>met automatiquement à jour</strong> votre plan avec la logistique cruciale de <strong>juin/juillet</strong>.",
+        "features": [
+          "Itinéraire personnalisé (matchs → villes → vols → hôtels)",
+          "Optimisé pour éviter les routes cauchemardesques (LA → KC → Miami)",
+          "Garanti pour vous garder près des supporters et du meilleur transport",
+          "Mises à jour automatiques avec transport confirmé, fan fests et fermetures de routes"
+        ],
+        "cta": "Créer Mon Voyage",
+        "price": "Accès Complet : 29 $",
+        "demoLink": "Voir la démo d'abord →"
+      }
+    },
+    "painPointCarousel": {
+      "title": "Le Vrai Défi du Voyage à la Coupe du Monde 2026 :",
+      "slides": [
+        {
+          "highlight": "L'Amérique du Nord est immense.",
+          "text": "L'itinéraire moyen d'un fan nécessite 5+ vols majeurs et 4+ transferts en bus à travers le pays—ne réservez pas un itinéraire cauchemardesque.",
+          "icon": "🗺️"
+        },
+        {
+          "highlight": "Les hôtels se vendront vite",
+          "text": "dans des emplacements mauvais ou peu pratiques. Notre système recommande des zones optimisées pour les supporters et le transport.",
+          "icon": "🏨"
+        },
+        {
+          "highlight": "La logistique cruciale du jour du match",
+          "text": "(changements de transport, fermetures de routes) ne sera pas finalisée avant juin/juillet 2026. Vous avez besoin d'un plan qui peut s'adapter instantanément.",
+          "icon": "🚧"
+        },
+        {
+          "highlight": "Google Maps ne vous montrera pas",
+          "text": "les fan zones temporaires, les itinéraires de navettes du stade ou les fermetures de rues le jour du match.",
+          "icon": "📍"
+        },
+        {
+          "highlight": "La plupart des villes hôtes ont 2+ aéroports majeurs.",
+          "text": "Choisir le mauvais pour les vols de correspondance peut vous coûter des heures (et votre santé mentale).",
+          "icon": "✈️"
+        }
+      ]
+    },
+    "socialProof": {
+      "title": "Logistique de Confiance pour le Plus Grand Tournoi du Monde",
+      "subtitle": "Compilé à partir de sources officielles, vérifié par les communautés de fans locales et mis à jour dans les 24 heures suivant les annonces majeures des villes hôtes.",
+      "metrics": {
+        "languages": {
+          "value": "5",
+          "label": "Langues Supportées"
+        },
+        "itineraries": {
+          "value": "300+",
+          "label": "Itinéraires Créés"
+        },
+        "cities": {
+          "value": "16",
+          "label": "Villes Hôtes Couvertes"
+        },
+        "updates": {
+          "value": "24h",
+          "label": "Délai de Mise à Jour"
+        }
+      },
+      "trustStatement": "Approuvé par des fans du monde entier",
+      "trustDetails": "— planifiant des voyages depuis l'Europe, l'Amérique du Sud, l'Asie, l'Afrique et au-delà.",
+      "availableIn": "Disponible en :"
+    },
+    "featureComparison": {
+      "title": "Quel Outil de Planification WC2026 Vous Convient ?",
+      "subtitle": "Comparez nos produits et choisissez la meilleure option pour votre voyage à la Coupe du Monde.",
+      "headers": {
+        "feature": "Fonctionnalité",
+        "cityGuides": "Guides de Villes",
+        "cityGuidesPrice": "3,99 $/ville",
+        "tripBuilder": "Planificateur de Voyage Personnalisé",
+        "tripBuilderBadge": "MEILLEUR RAPPORT QUALITÉ-PRIX",
+        "tripBuilderPrice": "29 $ Accès Complet"
+      },
+      "features": [
+        {
+          "name": "Infos logistiques d'initié (Zones hôtelières, etc.)",
+          "guidesNote": null,
+          "builderNote": null
+        },
+        {
+          "name": "Conseils de transport le jour du match",
+          "guidesNote": null,
+          "builderNote": "Auto-personnalisé"
+        },
+        {
+          "name": "Planification d'itinéraire match par match",
+          "guidesNote": null,
+          "builderNote": null
+        },
+        {
+          "name": "Suggestions de vols/hébergements",
+          "guidesNote": null,
+          "builderNote": null
+        },
+        {
+          "name": "Mises à jour des fermetures temporaires/fan fests (Juin '26)",
+          "guidesNote": null,
+          "builderNote": "Automatisé"
+        }
+      ],
+      "cta": {
+        "cityGuides": "Parcourir les Guides de Villes",
+        "tripBuilder": "Créer Mon Voyage"
+      }
     }
   },
   "planner": {

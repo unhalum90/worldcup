@@ -1,46 +1,29 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-
-const painPoints = [
-  {
-    highlight: "North America is massive.",
-    text: "The average fan route requires 5+ major flights and 4+ cross-country bus transfers—don't book a nightmare route.",
-    icon: "🗺️",
-  },
-  {
-    highlight: "Hotels will sell out fast",
-    text: "in bad or inconvenient locations. Our system recommends zones optimized for supporters and transit.",
-    icon: "🏨",
-  },
-  {
-    highlight: "Crucial match-day logistics",
-    text: "(transit changes, road closures) won't be final until June/July 2026. You need a plan that can instantly adapt.",
-    icon: "🚧",
-  },
-  {
-    highlight: "Google Maps won't show you",
-    text: "temporary fan zones, stadium shuttle routes, or match-day street closures.",
-    icon: "📍",
-  },
-  {
-    highlight: "Most host cities have 2+ major airports.",
-    text: "Choosing the wrong one for connection flights can cost you hours (and sanity).",
-    icon: "✈️",
-  },
-];
+import { useTranslations } from 'next-intl';
 
 export default function PainPointCarousel() {
+  const t = useTranslations('landing.painPointCarousel');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Get slides from translations
+  const slides = [
+    { highlight: t('slides.0.highlight'), text: t('slides.0.text'), icon: t('slides.0.icon') },
+    { highlight: t('slides.1.highlight'), text: t('slides.1.text'), icon: t('slides.1.icon') },
+    { highlight: t('slides.2.highlight'), text: t('slides.2.text'), icon: t('slides.2.icon') },
+    { highlight: t('slides.3.highlight'), text: t('slides.3.text'), icon: t('slides.3.icon') },
+    { highlight: t('slides.4.highlight'), text: t('slides.4.text'), icon: t('slides.4.icon') },
+  ];
+
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % painPoints.length);
-  }, []);
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
   const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + painPoints.length) % painPoints.length);
-  }, []);
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
   // Auto-rotate every 5 seconds
   useEffect(() => {
@@ -53,7 +36,7 @@ export default function PainPointCarousel() {
     <section className="bg-gradient-to-b from-slate-50 to-white py-16 sm:py-20">
       <div className="container max-w-4xl mx-auto px-4">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-12 text-slate-800">
-          The Real Challenge of World Cup 2026 Travel:
+          {t('title')}
         </h2>
 
         <div 
@@ -67,7 +50,7 @@ export default function PainPointCarousel() {
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
-              {painPoints.map((point, index) => (
+              {slides.map((point, index) => (
                 <div
                   key={index}
                   className="w-full flex-shrink-0 px-4"
@@ -107,7 +90,7 @@ export default function PainPointCarousel() {
 
         {/* Dots Indicator */}
         <div className="flex justify-center gap-2 mt-8">
-          {painPoints.map((_, index) => (
+          {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}

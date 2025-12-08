@@ -1,21 +1,25 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 export default function SocialProof() {
+  const t = useTranslations('landing.socialProof');
+
   const metrics = [
-    { value: '5', label: 'Languages Supported', icon: '🌍' },
-    { value: '300+', label: 'Itineraries Built', icon: '📋' },
-    { value: '16', label: 'Host Cities Covered', icon: '🏟️' },
-    { value: '24hr', label: 'Update Turnaround', icon: '⚡' },
+    { value: t('metrics.languages.value'), label: t('metrics.languages.label'), icon: '🌍' },
+    { value: t('metrics.itineraries.value'), label: t('metrics.itineraries.label'), icon: '📋' },
+    { value: t('metrics.cities.value'), label: t('metrics.cities.label'), icon: '🏟️' },
+    { value: t('metrics.updates.value'), label: t('metrics.updates.label'), icon: '⚡' },
   ];
 
   return (
     <section className="bg-gray-900 text-white py-16 sm:py-20">
       <div className="container max-w-5xl mx-auto px-4">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-4">
-          Trusted Logistics for the World&apos;s Biggest Tournament
+          {t('title')}
         </h2>
         <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
-          Compiled from official sources, vetted by local fan boards, and updated within 24 hours of major host city announcements.
+          {t('subtitle')}
         </p>
 
         {/* Metrics Grid */}
@@ -37,12 +41,12 @@ export default function SocialProof() {
         {/* Trust Statement */}
         <div className="text-center">
           <p className="text-lg text-gray-300 mb-6">
-            <span className="font-semibold text-white">Trusted by fans around the world</span> — planning trips from Europe, South America, Asia, Africa, and beyond.
+            <span className="font-semibold text-white">{t('trustStatement')}</span> {t('trustDetails')}
           </p>
           
           {/* Language Flags */}
           <div className="flex justify-center items-center gap-4 flex-wrap">
-            <span className="text-sm text-gray-500">Available in:</span>
+            <span className="text-sm text-gray-500">{t('availableIn')}</span>
             <div className="flex gap-3">
               {[
                 { flag: '🇺🇸', lang: 'EN' },

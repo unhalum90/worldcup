@@ -383,6 +383,103 @@
         "pill": "{count, plural, one {{formattedCount} día para {label}} other {{formattedCount} días para {label}}}"
       }
     },
+    "heroDecisionPoint": {
+      "title": "Elige Cómo Quieres Planificar tu",
+      "titleHighlight": "Viaje al Mundial 2026",
+      "subtitle": "Todo lo que los fans necesitan: guías de ciudades con información privilegiada, itinerarios personalizados y actualizaciones de transporte en tiempo real para junio/julio.",
+      "cityGuides": {
+        "question": "¿Solo Necesitas Información Privilegiada de Cada Ciudad Sede?",
+        "description": "Compra nuestras guías premium de ciudades—escritas por fans, para fans. Evita las trampas turísticas y los dolores de cabeza logísticos del día del partido.",
+        "features": [
+          "Mejores zonas hoteleras para tránsito rápido el día del partido",
+          "Ubicaciones de fan fests, seguridad y etiqueta local",
+          "Dónde van realmente los aficionados antes y después del partido",
+          "Logística del estadio que no encontrarás en Google Maps"
+        ],
+        "cta": "Comprar Guías Premium de Ciudades",
+        "price": "Desde $3.99 por ciudad"
+      },
+      "tripBuilder": {
+        "badge": "Más Popular",
+        "question": "¿Necesitas un Itinerario Personalizado que se Actualice Solo?",
+        "description": "El Planificador de Viajes Personalizado crea tu itinerario completo y optimizado en un minuto—y <strong>actualiza automáticamente</strong> tu plan con la logística crucial de <strong>junio/julio</strong>.",
+        "features": [
+          "Ruta personalizada (partidos → ciudades → vuelos → hoteles)",
+          "Optimizado para evitar rutas de pesadilla (LA → KC → Miami)",
+          "Garantizado para mantenerte cerca de aficionados y el mejor transporte",
+          "Actualizaciones automáticas con transporte confirmado, fan fests y cierres de calles"
+        ],
+        "cta": "Crear Mi Viaje",
+        "price": "Acceso Completo: $29",
+        "demoLink": "Ver demo primero →"
+      }
+    },
+    "painPointCarousel": {
+      "title": "El Verdadero Desafío de Viajar al Mundial 2026:",
+      "slides": [
+        {
+          "highlight": "Norteamérica es enorme.",
+          "text": "La ruta promedio del aficionado requiere 5+ vuelos principales y 4+ transferencias en autobús por el país—no reserves una ruta de pesadilla.",
+          "icon": "🗺️"
+        },
+        {
+          "highlight": "Los hoteles se agotarán rápido",
+          "text": "en ubicaciones malas o inconvenientes. Nuestro sistema recomienda zonas optimizadas para aficionados y transporte.",
+          "icon": "🏨"
+        },
+        {
+          "highlight": "La logística crucial del día del partido",
+          "text": "(cambios de transporte, cierres de calles) no estará definida hasta junio/julio 2026. Necesitas un plan que pueda adaptarse al instante.",
+          "icon": "🚧"
+        },
+        {
+          "highlight": "Google Maps no te mostrará",
+          "text": "las fan zones temporales, rutas de shuttles del estadio o cierres de calles el día del partido.",
+          "icon": "📍"
+        },
+        {
+          "highlight": "La mayoría de las ciudades sede tienen 2+ aeropuertos principales.",
+          "text": "Elegir el equivocado para vuelos de conexión puede costarte horas (y cordura).",
+          "icon": "✈️"
+        }
+      ]
+    },
+    "socialProof": {
+      "title": "Logística de Confianza para el Torneo Más Grande del Mundo",
+      "subtitle": "Recopilado de fuentes oficiales, verificado por comunidades locales de fans y actualizado dentro de 24 horas de los anuncios importantes de las ciudades sede.",
+      "metrics": {
+        "languages": { "value": "5", "label": "Idiomas Soportados" },
+        "itineraries": { "value": "300+", "label": "Itinerarios Creados" },
+        "cities": { "value": "16", "label": "Ciudades Sede Cubiertas" },
+        "updates": { "value": "24hr", "label": "Tiempo de Actualización" }
+      },
+      "trustStatement": "Confiado por fans de todo el mundo",
+      "trustDetails": "— planificando viajes desde Europa, Sudamérica, Asia, África y más.",
+      "availableIn": "Disponible en:"
+    },
+    "featureComparison": {
+      "title": "¿Qué Herramienta de Planificación WC2026 es la Correcta Para Ti?",
+      "subtitle": "Compara nuestros productos y elige la mejor opción para tu viaje al Mundial.",
+      "headers": {
+        "feature": "Característica",
+        "cityGuides": "Guías de Ciudades",
+        "cityGuidesPrice": "$3.99/ciudad",
+        "tripBuilder": "Planificador de Viajes Personalizado",
+        "tripBuilderBadge": "MEJOR VALOR",
+        "tripBuilderPrice": "$29 Acceso Completo"
+      },
+      "features": [
+        { "name": "Información logística privilegiada (Zonas hoteleras, etc.)", "guidesNote": null, "builderNote": null },
+        { "name": "Consejos de transporte del día del partido", "guidesNote": null, "builderNote": "Auto-personalizado" },
+        { "name": "Planificación de ruta partido a partido", "guidesNote": null, "builderNote": null },
+        { "name": "Sugerencias de vuelos/alojamiento", "guidesNote": null, "builderNote": null },
+        { "name": "Actualizaciones de cierres temporales/fan fests (Jun '26)", "guidesNote": null, "builderNote": "Automatizado" }
+      ],
+      "cta": {
+        "cityGuides": "Ver Guías de Ciudades",
+        "tripBuilder": "Crear Mi Viaje"
+      }
+    },
     "featureShowcase": {
       "title": "Tres Formas de Planificar tu Viaje al Mundial",
       "subtitle": "Todo lo que necesitas para hacer que tu viaje al Mundial 2026 sea inolvidable",

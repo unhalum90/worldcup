@@ -470,7 +470,12 @@
     "social": {
       "headline": "Confiável por comunidades de torcedores",
       "subhead": "nas cidades-sede de 2026 em todo o mundo.",
-      "badges": ["Clubes de torcedores", "Guias locais", "Voluntários da cidade", "Criadores de conteúdo"]
+      "badges": [
+        "Clubes de torcedores",
+        "Guias locais",
+        "Voluntários da cidade",
+        "Criadores de conteúdo"
+      ]
     },
     "chunks": {
       "title": "O que você receberá a seguir",
@@ -588,6 +593,135 @@
           "a": "Sim — contribuidores torcedores e especialistas locais podem enviar dicas e atualizações."
         }
       ]
+    },
+    "heroDecisionPoint": {
+      "title": "Escolha Como Planejar Sua",
+      "titleHighlight": "Viagem à Copa do Mundo 2026",
+      "subtitle": "Tudo o que os torcedores precisam: guias de cidades com informações privilegiadas, itinerários personalizados e atualizações de transporte em tempo real para junho/julho.",
+      "cityGuides": {
+        "question": "Só Precisa de Informações Privilegiadas de Cada Cidade-Sede?",
+        "description": "Compre nossos guias premium de cidades—escritos por torcedores, para torcedores. Evite as armadilhas turísticas e as dores de cabeça logísticas do dia do jogo.",
+        "features": [
+          "Melhores zonas hoteleiras para trânsito rápido no dia do jogo",
+          "Localizações de fan fests, segurança e etiqueta local",
+          "Para onde os torcedores realmente vão antes e depois do jogo",
+          "Logística do estádio que você não encontrará no Google Maps"
+        ],
+        "cta": "Comprar Guias Premium de Cidades",
+        "price": "A partir de $3,99 por cidade"
+      },
+      "tripBuilder": {
+        "badge": "Mais Popular",
+        "question": "Precisa de um Itinerário Personalizado que se Atualiza Automaticamente?",
+        "description": "O Planejador de Viagens Personalizado cria seu itinerário completo e otimizado em um minuto—e <strong>atualiza automaticamente</strong> seu plano com a logística crucial de <strong>junho/julho</strong>.",
+        "features": [
+          "Rota personalizada (jogos → cidades → voos → hotéis)",
+          "Otimizado para evitar rotas de pesadelo (LA → KC → Miami)",
+          "Garantido para mantê-lo perto dos torcedores e do melhor transporte",
+          "Atualizações automáticas com transporte confirmado, fan fests e fechamentos de ruas"
+        ],
+        "cta": "Criar Minha Viagem",
+        "price": "Acesso Completo: $29",
+        "demoLink": "Ver demo primeiro →"
+      }
+    },
+    "painPointCarousel": {
+      "title": "O Verdadeiro Desafio de Viajar para a Copa do Mundo 2026:",
+      "slides": [
+        {
+          "highlight": "A América do Norte é enorme.",
+          "text": "O itinerário médio do torcedor requer 5+ voos principais e 4+ transferências de ônibus pelo país—não reserve um itinerário de pesadelo.",
+          "icon": "🗺️"
+        },
+        {
+          "highlight": "Os hotéis vão esgotar rápido",
+          "text": "em localizações ruins ou inconvenientes. Nosso sistema recomenda zonas otimizadas para torcedores e transporte.",
+          "icon": "🏨"
+        },
+        {
+          "highlight": "A logística crucial do dia do jogo",
+          "text": "(mudanças de transporte, fechamentos de ruas) não estará definida até junho/julho 2026. Você precisa de um plano que pode se adaptar instantaneamente.",
+          "icon": "🚧"
+        },
+        {
+          "highlight": "O Google Maps não vai mostrar",
+          "text": "as fan zones temporárias, rotas de shuttles do estádio ou fechamentos de ruas no dia do jogo.",
+          "icon": "📍"
+        },
+        {
+          "highlight": "A maioria das cidades-sede tem 2+ aeroportos principais.",
+          "text": "Escolher o errado para voos de conexão pode custar horas (e sanidade).",
+          "icon": "✈️"
+        }
+      ]
+    },
+    "socialProof": {
+      "title": "Logística Confiável para o Maior Torneio do Mundo",
+      "subtitle": "Compilado de fontes oficiais, verificado por comunidades locais de torcedores e atualizado dentro de 24 horas dos anúncios importantes das cidades-sede.",
+      "metrics": {
+        "languages": {
+          "value": "5",
+          "label": "Idiomas Suportados"
+        },
+        "itineraries": {
+          "value": "300+",
+          "label": "Itinerários Criados"
+        },
+        "cities": {
+          "value": "16",
+          "label": "Cidades-Sede Cobertas"
+        },
+        "updates": {
+          "value": "24h",
+          "label": "Tempo de Atualização"
+        }
+      },
+      "trustStatement": "Confiado por torcedores do mundo todo",
+      "trustDetails": "— planejando viagens da Europa, América do Sul, Ásia, África e além.",
+      "availableIn": "Disponível em:"
+    },
+    "featureComparison": {
+      "title": "Qual Ferramenta de Planejamento WC2026 é Certa Para Você?",
+      "subtitle": "Compare nossos produtos e escolha a melhor opção para sua viagem à Copa do Mundo.",
+      "headers": {
+        "feature": "Recurso",
+        "cityGuides": "Guias de Cidades",
+        "cityGuidesPrice": "$3,99/cidade",
+        "tripBuilder": "Planejador de Viagens Personalizado",
+        "tripBuilderBadge": "MELHOR VALOR",
+        "tripBuilderPrice": "$29 Acesso Completo"
+      },
+      "features": [
+        {
+          "name": "Informações logísticas privilegiadas (Zonas hoteleiras, etc.)",
+          "guidesNote": null,
+          "builderNote": null
+        },
+        {
+          "name": "Conselhos de transporte do dia do jogo",
+          "guidesNote": null,
+          "builderNote": "Auto-personalizado"
+        },
+        {
+          "name": "Planejamento de rota jogo a jogo",
+          "guidesNote": null,
+          "builderNote": null
+        },
+        {
+          "name": "Sugestões de voos/hospedagem",
+          "guidesNote": null,
+          "builderNote": null
+        },
+        {
+          "name": "Atualizações de fechamentos temporários/fan fests (Jun '26)",
+          "guidesNote": null,
+          "builderNote": "Automatizado"
+        }
+      ],
+      "cta": {
+        "cityGuides": "Ver Guias de Cidades",
+        "tripBuilder": "Criar Minha Viagem"
+      }
     }
   },
   "planner": {

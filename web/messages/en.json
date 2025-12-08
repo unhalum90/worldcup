@@ -145,6 +145,103 @@
       "ctaWatch": "Watch How It Works (90 sec)",
       "ctaWatchAria": "Watch how it works (90 sec)"
     },
+    "heroDecisionPoint": {
+      "title": "Choose How You Want to Plan Your",
+      "titleHighlight": "World Cup 2026 Trip",
+      "subtitle": "Everything fans need: insider city guides, personalized itineraries, and real-time June/July transport updates.",
+      "cityGuides": {
+        "question": "Just Need Inside Info for Each Host City?",
+        "description": "Buy our premium city guides—written by fans, for fans. Skip the tourist traps and avoid game-day logistics headaches.",
+        "features": [
+          "Best hotel zones for quick match-day transit",
+          "Fan fest locations, safety, and local etiquette",
+          "Where supporters actually go pre- and post-match",
+          "Stadium logistics you won't find on Google Maps"
+        ],
+        "cta": "Buy Premium City Guides",
+        "price": "From $3.99 per city"
+      },
+      "tripBuilder": {
+        "badge": "Most Popular",
+        "question": "Need a Custom, Self-Updating Itinerary?",
+        "description": "The Personalized Trip Builder creates your full, optimized itinerary in a minute—and <strong>automatically updates</strong> your plan with crucial <strong>June/July</strong> logistics.",
+        "features": [
+          "Personalized route (matches → cities → flights → hotels)",
+          "Optimized to avoid nightmare routes (LA → KC → Miami)",
+          "Guaranteed to keep you near supporters and best transit",
+          "Auto-updates with confirmed transit, fan fests & road closures"
+        ],
+        "cta": "Build My Trip",
+        "price": "Full Access: $29",
+        "demoLink": "Watch demo first →"
+      }
+    },
+    "painPointCarousel": {
+      "title": "The Real Challenge of World Cup 2026 Travel:",
+      "slides": [
+        {
+          "highlight": "North America is massive.",
+          "text": "The average fan route requires 5+ major flights and 4+ cross-country bus transfers—don't book a nightmare route.",
+          "icon": "🗺️"
+        },
+        {
+          "highlight": "Hotels will sell out fast",
+          "text": "in bad or inconvenient locations. Our system recommends zones optimized for supporters and transit.",
+          "icon": "🏨"
+        },
+        {
+          "highlight": "Crucial match-day logistics",
+          "text": "(transit changes, road closures) won't be final until June/July 2026. You need a plan that can instantly adapt.",
+          "icon": "🚧"
+        },
+        {
+          "highlight": "Google Maps won't show you",
+          "text": "temporary fan zones, stadium shuttle routes, or match-day street closures.",
+          "icon": "📍"
+        },
+        {
+          "highlight": "Most host cities have 2+ major airports.",
+          "text": "Choosing the wrong one for connection flights can cost you hours (and sanity).",
+          "icon": "✈️"
+        }
+      ]
+    },
+    "socialProof": {
+      "title": "Trusted Logistics for the World's Biggest Tournament",
+      "subtitle": "Compiled from official sources, vetted by local fan boards, and updated within 24 hours of major host city announcements.",
+      "metrics": {
+        "languages": { "value": "5", "label": "Languages Supported" },
+        "itineraries": { "value": "300+", "label": "Itineraries Built" },
+        "cities": { "value": "16", "label": "Host Cities Covered" },
+        "updates": { "value": "24hr", "label": "Update Turnaround" }
+      },
+      "trustStatement": "Trusted by fans around the world",
+      "trustDetails": "— planning trips from Europe, South America, Asia, Africa, and beyond.",
+      "availableIn": "Available in:"
+    },
+    "featureComparison": {
+      "title": "Which WC2026 Planning Tool is Right For You?",
+      "subtitle": "Compare our products and choose the best fit for your World Cup journey.",
+      "headers": {
+        "feature": "Feature",
+        "cityGuides": "City Guides",
+        "cityGuidesPrice": "$3.99/city",
+        "tripBuilder": "Personalized Trip Builder",
+        "tripBuilderBadge": "BEST VALUE",
+        "tripBuilderPrice": "$29 Full Access"
+      },
+      "features": [
+        { "name": "Insider logistics info (Hotel zones, etc.)", "guidesNote": null, "builderNote": null },
+        { "name": "Match-day transport advice", "guidesNote": null, "builderNote": "Auto-personalized" },
+        { "name": "Match-to-Match route planning", "guidesNote": null, "builderNote": null },
+        { "name": "Flight/lodging suggestions", "guidesNote": null, "builderNote": null },
+        { "name": "Temporary closure/fan fest updates (June '26)", "guidesNote": null, "builderNote": "Automated" }
+      ],
+      "cta": {
+        "cityGuides": "Browse City Guides",
+        "tripBuilder": "Build My Trip"
+      }
+    },
     "featureShowcase": {
       "title": "Two Ways to Plan Your World Cup Journey",
       "subtitle": "Everything you need to make your 2026 World Cup trip unforgettable",

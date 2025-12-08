@@ -1,6 +1,10 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 export default function HeroDecisionPoint() {
+  const t = useTranslations('landing.heroDecisionPoint');
+
   const handleBuildMyTrip = () => {
     // Dispatch event to open the global auth modal, then redirect to membership
     if (typeof window !== 'undefined') {
@@ -9,6 +13,21 @@ export default function HeroDecisionPoint() {
       window.dispatchEvent(new CustomEvent('fz:open-auth'));
     }
   };
+
+  // Get feature arrays from translations
+  const cityGuidesFeatures = [
+    t('cityGuides.features.0'),
+    t('cityGuides.features.1'),
+    t('cityGuides.features.2'),
+    t('cityGuides.features.3'),
+  ];
+
+  const tripBuilderFeatures = [
+    t('tripBuilder.features.0'),
+    t('tripBuilder.features.1'),
+    t('tripBuilder.features.2'),
+    t('tripBuilder.features.3'),
+  ];
 
   return (
     <section className="relative bg-gradient-to-b from-blue-500 to-blue-700 text-white overflow-hidden">
@@ -19,13 +38,13 @@ export default function HeroDecisionPoint() {
         {/* Primary Headlines */}
         <div className="text-center mb-12 lg:mb-16">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 leading-tight text-white">
-            Choose How You Want to Plan Your
+            {t('title')}
             <span className="block text-amber-300">
-              World Cup 2026 Trip
+              {t('titleHighlight')}
             </span>
           </h1>
           <p className="text-lg sm:text-xl text-blue-100 max-w-3xl mx-auto">
-            Everything fans need: insider city guides, personalized itineraries, and real-time June/July transport updates.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -41,21 +60,16 @@ export default function HeroDecisionPoint() {
                 </svg>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-                Just Need Inside Info for Each Host City?
+                {t('cityGuides.question')}
               </h2>
             </div>
             
             <p className="text-gray-600 mb-6">
-              Buy our premium city guides—written by fans, for fans. Skip the tourist traps and avoid game-day logistics headaches.
+              {t('cityGuides.description')}
             </p>
 
             <ul className="space-y-3 mb-8">
-              {[
-                'Best hotel zones for quick match-day transit',
-                'Fan fest locations, safety, and local etiquette',
-                'Where supporters actually go pre- and post-match',
-                'Stadium logistics you won\'t find on Google Maps',
-              ].map((item, i) => (
+              {cityGuidesFeatures.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -70,13 +84,13 @@ export default function HeroDecisionPoint() {
                 href="/cityguides"
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold !text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
               >
-                Buy Premium City Guides
+                {t('cityGuides.cta')}
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </a>
               <p className="text-center text-sm text-gray-500">
-                From <span className="font-semibold text-gray-900">$3.99</span> per city
+                {t('cityGuides.price')}
               </p>
             </div>
           </div>
@@ -85,7 +99,7 @@ export default function HeroDecisionPoint() {
           <div className="relative bg-white rounded-2xl shadow-xl p-6 sm:p-8 text-gray-800 ring-2 ring-amber-400">
             {/* Popular Badge */}
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-amber-400 rounded-full text-xs font-bold text-gray-900 uppercase tracking-wide">
-              Most Popular
+              {t('tripBuilder.badge')}
             </div>
 
             <div className="flex items-center gap-3 mb-4 mt-2">
@@ -95,21 +109,14 @@ export default function HeroDecisionPoint() {
                 </svg>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-                Need a Custom, Self-Updating Itinerary?
+                {t('tripBuilder.question')}
               </h2>
             </div>
             
-            <p className="text-gray-600 mb-6">
-              The Personalized Trip Builder creates your full, optimized itinerary in a minute—and <strong className="text-gray-900">automatically updates</strong> your plan with crucial <strong className="text-gray-900">June/July</strong> logistics.
-            </p>
+            <p className="text-gray-600 mb-6" dangerouslySetInnerHTML={{ __html: t('tripBuilder.description') }} />
 
             <ul className="space-y-3 mb-8">
-              {[
-                'Personalized route (matches → cities → flights → hotels)',
-                'Optimized to avoid nightmare routes (LA → KC → Miami)',
-                'Guaranteed to keep you near supporters and best transit',
-                'Auto-updates with confirmed transit, fan fests & road closures',
-              ].map((item, i) => (
+              {tripBuilderFeatures.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -124,19 +131,19 @@ export default function HeroDecisionPoint() {
                 onClick={handleBuildMyTrip}
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold !text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
               >
-                Build My Trip
+                {t('tripBuilder.cta')}
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </button>
               <p className="text-center text-sm text-gray-500">
-                Full Access: <span className="font-semibold text-gray-900">$29</span>
+                {t('tripBuilder.price')}
               </p>
               <a
                 href="#how-it-works"
                 className="block text-center text-sm text-blue-600 hover:text-blue-700 font-medium"
               >
-                Watch demo first →
+                {t('tripBuilder.demoLink')}
               </a>
             </div>
           </div>

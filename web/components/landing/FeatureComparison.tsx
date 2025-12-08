@@ -1,47 +1,34 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 export default function FeatureComparison() {
-  const features = [
-    {
-      name: 'Insider logistics info (Hotel zones, etc.)',
-      guides: true,
-      builder: true,
-      builderNote: null,
-    },
-    {
-      name: 'Match-day transport advice',
-      guides: true,
-      builder: true,
-      builderNote: 'Auto-personalized',
-    },
-    {
-      name: 'Match-to-Match route planning',
-      guides: false,
-      builder: true,
-      builderNote: null,
-    },
-    {
-      name: 'Flight/lodging suggestions',
-      guides: false,
-      builder: true,
-      builderNote: null,
-    },
-    {
-      name: "Temporary closure/fan fest updates (June '26)",
-      guides: false,
-      builder: true,
-      builderNote: 'Automated',
-    },
+  const t = useTranslations('landing.featureComparison');
+
+  // Features with guides/builder availability
+  const featureConfigs = [
+    { guides: true, builder: true },
+    { guides: true, builder: true },
+    { guides: false, builder: true },
+    { guides: false, builder: true },
+    { guides: false, builder: true },
   ];
+
+  const features = featureConfigs.map((config, i) => ({
+    name: t(`features.${i}.name`),
+    guides: config.guides,
+    builder: config.builder,
+    builderNote: t.raw(`features.${i}.builderNote`),
+  }));
 
   return (
     <section className="bg-white py-16 sm:py-20">
       <div className="container max-w-4xl mx-auto px-4">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-4 text-gray-900">
-          Which WC2026 Planning Tool is Right For You?
+          {t('title')}
         </h2>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          Compare our products and choose the best fit for your World Cup journey.
+          {t('subtitle')}
         </p>
 
         {/* Comparison Table */}
@@ -50,20 +37,20 @@ export default function FeatureComparison() {
             <thead>
               <tr>
                 <th className="text-left p-4 bg-gray-50 border-b-2 border-gray-200 font-semibold text-gray-700">
-                  Feature
+                  {t('headers.feature')}
                 </th>
                 <th className="text-center p-4 bg-gray-50 border-b-2 border-gray-200 font-semibold text-gray-700">
-                  <div>City Guides</div>
-                  <div className="text-sm font-normal text-gray-500">$3.99/city</div>
+                  <div>{t('headers.cityGuides')}</div>
+                  <div className="text-sm font-normal text-gray-500">{t('headers.cityGuidesPrice')}</div>
                 </th>
                 <th className="text-center p-4 bg-blue-50 border-b-2 border-blue-200 font-semibold text-blue-800">
                   <div className="flex items-center justify-center gap-2">
-                    Personalized Trip Builder
+                    {t('headers.tripBuilder')}
                     <span className="px-2 py-0.5 bg-amber-400 text-gray-900 text-xs rounded-full font-bold">
-                      BEST VALUE
+                      {t('headers.tripBuilderBadge')}
                     </span>
                   </div>
-                  <div className="text-sm font-normal text-blue-600">$29 Full Access</div>
+                  <div className="text-sm font-normal text-blue-600">{t('headers.tripBuilderPrice')}</div>
                 </th>
               </tr>
             </thead>
@@ -117,16 +104,16 @@ export default function FeatureComparison() {
 
         {/* Bottom Price Row */}
         <div className="mt-8 grid grid-cols-2 gap-4 max-w-2xl mx-auto">
-          <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-200">
-            <div className="font-semibold text-gray-800">City Guides</div>
+          <a href="/cityguides" className="text-center p-4 rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors">
+            <div className="font-semibold text-gray-800">{t('headers.cityGuides')}</div>
             <div className="text-2xl font-bold text-gray-700">$3.99 – $9.99</div>
-            <div className="text-sm text-gray-500">per city</div>
-          </div>
-          <div className="text-center p-4 rounded-xl bg-blue-50 border-2 border-blue-300">
-            <div className="font-semibold text-blue-800">Personalized Trip Builder</div>
+            <div className="text-sm text-gray-500">{t('cta.cityGuides')}</div>
+          </a>
+          <a href="/membership" className="text-center p-4 rounded-xl bg-blue-50 border-2 border-blue-300 hover:bg-blue-100 transition-colors">
+            <div className="font-semibold text-blue-800">{t('headers.tripBuilder')}</div>
             <div className="text-2xl font-bold text-blue-600">$29</div>
-            <div className="text-sm text-blue-600">Full Access</div>
-          </div>
+            <div className="text-sm text-blue-600">{t('cta.tripBuilder')}</div>
+          </a>
         </div>
       </div>
     </section>
