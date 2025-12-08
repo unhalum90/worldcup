@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase-browser';
+import { supabase } from '@/lib/supabaseClient';
 
 interface HeadToHead {
   total_matches: number;
@@ -72,7 +72,6 @@ export default function MatchEditorPage() {
 
   const fetchMatch = useCallback(async () => {
     try {
-      const supabase = createClient();
       const { data, error } = await supabase
         .from('match_pages')
         .select('*')
