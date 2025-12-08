@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
 import { groupStageMatches } from '@/lib/matchesData';
 import { getTeamBySlug, teams } from '@/lib/teamsData';
+import { getVenueByCity, type VenueExtended } from '@/src/data/venuesExtended';
+import StadiumMapWrapper from '@/components/matches/StadiumMapWrapper';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -16,6 +18,14 @@ interface RedditQuote {
   quote: string;
   username: string;
   subreddit: string;
+}
+
+interface HeadToHead {
+  total_matches?: number;
+  team1_wins: number;
+  team2_wins: number;
+  draws: number;
+  notable_matches?: string;
 }
 
 interface MatchPage {
@@ -35,10 +45,19 @@ interface MatchPage {
   rivalry_context: string | null;
   fan_experience: string | null;
   infographic_url: string | null;
+  featured_image: string | null;
   map_embed_url: string | null;
   reddit_quotes: RedditQuote[];
   seo_title: string | null;
   seo_description: string | null;
+  // New logistics fields
+  head_to_head: HeadToHead | null;
+  team1_wc_appearances: number | null;
+  team2_wc_appearances: number | null;
+  team1_fan_culture: string | null;
+  team2_fan_culture: string | null;
+  getting_to_stadium: string | null;
+  fan_festival_info: string | null;
 }
 
 async function getMatchBySlug(slug: string): Promise<MatchPage | null> {
@@ -146,6 +165,7 @@ export default async function MatchPage({ params }: Props) {
   const team1OtherMatches = getTeamOtherMatches(match.team1, match.match_number);
   const team2OtherMatches = getTeamOtherMatches(match.team2, match.match_number);
   const youtubeEmbedUrl = match.youtube_url ? getYouTubeEmbedUrl(match.youtube_url) : null;
+  const venue = getVenueByCity(match.city);
 
   // City slug for linking
   const citySlug = match.city.toLowerCase()
@@ -369,20 +389,132 @@ export default async function MatchPage({ params }: Props) {
             )}
 
             {/* Map */}
-            {match.map_embed_url && (
+            {venue && (
               <section className="bg-white rounded-xl shadow-md overflow-hidden">
                 <div className="p-6 border-b">
                   <h2 className="text-2xl font-bold text-gray-900">Stadium Location</h2>
+                  <p className="text-gray-600 mt-1">{venue.stadium}, {venue.city}</p>
                 </div>
-                <div className="aspect-video">
-                  <iframe
-                    src={match.map_embed_url}
-                    title={`${match.stadium} location`}
-                    className="w-full h-full border-0"
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
+                <div className="p-4">
+                  <StadiumMapWrapper venue={venue} />
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="font-semibold text-gray-700">Transit:</span>
+                      <span className={`px-2 py-0.5 rounded text-sm font-medium ${
+                        venue.transit === 'EXCELLENT' ? 'bg-green-100 text-green-800' :
+                        venue.transit === 'GOOD' ? 'bg-blue-100 text-blue-800' :
+                        venue.transit === 'LIMITED' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {venue.transit}
+                      </span>
+                    </div>
+                    <p className="text-gray-600 text-sm">{venue.transitNote}</p>
+                    <p className="text-gray-500 text-xs mt-2">Capacity: {venue.capacity.toLocaleString()}</p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Quick Facts */}
+            {(match.head_to_head || match.team1_wc_appearances || match.team2_wc_appearances) && (
+              <section className="bg-white rounded-xl shadow-md p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Facts</h2>
+                
+                {/* Head to Head */}
+                {match.head_to_head && (
+                  <div className="mb-6">
+                    <h3 className="font-semibold text-gray-700 mb-3">Head-to-Head Record</h3>
+                    <div className="grid grid-cols-4 gap-4 text-center bg-gray-50 rounded-lg p-4">
+                      <div>
+                        <p className="text-2xl font-bold text-gray-900">
+                          {match.head_to_head.total_matches || (match.head_to_head.team1_wins + match.head_to_head.team2_wins + match.head_to_head.draws)}
+                        </p>
+                        <p className="text-xs text-gray-500">Matches</p>
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold text-green-600">{match.head_to_head.team1_wins}</p>
+                        <p className="text-xs text-gray-500">{match.team1} Wins</p>
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold text-gray-500">{match.head_to_head.draws}</p>
+                        <p className="text-xs text-gray-500">Draws</p>
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold text-blue-600">{match.head_to_head.team2_wins}</p>
+                        <p className="text-xs text-gray-500">{match.team2} Wins</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* World Cup Appearances */}
+                {(match.team1_wc_appearances || match.team2_wc_appearances) && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gray-50 rounded-lg p-4 text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        {team1Info && <span className="text-2xl">{team1Info.flagEmoji}</span>}
+                        <span className="font-medium text-gray-900">{match.team1}</span>
+                      </div>
+                      <p className="text-3xl font-bold text-gray-900">{match.team1_wc_appearances || '—'}</p>
+                      <p className="text-sm text-gray-500">World Cup Appearances</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4 text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        {team2Info && <span className="text-2xl">{team2Info.flagEmoji}</span>}
+                        <span className="font-medium text-gray-900">{match.team2}</span>
+                      </div>
+                      <p className="text-3xl font-bold text-gray-900">{match.team2_wc_appearances || '—'}</p>
+                      <p className="text-sm text-gray-500">World Cup Appearances</p>
+                    </div>
+                  </div>
+                )}
+              </section>
+            )}
+
+            {/* Fan Culture */}
+            {(match.team1_fan_culture || match.team2_fan_culture) && (
+              <section className="bg-white rounded-xl shadow-md p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Fan Culture</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {match.team1_fan_culture && (
+                    <div>
+                      <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        {team1Info && <span className="text-xl">{team1Info.flagEmoji}</span>}
+                        {match.team1} Fans
+                      </h3>
+                      <p className="text-gray-600">{match.team1_fan_culture}</p>
+                    </div>
+                  )}
+                  {match.team2_fan_culture && (
+                    <div>
+                      <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        {team2Info && <span className="text-xl">{team2Info.flagEmoji}</span>}
+                        {match.team2} Fans
+                      </h3>
+                      <p className="text-gray-600">{match.team2_fan_culture}</p>
+                    </div>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {/* Getting to the Stadium */}
+            {match.getting_to_stadium && (
+              <section className="bg-white rounded-xl shadow-md p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Getting to {match.stadium}</h2>
+                <div className="prose prose-gray max-w-none">
+                  <p>{match.getting_to_stadium}</p>
+                </div>
+              </section>
+            )}
+
+            {/* Fan Festival Info */}
+            {match.fan_festival_info && (
+              <section className="bg-white rounded-xl shadow-md p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Fan Festival in {match.city}</h2>
+                <div className="prose prose-gray max-w-none">
+                  <p>{match.fan_festival_info}</p>
                 </div>
               </section>
             )}
