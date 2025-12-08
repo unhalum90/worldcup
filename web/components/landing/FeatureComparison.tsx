@@ -5,20 +5,20 @@ import { useTranslations } from 'next-intl';
 export default function FeatureComparison() {
   const t = useTranslations('landing.featureComparison');
 
-  // Features with guides/builder availability
+  // Features with guides/builder availability and which have notes
   const featureConfigs = [
-    { guides: true, builder: true },
-    { guides: true, builder: true },
-    { guides: false, builder: true },
-    { guides: false, builder: true },
-    { guides: false, builder: true },
+    { guides: true, builder: true, hasNote: false },
+    { guides: true, builder: true, hasNote: true },
+    { guides: false, builder: true, hasNote: false },
+    { guides: false, builder: true, hasNote: false },
+    { guides: false, builder: true, hasNote: true },
   ];
 
   const features = featureConfigs.map((config, i) => ({
     name: t(`features.${i}.name`),
     guides: config.guides,
     builder: config.builder,
-    builderNote: t.raw(`features.${i}.builderNote`),
+    builderNote: config.hasNote ? t(`features.${i}.builderNote`) : null,
   }));
 
   return (
