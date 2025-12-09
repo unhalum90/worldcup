@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { groupStageMatches, type Match } from '@/lib/matchesData';
@@ -57,6 +58,8 @@ interface MatchPageTemplateProps {
 
 export default function MatchPageTemplate({ match }: MatchPageTemplateProps) {
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
+  const searchParams = useSearchParams();
+  const filmingMode = searchParams.get('filming') === 'true';
   
   const city = getCityByName(match.city);
   if (!city) {
@@ -107,6 +110,113 @@ export default function MatchPageTemplate({ match }: MatchPageTemplateProps) {
 
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         
+        {/* TEAM PROFILES - Shown first in filming mode */}
+        {filmingMode && (team1Data || team2Data) && (
+          <div className="grid md:grid-cols-2 gap-6">
+            <section className="bg-green-300/50 rounded-2xl p-6 text-gray-900 shadow-lg border-[3px] border-black/30">
+              <h2 className="text-2xl font-bold mb-4">{team1Flag} {match.team1}</h2>
+              {team1IsPlayoff ? (
+                <div className="bg-green-200/50 border-[3px] border-black/30 rounded-xl p-4 text-center py-8">
+                  <div className="text-4xl mb-3">⏳</div>
+                  <h3 className="font-bold text-lg mb-2">Playoff Team - TBD</h3>
+                  <p className="text-sm">This team will be determined after the March 2026 playoffs.</p>
+                </div>
+              ) : team1Data ? (
+                <div className="space-y-4">
+                  <div className="bg-green-200/50 border-[3px] border-black/30 rounded-xl p-4">
+                    <h3 className="font-semibold mb-2">📊 Quick Stats</h3>
+                    <ul className="text-sm space-y-1">
+                      {team1Data.fifaRanking && <li>• <strong>FIFA Ranking:</strong> #{team1Data.fifaRanking}</li>}
+                      {team1Data.appearances && <li>• <strong>WC Appearances:</strong> {team1Data.appearances}</li>}
+                      {team1Data.bestFinish && <li>• <strong>Best Finish:</strong> {team1Data.bestFinish}</li>}
+                      {team1Data.coach && <li>• <strong>Coach:</strong> {team1Data.coach}</li>}
+                      <li>• <strong>Confederation:</strong> {team1Data.confederation}</li>
+                    </ul>
+                  </div>
+                  {team1Data.starPlayers && team1Data.starPlayers.length > 0 && (
+                    <div className="bg-green-200/50 border-[3px] border-black/30 rounded-xl p-4">
+                      <h3 className="font-semibold mb-2">⭐ Key Players</h3>
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        {team1Data.starPlayers.slice(0, 4).map((player, i) => (
+                          <div key={i} className="bg-white/50 border-[3px] border-black/30 rounded-lg p-2 text-center">
+                            <div className="font-bold">{player.name}</div>
+                            <div>{player.position}</div>
+                            <div className="text-[10px]">{player.club}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {team1Data.fanCulture && (
+                    <div className="bg-green-200/50 border-[3px] border-black/30 rounded-xl p-4">
+                      <h3 className="font-semibold mb-2">🎉 Fan Culture</h3>
+                      <p className="text-sm">{team1Data.fanCulture.traditions}</p>
+                      {team1Data.fanCulture.famous_chant && (
+                        <p className="text-xs mt-2 italic">🎵 &quot;{team1Data.fanCulture.famous_chant}&quot;</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="bg-green-200/50 border-[3px] border-black/30 rounded-xl p-4">
+                  <p className="text-sm">Detailed team profile coming soon...</p>
+                </div>
+              )}
+            </section>
+
+            <section className="bg-red-300/50 rounded-2xl p-6 text-gray-900 shadow-lg border-[3px] border-black/30">
+              <h2 className="text-2xl font-bold mb-4">{team2Flag} {match.team2}</h2>
+              {team2IsPlayoff ? (
+                <div className="bg-red-200/50 border-[3px] border-black/30 rounded-xl p-4 text-center py-8">
+                  <div className="text-4xl mb-3">⏳</div>
+                  <h3 className="font-bold text-lg mb-2">Playoff Team - TBD</h3>
+                  <p className="text-sm">This team will be determined after the March 2026 playoffs.</p>
+                </div>
+              ) : team2Data ? (
+                <div className="space-y-4">
+                  <div className="bg-red-200/50 border-[3px] border-black/30 rounded-xl p-4">
+                    <h3 className="font-semibold mb-2">📊 Quick Stats</h3>
+                    <ul className="text-sm space-y-1">
+                      {team2Data.fifaRanking && <li>• <strong>FIFA Ranking:</strong> #{team2Data.fifaRanking}</li>}
+                      {team2Data.appearances && <li>• <strong>WC Appearances:</strong> {team2Data.appearances}</li>}
+                      {team2Data.bestFinish && <li>• <strong>Best Finish:</strong> {team2Data.bestFinish}</li>}
+                      {team2Data.coach && <li>• <strong>Coach:</strong> {team2Data.coach}</li>}
+                      <li>• <strong>Confederation:</strong> {team2Data.confederation}</li>
+                    </ul>
+                  </div>
+                  {team2Data.starPlayers && team2Data.starPlayers.length > 0 && (
+                    <div className="bg-red-200/50 border-[3px] border-black/30 rounded-xl p-4">
+                      <h3 className="font-semibold mb-2">⭐ Key Players</h3>
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        {team2Data.starPlayers.slice(0, 4).map((player, i) => (
+                          <div key={i} className="bg-white/50 border-[3px] border-black/30 rounded-lg p-2 text-center">
+                            <div className="font-bold">{player.name}</div>
+                            <div>{player.position}</div>
+                            <div className="text-[10px]">{player.club}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {team2Data.fanCulture && (
+                    <div className="bg-red-200/50 border-[3px] border-black/30 rounded-xl p-4">
+                      <h3 className="font-semibold mb-2">🎉 Fan Culture</h3>
+                      <p className="text-sm">{team2Data.fanCulture.traditions}</p>
+                      {team2Data.fanCulture.famous_chant && (
+                        <p className="text-xs mt-2 italic">🎵 &quot;{team2Data.fanCulture.famous_chant}&quot;</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="bg-red-200/50 border-[3px] border-black/30 rounded-xl p-4">
+                  <p className="text-sm">Detailed team profile coming soon...</p>
+                </div>
+              )}
+            </section>
+          </div>
+        )}
+
         {/* MAP SECTION - Blue */}
         <section className="bg-blue-300/50 rounded-2xl p-6 text-gray-900 shadow-lg border-[3px] border-black/30">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
@@ -139,8 +249,8 @@ export default function MatchPageTemplate({ match }: MatchPageTemplateProps) {
           </div>
         </section>
 
-        {/* TEAM PROFILES */}
-        {(team1Data || team2Data) && (
+        {/* TEAM PROFILES - Normal position (hidden in filming mode) */}
+        {!filmingMode && (team1Data || team2Data) && (
           <div className="grid md:grid-cols-2 gap-6">
             <section className="bg-green-300/50 rounded-2xl p-6 text-gray-900 shadow-lg border-[3px] border-black/30">
               <h2 className="text-2xl font-bold mb-4">{team1Flag} {match.team1}</h2>
