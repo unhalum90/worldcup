@@ -6,7 +6,6 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ExitIntentModal from "@/components/ExitIntentModal";
 import SubscribeModal from "@/components/SubscribeModal";
 import GlobalAuthLauncher from "@/components/GlobalAuthLauncher";
 import { NextIntlClientProvider } from 'next-intl';
@@ -87,7 +86,6 @@ export default async function RootLayout({
             <Header />
             <main>{children}</main>
             <SubscribeModal />
-            <ExitIntentModal />
             <GlobalAuthLauncher />
             <Footer />
             <ScrollToTop />
