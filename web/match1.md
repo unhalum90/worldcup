@@ -1,0 +1,32 @@
+it has. the basic info about match, lcoation, teams, etc - which we already know, 
+
+then a section on the teams
+ "name": "South Africa",
+                "tournament_history": "Bafana Bafana have made three previous FIFA World Cup appearances (1998, 2002, 2010). Their best finish remains the Group Stage in all three attempts, though they historically became the first host nation to fail to advance to the knockout rounds in 2010. Their most iconic tournament moment was Siphiwe Tshabalala scoring the opening goal of the 2010 World Cup against Mexico with a thunderous strike. After missing the 2014, 2018, and 2022 tournaments, their form has improved significantly, marked by a bronze medal finish at the 2023 Africa Cup of Nations. Culturally, their support is loud, festive, and omnipresent, defined by the iconic drone of vuvuzelas and hand-painted makaraba hardhats.",
+                "current_context": "Ranked approximately 59th by FIFA. The team is led by veteran Belgian coach Hugo Broos, who has revitalized the squad since 2021. Key stars include captain and goalkeeper Ronwen Williams (Mamelodi Sundowns), dynamic midfielder Teboho Mokoena, and forward Percy Tau (Al Ahly). Broos typically employs a disciplined 4-2-3-1 formation that relies on quick transitions and defensive solidity. South Africa secured their place in 2026 by topping CAF Qualifying Group C, overcoming rivals like Nigeria and Benin."
+            },
+            "team_b": {
+                "name": "Mexico",
+                "tournament_history": "El Tri is a World Cup staple with 17 prior appearances. Their best finishes were the Quarter-finals in 1970 and 1986, both achieved on home soil. Mexico held a remarkable streak of reaching the Round of 16 in seven consecutive tournaments (1994–2018), including a famous 1-0 victory over defending champions Germany in 2018. However, this streak snapped in 2022 when they were eliminated in the Group Stage. Their fanbase is vibrant and colorful, turning stadiums into a sea of green jerseys and sombreros, often singing 'Cielito Lindo' to rally the team.",
+                "current_context": "Ranked roughly 17th by FIFA. They are managed by Javier Aguirre, serving his third tenure as national team boss specifically for the 2026 cycle. The squad relies on star players Edson Álvarez (West Ham United, CDM), Santiago Giménez (Feyenoord, ST), and Luis Malagón (Club América, GK). Mexico plays an aggressive, high-pressing 4-3-3 system utilizing width and pace. As one of the three host nations, Mexico qualified automatically for the tournament."
+            },
+            "head_to_head": {
+                "summary": "These two nations share a historic link through the World Cup. Their most notable meeting was the opening match of the 2010 World Cup in Johannesburg, where South Africa and Mexico drew 1-1. Outside of the World Cup, they met in the 2005 CONCACAF Gold Cup, where South Africa (invited as guests) defeated Mexico 2-1. Mexico won two earlier friendly encounters in 1993 and 2000.",
+                "all_time_record": "Mexico: 2 wins, South Africa: 1 win, 1 draw"
+            },
+            "match_significance": "This match serves as the official opener for the 2026 World Cup at the iconic Estadio Azteca. For Mexico, playing at home carries immense pressure to exorcise the ghosts of their 2022 group stage exit and capitalize on their historic home-field advantage. For South Africa, returning to the World Cup after 16 years, it is a poetic rematch of the 2010 opener, offering a chance to spoil the host's fiesta."
+        },
+
+        section on logistics to stadium
+
+        Primary method: Metro Line 2 (Blue Line) to Tasqueña station, transfer to Tren Ligero (Light Rail) to Estadio Azteca station. Time: 1 to 1.5 hours from city center. Cost: Low (requires Metro Card). Rideshare (Uber/DiDi): Available but expect travel times of 2+ hours and significant surge pricing; highly discouraged for post-match departure due to gridlock.Generally discouraged for match day due to severe traffic congestion and limited, challenging parking near the stadium. Costs are moderate to high, and navigating unfamiliar roads is stressful.Strict no re-entry policy. Standard bag policies apply. ADA access is available including ramps and designated seating. Travelers are advised to familiarize themselves with specific bag rules closer to the event via official channels.Purchase and load a rechargeable Metro Card upon arrival in Mexico City to avoid long queues at Tasqueña. Post-match, wait 30-45 minutes at nearby vendors to avoid the initial station crush. Prepare for rain (June is rainy season) with light layers. Avoid rideshare apps after the game due to gridlock.
+
+        section on traveling to the host city
+
+        Benito Juárez International Airport (MEX) - The primary international hub connected to the city's public transport network; Toluca (TLC) and Puebla (PBC) are alternative options requiring bus transfersJune is the rainy season with average highs of 24-26°C (75-79°F) and frequent afternoon showers; high altitude (2,240m/7,350ft) affects acclimatization; pack light layers, comfortable shoes, and an umbrella or rain jacketUse reputable rideshare services (Uber/DiDi) or official site-based taxis; avoid hailing unmarked cabs; avoid displaying expensive jewelry/electronics; be aware of pickpockets in crowded metro stations; Polanco, Condesa, and Roma Norte are rated safest for touristsMexico City 2026 Host Committee (Facebook: MexicoCity26), Estadio Azteca (www.estadioazteca.com.mx), CDMX Tourism (cdmxtravel.com)
+
+        section on lodging
+
+        Polanco or Roma Norte / Condesa. Polanco offers upscale luxury and shopping; Roma Norte / Condesa offers trendy, vibrant nightlife and dining. Est. Rate: 200–500+. Distance to stadium: 30-60 min (via Metro/Taxi).Coyoacán / Tlalpan or Centro Histórico. Coyoacán is historic and bohemian near the stadium; Centro Histórico offers culture and major landmarks. Est. Rate: 100–350. Distance to stadium: 15-60 min.Narvarte / Del Valle. Residential, authentic, with local eateries. Est. Rate: 80–200. Distance to stadium: 20-35 min (via Metro/Taxi).Toluca (1.5-2 hrs commute; closer proximity), Puebla (3-4+ hrs commute; culinary scene), Querétaro (4-5+ hrs commute; historic city). Pros: Lower costs, unique cultural experience. Cons: Significant travel time on match days.
+
+        
