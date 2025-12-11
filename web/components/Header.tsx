@@ -89,18 +89,6 @@ export default function Header() {
               </Link>
             ))}
             
-            <a
-              href="https://wc26fanzone.beehiiv.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`text-sm font-bold hover:underline underline-offset-4 opacity-100 hover:opacity-90 transition-opacity ${profile?.favorite_team ? 'nav-with-shadow' : 'nav-no-shadow'}`}
-              style={{ 
-                color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : undefined
-              }}
-            >
-              {t('newsletter')}
-            </a>
-            
             <LanguageSwitcher />
 
             {/* Auth area (desktop) */}
@@ -195,14 +183,6 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
-              
-              <button
-                onClick={() => { setIsMenuOpen(false); window.dispatchEvent(new Event('fz:open-subscribe')); }}
-                className={`text-sm font-medium py-2 px-3 rounded-lg hover:opacity-80 text-left transition-opacity ${!profile?.favorite_team ? 'text-gray-900' : ''}`}
-                style={{ color: profile?.favorite_team ? "var(--nav-text, #FFFFFF)" : "#111827" }}
-              >
-                {t('newsletter')}
-              </button>
               
               <div className="py-2 px-3">
                 <LanguageSwitcher />

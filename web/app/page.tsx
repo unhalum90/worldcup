@@ -1,4 +1,4 @@
-import HeroDecisionPoint from "@/components/landing/HeroDecisionPoint";
+import HeroSimple from "@/components/landing/HeroSimple";
 import PainPointCarousel from "@/components/landing/PainPointCarousel";
 import SocialProof from "@/components/landing/SocialProof";
 import FeatureComparison from "@/components/landing/FeatureComparison";
@@ -49,10 +49,10 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      {/* SECTION 1: Hero & Decision Point */}
-      <HeroDecisionPoint />
+      {/* NEW HERO: Clean navigation + video + email capture */}
+      <HeroSimple />
       
-      {/* SECTION 2: Pain-Point Carousel */}
+      {/* SECTION 2: Pain-Point Carousel - "The Real Challenge" */}
       <PainPointCarousel />
       
       {/* SECTION 3: Social Proof & Authority */}
