@@ -1,0 +1,4909 @@
+
+################################################################################
+#                                                                              #
+#           2026 FIFA WORLD CUP - ALL 72 GROUP STAGE VIDEO SCRIPTS            #
+#                                                                              #
+#           Generated: 2025-12-11                                          #
+#                                                                              #
+################################################################################
+
+TABLE OF CONTENTS
+-----------------
+Match 01: Mexico vs South Africa (Mexico City)
+Match 02: South Korea vs UEFA Playoff Winner D (Guadalajara)
+Match 03: Canada vs UEFA Playoff Winner A (Toronto)
+Match 04: USA vs Paraguay (Los Angeles)
+Match 05: Haiti vs Scotland (Boston)
+Match 06: Qatar vs Switzerland (San Francisco Bay Area)
+Match 07: Brazil vs Morocco (New York/New Jersey)
+Match 08: Australia vs UEFA Playoff Winner C (Vancouver)
+Match 09: Ivory Coast vs Ecuador (Philadelphia)
+Match 10: Germany vs Curaçao (Houston)
+Match 11: Netherlands vs Japan (Dallas)
+Match 12: UEFA Playoff Winner B vs Tunisia (Monterrey)
+Match 13: Saudi Arabia vs Uruguay (Miami)
+Match 14: Spain vs Cape Verde (Atlanta)
+Match 15: Iran vs New Zealand (Los Angeles)
+Match 16: Belgium vs Egypt (Seattle)
+Match 17: France vs Senegal (New York/New Jersey)
+Match 18: FIFA Playoff Winner 2 vs Norway (Boston)
+Match 19: Argentina vs Algeria (Kansas City)
+Match 20: Austria vs Jordan (San Francisco Bay Area)
+Match 21: England vs Croatia (Toronto)
+Match 22: Ghana vs Panama (Dallas)
+Match 23: Portugal vs FIFA Playoff Winner 1 (Houston)
+Match 24: Uzbekistan vs Colombia (Mexico City)
+Match 25: UEFA Playoff Winner D vs South Africa (Atlanta)
+Match 26: Switzerland vs UEFA Playoff Winner A (Los Angeles)
+Match 27: Canada vs Qatar (Vancouver)
+Match 28: Mexico vs South Korea (Guadalajara)
+Match 29: Brazil vs Haiti (Philadelphia)
+Match 30: Scotland vs Morocco (Boston)
+Match 31: UEFA Playoff Winner C vs Paraguay (San Francisco Bay Area)
+Match 32: USA vs Australia (Seattle)
+Match 33: Germany vs Ivory Coast (Toronto)
+Match 34: Ecuador vs Curaçao (Kansas City)
+Match 35: Netherlands vs UEFA Playoff Winner B (Houston)
+Match 36: Tunisia vs Japan (Monterrey)
+Match 37: Uruguay vs Cape Verde (Miami)
+Match 38: Spain vs Saudi Arabia (Atlanta)
+Match 39: Belgium vs Iran (Los Angeles)
+Match 40: New Zealand vs Egypt (Vancouver)
+Match 41: Norway vs Senegal (New York/New Jersey)
+Match 42: France vs FIFA Playoff Winner 2 (Philadelphia)
+Match 43: Argentina vs Austria (Dallas)
+Match 44: Jordan vs Algeria (San Francisco Bay Area)
+Match 45: England vs Ghana (Boston)
+Match 46: Panama vs Croatia (Toronto)
+Match 47: Portugal vs Uzbekistan (Houston)
+Match 48: Colombia vs FIFA Playoff Winner 1 (Guadalajara)
+Match 49: Scotland vs Brazil (Miami)
+Match 50: Morocco vs Haiti (Atlanta)
+Match 51: Switzerland vs Canada (Vancouver)
+Match 52: UEFA Playoff Winner A vs Qatar (Seattle)
+Match 53: UEFA Playoff Winner D vs Mexico (Mexico City)
+Match 54: South Africa vs South Korea (Monterrey)
+Match 55: Curaçao vs Ivory Coast (Philadelphia)
+Match 56: Ecuador vs Germany (New York/New Jersey)
+Match 57: Japan vs UEFA Playoff Winner B (Dallas)
+Match 58: Tunisia vs Netherlands (Kansas City)
+Match 59: UEFA Playoff Winner C vs USA (Los Angeles)
+Match 60: Paraguay vs Australia (San Francisco Bay Area)
+Match 61: Norway vs France (Boston)
+Match 62: Senegal vs FIFA Playoff Winner 2 (Toronto)
+Match 63: New Zealand vs Belgium (Seattle)
+Match 64: Egypt vs Iran (Vancouver)
+Match 65: Uruguay vs Spain (Houston)
+Match 66: Cape Verde vs Saudi Arabia (Guadalajara)
+Match 67: Panama vs England (New York/New Jersey)
+Match 68: Croatia vs Ghana (Philadelphia)
+Match 69: Jordan vs Argentina (Kansas City)
+Match 70: Algeria vs Austria (Dallas)
+Match 71: Colombia vs Portugal (Miami)
+Match 72: FIFA Playoff Winner 1 vs Uzbekistan (Atlanta)
+
+
+
+================================================================================
+MATCH 1: Mexico vs South Africa
+================================================================================
+
+📍 LOCATION: Mexico City | Estadio Azteca
+📅 DATE: June 11, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 1]
+
+"Welcome to Match 1 of the 2026 FIFA World Cup!
+
+We're here in Mexico City at Estadio Azteca, where 🇲🇽 Mexico takes on 🇿🇦 South Africa.
+
+June 11, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Mexico]
+
+
+"First up, 🇲🇽 Mexico, known as 'El Tri'.
+
+Currently ranked #14 in the world, they come into this tournament with 17 World Cup appearances, with their best finish being Quarter-finals (1970, 1986).
+
+Head Coach Javier Aguirre will be looking to their star players: Edson Álvarez (Midfielder, West Ham United), Santiago Giménez (Forward, Feyenoord), Hirving Lozano (Winger, PSV Eindhoven).
+
+Their passionate supporters are known for Mexican fan culture is renowned for its noise, passion, and color, particularly at the Estadio Azteca. Fans frequently wear sombreros and traditional ...
+"
+
+---
+
+[TEAM 2 SEGMENT - South Africa]
+
+
+"Their opponents, 🇿🇦 South Africa, nicknamed 'South Africa'.
+
+Ranked #58 in the FIFA rankings, they have 4 World Cup appearances, with a best finish of Group Stage.
+
+Under coach Hugo Broos, watch out for: Percy Tau (Winger, Al Ahly), Ronwen Williams (Goalkeeper, Mamelodi Sundowns), Themba Zwane (Midfielder, Mamelodi Sundowns).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Mexico City showdown promises to be a thrilling encounter.
+
+Estadio Azteca will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 1 - Mexico versus South Africa, June 11, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Mexico City, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 1 | Mexico vs South Africa
+Mexico City | June 11, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 2: South Korea vs UEFA Playoff Winner D
+================================================================================
+
+📍 LOCATION: Guadalajara | Estadio Akron
+📅 DATE: June 11, 2026 | 10:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 2]
+
+"Welcome to Match 2 of the 2026 FIFA World Cup!
+
+We're here in Guadalajara at Estadio Akron, where 🇰🇷 South Korea takes on 🏳️ UEFA Playoff Winner D.
+
+June 11, 2026, 10:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - South Korea]
+
+
+"First up, 🇰🇷 South Korea, known as 'South Korea'.
+
+Currently ranked #23 in the world, they come into this tournament with 11 World Cup appearances, with their best finish being Fourth Place (2002).
+
+Head Coach Jürgen Klinsmann will be looking to their star players: Son Heung-min (Forward, Tottenham), Lee Kang-in (Midfielder, Paris Saint-Germain), Kim Min-jae (Defender, Bayern Munich).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - UEFA Playoff Winner D]
+
+"UEFA Playoff Winner D - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Guadalajara showdown promises to be a thrilling encounter.
+
+Estadio Akron will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 2 - South Korea versus UEFA Playoff Winner D, June 11, 2026 at 10:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Guadalajara, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 2 | South Korea vs UEFA Playoff Winner D
+Guadalajara | June 11, 2026 | 10:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 3: Canada vs UEFA Playoff Winner A
+================================================================================
+
+📍 LOCATION: Toronto | BMO Field
+📅 DATE: June 12, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 3]
+
+"Welcome to Match 3 of the 2026 FIFA World Cup!
+
+We're here in Toronto at BMO Field, where 🇨🇦 Canada takes on 🏳️ UEFA Playoff Winner A.
+
+June 12, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Canada]
+
+
+"First up, 🇨🇦 Canada, known as 'Les Rouges'.
+
+Currently ranked #26 in the world, they come into this tournament with 2 World Cup appearances, with their best finish being Group Stage (1986, 2022).
+
+Head Coach Jesse Marsch will be looking to their star players: Alphonso Davies (Defender, Bayern Munich), Jonathan David (Forward, Lille), Cyle Larin (Forward, Mallorca).
+
+Their passionate supporters are known for Canadian support is friendly, welcoming, and united, often chanting bilingual slogans. The Voyageurs, the official supporters' group, are known for cr...
+"
+
+---
+
+[TEAM 2 SEGMENT - UEFA Playoff Winner A]
+
+"UEFA Playoff Winner A - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Toronto showdown promises to be a thrilling encounter.
+
+BMO Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 3 - Canada versus UEFA Playoff Winner A, June 12, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Toronto, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 3 | Canada vs UEFA Playoff Winner A
+Toronto | June 12, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 4: USA vs Paraguay
+================================================================================
+
+📍 LOCATION: Los Angeles | SoFi Stadium
+📅 DATE: June 12, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 4]
+
+"Welcome to Match 4 of the 2026 FIFA World Cup!
+
+We're here in Los Angeles at SoFi Stadium, where 🏳️ USA takes on 🇵🇾 Paraguay.
+
+June 12, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - USA]
+
+
+"First up, 🏳️ USA, known as 'USA'.
+
+Currently ranked TBD in the world, they come into this tournament with .
+
+Head Coach TBD will be looking to their star players: To be determined after playoffs.
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Paraguay]
+
+
+"Their opponents, 🇵🇾 Paraguay, nicknamed 'La Albirroja'.
+
+Ranked #43 in the FIFA rankings, they have 8 World Cup appearances, with a best finish of Quarter-finals (2010).
+
+Under coach Gustavo Alfaro, watch out for: Miguel Almirón (Winger, Newcastle United), Gustavo Gómez (Defender, Palmeiras), Julio Enciso (Forward, Brighton & Hove Albion).
+
+The Paraguay fans are famous for Paraguayan fans are highly committed and spirited, known for their powerful chants and the unwavering support of 'La Albirroja' (The White and Red). T...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Los Angeles showdown promises to be a thrilling encounter.
+
+SoFi Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 4 - USA versus Paraguay, June 12, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Los Angeles, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 4 | USA vs Paraguay
+Los Angeles | June 12, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 5: Haiti vs Scotland
+================================================================================
+
+📍 LOCATION: Boston | Gillette Stadium
+📅 DATE: June 13, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 5]
+
+"Welcome to Match 5 of the 2026 FIFA World Cup!
+
+We're here in Boston at Gillette Stadium, where 🇭🇹 Haiti takes on 🏴 Scotland.
+
+June 13, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Haiti]
+
+
+"First up, 🇭🇹 Haiti, known as 'Les Grenadiers'.
+
+Currently ranked #90 in the world, they come into this tournament with 2 World Cup appearances, with their best finish being Group Stage (1974).
+
+Head Coach Jean-Jacques Pierre will be looking to their star players: Duckens Nazon (Forward, CSKA Sofia), Frantzdy Pierrot (Forward, Maccabi Haifa), Derrick Étienne Jr. (Winger, FC Cincinnati).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Scotland]
+
+
+"Their opponents, 🏴 Scotland, nicknamed 'The Tartan Army'.
+
+Ranked #39 in the FIFA rankings, they have 8 World Cup appearances, with a best finish of Group Stage.
+
+Under coach Steve Clarke, watch out for: Andrew Robertson (Defender, Liverpool), Scott McTominay (Midfielder, Manchester United), John McGinn (Midfielder, Aston Villa).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Boston showdown promises to be a thrilling encounter.
+
+Gillette Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 5 - Haiti versus Scotland, June 13, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Boston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 5 | Haiti vs Scotland
+Boston | June 13, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 6: Qatar vs Switzerland
+================================================================================
+
+📍 LOCATION: San Francisco Bay Area | Levi's Stadium
+📅 DATE: June 13, 2026 | 4:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 6]
+
+"Welcome to Match 6 of the 2026 FIFA World Cup!
+
+We're here in San Francisco Bay Area at Levi's Stadium, where 🇶🇦 Qatar takes on 🇨🇭 Switzerland.
+
+June 13, 2026, 4:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Qatar]
+
+
+"First up, 🇶🇦 Qatar, known as 'Qatar'.
+
+Currently ranked #34 in the world, they come into this tournament with 2 World Cup appearances, with their best finish being Group Stage.
+
+Head Coach Tintin Márquez will be looking to their star players: Akram Afif (Winger, Al-Sadd), Almoez Ali (Forward, Al-Duhail), Hassan Al-Haydos (Midfielder, Al-Sadd).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Switzerland]
+
+
+"Their opponents, 🇨🇭 Switzerland, nicknamed 'Switzerland'.
+
+Ranked #17 in the FIFA rankings, they have 12 World Cup appearances, with a best finish of Quarter-finals.
+
+Under coach Murat Yakin, watch out for: Granit Xhaka (Midfielder, Bayer Leverkusen), Xherdan Shaqiri (Winger, FC Basel), Yann Sommer (Goalkeeper, Inter Milan).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This San Francisco Bay Area showdown promises to be a thrilling encounter.
+
+Levi's Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 6 - Qatar versus Switzerland, June 13, 2026 at 4:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for San Francisco Bay Area, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 6 | Qatar vs Switzerland
+San Francisco Bay Area | June 13, 2026 | 4:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 7: Brazil vs Morocco
+================================================================================
+
+📍 LOCATION: New York/New Jersey | MetLife Stadium
+📅 DATE: June 13, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 7]
+
+"Welcome to Match 7 of the 2026 FIFA World Cup!
+
+We're here in New York/New Jersey at MetLife Stadium, where 🇧🇷 Brazil takes on 🇲🇦 Morocco.
+
+June 13, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Brazil]
+
+
+"First up, 🇧🇷 Brazil, known as 'Seleção'.
+
+Currently ranked #5 in the world, they come into this tournament with 22 World Cup appearances, with their best finish being Champions (5x).
+
+Head Coach Dorival Júnior will be looking to their star players: Vinícius Júnior (Winger, Real Madrid), Rodrygo (Forward, Real Madrid), Marquinhos (Defender, Paris Saint-Germain).
+
+Their passionate supporters are known for Brazilian fan culture is synonymous with 'Samba football'—a joyous, musical, and fluid style of support. Fans are known for bringing samba drums (bate...
+"
+
+---
+
+[TEAM 2 SEGMENT - Morocco]
+
+
+"Their opponents, 🇲🇦 Morocco, nicknamed 'The Atlas Lions'.
+
+Ranked #12 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Fourth Place (2022).
+
+Under coach Walid Regragui, watch out for: Achraf Hakimi (Defender, Paris Saint-Germain), Yassine Bounou (Goalkeeper, Al-Hilal SFC), Sofyan Amrabat (Midfielder, Manchester United).
+
+The Morocco fans are famous for Moroccan fan support is globally renowned for its passionate, relentless volume and choreographies. Fans are known for creating an intense, unified wa...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This New York/New Jersey showdown promises to be a thrilling encounter.
+
+MetLife Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 7 - Brazil versus Morocco, June 13, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for New York/New Jersey, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 7 | Brazil vs Morocco
+New York/New Jersey | June 13, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 8: Australia vs UEFA Playoff Winner C
+================================================================================
+
+📍 LOCATION: Vancouver | BC Place
+📅 DATE: June 13, 2026 | 12:00 AM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 8]
+
+"Welcome to Match 8 of the 2026 FIFA World Cup!
+
+We're here in Vancouver at BC Place, where 🇦🇺 Australia takes on 🏳️ UEFA Playoff Winner C.
+
+June 13, 2026, 12:00 AM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Australia]
+
+
+"First up, 🇦🇺 Australia, known as 'Australia'.
+
+Currently ranked #25 in the world, they come into this tournament with 6 World Cup appearances, with their best finish being Round of 16.
+
+Head Coach Graham Arnold will be looking to their star players: Mathew Ryan (Goalkeeper, AZ Alkmaar), Aaron Mooy (Midfielder, Shanghai Port), Martin Boyle (Winger, Hibernian).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - UEFA Playoff Winner C]
+
+"UEFA Playoff Winner C - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Vancouver showdown promises to be a thrilling encounter.
+
+BC Place will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 8 - Australia versus UEFA Playoff Winner C, June 13, 2026 at 12:00 AM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Vancouver, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 8 | Australia vs UEFA Playoff Winner C
+Vancouver | June 13, 2026 | 12:00 AM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 9: Ivory Coast vs Ecuador
+================================================================================
+
+📍 LOCATION: Philadelphia | Lincoln Financial Field
+📅 DATE: June 14, 2026 | 1:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 9]
+
+"Welcome to Match 9 of the 2026 FIFA World Cup!
+
+We're here in Philadelphia at Lincoln Financial Field, where 🇨🇮 Ivory Coast takes on 🇪🇨 Ecuador.
+
+June 14, 2026, 1:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Ivory Coast]
+
+
+"First up, 🇨🇮 Ivory Coast, known as 'The Elephants'.
+
+Currently ranked #47 in the world, they come into this tournament with 3 World Cup appearances, with their best finish being Group Stage (2006, 2010, 2014).
+
+Head Coach Emerse Faé will be looking to their star players: Sébastien Haller (Forward, Borussia Dortmund), Franck Kessié (Midfielder, Al-Ahli SFC), Simon Adingra (Winger, Brighton & Hove Albion).
+
+Their passionate supporters are known for Ivorian fans ('Les Éléphants') are known for their passionate support and distinctive orange, white, and green colors. Their chant of 'Allez Les Éléph...
+"
+
+---
+
+[TEAM 2 SEGMENT - Ecuador]
+
+
+"Their opponents, 🇪🇨 Ecuador, nicknamed 'La Tri'.
+
+Ranked #30 in the FIFA rankings, they have 4 World Cup appearances, with a best finish of Round of 16 (2006).
+
+Under coach Sebastián Beccacece, watch out for: Moisés Caicedo (Midfielder, Chelsea), Pervis Estupiñán (Defender, AC Milan), Enner Valencia (Forward, Internacional).
+
+The Ecuador fans are famous for Ecuadorian fans are known for their lively and warm support. They are often called 'La Marea Amarilla' (The Yellow Tide), referring to the sheer volum...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Philadelphia showdown promises to be a thrilling encounter.
+
+Lincoln Financial Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 9 - Ivory Coast versus Ecuador, June 14, 2026 at 1:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Philadelphia, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 9 | Ivory Coast vs Ecuador
+Philadelphia | June 14, 2026 | 1:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 10: Germany vs Curaçao
+================================================================================
+
+📍 LOCATION: Houston | NRG Stadium
+📅 DATE: June 14, 2026 | 4:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 10]
+
+"Welcome to Match 10 of the 2026 FIFA World Cup!
+
+We're here in Houston at NRG Stadium, where 🇩🇪 Germany takes on 🇨🇼 Curaçao.
+
+June 14, 2026, 4:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Germany]
+
+
+"First up, 🇩🇪 Germany, known as 'Die Mannschaft'.
+
+Currently ranked #10 in the world, they come into this tournament with 20 World Cup appearances, with their best finish being Champions (4x).
+
+Head Coach Julian Nagelsmann will be looking to their star players: Jamal Musiala (Midfielder, Bayern Munich), Florian Wirtz (Midfielder, Bayer Leverkusen), Joshua Kimmich (Midfielder, Bayern Munich).
+
+Their passionate supporters are known for German fan culture is known for its structure, organization, and a wave of national pride that crests during major tournaments. Face painting, nationa...
+"
+
+---
+
+[TEAM 2 SEGMENT - Curaçao]
+
+
+"Their opponents, 🇨🇼 Curaçao, nicknamed 'The Blue Legion'.
+
+Ranked #85 in the FIFA rankings, they have , with a best finish of Debut.
+
+Under coach Dick Advocaat, watch out for: Leandro Bacuna (Midfielder, Watford), Cuco Martina (Defender, NAC Breda), Kenji Gorré (Winger, Zulte Waregem).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Houston showdown promises to be a thrilling encounter.
+
+NRG Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 10 - Germany versus Curaçao, June 14, 2026 at 4:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Houston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 10 | Germany vs Curaçao
+Houston | June 14, 2026 | 4:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 11: Netherlands vs Japan
+================================================================================
+
+📍 LOCATION: Dallas | AT&T Stadium
+📅 DATE: June 14, 2026 | 7:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 11]
+
+"Welcome to Match 11 of the 2026 FIFA World Cup!
+
+We're here in Dallas at AT&T Stadium, where 🇳🇱 Netherlands takes on 🇯🇵 Japan.
+
+June 14, 2026, 7:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Netherlands]
+
+
+"First up, 🇳🇱 Netherlands, known as 'Oranje'.
+
+Currently ranked #8 in the world, they come into this tournament with 11 World Cup appearances, with their best finish being Runners-up (3x).
+
+Head Coach Ronald Koeman will be looking to their star players: Virgil van Dijk (Defender, Liverpool), Frenkie de Jong (Midfielder, FC Barcelona), Cody Gakpo (Forward, Liverpool).
+
+Their passionate supporters are known for Dutch fans, universally known as 'Oranje', create a massive sea of orange in the stands. They are famous for their festive, party-like atmosphere, oft...
+"
+
+---
+
+[TEAM 2 SEGMENT - Japan]
+
+
+"Their opponents, 🇯🇵 Japan, nicknamed 'Japan'.
+
+Ranked #18 in the FIFA rankings, they have 8 World Cup appearances, with a best finish of Round of 16.
+
+Under coach Hajime Moriyasu, watch out for: Takumi Minamino (Forward, AS Monaco), Kaoru Mitoma (Winger, Brighton), Takefusa Kubo (Midfielder, Real Sociedad).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Dallas showdown promises to be a thrilling encounter.
+
+AT&T Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 11 - Netherlands versus Japan, June 14, 2026 at 7:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Dallas, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 11 | Netherlands vs Japan
+Dallas | June 14, 2026 | 7:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 12: UEFA Playoff Winner B vs Tunisia
+================================================================================
+
+📍 LOCATION: Monterrey | Estadio BBVA
+📅 DATE: June 14, 2026 | 10:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 12]
+
+"Welcome to Match 12 of the 2026 FIFA World Cup!
+
+We're here in Monterrey at Estadio BBVA, where 🏳️ UEFA Playoff Winner B takes on 🇹🇳 Tunisia.
+
+June 14, 2026, 10:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - UEFA Playoff Winner B]
+
+"UEFA Playoff Winner B - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[TEAM 2 SEGMENT - Tunisia]
+
+
+"Their opponents, 🇹🇳 Tunisia, nicknamed 'Tunisia'.
+
+Ranked #47 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Group Stage.
+
+Under coach Jalel Kadri, watch out for: Youssef Msakni (Forward, Al-Arabi), Wahbi Khazri (Midfielder, Montpellier), Aïssa Laïdouni (Midfielder, Union Berlin).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Monterrey showdown promises to be a thrilling encounter.
+
+Estadio BBVA will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 12 - UEFA Playoff Winner B versus Tunisia, June 14, 2026 at 10:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Monterrey, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 12 | UEFA Playoff Winner B vs Tunisia
+Monterrey | June 14, 2026 | 10:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 13: Saudi Arabia vs Uruguay
+================================================================================
+
+📍 LOCATION: Miami | Hard Rock Stadium
+📅 DATE: June 15, 2026 | 12:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 13]
+
+"Welcome to Match 13 of the 2026 FIFA World Cup!
+
+We're here in Miami at Hard Rock Stadium, where 🇸🇦 Saudi Arabia takes on 🇺🇾 Uruguay.
+
+June 15, 2026, 12:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Saudi Arabia]
+
+
+"First up, 🇸🇦 Saudi Arabia, known as 'Saudi Arabia'.
+
+Currently ranked #56 in the world, they come into this tournament with 7 World Cup appearances, with their best finish being Round of 16.
+
+Head Coach Roberto Mancini will be looking to their star players: Salem Al-Dawsari (Winger, Al-Hilal), Saleh Al-Shehri (Forward, Al-Hilal).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Uruguay]
+
+
+"Their opponents, 🇺🇾 Uruguay, nicknamed 'La Celeste'.
+
+Ranked #11 in the FIFA rankings, they have 14 World Cup appearances, with a best finish of Champions (1930, 1950).
+
+Under coach Marcelo Bielsa, watch out for: Federico Valverde (Midfielder, Real Madrid), Ronald Araújo (Defender, FC Barcelona), Darwin Núñez (Forward, Liverpool).
+
+The Uruguay fans are famous for Uruguayan fan culture, though smaller in number, is fierce and proud, reflecting the country's huge footballing legacy (the 'Garra Charrúa' or 'Charrú...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Miami showdown promises to be a thrilling encounter.
+
+Hard Rock Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 13 - Saudi Arabia versus Uruguay, June 15, 2026 at 12:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Miami, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 13 | Saudi Arabia vs Uruguay
+Miami | June 15, 2026 | 12:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 14: Spain vs Cape Verde
+================================================================================
+
+📍 LOCATION: Atlanta | Mercedes-Benz Stadium
+📅 DATE: June 15, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 14]
+
+"Welcome to Match 14 of the 2026 FIFA World Cup!
+
+We're here in Atlanta at Mercedes-Benz Stadium, where 🇪🇸 Spain takes on 🇨🇻 Cape Verde.
+
+June 15, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Spain]
+
+
+"First up, 🇪🇸 Spain, known as 'La Roja'.
+
+Currently ranked #3 in the world, they come into this tournament with 16 World Cup appearances, with their best finish being Champions (2010).
+
+Head Coach Luis de la Fuente will be looking to their star players: Rodri (Midfielder, Manchester City), Gavi (Midfielder, FC Barcelona), Lamine Yamal (Winger, FC Barcelona).
+
+Their passionate supporters are known for Spanish fan culture is marked by regional diversity but unites under the banner of 'La Roja' (The Red One). The 'tiki-taka' playing style is a source ...
+"
+
+---
+
+[TEAM 2 SEGMENT - Cape Verde]
+
+
+"Their opponents, 🇨🇻 Cape Verde, nicknamed 'Blue Sharks'.
+
+Ranked #70 in the FIFA rankings, they have 1 World Cup appearances, with a best finish of Group stage (Debut).
+
+Under coach Bubista (Pedro Leitão Brito), watch out for: Ryan Mendes (Winger/Captain, Karagümrük), Logan Costa (Defender, Toulouse FC), Jamiro Monteiro (Midfielder, Gassman).
+
+The Cape Verde fans are famous for Reflecting its island and diaspora heritage, Cape Verdean support is highly festive and celebratory. Fans are known for using the Creole language and ...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Atlanta showdown promises to be a thrilling encounter.
+
+Mercedes-Benz Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 14 - Spain versus Cape Verde, June 15, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Atlanta, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 14 | Spain vs Cape Verde
+Atlanta | June 15, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 15: Iran vs New Zealand
+================================================================================
+
+📍 LOCATION: Los Angeles | SoFi Stadium
+📅 DATE: June 15, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 15]
+
+"Welcome to Match 15 of the 2026 FIFA World Cup!
+
+We're here in Los Angeles at SoFi Stadium, where 🇮🇷 Iran takes on 🇳🇿 New Zealand.
+
+June 15, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Iran]
+
+
+"First up, 🇮🇷 Iran, known as 'Iran'.
+
+Currently ranked #21 in the world, they come into this tournament with 6 World Cup appearances, with their best finish being Group Stage.
+
+Head Coach Amir Ghalenoei will be looking to their star players: Sardar Azmoun (Forward, AS Roma), Mehdi Taremi (Forward, FC Porto), Alireza Jahanbakhsh (Winger, Feyenoord).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - New Zealand]
+
+
+"Their opponents, 🇳🇿 New Zealand, nicknamed 'New Zealand'.
+
+Ranked #95 in the FIFA rankings, they have 3 World Cup appearances, with a best finish of Group Stage.
+
+Under coach Darren Bazeley, watch out for: Chris Wood (Forward, Nottingham Forest), Winston Reid (Defender, Brentford), Liberato Cacace (Defender, Empoli).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Los Angeles showdown promises to be a thrilling encounter.
+
+SoFi Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 15 - Iran versus New Zealand, June 15, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Los Angeles, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 15 | Iran vs New Zealand
+Los Angeles | June 15, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 16: Belgium vs Egypt
+================================================================================
+
+📍 LOCATION: Seattle | Lumen Field
+📅 DATE: June 15, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 16]
+
+"Welcome to Match 16 of the 2026 FIFA World Cup!
+
+We're here in Seattle at Lumen Field, where 🇧🇪 Belgium takes on 🇪🇬 Egypt.
+
+June 15, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Belgium]
+
+
+"First up, 🇧🇪 Belgium, known as 'Red Devils'.
+
+Currently ranked #6 in the world, they come into this tournament with 14 World Cup appearances, with their best finish being Third Place (2018).
+
+Head Coach Domenico Tedesco will be looking to their star players: Kevin De Bruyne (Midfielder, Manchester City), Romelu Lukaku (Forward, Napoli), Jérémy Doku (Winger, Manchester City).
+
+Their passionate supporters are known for Belgian fan culture is united despite the country's linguistic divisions (Flemish, French, German). Fans are friendly and heavily feature the national...
+"
+
+---
+
+[TEAM 2 SEGMENT - Egypt]
+
+
+"Their opponents, 🇪🇬 Egypt, nicknamed 'The Pharaohs'.
+
+Ranked #35 in the FIFA rankings, they have 3 World Cup appearances, with a best finish of Group Stage (1934, 1990, 2018).
+
+Under coach Hossam Hassan, watch out for: Mohamed Salah (Winger/Captain, Liverpool), Mostafa Mohamed (Forward, FC Nantes), Trézéguet (Winger, Trabzonspor).
+
+The Egypt fans are famous for Egyptian fans, 'The Pharaohs', are extremely passionate and create a famously loud, high-octane atmosphere, especially in Cairo. Their support for Moh...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Seattle showdown promises to be a thrilling encounter.
+
+Lumen Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 16 - Belgium versus Egypt, June 15, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Seattle, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 16 | Belgium vs Egypt
+Seattle | June 15, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 17: France vs Senegal
+================================================================================
+
+📍 LOCATION: New York/New Jersey | MetLife Stadium
+📅 DATE: June 16, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 17]
+
+"Welcome to Match 17 of the 2026 FIFA World Cup!
+
+We're here in New York/New Jersey at MetLife Stadium, where 🇫🇷 France takes on 🇸🇳 Senegal.
+
+June 16, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - France]
+
+
+"First up, 🇫🇷 France, known as 'Les Bleus'.
+
+Currently ranked #2 in the world, they come into this tournament with 16 World Cup appearances, with their best finish being Champions (2x).
+
+Head Coach Didier Deschamps will be looking to their star players: Kylian Mbappé (Forward, Real Madrid), Aurélien Tchouaméni (Midfielder, Real Madrid), William Saliba (Defender, Arsenal).
+
+Their passionate supporters are known for French fan culture is highly patriotic, with supporters often singing the national anthem (La Marseillaise) with fervor. The culture is very diverse, ...
+"
+
+---
+
+[TEAM 2 SEGMENT - Senegal]
+
+
+"Their opponents, 🇸🇳 Senegal, nicknamed 'Lions of Teranga'.
+
+Ranked #19 in the FIFA rankings, they have 3 World Cup appearances, with a best finish of Quarter-finals (2002).
+
+Under coach Pape Thiaw, watch out for: Sadio Mané (Winger, Al-Nassr FC), Kalidou Koulibaly (Defender/Captain, Al-Hilal SFC), Nicolas Jackson (Forward, Chelsea).
+
+The Senegal fans are famous for Senegalese fans ('Lions of Teranga') are famous for their vibrant color, relentless drumming, and positive, fair-play spirit, earning the nickname 'Te...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This New York/New Jersey showdown promises to be a thrilling encounter.
+
+MetLife Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 17 - France versus Senegal, June 16, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for New York/New Jersey, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 17 | France vs Senegal
+New York/New Jersey | June 16, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 18: FIFA Playoff Winner 2 vs Norway
+================================================================================
+
+📍 LOCATION: Boston | Gillette Stadium
+📅 DATE: June 16, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 18]
+
+"Welcome to Match 18 of the 2026 FIFA World Cup!
+
+We're here in Boston at Gillette Stadium, where 🏳️ FIFA Playoff Winner 2 takes on 🇳🇴 Norway.
+
+June 16, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - FIFA Playoff Winner 2]
+
+"FIFA Playoff Winner 2 - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[TEAM 2 SEGMENT - Norway]
+
+
+"Their opponents, 🇳🇴 Norway, nicknamed 'Drillos'.
+
+Ranked #44 in the FIFA rankings, they have 3 World Cup appearances, with a best finish of Round of 16 (1998).
+
+Under coach Ståle Solbakken, watch out for: Erling Haaland (Forward, Manchester City), Martin Ødegaard (Midfielder, Arsenal), Alexander Sørloth (Forward, Atlético Madrid).
+
+The Norway fans are famous for Norwegian support is passionate, often centered around their 'Drillos' tactical era. There is huge excitement and focus on the current generation led ...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Boston showdown promises to be a thrilling encounter.
+
+Gillette Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 18 - FIFA Playoff Winner 2 versus Norway, June 16, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Boston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 18 | FIFA Playoff Winner 2 vs Norway
+Boston | June 16, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 19: Argentina vs Algeria
+================================================================================
+
+📍 LOCATION: Kansas City | Arrowhead Stadium
+📅 DATE: June 16, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 19]
+
+"Welcome to Match 19 of the 2026 FIFA World Cup!
+
+We're here in Kansas City at Arrowhead Stadium, where 🇦🇷 Argentina takes on 🇩🇿 Algeria.
+
+June 16, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Argentina]
+
+
+"First up, 🇦🇷 Argentina, known as 'La Albiceleste'.
+
+Currently ranked #1 in the world, they come into this tournament with 18 World Cup appearances, with their best finish being Champions (1978, 1986, 2022).
+
+Head Coach Lionel Scaloni will be looking to their star players: Lionel Messi (Forward, Inter Miami CF), Emiliano Martínez (Goalkeeper, Aston Villa), Enzo Fernández (Midfielder, Chelsea).
+
+Their passionate supporters are known for Argentine fan culture is highly intense, passionate, and often political. Supporters often hold massive, coordinated Tifos and have a massive repertoi...
+"
+
+---
+
+[TEAM 2 SEGMENT - Algeria]
+
+
+"Their opponents, 🇩🇿 Algeria, nicknamed 'The Fennecs'.
+
+Ranked #37 in the FIFA rankings, they have 5 World Cup appearances, with a best finish of Round of 16 (2014).
+
+Under coach Vladimir Petković, watch out for: Riyad Mahrez (Winger, Al-Ahli SFC), Ismaël Bennacer (Midfielder, AC Milan), Mohamed Amoura (Forward, Union SG).
+
+The Algeria fans are famous for Algerian fans ('El Khadra' or 'The Greens') are known for their intense passion, creating a fiery atmosphere with constant drumming, chanting, and hea...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Kansas City showdown promises to be a thrilling encounter.
+
+Arrowhead Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 19 - Argentina versus Algeria, June 16, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Kansas City, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 19 | Argentina vs Algeria
+Kansas City | June 16, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 20: Austria vs Jordan
+================================================================================
+
+📍 LOCATION: San Francisco Bay Area | Levi's Stadium
+📅 DATE: June 16, 2026 | 12:00 AM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 20]
+
+"Welcome to Match 20 of the 2026 FIFA World Cup!
+
+We're here in San Francisco Bay Area at Levi's Stadium, where 🇦🇹 Austria takes on 🇯🇴 Jordan.
+
+June 16, 2026, 12:00 AM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Austria]
+
+
+"First up, 🇦🇹 Austria, known as 'Das Team'.
+
+Currently ranked #24 in the world, they come into this tournament with 7 World Cup appearances, with their best finish being Third Place (1954).
+
+Head Coach Ralf Rangnick will be looking to their star players: David Alaba (Defender, Real Madrid), Marcel Sabitzer (Midfielder, Borussia Dortmund), Christoph Baumgartner (Midfielder, RB Leipzig).
+
+Their passionate supporters are known for Austrian fans are known for their strong national pride, often uniting under the banner of 'Das Team'. They create an enthusiastic, friendly atmospher...
+"
+
+---
+
+[TEAM 2 SEGMENT - Jordan]
+
+
+"Their opponents, 🇯🇴 Jordan, nicknamed 'Jordan'.
+
+Ranked #68 in the FIFA rankings, they have 1 World Cup appearances, with a best finish of TBD.
+
+Under coach Jamal Sellami, watch out for: Yazan Al-Naimat (Forward, Al-Hussein), Musa Al-Taamari (Winger, Montpellier).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This San Francisco Bay Area showdown promises to be a thrilling encounter.
+
+Levi's Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 20 - Austria versus Jordan, June 16, 2026 at 12:00 AM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for San Francisco Bay Area, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 20 | Austria vs Jordan
+San Francisco Bay Area | June 16, 2026 | 12:00 AM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 21: England vs Croatia
+================================================================================
+
+📍 LOCATION: Toronto | BMO Field
+📅 DATE: June 17, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 21]
+
+"Welcome to Match 21 of the 2026 FIFA World Cup!
+
+We're here in Toronto at BMO Field, where 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England takes on 🇭🇷 Croatia.
+
+June 17, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - England]
+
+
+"First up, 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England, known as 'The Three Lions'.
+
+Currently ranked #4 in the world, they come into this tournament with 16 World Cup appearances, with their best finish being Champions (1966).
+
+Head Coach Thomas Tuchel will be looking to their star players: Harry Kane (Forward, Bayern Munich), Jude Bellingham (Midfielder, Real Madrid), Phil Foden (Winger, Manchester City).
+
+Their passionate supporters are known for English fan culture is deeply rooted in club loyalty but unites passionately for the national team. Traditions include singing the national anthem lou...
+"
+
+---
+
+[TEAM 2 SEGMENT - Croatia]
+
+
+"Their opponents, 🇭🇷 Croatia, nicknamed 'Vatreni'.
+
+Ranked #11 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Runners-up (2018).
+
+Under coach Zlatko Dalić, watch out for: Luka Modrić (Midfielder, Real Madrid), Joško Gvardiol (Defender, Manchester City), Mateo Kovačić (Midfielder, Manchester City).
+
+The Croatia fans are famous for Croatian fans, known as the 'Vatreni' (The Fiery Ones), are famous for their passionate, constant chanting and the iconic red and white checkerboard p...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Toronto showdown promises to be a thrilling encounter.
+
+BMO Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 21 - England versus Croatia, June 17, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Toronto, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 21 | England vs Croatia
+Toronto | June 17, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 22: Ghana vs Panama
+================================================================================
+
+📍 LOCATION: Dallas | AT&T Stadium
+📅 DATE: June 17, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 22]
+
+"Welcome to Match 22 of the 2026 FIFA World Cup!
+
+We're here in Dallas at AT&T Stadium, where 🇬🇭 Ghana takes on 🇵🇦 Panama.
+
+June 17, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Ghana]
+
+
+"First up, 🇬🇭 Ghana, known as 'Black Stars'.
+
+Currently ranked #61 in the world, they come into this tournament with 4 World Cup appearances, with their best finish being Quarter-finals (2010).
+
+Head Coach Otto Addo will be looking to their star players: Mohammed Kudus (Midfielder, West Ham United), Thomas Partey (Midfielder, Arsenal), Iñaki Williams (Forward, Athletic Bilbao).
+
+Their passionate supporters are known for Ghanaian fans are highly expressive, often incorporating traditional drumming, dancing, and the vibrant colours of the national flag (red, yellow, gre...
+"
+
+---
+
+[TEAM 2 SEGMENT - Panama]
+
+
+"Their opponents, 🇵🇦 Panama, nicknamed 'Los Canaleros'.
+
+Ranked #45 in the FIFA rankings, they have 2 World Cup appearances, with a best finish of Group Stage (2018).
+
+Under coach Thomas Christiansen, watch out for: Aníbal Godoy (Midfielder, Nashville SC), Michael Murillo (Defender, Olympique Marseille), Ismael Díaz (Forward, Feirense).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Dallas showdown promises to be a thrilling encounter.
+
+AT&T Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 22 - Ghana versus Panama, June 17, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Dallas, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 22 | Ghana vs Panama
+Dallas | June 17, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 23: Portugal vs FIFA Playoff Winner 1
+================================================================================
+
+📍 LOCATION: Houston | NRG Stadium
+📅 DATE: June 17, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 23]
+
+"Welcome to Match 23 of the 2026 FIFA World Cup!
+
+We're here in Houston at NRG Stadium, where 🇵🇹 Portugal takes on 🏳️ FIFA Playoff Winner 1.
+
+June 17, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Portugal]
+
+
+"First up, 🇵🇹 Portugal, known as 'A Seleção'.
+
+Currently ranked #7 in the world, they come into this tournament with 8 World Cup appearances, with their best finish being Third Place (1966).
+
+Head Coach Roberto Martínez will be looking to their star players: Cristiano Ronaldo (Forward, Al-Nassr FC), Bruno Fernandes (Midfielder, Manchester United), Bernardo Silva (Midfielder, Manchester City).
+
+Their passionate supporters are known for Portuguese fan culture is patriotic and vocal, with fans known for waving large national flags and adopting the unofficial team motto, 'Força Portugal...
+"
+
+---
+
+[TEAM 2 SEGMENT - FIFA Playoff Winner 1]
+
+"FIFA Playoff Winner 1 - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Houston showdown promises to be a thrilling encounter.
+
+NRG Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 23 - Portugal versus FIFA Playoff Winner 1, June 17, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Houston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 23 | Portugal vs FIFA Playoff Winner 1
+Houston | June 17, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 24: Uzbekistan vs Colombia
+================================================================================
+
+📍 LOCATION: Mexico City | Estadio Azteca
+📅 DATE: June 17, 2026 | 12:00 AM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 24]
+
+"Welcome to Match 24 of the 2026 FIFA World Cup!
+
+We're here in Mexico City at Estadio Azteca, where 🇺🇿 Uzbekistan takes on 🇨🇴 Colombia.
+
+June 17, 2026, 12:00 AM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Uzbekistan]
+
+
+"First up, 🇺🇿 Uzbekistan, known as 'Uzbekistan'.
+
+Currently ranked #68 in the world, they come into this tournament with 1 World Cup appearances, with their best finish being TBD.
+
+Head Coach Srecko Katanec will be looking to their star players: Eldor Shomurodov (Forward, Roma), Odil Ahmedov (Midfielder, Al-Wehda).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Colombia]
+
+
+"Their opponents, 🇨🇴 Colombia, nicknamed 'Los Cafeteros'.
+
+Ranked #12 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Quarter-finals (2014).
+
+Under coach Néstor Lorenzo, watch out for: Luis Díaz (Winger, Liverpool), James Rodríguez (Midfielder, Rayo Vallecano), Jhon Durán (Forward, Aston Villa).
+
+The Colombia fans are famous for Colombian fans, 'Los Cafeteros,' are known for their vibrant yellow jerseys and loud, synchronized chanting, especially the famous 'Si, se puede' (Yes...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Mexico City showdown promises to be a thrilling encounter.
+
+Estadio Azteca will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 24 - Uzbekistan versus Colombia, June 17, 2026 at 12:00 AM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Mexico City, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 24 | Uzbekistan vs Colombia
+Mexico City | June 17, 2026 | 12:00 AM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 25: UEFA Playoff Winner D vs South Africa
+================================================================================
+
+📍 LOCATION: Atlanta | Mercedes-Benz Stadium
+📅 DATE: June 18, 2026 | 12:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 25]
+
+"Welcome to Match 25 of the 2026 FIFA World Cup!
+
+We're here in Atlanta at Mercedes-Benz Stadium, where 🏳️ UEFA Playoff Winner D takes on 🇿🇦 South Africa.
+
+June 18, 2026, 12:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - UEFA Playoff Winner D]
+
+"UEFA Playoff Winner D - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[TEAM 2 SEGMENT - South Africa]
+
+
+"Their opponents, 🇿🇦 South Africa, nicknamed 'South Africa'.
+
+Ranked #58 in the FIFA rankings, they have 4 World Cup appearances, with a best finish of Group Stage.
+
+Under coach Hugo Broos, watch out for: Percy Tau (Winger, Al Ahly), Ronwen Williams (Goalkeeper, Mamelodi Sundowns), Themba Zwane (Midfielder, Mamelodi Sundowns).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Atlanta showdown promises to be a thrilling encounter.
+
+Mercedes-Benz Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 25 - UEFA Playoff Winner D versus South Africa, June 18, 2026 at 12:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Atlanta, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 25 | UEFA Playoff Winner D vs South Africa
+Atlanta | June 18, 2026 | 12:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 26: Switzerland vs UEFA Playoff Winner A
+================================================================================
+
+📍 LOCATION: Los Angeles | SoFi Stadium
+📅 DATE: June 18, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 26]
+
+"Welcome to Match 26 of the 2026 FIFA World Cup!
+
+We're here in Los Angeles at SoFi Stadium, where 🇨🇭 Switzerland takes on 🏳️ UEFA Playoff Winner A.
+
+June 18, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Switzerland]
+
+
+"First up, 🇨🇭 Switzerland, known as 'Switzerland'.
+
+Currently ranked #17 in the world, they come into this tournament with 12 World Cup appearances, with their best finish being Quarter-finals.
+
+Head Coach Murat Yakin will be looking to their star players: Granit Xhaka (Midfielder, Bayer Leverkusen), Xherdan Shaqiri (Winger, FC Basel), Yann Sommer (Goalkeeper, Inter Milan).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - UEFA Playoff Winner A]
+
+"UEFA Playoff Winner A - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Los Angeles showdown promises to be a thrilling encounter.
+
+SoFi Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 26 - Switzerland versus UEFA Playoff Winner A, June 18, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Los Angeles, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 26 | Switzerland vs UEFA Playoff Winner A
+Los Angeles | June 18, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 27: Canada vs Qatar
+================================================================================
+
+📍 LOCATION: Vancouver | BC Place
+📅 DATE: June 18, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 27]
+
+"Welcome to Match 27 of the 2026 FIFA World Cup!
+
+We're here in Vancouver at BC Place, where 🇨🇦 Canada takes on 🇶🇦 Qatar.
+
+June 18, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Canada]
+
+
+"First up, 🇨🇦 Canada, known as 'Les Rouges'.
+
+Currently ranked #26 in the world, they come into this tournament with 2 World Cup appearances, with their best finish being Group Stage (1986, 2022).
+
+Head Coach Jesse Marsch will be looking to their star players: Alphonso Davies (Defender, Bayern Munich), Jonathan David (Forward, Lille), Cyle Larin (Forward, Mallorca).
+
+Their passionate supporters are known for Canadian support is friendly, welcoming, and united, often chanting bilingual slogans. The Voyageurs, the official supporters' group, are known for cr...
+"
+
+---
+
+[TEAM 2 SEGMENT - Qatar]
+
+
+"Their opponents, 🇶🇦 Qatar, nicknamed 'Qatar'.
+
+Ranked #34 in the FIFA rankings, they have 2 World Cup appearances, with a best finish of Group Stage.
+
+Under coach Tintin Márquez, watch out for: Akram Afif (Winger, Al-Sadd), Almoez Ali (Forward, Al-Duhail), Hassan Al-Haydos (Midfielder, Al-Sadd).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Vancouver showdown promises to be a thrilling encounter.
+
+BC Place will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 27 - Canada versus Qatar, June 18, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Vancouver, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 27 | Canada vs Qatar
+Vancouver | June 18, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 28: Mexico vs South Korea
+================================================================================
+
+📍 LOCATION: Guadalajara | Estadio Akron
+📅 DATE: June 18, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 28]
+
+"Welcome to Match 28 of the 2026 FIFA World Cup!
+
+We're here in Guadalajara at Estadio Akron, where 🇲🇽 Mexico takes on 🇰🇷 South Korea.
+
+June 18, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Mexico]
+
+
+"First up, 🇲🇽 Mexico, known as 'El Tri'.
+
+Currently ranked #14 in the world, they come into this tournament with 17 World Cup appearances, with their best finish being Quarter-finals (1970, 1986).
+
+Head Coach Javier Aguirre will be looking to their star players: Edson Álvarez (Midfielder, West Ham United), Santiago Giménez (Forward, Feyenoord), Hirving Lozano (Winger, PSV Eindhoven).
+
+Their passionate supporters are known for Mexican fan culture is renowned for its noise, passion, and color, particularly at the Estadio Azteca. Fans frequently wear sombreros and traditional ...
+"
+
+---
+
+[TEAM 2 SEGMENT - South Korea]
+
+
+"Their opponents, 🇰🇷 South Korea, nicknamed 'South Korea'.
+
+Ranked #23 in the FIFA rankings, they have 11 World Cup appearances, with a best finish of Fourth Place (2002).
+
+Under coach Jürgen Klinsmann, watch out for: Son Heung-min (Forward, Tottenham), Lee Kang-in (Midfielder, Paris Saint-Germain), Kim Min-jae (Defender, Bayern Munich).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Guadalajara showdown promises to be a thrilling encounter.
+
+Estadio Akron will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 28 - Mexico versus South Korea, June 18, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Guadalajara, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 28 | Mexico vs South Korea
+Guadalajara | June 18, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 29: Brazil vs Haiti
+================================================================================
+
+📍 LOCATION: Philadelphia | Lincoln Financial Field
+📅 DATE: June 19, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 29]
+
+"Welcome to Match 29 of the 2026 FIFA World Cup!
+
+We're here in Philadelphia at Lincoln Financial Field, where 🇧🇷 Brazil takes on 🇭🇹 Haiti.
+
+June 19, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Brazil]
+
+
+"First up, 🇧🇷 Brazil, known as 'Seleção'.
+
+Currently ranked #5 in the world, they come into this tournament with 22 World Cup appearances, with their best finish being Champions (5x).
+
+Head Coach Dorival Júnior will be looking to their star players: Vinícius Júnior (Winger, Real Madrid), Rodrygo (Forward, Real Madrid), Marquinhos (Defender, Paris Saint-Germain).
+
+Their passionate supporters are known for Brazilian fan culture is synonymous with 'Samba football'—a joyous, musical, and fluid style of support. Fans are known for bringing samba drums (bate...
+"
+
+---
+
+[TEAM 2 SEGMENT - Haiti]
+
+
+"Their opponents, 🇭🇹 Haiti, nicknamed 'Les Grenadiers'.
+
+Ranked #90 in the FIFA rankings, they have 2 World Cup appearances, with a best finish of Group Stage (1974).
+
+Under coach Jean-Jacques Pierre, watch out for: Duckens Nazon (Forward, CSKA Sofia), Frantzdy Pierrot (Forward, Maccabi Haifa), Derrick Étienne Jr. (Winger, FC Cincinnati).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Philadelphia showdown promises to be a thrilling encounter.
+
+Lincoln Financial Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 29 - Brazil versus Haiti, June 19, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Philadelphia, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 29 | Brazil vs Haiti
+Philadelphia | June 19, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 30: Scotland vs Morocco
+================================================================================
+
+📍 LOCATION: Boston | Gillette Stadium
+📅 DATE: June 19, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 30]
+
+"Welcome to Match 30 of the 2026 FIFA World Cup!
+
+We're here in Boston at Gillette Stadium, where 🏴 Scotland takes on 🇲🇦 Morocco.
+
+June 19, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Scotland]
+
+
+"First up, 🏴 Scotland, known as 'The Tartan Army'.
+
+Currently ranked #39 in the world, they come into this tournament with 8 World Cup appearances, with their best finish being Group Stage.
+
+Head Coach Steve Clarke will be looking to their star players: Andrew Robertson (Defender, Liverpool), Scott McTominay (Midfielder, Manchester United), John McGinn (Midfielder, Aston Villa).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Morocco]
+
+
+"Their opponents, 🇲🇦 Morocco, nicknamed 'The Atlas Lions'.
+
+Ranked #12 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Fourth Place (2022).
+
+Under coach Walid Regragui, watch out for: Achraf Hakimi (Defender, Paris Saint-Germain), Yassine Bounou (Goalkeeper, Al-Hilal SFC), Sofyan Amrabat (Midfielder, Manchester United).
+
+The Morocco fans are famous for Moroccan fan support is globally renowned for its passionate, relentless volume and choreographies. Fans are known for creating an intense, unified wa...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Boston showdown promises to be a thrilling encounter.
+
+Gillette Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 30 - Scotland versus Morocco, June 19, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Boston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 30 | Scotland vs Morocco
+Boston | June 19, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 31: UEFA Playoff Winner C vs Paraguay
+================================================================================
+
+📍 LOCATION: San Francisco Bay Area | Levi's Stadium
+📅 DATE: June 19, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 31]
+
+"Welcome to Match 31 of the 2026 FIFA World Cup!
+
+We're here in San Francisco Bay Area at Levi's Stadium, where 🏳️ UEFA Playoff Winner C takes on 🇵🇾 Paraguay.
+
+June 19, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - UEFA Playoff Winner C]
+
+"UEFA Playoff Winner C - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[TEAM 2 SEGMENT - Paraguay]
+
+
+"Their opponents, 🇵🇾 Paraguay, nicknamed 'La Albirroja'.
+
+Ranked #43 in the FIFA rankings, they have 8 World Cup appearances, with a best finish of Quarter-finals (2010).
+
+Under coach Gustavo Alfaro, watch out for: Miguel Almirón (Winger, Newcastle United), Gustavo Gómez (Defender, Palmeiras), Julio Enciso (Forward, Brighton & Hove Albion).
+
+The Paraguay fans are famous for Paraguayan fans are highly committed and spirited, known for their powerful chants and the unwavering support of 'La Albirroja' (The White and Red). T...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This San Francisco Bay Area showdown promises to be a thrilling encounter.
+
+Levi's Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 31 - UEFA Playoff Winner C versus Paraguay, June 19, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for San Francisco Bay Area, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 31 | UEFA Playoff Winner C vs Paraguay
+San Francisco Bay Area | June 19, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 32: USA vs Australia
+================================================================================
+
+📍 LOCATION: Seattle | Lumen Field
+📅 DATE: June 19, 2026 | 12:00 AM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 32]
+
+"Welcome to Match 32 of the 2026 FIFA World Cup!
+
+We're here in Seattle at Lumen Field, where 🏳️ USA takes on 🇦🇺 Australia.
+
+June 19, 2026, 12:00 AM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - USA]
+
+
+"First up, 🏳️ USA, known as 'USA'.
+
+Currently ranked TBD in the world, they come into this tournament with .
+
+Head Coach TBD will be looking to their star players: To be determined after playoffs.
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Australia]
+
+
+"Their opponents, 🇦🇺 Australia, nicknamed 'Australia'.
+
+Ranked #25 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Round of 16.
+
+Under coach Graham Arnold, watch out for: Mathew Ryan (Goalkeeper, AZ Alkmaar), Aaron Mooy (Midfielder, Shanghai Port), Martin Boyle (Winger, Hibernian).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Seattle showdown promises to be a thrilling encounter.
+
+Lumen Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 32 - USA versus Australia, June 19, 2026 at 12:00 AM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Seattle, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 32 | USA vs Australia
+Seattle | June 19, 2026 | 12:00 AM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 33: Germany vs Ivory Coast
+================================================================================
+
+📍 LOCATION: Toronto | BMO Field
+📅 DATE: June 20, 2026 | 1:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 33]
+
+"Welcome to Match 33 of the 2026 FIFA World Cup!
+
+We're here in Toronto at BMO Field, where 🇩🇪 Germany takes on 🇨🇮 Ivory Coast.
+
+June 20, 2026, 1:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Germany]
+
+
+"First up, 🇩🇪 Germany, known as 'Die Mannschaft'.
+
+Currently ranked #10 in the world, they come into this tournament with 20 World Cup appearances, with their best finish being Champions (4x).
+
+Head Coach Julian Nagelsmann will be looking to their star players: Jamal Musiala (Midfielder, Bayern Munich), Florian Wirtz (Midfielder, Bayer Leverkusen), Joshua Kimmich (Midfielder, Bayern Munich).
+
+Their passionate supporters are known for German fan culture is known for its structure, organization, and a wave of national pride that crests during major tournaments. Face painting, nationa...
+"
+
+---
+
+[TEAM 2 SEGMENT - Ivory Coast]
+
+
+"Their opponents, 🇨🇮 Ivory Coast, nicknamed 'The Elephants'.
+
+Ranked #47 in the FIFA rankings, they have 3 World Cup appearances, with a best finish of Group Stage (2006, 2010, 2014).
+
+Under coach Emerse Faé, watch out for: Sébastien Haller (Forward, Borussia Dortmund), Franck Kessié (Midfielder, Al-Ahli SFC), Simon Adingra (Winger, Brighton & Hove Albion).
+
+The Ivory Coast fans are famous for Ivorian fans ('Les Éléphants') are known for their passionate support and distinctive orange, white, and green colors. Their chant of 'Allez Les Éléph...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Toronto showdown promises to be a thrilling encounter.
+
+BMO Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 33 - Germany versus Ivory Coast, June 20, 2026 at 1:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Toronto, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 33 | Germany vs Ivory Coast
+Toronto | June 20, 2026 | 1:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 34: Ecuador vs Curaçao
+================================================================================
+
+📍 LOCATION: Kansas City | Arrowhead Stadium
+📅 DATE: June 20, 2026 | 4:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 34]
+
+"Welcome to Match 34 of the 2026 FIFA World Cup!
+
+We're here in Kansas City at Arrowhead Stadium, where 🇪🇨 Ecuador takes on 🇨🇼 Curaçao.
+
+June 20, 2026, 4:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Ecuador]
+
+
+"First up, 🇪🇨 Ecuador, known as 'La Tri'.
+
+Currently ranked #30 in the world, they come into this tournament with 4 World Cup appearances, with their best finish being Round of 16 (2006).
+
+Head Coach Sebastián Beccacece will be looking to their star players: Moisés Caicedo (Midfielder, Chelsea), Pervis Estupiñán (Defender, AC Milan), Enner Valencia (Forward, Internacional).
+
+Their passionate supporters are known for Ecuadorian fans are known for their lively and warm support. They are often called 'La Marea Amarilla' (The Yellow Tide), referring to the sheer volum...
+"
+
+---
+
+[TEAM 2 SEGMENT - Curaçao]
+
+
+"Their opponents, 🇨🇼 Curaçao, nicknamed 'The Blue Legion'.
+
+Ranked #85 in the FIFA rankings, they have , with a best finish of Debut.
+
+Under coach Dick Advocaat, watch out for: Leandro Bacuna (Midfielder, Watford), Cuco Martina (Defender, NAC Breda), Kenji Gorré (Winger, Zulte Waregem).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Kansas City showdown promises to be a thrilling encounter.
+
+Arrowhead Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 34 - Ecuador versus Curaçao, June 20, 2026 at 4:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Kansas City, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 34 | Ecuador vs Curaçao
+Kansas City | June 20, 2026 | 4:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 35: Netherlands vs UEFA Playoff Winner B
+================================================================================
+
+📍 LOCATION: Houston | NRG Stadium
+📅 DATE: June 20, 2026 | 7:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 35]
+
+"Welcome to Match 35 of the 2026 FIFA World Cup!
+
+We're here in Houston at NRG Stadium, where 🇳🇱 Netherlands takes on 🏳️ UEFA Playoff Winner B.
+
+June 20, 2026, 7:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Netherlands]
+
+
+"First up, 🇳🇱 Netherlands, known as 'Oranje'.
+
+Currently ranked #8 in the world, they come into this tournament with 11 World Cup appearances, with their best finish being Runners-up (3x).
+
+Head Coach Ronald Koeman will be looking to their star players: Virgil van Dijk (Defender, Liverpool), Frenkie de Jong (Midfielder, FC Barcelona), Cody Gakpo (Forward, Liverpool).
+
+Their passionate supporters are known for Dutch fans, universally known as 'Oranje', create a massive sea of orange in the stands. They are famous for their festive, party-like atmosphere, oft...
+"
+
+---
+
+[TEAM 2 SEGMENT - UEFA Playoff Winner B]
+
+"UEFA Playoff Winner B - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Houston showdown promises to be a thrilling encounter.
+
+NRG Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 35 - Netherlands versus UEFA Playoff Winner B, June 20, 2026 at 7:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Houston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 35 | Netherlands vs UEFA Playoff Winner B
+Houston | June 20, 2026 | 7:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 36: Tunisia vs Japan
+================================================================================
+
+📍 LOCATION: Monterrey | Estadio BBVA
+📅 DATE: June 20, 2026 | 10:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 36]
+
+"Welcome to Match 36 of the 2026 FIFA World Cup!
+
+We're here in Monterrey at Estadio BBVA, where 🇹🇳 Tunisia takes on 🇯🇵 Japan.
+
+June 20, 2026, 10:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Tunisia]
+
+
+"First up, 🇹🇳 Tunisia, known as 'Tunisia'.
+
+Currently ranked #47 in the world, they come into this tournament with 6 World Cup appearances, with their best finish being Group Stage.
+
+Head Coach Jalel Kadri will be looking to their star players: Youssef Msakni (Forward, Al-Arabi), Wahbi Khazri (Midfielder, Montpellier), Aïssa Laïdouni (Midfielder, Union Berlin).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Japan]
+
+
+"Their opponents, 🇯🇵 Japan, nicknamed 'Japan'.
+
+Ranked #18 in the FIFA rankings, they have 8 World Cup appearances, with a best finish of Round of 16.
+
+Under coach Hajime Moriyasu, watch out for: Takumi Minamino (Forward, AS Monaco), Kaoru Mitoma (Winger, Brighton), Takefusa Kubo (Midfielder, Real Sociedad).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Monterrey showdown promises to be a thrilling encounter.
+
+Estadio BBVA will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 36 - Tunisia versus Japan, June 20, 2026 at 10:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Monterrey, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 36 | Tunisia vs Japan
+Monterrey | June 20, 2026 | 10:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 37: Uruguay vs Cape Verde
+================================================================================
+
+📍 LOCATION: Miami | Hard Rock Stadium
+📅 DATE: June 21, 2026 | 12:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 37]
+
+"Welcome to Match 37 of the 2026 FIFA World Cup!
+
+We're here in Miami at Hard Rock Stadium, where 🇺🇾 Uruguay takes on 🇨🇻 Cape Verde.
+
+June 21, 2026, 12:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Uruguay]
+
+
+"First up, 🇺🇾 Uruguay, known as 'La Celeste'.
+
+Currently ranked #11 in the world, they come into this tournament with 14 World Cup appearances, with their best finish being Champions (1930, 1950).
+
+Head Coach Marcelo Bielsa will be looking to their star players: Federico Valverde (Midfielder, Real Madrid), Ronald Araújo (Defender, FC Barcelona), Darwin Núñez (Forward, Liverpool).
+
+Their passionate supporters are known for Uruguayan fan culture, though smaller in number, is fierce and proud, reflecting the country's huge footballing legacy (the 'Garra Charrúa' or 'Charrú...
+"
+
+---
+
+[TEAM 2 SEGMENT - Cape Verde]
+
+
+"Their opponents, 🇨🇻 Cape Verde, nicknamed 'Blue Sharks'.
+
+Ranked #70 in the FIFA rankings, they have 1 World Cup appearances, with a best finish of Group stage (Debut).
+
+Under coach Bubista (Pedro Leitão Brito), watch out for: Ryan Mendes (Winger/Captain, Karagümrük), Logan Costa (Defender, Toulouse FC), Jamiro Monteiro (Midfielder, Gassman).
+
+The Cape Verde fans are famous for Reflecting its island and diaspora heritage, Cape Verdean support is highly festive and celebratory. Fans are known for using the Creole language and ...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Miami showdown promises to be a thrilling encounter.
+
+Hard Rock Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 37 - Uruguay versus Cape Verde, June 21, 2026 at 12:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Miami, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 37 | Uruguay vs Cape Verde
+Miami | June 21, 2026 | 12:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 38: Spain vs Saudi Arabia
+================================================================================
+
+📍 LOCATION: Atlanta | Mercedes-Benz Stadium
+📅 DATE: June 21, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 38]
+
+"Welcome to Match 38 of the 2026 FIFA World Cup!
+
+We're here in Atlanta at Mercedes-Benz Stadium, where 🇪🇸 Spain takes on 🇸🇦 Saudi Arabia.
+
+June 21, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Spain]
+
+
+"First up, 🇪🇸 Spain, known as 'La Roja'.
+
+Currently ranked #3 in the world, they come into this tournament with 16 World Cup appearances, with their best finish being Champions (2010).
+
+Head Coach Luis de la Fuente will be looking to their star players: Rodri (Midfielder, Manchester City), Gavi (Midfielder, FC Barcelona), Lamine Yamal (Winger, FC Barcelona).
+
+Their passionate supporters are known for Spanish fan culture is marked by regional diversity but unites under the banner of 'La Roja' (The Red One). The 'tiki-taka' playing style is a source ...
+"
+
+---
+
+[TEAM 2 SEGMENT - Saudi Arabia]
+
+
+"Their opponents, 🇸🇦 Saudi Arabia, nicknamed 'Saudi Arabia'.
+
+Ranked #56 in the FIFA rankings, they have 7 World Cup appearances, with a best finish of Round of 16.
+
+Under coach Roberto Mancini, watch out for: Salem Al-Dawsari (Winger, Al-Hilal), Saleh Al-Shehri (Forward, Al-Hilal).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Atlanta showdown promises to be a thrilling encounter.
+
+Mercedes-Benz Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 38 - Spain versus Saudi Arabia, June 21, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Atlanta, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 38 | Spain vs Saudi Arabia
+Atlanta | June 21, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 39: Belgium vs Iran
+================================================================================
+
+📍 LOCATION: Los Angeles | SoFi Stadium
+📅 DATE: June 21, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 39]
+
+"Welcome to Match 39 of the 2026 FIFA World Cup!
+
+We're here in Los Angeles at SoFi Stadium, where 🇧🇪 Belgium takes on 🇮🇷 Iran.
+
+June 21, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Belgium]
+
+
+"First up, 🇧🇪 Belgium, known as 'Red Devils'.
+
+Currently ranked #6 in the world, they come into this tournament with 14 World Cup appearances, with their best finish being Third Place (2018).
+
+Head Coach Domenico Tedesco will be looking to their star players: Kevin De Bruyne (Midfielder, Manchester City), Romelu Lukaku (Forward, Napoli), Jérémy Doku (Winger, Manchester City).
+
+Their passionate supporters are known for Belgian fan culture is united despite the country's linguistic divisions (Flemish, French, German). Fans are friendly and heavily feature the national...
+"
+
+---
+
+[TEAM 2 SEGMENT - Iran]
+
+
+"Their opponents, 🇮🇷 Iran, nicknamed 'Iran'.
+
+Ranked #21 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Group Stage.
+
+Under coach Amir Ghalenoei, watch out for: Sardar Azmoun (Forward, AS Roma), Mehdi Taremi (Forward, FC Porto), Alireza Jahanbakhsh (Winger, Feyenoord).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Los Angeles showdown promises to be a thrilling encounter.
+
+SoFi Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 39 - Belgium versus Iran, June 21, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Los Angeles, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 39 | Belgium vs Iran
+Los Angeles | June 21, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 40: New Zealand vs Egypt
+================================================================================
+
+📍 LOCATION: Vancouver | BC Place
+📅 DATE: June 21, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 40]
+
+"Welcome to Match 40 of the 2026 FIFA World Cup!
+
+We're here in Vancouver at BC Place, where 🇳🇿 New Zealand takes on 🇪🇬 Egypt.
+
+June 21, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - New Zealand]
+
+
+"First up, 🇳🇿 New Zealand, known as 'New Zealand'.
+
+Currently ranked #95 in the world, they come into this tournament with 3 World Cup appearances, with their best finish being Group Stage.
+
+Head Coach Darren Bazeley will be looking to their star players: Chris Wood (Forward, Nottingham Forest), Winston Reid (Defender, Brentford), Liberato Cacace (Defender, Empoli).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Egypt]
+
+
+"Their opponents, 🇪🇬 Egypt, nicknamed 'The Pharaohs'.
+
+Ranked #35 in the FIFA rankings, they have 3 World Cup appearances, with a best finish of Group Stage (1934, 1990, 2018).
+
+Under coach Hossam Hassan, watch out for: Mohamed Salah (Winger/Captain, Liverpool), Mostafa Mohamed (Forward, FC Nantes), Trézéguet (Winger, Trabzonspor).
+
+The Egypt fans are famous for Egyptian fans, 'The Pharaohs', are extremely passionate and create a famously loud, high-octane atmosphere, especially in Cairo. Their support for Moh...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Vancouver showdown promises to be a thrilling encounter.
+
+BC Place will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 40 - New Zealand versus Egypt, June 21, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Vancouver, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 40 | New Zealand vs Egypt
+Vancouver | June 21, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 41: Norway vs Senegal
+================================================================================
+
+📍 LOCATION: New York/New Jersey | MetLife Stadium
+📅 DATE: June 22, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 41]
+
+"Welcome to Match 41 of the 2026 FIFA World Cup!
+
+We're here in New York/New Jersey at MetLife Stadium, where 🇳🇴 Norway takes on 🇸🇳 Senegal.
+
+June 22, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Norway]
+
+
+"First up, 🇳🇴 Norway, known as 'Drillos'.
+
+Currently ranked #44 in the world, they come into this tournament with 3 World Cup appearances, with their best finish being Round of 16 (1998).
+
+Head Coach Ståle Solbakken will be looking to their star players: Erling Haaland (Forward, Manchester City), Martin Ødegaard (Midfielder, Arsenal), Alexander Sørloth (Forward, Atlético Madrid).
+
+Their passionate supporters are known for Norwegian support is passionate, often centered around their 'Drillos' tactical era. There is huge excitement and focus on the current generation led ...
+"
+
+---
+
+[TEAM 2 SEGMENT - Senegal]
+
+
+"Their opponents, 🇸🇳 Senegal, nicknamed 'Lions of Teranga'.
+
+Ranked #19 in the FIFA rankings, they have 3 World Cup appearances, with a best finish of Quarter-finals (2002).
+
+Under coach Pape Thiaw, watch out for: Sadio Mané (Winger, Al-Nassr FC), Kalidou Koulibaly (Defender/Captain, Al-Hilal SFC), Nicolas Jackson (Forward, Chelsea).
+
+The Senegal fans are famous for Senegalese fans ('Lions of Teranga') are famous for their vibrant color, relentless drumming, and positive, fair-play spirit, earning the nickname 'Te...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This New York/New Jersey showdown promises to be a thrilling encounter.
+
+MetLife Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 41 - Norway versus Senegal, June 22, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for New York/New Jersey, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 41 | Norway vs Senegal
+New York/New Jersey | June 22, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 42: France vs FIFA Playoff Winner 2
+================================================================================
+
+📍 LOCATION: Philadelphia | Lincoln Financial Field
+📅 DATE: June 22, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 42]
+
+"Welcome to Match 42 of the 2026 FIFA World Cup!
+
+We're here in Philadelphia at Lincoln Financial Field, where 🇫🇷 France takes on 🏳️ FIFA Playoff Winner 2.
+
+June 22, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - France]
+
+
+"First up, 🇫🇷 France, known as 'Les Bleus'.
+
+Currently ranked #2 in the world, they come into this tournament with 16 World Cup appearances, with their best finish being Champions (2x).
+
+Head Coach Didier Deschamps will be looking to their star players: Kylian Mbappé (Forward, Real Madrid), Aurélien Tchouaméni (Midfielder, Real Madrid), William Saliba (Defender, Arsenal).
+
+Their passionate supporters are known for French fan culture is highly patriotic, with supporters often singing the national anthem (La Marseillaise) with fervor. The culture is very diverse, ...
+"
+
+---
+
+[TEAM 2 SEGMENT - FIFA Playoff Winner 2]
+
+"FIFA Playoff Winner 2 - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Philadelphia showdown promises to be a thrilling encounter.
+
+Lincoln Financial Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 42 - France versus FIFA Playoff Winner 2, June 22, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Philadelphia, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 42 | France vs FIFA Playoff Winner 2
+Philadelphia | June 22, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 43: Argentina vs Austria
+================================================================================
+
+📍 LOCATION: Dallas | AT&T Stadium
+📅 DATE: June 22, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 43]
+
+"Welcome to Match 43 of the 2026 FIFA World Cup!
+
+We're here in Dallas at AT&T Stadium, where 🇦🇷 Argentina takes on 🇦🇹 Austria.
+
+June 22, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Argentina]
+
+
+"First up, 🇦🇷 Argentina, known as 'La Albiceleste'.
+
+Currently ranked #1 in the world, they come into this tournament with 18 World Cup appearances, with their best finish being Champions (1978, 1986, 2022).
+
+Head Coach Lionel Scaloni will be looking to their star players: Lionel Messi (Forward, Inter Miami CF), Emiliano Martínez (Goalkeeper, Aston Villa), Enzo Fernández (Midfielder, Chelsea).
+
+Their passionate supporters are known for Argentine fan culture is highly intense, passionate, and often political. Supporters often hold massive, coordinated Tifos and have a massive repertoi...
+"
+
+---
+
+[TEAM 2 SEGMENT - Austria]
+
+
+"Their opponents, 🇦🇹 Austria, nicknamed 'Das Team'.
+
+Ranked #24 in the FIFA rankings, they have 7 World Cup appearances, with a best finish of Third Place (1954).
+
+Under coach Ralf Rangnick, watch out for: David Alaba (Defender, Real Madrid), Marcel Sabitzer (Midfielder, Borussia Dortmund), Christoph Baumgartner (Midfielder, RB Leipzig).
+
+The Austria fans are famous for Austrian fans are known for their strong national pride, often uniting under the banner of 'Das Team'. They create an enthusiastic, friendly atmospher...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Dallas showdown promises to be a thrilling encounter.
+
+AT&T Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 43 - Argentina versus Austria, June 22, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Dallas, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 43 | Argentina vs Austria
+Dallas | June 22, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 44: Jordan vs Algeria
+================================================================================
+
+📍 LOCATION: San Francisco Bay Area | Levi's Stadium
+📅 DATE: June 22, 2026 | 12:00 AM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 44]
+
+"Welcome to Match 44 of the 2026 FIFA World Cup!
+
+We're here in San Francisco Bay Area at Levi's Stadium, where 🇯🇴 Jordan takes on 🇩🇿 Algeria.
+
+June 22, 2026, 12:00 AM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Jordan]
+
+
+"First up, 🇯🇴 Jordan, known as 'Jordan'.
+
+Currently ranked #68 in the world, they come into this tournament with 1 World Cup appearances, with their best finish being TBD.
+
+Head Coach Jamal Sellami will be looking to their star players: Yazan Al-Naimat (Forward, Al-Hussein), Musa Al-Taamari (Winger, Montpellier).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Algeria]
+
+
+"Their opponents, 🇩🇿 Algeria, nicknamed 'The Fennecs'.
+
+Ranked #37 in the FIFA rankings, they have 5 World Cup appearances, with a best finish of Round of 16 (2014).
+
+Under coach Vladimir Petković, watch out for: Riyad Mahrez (Winger, Al-Ahli SFC), Ismaël Bennacer (Midfielder, AC Milan), Mohamed Amoura (Forward, Union SG).
+
+The Algeria fans are famous for Algerian fans ('El Khadra' or 'The Greens') are known for their intense passion, creating a fiery atmosphere with constant drumming, chanting, and hea...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This San Francisco Bay Area showdown promises to be a thrilling encounter.
+
+Levi's Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 44 - Jordan versus Algeria, June 22, 2026 at 12:00 AM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for San Francisco Bay Area, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 44 | Jordan vs Algeria
+San Francisco Bay Area | June 22, 2026 | 12:00 AM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 45: England vs Ghana
+================================================================================
+
+📍 LOCATION: Boston | Gillette Stadium
+📅 DATE: June 23, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 45]
+
+"Welcome to Match 45 of the 2026 FIFA World Cup!
+
+We're here in Boston at Gillette Stadium, where 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England takes on 🇬🇭 Ghana.
+
+June 23, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - England]
+
+
+"First up, 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England, known as 'The Three Lions'.
+
+Currently ranked #4 in the world, they come into this tournament with 16 World Cup appearances, with their best finish being Champions (1966).
+
+Head Coach Thomas Tuchel will be looking to their star players: Harry Kane (Forward, Bayern Munich), Jude Bellingham (Midfielder, Real Madrid), Phil Foden (Winger, Manchester City).
+
+Their passionate supporters are known for English fan culture is deeply rooted in club loyalty but unites passionately for the national team. Traditions include singing the national anthem lou...
+"
+
+---
+
+[TEAM 2 SEGMENT - Ghana]
+
+
+"Their opponents, 🇬🇭 Ghana, nicknamed 'Black Stars'.
+
+Ranked #61 in the FIFA rankings, they have 4 World Cup appearances, with a best finish of Quarter-finals (2010).
+
+Under coach Otto Addo, watch out for: Mohammed Kudus (Midfielder, West Ham United), Thomas Partey (Midfielder, Arsenal), Iñaki Williams (Forward, Athletic Bilbao).
+
+The Ghana fans are famous for Ghanaian fans are highly expressive, often incorporating traditional drumming, dancing, and the vibrant colours of the national flag (red, yellow, gre...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Boston showdown promises to be a thrilling encounter.
+
+Gillette Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 45 - England versus Ghana, June 23, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Boston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 45 | England vs Ghana
+Boston | June 23, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 46: Panama vs Croatia
+================================================================================
+
+📍 LOCATION: Toronto | BMO Field
+📅 DATE: June 23, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 46]
+
+"Welcome to Match 46 of the 2026 FIFA World Cup!
+
+We're here in Toronto at BMO Field, where 🇵🇦 Panama takes on 🇭🇷 Croatia.
+
+June 23, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Panama]
+
+
+"First up, 🇵🇦 Panama, known as 'Los Canaleros'.
+
+Currently ranked #45 in the world, they come into this tournament with 2 World Cup appearances, with their best finish being Group Stage (2018).
+
+Head Coach Thomas Christiansen will be looking to their star players: Aníbal Godoy (Midfielder, Nashville SC), Michael Murillo (Defender, Olympique Marseille), Ismael Díaz (Forward, Feirense).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Croatia]
+
+
+"Their opponents, 🇭🇷 Croatia, nicknamed 'Vatreni'.
+
+Ranked #11 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Runners-up (2018).
+
+Under coach Zlatko Dalić, watch out for: Luka Modrić (Midfielder, Real Madrid), Joško Gvardiol (Defender, Manchester City), Mateo Kovačić (Midfielder, Manchester City).
+
+The Croatia fans are famous for Croatian fans, known as the 'Vatreni' (The Fiery Ones), are famous for their passionate, constant chanting and the iconic red and white checkerboard p...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Toronto showdown promises to be a thrilling encounter.
+
+BMO Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 46 - Panama versus Croatia, June 23, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Toronto, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 46 | Panama vs Croatia
+Toronto | June 23, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 47: Portugal vs Uzbekistan
+================================================================================
+
+📍 LOCATION: Houston | NRG Stadium
+📅 DATE: June 23, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 47]
+
+"Welcome to Match 47 of the 2026 FIFA World Cup!
+
+We're here in Houston at NRG Stadium, where 🇵🇹 Portugal takes on 🇺🇿 Uzbekistan.
+
+June 23, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Portugal]
+
+
+"First up, 🇵🇹 Portugal, known as 'A Seleção'.
+
+Currently ranked #7 in the world, they come into this tournament with 8 World Cup appearances, with their best finish being Third Place (1966).
+
+Head Coach Roberto Martínez will be looking to their star players: Cristiano Ronaldo (Forward, Al-Nassr FC), Bruno Fernandes (Midfielder, Manchester United), Bernardo Silva (Midfielder, Manchester City).
+
+Their passionate supporters are known for Portuguese fan culture is patriotic and vocal, with fans known for waving large national flags and adopting the unofficial team motto, 'Força Portugal...
+"
+
+---
+
+[TEAM 2 SEGMENT - Uzbekistan]
+
+
+"Their opponents, 🇺🇿 Uzbekistan, nicknamed 'Uzbekistan'.
+
+Ranked #68 in the FIFA rankings, they have 1 World Cup appearances, with a best finish of TBD.
+
+Under coach Srecko Katanec, watch out for: Eldor Shomurodov (Forward, Roma), Odil Ahmedov (Midfielder, Al-Wehda).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Houston showdown promises to be a thrilling encounter.
+
+NRG Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 47 - Portugal versus Uzbekistan, June 23, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Houston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 47 | Portugal vs Uzbekistan
+Houston | June 23, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 48: Colombia vs FIFA Playoff Winner 1
+================================================================================
+
+📍 LOCATION: Guadalajara | Estadio Akron
+📅 DATE: June 23, 2026 | 12:00 AM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 48]
+
+"Welcome to Match 48 of the 2026 FIFA World Cup!
+
+We're here in Guadalajara at Estadio Akron, where 🇨🇴 Colombia takes on 🏳️ FIFA Playoff Winner 1.
+
+June 23, 2026, 12:00 AM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Colombia]
+
+
+"First up, 🇨🇴 Colombia, known as 'Los Cafeteros'.
+
+Currently ranked #12 in the world, they come into this tournament with 6 World Cup appearances, with their best finish being Quarter-finals (2014).
+
+Head Coach Néstor Lorenzo will be looking to their star players: Luis Díaz (Winger, Liverpool), James Rodríguez (Midfielder, Rayo Vallecano), Jhon Durán (Forward, Aston Villa).
+
+Their passionate supporters are known for Colombian fans, 'Los Cafeteros,' are known for their vibrant yellow jerseys and loud, synchronized chanting, especially the famous 'Si, se puede' (Yes...
+"
+
+---
+
+[TEAM 2 SEGMENT - FIFA Playoff Winner 1]
+
+"FIFA Playoff Winner 1 - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Guadalajara showdown promises to be a thrilling encounter.
+
+Estadio Akron will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 48 - Colombia versus FIFA Playoff Winner 1, June 23, 2026 at 12:00 AM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Guadalajara, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 48 | Colombia vs FIFA Playoff Winner 1
+Guadalajara | June 23, 2026 | 12:00 AM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 49: Scotland vs Brazil
+================================================================================
+
+📍 LOCATION: Miami | Hard Rock Stadium
+📅 DATE: June 24, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 49]
+
+"Welcome to Match 49 of the 2026 FIFA World Cup!
+
+We're here in Miami at Hard Rock Stadium, where 🏴 Scotland takes on 🇧🇷 Brazil.
+
+June 24, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Scotland]
+
+
+"First up, 🏴 Scotland, known as 'The Tartan Army'.
+
+Currently ranked #39 in the world, they come into this tournament with 8 World Cup appearances, with their best finish being Group Stage.
+
+Head Coach Steve Clarke will be looking to their star players: Andrew Robertson (Defender, Liverpool), Scott McTominay (Midfielder, Manchester United), John McGinn (Midfielder, Aston Villa).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Brazil]
+
+
+"Their opponents, 🇧🇷 Brazil, nicknamed 'Seleção'.
+
+Ranked #5 in the FIFA rankings, they have 22 World Cup appearances, with a best finish of Champions (5x).
+
+Under coach Dorival Júnior, watch out for: Vinícius Júnior (Winger, Real Madrid), Rodrygo (Forward, Real Madrid), Marquinhos (Defender, Paris Saint-Germain).
+
+The Brazil fans are famous for Brazilian fan culture is synonymous with 'Samba football'—a joyous, musical, and fluid style of support. Fans are known for bringing samba drums (bate...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Miami showdown promises to be a thrilling encounter.
+
+Hard Rock Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 49 - Scotland versus Brazil, June 24, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Miami, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 49 | Scotland vs Brazil
+Miami | June 24, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 50: Morocco vs Haiti
+================================================================================
+
+📍 LOCATION: Atlanta | Mercedes-Benz Stadium
+📅 DATE: June 24, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 50]
+
+"Welcome to Match 50 of the 2026 FIFA World Cup!
+
+We're here in Atlanta at Mercedes-Benz Stadium, where 🇲🇦 Morocco takes on 🇭🇹 Haiti.
+
+June 24, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Morocco]
+
+
+"First up, 🇲🇦 Morocco, known as 'The Atlas Lions'.
+
+Currently ranked #12 in the world, they come into this tournament with 6 World Cup appearances, with their best finish being Fourth Place (2022).
+
+Head Coach Walid Regragui will be looking to their star players: Achraf Hakimi (Defender, Paris Saint-Germain), Yassine Bounou (Goalkeeper, Al-Hilal SFC), Sofyan Amrabat (Midfielder, Manchester United).
+
+Their passionate supporters are known for Moroccan fan support is globally renowned for its passionate, relentless volume and choreographies. Fans are known for creating an intense, unified wa...
+"
+
+---
+
+[TEAM 2 SEGMENT - Haiti]
+
+
+"Their opponents, 🇭🇹 Haiti, nicknamed 'Les Grenadiers'.
+
+Ranked #90 in the FIFA rankings, they have 2 World Cup appearances, with a best finish of Group Stage (1974).
+
+Under coach Jean-Jacques Pierre, watch out for: Duckens Nazon (Forward, CSKA Sofia), Frantzdy Pierrot (Forward, Maccabi Haifa), Derrick Étienne Jr. (Winger, FC Cincinnati).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Atlanta showdown promises to be a thrilling encounter.
+
+Mercedes-Benz Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 50 - Morocco versus Haiti, June 24, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Atlanta, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 50 | Morocco vs Haiti
+Atlanta | June 24, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 51: Switzerland vs Canada
+================================================================================
+
+📍 LOCATION: Vancouver | BC Place
+📅 DATE: June 24, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 51]
+
+"Welcome to Match 51 of the 2026 FIFA World Cup!
+
+We're here in Vancouver at BC Place, where 🇨🇭 Switzerland takes on 🇨🇦 Canada.
+
+June 24, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Switzerland]
+
+
+"First up, 🇨🇭 Switzerland, known as 'Switzerland'.
+
+Currently ranked #17 in the world, they come into this tournament with 12 World Cup appearances, with their best finish being Quarter-finals.
+
+Head Coach Murat Yakin will be looking to their star players: Granit Xhaka (Midfielder, Bayer Leverkusen), Xherdan Shaqiri (Winger, FC Basel), Yann Sommer (Goalkeeper, Inter Milan).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Canada]
+
+
+"Their opponents, 🇨🇦 Canada, nicknamed 'Les Rouges'.
+
+Ranked #26 in the FIFA rankings, they have 2 World Cup appearances, with a best finish of Group Stage (1986, 2022).
+
+Under coach Jesse Marsch, watch out for: Alphonso Davies (Defender, Bayern Munich), Jonathan David (Forward, Lille), Cyle Larin (Forward, Mallorca).
+
+The Canada fans are famous for Canadian support is friendly, welcoming, and united, often chanting bilingual slogans. The Voyageurs, the official supporters' group, are known for cr...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Vancouver showdown promises to be a thrilling encounter.
+
+BC Place will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 51 - Switzerland versus Canada, June 24, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Vancouver, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 51 | Switzerland vs Canada
+Vancouver | June 24, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 52: UEFA Playoff Winner A vs Qatar
+================================================================================
+
+📍 LOCATION: Seattle | Lumen Field
+📅 DATE: June 24, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 52]
+
+"Welcome to Match 52 of the 2026 FIFA World Cup!
+
+We're here in Seattle at Lumen Field, where 🏳️ UEFA Playoff Winner A takes on 🇶🇦 Qatar.
+
+June 24, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - UEFA Playoff Winner A]
+
+"UEFA Playoff Winner A - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[TEAM 2 SEGMENT - Qatar]
+
+
+"Their opponents, 🇶🇦 Qatar, nicknamed 'Qatar'.
+
+Ranked #34 in the FIFA rankings, they have 2 World Cup appearances, with a best finish of Group Stage.
+
+Under coach Tintin Márquez, watch out for: Akram Afif (Winger, Al-Sadd), Almoez Ali (Forward, Al-Duhail), Hassan Al-Haydos (Midfielder, Al-Sadd).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Seattle showdown promises to be a thrilling encounter.
+
+Lumen Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 52 - UEFA Playoff Winner A versus Qatar, June 24, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Seattle, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 52 | UEFA Playoff Winner A vs Qatar
+Seattle | June 24, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 53: UEFA Playoff Winner D vs Mexico
+================================================================================
+
+📍 LOCATION: Mexico City | Estadio Azteca
+📅 DATE: June 24, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 53]
+
+"Welcome to Match 53 of the 2026 FIFA World Cup!
+
+We're here in Mexico City at Estadio Azteca, where 🏳️ UEFA Playoff Winner D takes on 🇲🇽 Mexico.
+
+June 24, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - UEFA Playoff Winner D]
+
+"UEFA Playoff Winner D - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[TEAM 2 SEGMENT - Mexico]
+
+
+"Their opponents, 🇲🇽 Mexico, nicknamed 'El Tri'.
+
+Ranked #14 in the FIFA rankings, they have 17 World Cup appearances, with a best finish of Quarter-finals (1970, 1986).
+
+Under coach Javier Aguirre, watch out for: Edson Álvarez (Midfielder, West Ham United), Santiago Giménez (Forward, Feyenoord), Hirving Lozano (Winger, PSV Eindhoven).
+
+The Mexico fans are famous for Mexican fan culture is renowned for its noise, passion, and color, particularly at the Estadio Azteca. Fans frequently wear sombreros and traditional ...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Mexico City showdown promises to be a thrilling encounter.
+
+Estadio Azteca will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 53 - UEFA Playoff Winner D versus Mexico, June 24, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Mexico City, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 53 | UEFA Playoff Winner D vs Mexico
+Mexico City | June 24, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 54: South Africa vs South Korea
+================================================================================
+
+📍 LOCATION: Monterrey | Estadio BBVA
+📅 DATE: June 24, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 54]
+
+"Welcome to Match 54 of the 2026 FIFA World Cup!
+
+We're here in Monterrey at Estadio BBVA, where 🇿🇦 South Africa takes on 🇰🇷 South Korea.
+
+June 24, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - South Africa]
+
+
+"First up, 🇿🇦 South Africa, known as 'South Africa'.
+
+Currently ranked #58 in the world, they come into this tournament with 4 World Cup appearances, with their best finish being Group Stage.
+
+Head Coach Hugo Broos will be looking to their star players: Percy Tau (Winger, Al Ahly), Ronwen Williams (Goalkeeper, Mamelodi Sundowns), Themba Zwane (Midfielder, Mamelodi Sundowns).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - South Korea]
+
+
+"Their opponents, 🇰🇷 South Korea, nicknamed 'South Korea'.
+
+Ranked #23 in the FIFA rankings, they have 11 World Cup appearances, with a best finish of Fourth Place (2002).
+
+Under coach Jürgen Klinsmann, watch out for: Son Heung-min (Forward, Tottenham), Lee Kang-in (Midfielder, Paris Saint-Germain), Kim Min-jae (Defender, Bayern Munich).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Monterrey showdown promises to be a thrilling encounter.
+
+Estadio BBVA will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 54 - South Africa versus South Korea, June 24, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Monterrey, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 54 | South Africa vs South Korea
+Monterrey | June 24, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 55: Curaçao vs Ivory Coast
+================================================================================
+
+📍 LOCATION: Philadelphia | Lincoln Financial Field
+📅 DATE: June 25, 2026 | 4:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 55]
+
+"Welcome to Match 55 of the 2026 FIFA World Cup!
+
+We're here in Philadelphia at Lincoln Financial Field, where 🇨🇼 Curaçao takes on 🇨🇮 Ivory Coast.
+
+June 25, 2026, 4:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Curaçao]
+
+
+"First up, 🇨🇼 Curaçao, known as 'The Blue Legion'.
+
+Currently ranked #85 in the world, they come into this tournament with , with their best finish being Debut.
+
+Head Coach Dick Advocaat will be looking to their star players: Leandro Bacuna (Midfielder, Watford), Cuco Martina (Defender, NAC Breda), Kenji Gorré (Winger, Zulte Waregem).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Ivory Coast]
+
+
+"Their opponents, 🇨🇮 Ivory Coast, nicknamed 'The Elephants'.
+
+Ranked #47 in the FIFA rankings, they have 3 World Cup appearances, with a best finish of Group Stage (2006, 2010, 2014).
+
+Under coach Emerse Faé, watch out for: Sébastien Haller (Forward, Borussia Dortmund), Franck Kessié (Midfielder, Al-Ahli SFC), Simon Adingra (Winger, Brighton & Hove Albion).
+
+The Ivory Coast fans are famous for Ivorian fans ('Les Éléphants') are known for their passionate support and distinctive orange, white, and green colors. Their chant of 'Allez Les Éléph...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Philadelphia showdown promises to be a thrilling encounter.
+
+Lincoln Financial Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 55 - Curaçao versus Ivory Coast, June 25, 2026 at 4:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Philadelphia, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 55 | Curaçao vs Ivory Coast
+Philadelphia | June 25, 2026 | 4:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 56: Ecuador vs Germany
+================================================================================
+
+📍 LOCATION: New York/New Jersey | MetLife Stadium
+📅 DATE: June 25, 2026 | 4:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 56]
+
+"Welcome to Match 56 of the 2026 FIFA World Cup!
+
+We're here in New York/New Jersey at MetLife Stadium, where 🇪🇨 Ecuador takes on 🇩🇪 Germany.
+
+June 25, 2026, 4:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Ecuador]
+
+
+"First up, 🇪🇨 Ecuador, known as 'La Tri'.
+
+Currently ranked #30 in the world, they come into this tournament with 4 World Cup appearances, with their best finish being Round of 16 (2006).
+
+Head Coach Sebastián Beccacece will be looking to their star players: Moisés Caicedo (Midfielder, Chelsea), Pervis Estupiñán (Defender, AC Milan), Enner Valencia (Forward, Internacional).
+
+Their passionate supporters are known for Ecuadorian fans are known for their lively and warm support. They are often called 'La Marea Amarilla' (The Yellow Tide), referring to the sheer volum...
+"
+
+---
+
+[TEAM 2 SEGMENT - Germany]
+
+
+"Their opponents, 🇩🇪 Germany, nicknamed 'Die Mannschaft'.
+
+Ranked #10 in the FIFA rankings, they have 20 World Cup appearances, with a best finish of Champions (4x).
+
+Under coach Julian Nagelsmann, watch out for: Jamal Musiala (Midfielder, Bayern Munich), Florian Wirtz (Midfielder, Bayer Leverkusen), Joshua Kimmich (Midfielder, Bayern Munich).
+
+The Germany fans are famous for German fan culture is known for its structure, organization, and a wave of national pride that crests during major tournaments. Face painting, nationa...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This New York/New Jersey showdown promises to be a thrilling encounter.
+
+MetLife Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 56 - Ecuador versus Germany, June 25, 2026 at 4:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for New York/New Jersey, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 56 | Ecuador vs Germany
+New York/New Jersey | June 25, 2026 | 4:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 57: Japan vs UEFA Playoff Winner B
+================================================================================
+
+📍 LOCATION: Dallas | AT&T Stadium
+📅 DATE: June 25, 2026 | 7:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 57]
+
+"Welcome to Match 57 of the 2026 FIFA World Cup!
+
+We're here in Dallas at AT&T Stadium, where 🇯🇵 Japan takes on 🏳️ UEFA Playoff Winner B.
+
+June 25, 2026, 7:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Japan]
+
+
+"First up, 🇯🇵 Japan, known as 'Japan'.
+
+Currently ranked #18 in the world, they come into this tournament with 8 World Cup appearances, with their best finish being Round of 16.
+
+Head Coach Hajime Moriyasu will be looking to their star players: Takumi Minamino (Forward, AS Monaco), Kaoru Mitoma (Winger, Brighton), Takefusa Kubo (Midfielder, Real Sociedad).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - UEFA Playoff Winner B]
+
+"UEFA Playoff Winner B - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Dallas showdown promises to be a thrilling encounter.
+
+AT&T Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 57 - Japan versus UEFA Playoff Winner B, June 25, 2026 at 7:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Dallas, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 57 | Japan vs UEFA Playoff Winner B
+Dallas | June 25, 2026 | 7:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 58: Tunisia vs Netherlands
+================================================================================
+
+📍 LOCATION: Kansas City | Arrowhead Stadium
+📅 DATE: June 25, 2026 | 7:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 58]
+
+"Welcome to Match 58 of the 2026 FIFA World Cup!
+
+We're here in Kansas City at Arrowhead Stadium, where 🇹🇳 Tunisia takes on 🇳🇱 Netherlands.
+
+June 25, 2026, 7:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Tunisia]
+
+
+"First up, 🇹🇳 Tunisia, known as 'Tunisia'.
+
+Currently ranked #47 in the world, they come into this tournament with 6 World Cup appearances, with their best finish being Group Stage.
+
+Head Coach Jalel Kadri will be looking to their star players: Youssef Msakni (Forward, Al-Arabi), Wahbi Khazri (Midfielder, Montpellier), Aïssa Laïdouni (Midfielder, Union Berlin).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Netherlands]
+
+
+"Their opponents, 🇳🇱 Netherlands, nicknamed 'Oranje'.
+
+Ranked #8 in the FIFA rankings, they have 11 World Cup appearances, with a best finish of Runners-up (3x).
+
+Under coach Ronald Koeman, watch out for: Virgil van Dijk (Defender, Liverpool), Frenkie de Jong (Midfielder, FC Barcelona), Cody Gakpo (Forward, Liverpool).
+
+The Netherlands fans are famous for Dutch fans, universally known as 'Oranje', create a massive sea of orange in the stands. They are famous for their festive, party-like atmosphere, oft...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Kansas City showdown promises to be a thrilling encounter.
+
+Arrowhead Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 58 - Tunisia versus Netherlands, June 25, 2026 at 7:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Kansas City, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 58 | Tunisia vs Netherlands
+Kansas City | June 25, 2026 | 7:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 59: UEFA Playoff Winner C vs USA
+================================================================================
+
+📍 LOCATION: Los Angeles | SoFi Stadium
+📅 DATE: June 25, 2026 | 10:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 59]
+
+"Welcome to Match 59 of the 2026 FIFA World Cup!
+
+We're here in Los Angeles at SoFi Stadium, where 🏳️ UEFA Playoff Winner C takes on 🏳️ USA.
+
+June 25, 2026, 10:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - UEFA Playoff Winner C]
+
+"UEFA Playoff Winner C - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[TEAM 2 SEGMENT - USA]
+
+
+"Their opponents, 🏳️ USA, nicknamed 'USA'.
+
+Ranked TBD in the FIFA rankings, they have .
+
+Under coach TBD, watch out for: To be determined after playoffs.
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Los Angeles showdown promises to be a thrilling encounter.
+
+SoFi Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 59 - UEFA Playoff Winner C versus USA, June 25, 2026 at 10:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Los Angeles, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 59 | UEFA Playoff Winner C vs USA
+Los Angeles | June 25, 2026 | 10:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 60: Paraguay vs Australia
+================================================================================
+
+📍 LOCATION: San Francisco Bay Area | Levi's Stadium
+📅 DATE: June 25, 2026 | 10:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 60]
+
+"Welcome to Match 60 of the 2026 FIFA World Cup!
+
+We're here in San Francisco Bay Area at Levi's Stadium, where 🇵🇾 Paraguay takes on 🇦🇺 Australia.
+
+June 25, 2026, 10:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Paraguay]
+
+
+"First up, 🇵🇾 Paraguay, known as 'La Albirroja'.
+
+Currently ranked #43 in the world, they come into this tournament with 8 World Cup appearances, with their best finish being Quarter-finals (2010).
+
+Head Coach Gustavo Alfaro will be looking to their star players: Miguel Almirón (Winger, Newcastle United), Gustavo Gómez (Defender, Palmeiras), Julio Enciso (Forward, Brighton & Hove Albion).
+
+Their passionate supporters are known for Paraguayan fans are highly committed and spirited, known for their powerful chants and the unwavering support of 'La Albirroja' (The White and Red). T...
+"
+
+---
+
+[TEAM 2 SEGMENT - Australia]
+
+
+"Their opponents, 🇦🇺 Australia, nicknamed 'Australia'.
+
+Ranked #25 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Round of 16.
+
+Under coach Graham Arnold, watch out for: Mathew Ryan (Goalkeeper, AZ Alkmaar), Aaron Mooy (Midfielder, Shanghai Port), Martin Boyle (Winger, Hibernian).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This San Francisco Bay Area showdown promises to be a thrilling encounter.
+
+Levi's Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 60 - Paraguay versus Australia, June 25, 2026 at 10:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for San Francisco Bay Area, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 60 | Paraguay vs Australia
+San Francisco Bay Area | June 25, 2026 | 10:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 61: Norway vs France
+================================================================================
+
+📍 LOCATION: Boston | Gillette Stadium
+📅 DATE: June 26, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 61]
+
+"Welcome to Match 61 of the 2026 FIFA World Cup!
+
+We're here in Boston at Gillette Stadium, where 🇳🇴 Norway takes on 🇫🇷 France.
+
+June 26, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Norway]
+
+
+"First up, 🇳🇴 Norway, known as 'Drillos'.
+
+Currently ranked #44 in the world, they come into this tournament with 3 World Cup appearances, with their best finish being Round of 16 (1998).
+
+Head Coach Ståle Solbakken will be looking to their star players: Erling Haaland (Forward, Manchester City), Martin Ødegaard (Midfielder, Arsenal), Alexander Sørloth (Forward, Atlético Madrid).
+
+Their passionate supporters are known for Norwegian support is passionate, often centered around their 'Drillos' tactical era. There is huge excitement and focus on the current generation led ...
+"
+
+---
+
+[TEAM 2 SEGMENT - France]
+
+
+"Their opponents, 🇫🇷 France, nicknamed 'Les Bleus'.
+
+Ranked #2 in the FIFA rankings, they have 16 World Cup appearances, with a best finish of Champions (2x).
+
+Under coach Didier Deschamps, watch out for: Kylian Mbappé (Forward, Real Madrid), Aurélien Tchouaméni (Midfielder, Real Madrid), William Saliba (Defender, Arsenal).
+
+The France fans are famous for French fan culture is highly patriotic, with supporters often singing the national anthem (La Marseillaise) with fervor. The culture is very diverse, ...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Boston showdown promises to be a thrilling encounter.
+
+Gillette Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 61 - Norway versus France, June 26, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Boston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 61 | Norway vs France
+Boston | June 26, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 62: Senegal vs FIFA Playoff Winner 2
+================================================================================
+
+📍 LOCATION: Toronto | BMO Field
+📅 DATE: June 26, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 62]
+
+"Welcome to Match 62 of the 2026 FIFA World Cup!
+
+We're here in Toronto at BMO Field, where 🇸🇳 Senegal takes on 🏳️ FIFA Playoff Winner 2.
+
+June 26, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Senegal]
+
+
+"First up, 🇸🇳 Senegal, known as 'Lions of Teranga'.
+
+Currently ranked #19 in the world, they come into this tournament with 3 World Cup appearances, with their best finish being Quarter-finals (2002).
+
+Head Coach Pape Thiaw will be looking to their star players: Sadio Mané (Winger, Al-Nassr FC), Kalidou Koulibaly (Defender/Captain, Al-Hilal SFC), Nicolas Jackson (Forward, Chelsea).
+
+Their passionate supporters are known for Senegalese fans ('Lions of Teranga') are famous for their vibrant color, relentless drumming, and positive, fair-play spirit, earning the nickname 'Te...
+"
+
+---
+
+[TEAM 2 SEGMENT - FIFA Playoff Winner 2]
+
+"FIFA Playoff Winner 2 - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Toronto showdown promises to be a thrilling encounter.
+
+BMO Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 62 - Senegal versus FIFA Playoff Winner 2, June 26, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Toronto, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 62 | Senegal vs FIFA Playoff Winner 2
+Toronto | June 26, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 63: New Zealand vs Belgium
+================================================================================
+
+📍 LOCATION: Seattle | Lumen Field
+📅 DATE: June 26, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 63]
+
+"Welcome to Match 63 of the 2026 FIFA World Cup!
+
+We're here in Seattle at Lumen Field, where 🇳🇿 New Zealand takes on 🇧🇪 Belgium.
+
+June 26, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - New Zealand]
+
+
+"First up, 🇳🇿 New Zealand, known as 'New Zealand'.
+
+Currently ranked #95 in the world, they come into this tournament with 3 World Cup appearances, with their best finish being Group Stage.
+
+Head Coach Darren Bazeley will be looking to their star players: Chris Wood (Forward, Nottingham Forest), Winston Reid (Defender, Brentford), Liberato Cacace (Defender, Empoli).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Belgium]
+
+
+"Their opponents, 🇧🇪 Belgium, nicknamed 'Red Devils'.
+
+Ranked #6 in the FIFA rankings, they have 14 World Cup appearances, with a best finish of Third Place (2018).
+
+Under coach Domenico Tedesco, watch out for: Kevin De Bruyne (Midfielder, Manchester City), Romelu Lukaku (Forward, Napoli), Jérémy Doku (Winger, Manchester City).
+
+The Belgium fans are famous for Belgian fan culture is united despite the country's linguistic divisions (Flemish, French, German). Fans are friendly and heavily feature the national...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Seattle showdown promises to be a thrilling encounter.
+
+Lumen Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 63 - New Zealand versus Belgium, June 26, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Seattle, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 63 | New Zealand vs Belgium
+Seattle | June 26, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 64: Egypt vs Iran
+================================================================================
+
+📍 LOCATION: Vancouver | BC Place
+📅 DATE: June 26, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 64]
+
+"Welcome to Match 64 of the 2026 FIFA World Cup!
+
+We're here in Vancouver at BC Place, where 🇪🇬 Egypt takes on 🇮🇷 Iran.
+
+June 26, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Egypt]
+
+
+"First up, 🇪🇬 Egypt, known as 'The Pharaohs'.
+
+Currently ranked #35 in the world, they come into this tournament with 3 World Cup appearances, with their best finish being Group Stage (1934, 1990, 2018).
+
+Head Coach Hossam Hassan will be looking to their star players: Mohamed Salah (Winger/Captain, Liverpool), Mostafa Mohamed (Forward, FC Nantes), Trézéguet (Winger, Trabzonspor).
+
+Their passionate supporters are known for Egyptian fans, 'The Pharaohs', are extremely passionate and create a famously loud, high-octane atmosphere, especially in Cairo. Their support for Moh...
+"
+
+---
+
+[TEAM 2 SEGMENT - Iran]
+
+
+"Their opponents, 🇮🇷 Iran, nicknamed 'Iran'.
+
+Ranked #21 in the FIFA rankings, they have 6 World Cup appearances, with a best finish of Group Stage.
+
+Under coach Amir Ghalenoei, watch out for: Sardar Azmoun (Forward, AS Roma), Mehdi Taremi (Forward, FC Porto), Alireza Jahanbakhsh (Winger, Feyenoord).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Vancouver showdown promises to be a thrilling encounter.
+
+BC Place will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 64 - Egypt versus Iran, June 26, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Vancouver, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 64 | Egypt vs Iran
+Vancouver | June 26, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 65: Uruguay vs Spain
+================================================================================
+
+📍 LOCATION: Houston | NRG Stadium
+📅 DATE: June 26, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 65]
+
+"Welcome to Match 65 of the 2026 FIFA World Cup!
+
+We're here in Houston at NRG Stadium, where 🇺🇾 Uruguay takes on 🇪🇸 Spain.
+
+June 26, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Uruguay]
+
+
+"First up, 🇺🇾 Uruguay, known as 'La Celeste'.
+
+Currently ranked #11 in the world, they come into this tournament with 14 World Cup appearances, with their best finish being Champions (1930, 1950).
+
+Head Coach Marcelo Bielsa will be looking to their star players: Federico Valverde (Midfielder, Real Madrid), Ronald Araújo (Defender, FC Barcelona), Darwin Núñez (Forward, Liverpool).
+
+Their passionate supporters are known for Uruguayan fan culture, though smaller in number, is fierce and proud, reflecting the country's huge footballing legacy (the 'Garra Charrúa' or 'Charrú...
+"
+
+---
+
+[TEAM 2 SEGMENT - Spain]
+
+
+"Their opponents, 🇪🇸 Spain, nicknamed 'La Roja'.
+
+Ranked #3 in the FIFA rankings, they have 16 World Cup appearances, with a best finish of Champions (2010).
+
+Under coach Luis de la Fuente, watch out for: Rodri (Midfielder, Manchester City), Gavi (Midfielder, FC Barcelona), Lamine Yamal (Winger, FC Barcelona).
+
+The Spain fans are famous for Spanish fan culture is marked by regional diversity but unites under the banner of 'La Roja' (The Red One). The 'tiki-taka' playing style is a source ...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Houston showdown promises to be a thrilling encounter.
+
+NRG Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 65 - Uruguay versus Spain, June 26, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Houston, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 65 | Uruguay vs Spain
+Houston | June 26, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 66: Cape Verde vs Saudi Arabia
+================================================================================
+
+📍 LOCATION: Guadalajara | Estadio Akron
+📅 DATE: June 26, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 66]
+
+"Welcome to Match 66 of the 2026 FIFA World Cup!
+
+We're here in Guadalajara at Estadio Akron, where 🇨🇻 Cape Verde takes on 🇸🇦 Saudi Arabia.
+
+June 26, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Cape Verde]
+
+
+"First up, 🇨🇻 Cape Verde, known as 'Blue Sharks'.
+
+Currently ranked #70 in the world, they come into this tournament with 1 World Cup appearances, with their best finish being Group stage (Debut).
+
+Head Coach Bubista (Pedro Leitão Brito) will be looking to their star players: Ryan Mendes (Winger/Captain, Karagümrük), Logan Costa (Defender, Toulouse FC), Jamiro Monteiro (Midfielder, Gassman).
+
+Their passionate supporters are known for Reflecting its island and diaspora heritage, Cape Verdean support is highly festive and celebratory. Fans are known for using the Creole language and ...
+"
+
+---
+
+[TEAM 2 SEGMENT - Saudi Arabia]
+
+
+"Their opponents, 🇸🇦 Saudi Arabia, nicknamed 'Saudi Arabia'.
+
+Ranked #56 in the FIFA rankings, they have 7 World Cup appearances, with a best finish of Round of 16.
+
+Under coach Roberto Mancini, watch out for: Salem Al-Dawsari (Winger, Al-Hilal), Saleh Al-Shehri (Forward, Al-Hilal).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Guadalajara showdown promises to be a thrilling encounter.
+
+Estadio Akron will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 66 - Cape Verde versus Saudi Arabia, June 26, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Guadalajara, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 66 | Cape Verde vs Saudi Arabia
+Guadalajara | June 26, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 67: Panama vs England
+================================================================================
+
+📍 LOCATION: New York/New Jersey | MetLife Stadium
+📅 DATE: June 27, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 67]
+
+"Welcome to Match 67 of the 2026 FIFA World Cup!
+
+We're here in New York/New Jersey at MetLife Stadium, where 🇵🇦 Panama takes on 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England.
+
+June 27, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Panama]
+
+
+"First up, 🇵🇦 Panama, known as 'Los Canaleros'.
+
+Currently ranked #45 in the world, they come into this tournament with 2 World Cup appearances, with their best finish being Group Stage (2018).
+
+Head Coach Thomas Christiansen will be looking to their star players: Aníbal Godoy (Midfielder, Nashville SC), Michael Murillo (Defender, Olympique Marseille), Ismael Díaz (Forward, Feirense).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - England]
+
+
+"Their opponents, 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England, nicknamed 'The Three Lions'.
+
+Ranked #4 in the FIFA rankings, they have 16 World Cup appearances, with a best finish of Champions (1966).
+
+Under coach Thomas Tuchel, watch out for: Harry Kane (Forward, Bayern Munich), Jude Bellingham (Midfielder, Real Madrid), Phil Foden (Winger, Manchester City).
+
+The England fans are famous for English fan culture is deeply rooted in club loyalty but unites passionately for the national team. Traditions include singing the national anthem lou...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This New York/New Jersey showdown promises to be a thrilling encounter.
+
+MetLife Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 67 - Panama versus England, June 27, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for New York/New Jersey, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 67 | Panama vs England
+New York/New Jersey | June 27, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 68: Croatia vs Ghana
+================================================================================
+
+📍 LOCATION: Philadelphia | Lincoln Financial Field
+📅 DATE: June 27, 2026 | 3:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 68]
+
+"Welcome to Match 68 of the 2026 FIFA World Cup!
+
+We're here in Philadelphia at Lincoln Financial Field, where 🇭🇷 Croatia takes on 🇬🇭 Ghana.
+
+June 27, 2026, 3:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Croatia]
+
+
+"First up, 🇭🇷 Croatia, known as 'Vatreni'.
+
+Currently ranked #11 in the world, they come into this tournament with 6 World Cup appearances, with their best finish being Runners-up (2018).
+
+Head Coach Zlatko Dalić will be looking to their star players: Luka Modrić (Midfielder, Real Madrid), Joško Gvardiol (Defender, Manchester City), Mateo Kovačić (Midfielder, Manchester City).
+
+Their passionate supporters are known for Croatian fans, known as the 'Vatreni' (The Fiery Ones), are famous for their passionate, constant chanting and the iconic red and white checkerboard p...
+"
+
+---
+
+[TEAM 2 SEGMENT - Ghana]
+
+
+"Their opponents, 🇬🇭 Ghana, nicknamed 'Black Stars'.
+
+Ranked #61 in the FIFA rankings, they have 4 World Cup appearances, with a best finish of Quarter-finals (2010).
+
+Under coach Otto Addo, watch out for: Mohammed Kudus (Midfielder, West Ham United), Thomas Partey (Midfielder, Arsenal), Iñaki Williams (Forward, Athletic Bilbao).
+
+The Ghana fans are famous for Ghanaian fans are highly expressive, often incorporating traditional drumming, dancing, and the vibrant colours of the national flag (red, yellow, gre...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Philadelphia showdown promises to be a thrilling encounter.
+
+Lincoln Financial Field will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 68 - Croatia versus Ghana, June 27, 2026 at 3:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Philadelphia, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 68 | Croatia vs Ghana
+Philadelphia | June 27, 2026 | 3:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 69: Jordan vs Argentina
+================================================================================
+
+📍 LOCATION: Kansas City | Arrowhead Stadium
+📅 DATE: June 27, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 69]
+
+"Welcome to Match 69 of the 2026 FIFA World Cup!
+
+We're here in Kansas City at Arrowhead Stadium, where 🇯🇴 Jordan takes on 🇦🇷 Argentina.
+
+June 27, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Jordan]
+
+
+"First up, 🇯🇴 Jordan, known as 'Jordan'.
+
+Currently ranked #68 in the world, they come into this tournament with 1 World Cup appearances, with their best finish being TBD.
+
+Head Coach Jamal Sellami will be looking to their star players: Yazan Al-Naimat (Forward, Al-Hussein), Musa Al-Taamari (Winger, Montpellier).
+
+
+"
+
+---
+
+[TEAM 2 SEGMENT - Argentina]
+
+
+"Their opponents, 🇦🇷 Argentina, nicknamed 'La Albiceleste'.
+
+Ranked #1 in the FIFA rankings, they have 18 World Cup appearances, with a best finish of Champions (1978, 1986, 2022).
+
+Under coach Lionel Scaloni, watch out for: Lionel Messi (Forward, Inter Miami CF), Emiliano Martínez (Goalkeeper, Aston Villa), Enzo Fernández (Midfielder, Chelsea).
+
+The Argentina fans are famous for Argentine fan culture is highly intense, passionate, and often political. Supporters often hold massive, coordinated Tifos and have a massive repertoi...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Kansas City showdown promises to be a thrilling encounter.
+
+Arrowhead Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 69 - Jordan versus Argentina, June 27, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Kansas City, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 69 | Jordan vs Argentina
+Kansas City | June 27, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 70: Algeria vs Austria
+================================================================================
+
+📍 LOCATION: Dallas | AT&T Stadium
+📅 DATE: June 27, 2026 | 6:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 70]
+
+"Welcome to Match 70 of the 2026 FIFA World Cup!
+
+We're here in Dallas at AT&T Stadium, where 🇩🇿 Algeria takes on 🇦🇹 Austria.
+
+June 27, 2026, 6:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Algeria]
+
+
+"First up, 🇩🇿 Algeria, known as 'The Fennecs'.
+
+Currently ranked #37 in the world, they come into this tournament with 5 World Cup appearances, with their best finish being Round of 16 (2014).
+
+Head Coach Vladimir Petković will be looking to their star players: Riyad Mahrez (Winger, Al-Ahli SFC), Ismaël Bennacer (Midfielder, AC Milan), Mohamed Amoura (Forward, Union SG).
+
+Their passionate supporters are known for Algerian fans ('El Khadra' or 'The Greens') are known for their intense passion, creating a fiery atmosphere with constant drumming, chanting, and hea...
+"
+
+---
+
+[TEAM 2 SEGMENT - Austria]
+
+
+"Their opponents, 🇦🇹 Austria, nicknamed 'Das Team'.
+
+Ranked #24 in the FIFA rankings, they have 7 World Cup appearances, with a best finish of Third Place (1954).
+
+Under coach Ralf Rangnick, watch out for: David Alaba (Defender, Real Madrid), Marcel Sabitzer (Midfielder, Borussia Dortmund), Christoph Baumgartner (Midfielder, RB Leipzig).
+
+The Austria fans are famous for Austrian fans are known for their strong national pride, often uniting under the banner of 'Das Team'. They create an enthusiastic, friendly atmospher...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Dallas showdown promises to be a thrilling encounter.
+
+AT&T Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 70 - Algeria versus Austria, June 27, 2026 at 6:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Dallas, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 70 | Algeria vs Austria
+Dallas | June 27, 2026 | 6:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 71: Colombia vs Portugal
+================================================================================
+
+📍 LOCATION: Miami | Hard Rock Stadium
+📅 DATE: June 27, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 71]
+
+"Welcome to Match 71 of the 2026 FIFA World Cup!
+
+We're here in Miami at Hard Rock Stadium, where 🇨🇴 Colombia takes on 🇵🇹 Portugal.
+
+June 27, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - Colombia]
+
+
+"First up, 🇨🇴 Colombia, known as 'Los Cafeteros'.
+
+Currently ranked #12 in the world, they come into this tournament with 6 World Cup appearances, with their best finish being Quarter-finals (2014).
+
+Head Coach Néstor Lorenzo will be looking to their star players: Luis Díaz (Winger, Liverpool), James Rodríguez (Midfielder, Rayo Vallecano), Jhon Durán (Forward, Aston Villa).
+
+Their passionate supporters are known for Colombian fans, 'Los Cafeteros,' are known for their vibrant yellow jerseys and loud, synchronized chanting, especially the famous 'Si, se puede' (Yes...
+"
+
+---
+
+[TEAM 2 SEGMENT - Portugal]
+
+
+"Their opponents, 🇵🇹 Portugal, nicknamed 'A Seleção'.
+
+Ranked #7 in the FIFA rankings, they have 8 World Cup appearances, with a best finish of Third Place (1966).
+
+Under coach Roberto Martínez, watch out for: Cristiano Ronaldo (Forward, Al-Nassr FC), Bruno Fernandes (Midfielder, Manchester United), Bernardo Silva (Midfielder, Manchester City).
+
+The Portugal fans are famous for Portuguese fan culture is patriotic and vocal, with fans known for waving large national flags and adopting the unofficial team motto, 'Força Portugal...
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Miami showdown promises to be a thrilling encounter.
+
+Hard Rock Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 71 - Colombia versus Portugal, June 27, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Miami, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 71 | Colombia vs Portugal
+Miami | June 27, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+
+
+================================================================================
+MATCH 72: FIFA Playoff Winner 1 vs Uzbekistan
+================================================================================
+
+📍 LOCATION: Atlanta | Mercedes-Benz Stadium
+📅 DATE: June 27, 2026 | 9:00 PM ET
+
+--------------------------------------------------------------------------------
+🎬 VIDEO SCRIPT
+--------------------------------------------------------------------------------
+
+[INTRO - On Screen: Match 72]
+
+"Welcome to Match 72 of the 2026 FIFA World Cup!
+
+We're here in Atlanta at Mercedes-Benz Stadium, where 🏳️ FIFA Playoff Winner 1 takes on 🇺🇿 Uzbekistan.
+
+June 27, 2026, 9:00 PM Eastern Time."
+
+---
+
+[TEAM 1 SEGMENT - FIFA Playoff Winner 1]
+
+"FIFA Playoff Winner 1 - this spot will be determined by upcoming playoffs. We'll update this video once the team is confirmed."
+
+---
+
+[TEAM 2 SEGMENT - Uzbekistan]
+
+
+"Their opponents, 🇺🇿 Uzbekistan, nicknamed 'Uzbekistan'.
+
+Ranked #68 in the FIFA rankings, they have 1 World Cup appearances, with a best finish of TBD.
+
+Under coach Srecko Katanec, watch out for: Eldor Shomurodov (Forward, Roma), Odil Ahmedov (Midfielder, Al-Wehda).
+
+
+"
+
+---
+
+[MATCH PREVIEW / CLOSING]
+
+"This Atlanta showdown promises to be a thrilling encounter.
+
+Mercedes-Benz Stadium will be packed with fans from both nations, creating an electric atmosphere.
+
+Don't miss Match 72 - FIFA Playoff Winner 1 versus Uzbekistan, June 27, 2026 at 9:00 PM Eastern.
+
+For complete travel guides, lodging tips, and fan fest information for Atlanta, check out worldcup26.guide."
+
+---
+
+[END CARD]
+Match 72 | FIFA Playoff Winner 1 vs Uzbekistan
+Atlanta | June 27, 2026 | 9:00 PM ET
+worldcup26.guide
+
+================================================================================
+

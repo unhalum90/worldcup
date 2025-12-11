@@ -1,4 +1,3 @@
-'use client';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -7,6 +6,8 @@ import matchDates from '@/data/match_dates.json';
 import { getCityMapPath } from '@/lib/cityMaps';
 import LocationMap from '@/app/guides/components/LocationMap';
 import SubscribeButton from '@/components/SubscribeButton';
+
+const SITE_ORIGIN = 'https://worldcup26.app';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -34,11 +35,12 @@ export default async function CityGuidePage({ params }: Props) {
   const mapImage = getCityMapPath(city.name);
   // Prefer a specific variant link to avoid any store-level defaulting
   const preferredVariantId = city.purchase?.variants?.en || city.purchase?.variants?.es;
+  const redirectPath = `/guides/${slug}`;
   const buyUrl = city.purchase?.provider === 'lemonsqueezy' && (
     city.purchase?.buyLink
-      ? `${city.purchase.buyLink}${city.purchase.buyLink.includes('?') ? '&' : '?'}redirect_url=${window.location.origin}/waiting?redirect=${window.location.pathname}`
-      : (preferredVariantId && `https://fanzonenetwork.lemonsqueezy.com/checkout?variant=${preferredVariantId}&redirect_url=${window.location.origin}/waiting?redirect=${window.location.pathname}`)
-      || (city.purchase?.productId && `https://fanzonenetwork.lemonsqueezy.com/checkout?product=${city.purchase.productId}&redirect_url=${window.location.origin}/waiting?redirect=${window.location.pathname}`)
+      ? `${city.purchase.buyLink}${city.purchase.buyLink.includes('?') ? '&' : '?'}redirect_url=${SITE_ORIGIN}/waiting?redirect=${redirectPath}`
+      : (preferredVariantId && `https://fanzonenetwork.lemonsqueezy.com/checkout?variant=${preferredVariantId}&redirect_url=${SITE_ORIGIN}/waiting?redirect=${redirectPath}`)
+      || (city.purchase?.productId && `https://fanzonenetwork.lemonsqueezy.com/checkout?product=${city.purchase.productId}&redirect_url=${SITE_ORIGIN}/waiting?redirect=${redirectPath}`)
   ) || undefined;
 
   return (

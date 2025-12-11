@@ -16,6 +16,13 @@ function normalizeToHttps(u: string): string {
 
 // Middleware to handle locale from cookies
 export async function middleware(req: NextRequest) {
+  // 301 Redirect: /cities/* → /guides/* (preserve SEO from old URLs)
+  if (req.nextUrl.pathname.startsWith('/cities/')) {
+    const citySlug = req.nextUrl.pathname.replace('/cities/', '');
+    const newUrl = new URL(`/guides/${citySlug}`, req.url);
+    return NextResponse.redirect(newUrl, 301);
+  }
+
   // Get locale from cookie
   const locale = req.cookies.get('NEXT_LOCALE')?.value || defaultLocale;
   

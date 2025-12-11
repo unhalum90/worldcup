@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getTeamBySlug, teams, Team } from '@/lib/teamsData';
 import { getTeamToGroupMap } from '@/lib/drawLookup';
 import { groupStageMatches, type Match } from '@/lib/matchesData';
+import { cities } from '@/src/data/city-guides';
 import MiniCountdown from '@/components/MiniCountdown';
 import SubscribeButton from '@/components/SubscribeButton';
 
@@ -269,6 +270,7 @@ export default async function TeamPage({ params }: Props) {
                 <table className="min-w-full">
                   <thead>
                     <tr className="border-b-2 border-gray-200">
+                      <th className="text-left py-3 px-4 text-gray-700 font-semibold">Guide</th>
                       <th className="text-left py-3 px-4 text-gray-700 font-semibold">Date</th>
                       <th className="text-left py-3 px-4 text-gray-700 font-semibold">Kickoff (ET)</th>
                       <th className="text-left py-3 px-4 text-gray-700 font-semibold">Opponent</th>
@@ -287,8 +289,27 @@ export default async function TeamPage({ params }: Props) {
                         .replace(/[^a-z0-9-]/g, '')
                         .replace('new-yorknew-jersey', 'new-york')
                         .replace('san-francisco-bay-area', 'san-francisco');
+                      const cityData = cities.find(c => c.id === citySlug);
+                      const guideUrl = cityData?.products?.en;
                       return (
                         <tr key={match.matchNumber} className={idx < teamMatches.length - 1 ? "border-b border-gray-100" : ""}>
+                          <td className="py-4 px-4">
+                            {guideUrl ? (
+                              <a
+                                href={guideUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors shadow-sm"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                City Guide
+                              </a>
+                            ) : (
+                              <span className="text-gray-400 text-sm">Coming Soon</span>
+                            )}
+                          </td>
                           <td className="py-4 px-4 font-semibold">{match.date}</td>
                           <td className="py-4 px-4 text-blue-600 font-medium">{match.time}</td>
                           <td className="py-4 px-4 font-medium">{opponent}</td>
@@ -417,7 +438,7 @@ export default async function TeamPage({ params }: Props) {
                     {index + 1}. {moment.title}
                   </h3>
                   <p className="text-gray-700 mb-3">{moment.description}</p>
-                  <div className="flex items-center gap-4 text-sm mb-4">
+                  <div className="flex items-center gap-4 text-sm">
                     {moment.year && (
                       <span className="text-gray-500 font-semibold">
                         {moment.year}
@@ -429,34 +450,6 @@ export default async function TeamPage({ params }: Props) {
                       </span>
                     )}
                   </div>
-                  
-                  {/* Video Embed Placeholder */}
-                  {moment.video_search_query && (
-                    <div className="mt-4 bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
-                      <div className="flex items-center justify-center gap-3 mb-3">
-                        <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z"/>
-                        </svg>
-                        <span className="text-gray-600 font-semibold">Video Highlight</span>
-                      </div>
-                      <p className="text-sm text-gray-500 text-center mb-2">
-                        Search YouTube: <span className="font-mono italic">"{moment.video_search_query}"</span>
-                      </p>
-                      <a
-                        href={`https://www.youtube.com/results?search_query=${encodeURIComponent(moment.video_search_query)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block text-center mt-3"
-                      >
-                        <span className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm font-semibold">
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                          </svg>
-                          Watch on YouTube
-                        </span>
-                      </a>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -606,43 +599,113 @@ export default async function TeamPage({ params }: Props) {
           </div>
         )}
 
-        {/* Host Cities Announcement (Placeholder) */}
-        <div className="bg-gradient-to-r from-blue-900 to-blue-800 text-white rounded-xl shadow-xl p-8 mb-12">
-          <h2 className="text-3xl font-bold mb-4 flex items-center">
-            <span className="text-4xl mr-3">🗺️</span>
-            Host Cities
-          </h2>
-          <p className="text-blue-100 mb-6">
-            Once the group draw is announced on December 5, 2025, this section will show you exactly which cities 
-            {team.name} will play in, along with stadium information and travel guides.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <Link 
-              href="/planner"
-              className="bg-white text-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
-            >
-              Plan Your Trip →
-            </Link>
-            <button className="bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
-              Download Fan Pack (Coming Soon)
-            </button>
-          </div>
-        </div>
+        {/* Host Cities Section */}
+        {(() => {
+          // Get unique cities from team's matches for guide buttons
+          const teamMatches = groupStageMatches.filter(m => {
+            const t1 = m.team1.toLowerCase();
+            const t2 = m.team2.toLowerCase();
+            const teamNameLower = team.name.toLowerCase();
+            return t1.includes(teamNameLower) || teamNameLower.includes(t1) ||
+                   t2.includes(teamNameLower) || teamNameLower.includes(t2);
+          });
+          
+          const uniqueCities = [...new Set(teamMatches.map(m => {
+            const citySlug = m.city.toLowerCase()
+              .replace(/\s+/g, '-')
+              .replace(/[^a-z0-9-]/g, '')
+              .replace('new-yorknew-jersey', 'new-york')
+              .replace('san-francisco-bay-area', 'san-francisco');
+            return { name: m.city, slug: citySlug };
+          }))].filter((city, index, self) => 
+            index === self.findIndex(c => c.slug === city.slug)
+          );
+
+          if (uniqueCities.length === 0) {
+            return (
+              <div className="bg-gradient-to-r from-blue-900 to-blue-800 text-white rounded-xl shadow-xl p-8 mb-12">
+                <h2 className="text-3xl font-bold mb-4 flex items-center">
+                  <span className="text-4xl mr-3">🗺️</span>
+                  Host Cities
+                </h2>
+                <p className="text-blue-100 mb-6">
+                  {team.name}&apos;s host cities will be shown here once their fixtures are confirmed.
+                </p>
+                <Link 
+                  href="/planner"
+                  className="bg-white text-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block"
+                >
+                  Plan Your Trip →
+                </Link>
+              </div>
+            );
+          }
+
+          return (
+            <div className="bg-gradient-to-r from-blue-900 to-blue-800 text-white rounded-xl shadow-xl p-8 mb-12">
+              <h2 className="text-3xl font-bold mb-4 flex items-center">
+                <span className="text-4xl mr-3">🗺️</span>
+                {team.name}&apos;s Host Cities
+              </h2>
+              <p className="text-blue-100 mb-6">
+                Get the complete city guides for {team.name}&apos;s World Cup destinations — lodging, transit, food, and everything you need to know.
+              </p>
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                {uniqueCities.map((city) => {
+                  const cityData = cities.find(c => c.id === city.slug);
+                  const guideUrl = cityData?.products?.en;
+                  return (
+                    <div key={city.slug} className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                      <h3 className="font-bold text-lg mb-3">{city.name}</h3>
+                      <div className="flex flex-col gap-2">
+                        <Link 
+                          href={`/guides/${city.slug}`}
+                          className="text-blue-200 hover:text-white text-sm underline"
+                        >
+                          View Free Preview →
+                        </Link>
+                        {guideUrl && (
+                          <a
+                            href={guideUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                            Get City Guide
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <Link 
+                href="/planner"
+                className="bg-white text-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block"
+              >
+                Plan Your Full Trip →
+              </Link>
+            </div>
+          );
+        })()}
 
         {/* Community Section removed per request */}
 
-        {/* Newsletter CTA Footer */}
+        {/* Subscribe for Updates Footer */}
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-xl shadow-xl p-12 text-center">
           <h2 className="text-3xl font-bold mb-4">
-            Join Fan Zone Insider
+            📅 Stay Updated
           </h2>
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Our free weekly newsletter for World Cup 2026 fans. Get city updates, travel tips, and early access to new guides as they launch.
+            Subscribe to get notified when updated guides and new information are published in <strong>March</strong> and <strong>May 2026</strong>. Be the first to know about travel tips, venue updates, and insider info.
           </p>
           <SubscribeButton className="inline-flex items-center gap-2 bg-[color:var(--color-accent-red)] text-white px-8 py-4 rounded-lg font-bold text-lg hover:brightness-110 transition-colors shadow-lg">
-            Subscribe Free
+            Subscribe for Updates
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
           </SubscribeButton>
         </div>
