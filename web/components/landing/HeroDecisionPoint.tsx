@@ -113,7 +113,11 @@ export default function HeroDecisionPoint() {
               </h2>
             </div>
             
-            <p className="text-gray-600 mb-6" dangerouslySetInnerHTML={{ __html: t('tripBuilder.description') }} />
+            <p className="text-gray-600 mb-6">
+              {t.rich('tripBuilder.description', {
+                strong: (chunks) => <strong className="font-semibold">{chunks}</strong>
+              })}
+            </p>
 
             <ul className="space-y-3 mb-8">
               {tripBuilderFeatures.map((item, i) => (

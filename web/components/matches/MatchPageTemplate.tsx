@@ -498,6 +498,44 @@ export default function MatchPageTemplate({ match }: MatchPageTemplateProps) {
               ))}
             </div>
           </div>
+
+          {/* Stay22 Lodging Widget */}
+          {(() => {
+            const stay22Embeds: Record<string, string> = {
+              'Houston': '69387c5667173ecf386132b2',
+              'Toronto': '69388209f30a4998429650ce',
+              'Boston': '693a6a59f30a499842993d3f',
+              'New York / New Jersey': '693a6b33f30a499842993e6e',
+              'Philadelphia': '693a6b5bf30a499842993eab',
+              'Atlanta': '693a6c06f30a499842993fbc',
+              'Miami': '693a6c3cf30a49984299404b',
+              'Dallas': '693a6c6e67173ecf3864331e',
+              'Kansas City': '693a6ca067173ecf3864338f',
+              'Mexico City': '693a6ce4f30a49984299419d',
+              'Guadalajara': '693a6d7067173ecf386434f6',
+              'Monterrey': '693a6dc467173ecf3864363b',
+              'Los Angeles': '693a6dec67173ecf386436b8',
+              'San Francisco Bay Area': '693a6e1167173ecf3864372c',
+              'Seattle': '693a6e36f30a499842994543',
+              'Vancouver': '693a6e7b67173ecf386437de',
+            };
+            const embedId = stay22Embeds[city.city];
+            if (!embedId) return null;
+            return (
+              <div className="mt-4 bg-white/70 border-[3px] border-black/30 rounded-xl p-4">
+                <h3 className="font-semibold mb-3">🔍 Search Available Lodging in {city.city}</h3>
+                <iframe 
+                  id="stay22-widget" 
+                  width="100%" 
+                  height="428" 
+                  src={`https://www.stay22.com/embed/${embedId}`}
+                  frameBorder="0"
+                  title={`${city.city} Lodging Search`}
+                  className="rounded-lg"
+                />
+              </div>
+            );
+          })()}
         </section>
 
         {/* WEATHER & SAFETY - Indigo */}

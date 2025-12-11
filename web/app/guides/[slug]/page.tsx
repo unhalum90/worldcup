@@ -254,6 +254,44 @@ export default async function CityGuidePage({ params }: Props) {
               );
             })()}
           </div>
+
+          {/* Stay22 Lodging Widget */}
+          {(() => {
+            const stay22Embeds: Record<string, string> = {
+              'houston': '69387c5667173ecf386132b2',
+              'toronto': '69388209f30a4998429650ce',
+              'boston': '693a6a59f30a499842993d3f',
+              'new-york-new-jersey': '693a6b33f30a499842993e6e',
+              'philadelphia': '693a6b5bf30a499842993eab',
+              'atlanta': '693a6c06f30a499842993fbc',
+              'miami': '693a6c3cf30a49984299404b',
+              'dallas': '693a6c6e67173ecf3864331e',
+              'kansas-city': '693a6ca067173ecf3864338f',
+              'mexico-city': '693a6ce4f30a49984299419d',
+              'guadalajara': '693a6d7067173ecf386434f6',
+              'monterrey': '693a6dc467173ecf3864363b',
+              'los-angeles': '693a6dec67173ecf386436b8',
+              'san-francisco': '693a6e1167173ecf3864372c',
+              'seattle': '693a6e36f30a499842994543',
+              'vancouver': '693a6e7b67173ecf386437de',
+            };
+            const embedId = stay22Embeds[slug];
+            if (!embedId) return null;
+            return (
+              <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-4">
+                <h3 className="font-bold text-gray-900 mb-3">🔍 Search Available Lodging</h3>
+                <iframe 
+                  id="stay22-widget" 
+                  width="100%" 
+                  height="428" 
+                  src={`https://www.stay22.com/embed/${embedId}`}
+                  frameBorder="0"
+                  title={`${city.name} Lodging Search`}
+                  className="rounded-lg"
+                />
+              </div>
+            );
+          })()}
         </div>
 
         {/* Location Map */}
