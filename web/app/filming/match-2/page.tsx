@@ -310,7 +310,21 @@ function VenueSection({ match }: { match: typeof matchData }) {
   );
 }
 
-function TeamProfileSection({ team, isProvisional = false }: { team: typeof matchData.team1; isProvisional?: boolean }) {
+function TeamProfileSection({ team, isProvisional = false }: { 
+  team: {
+    name: string;
+    slug: string;
+    flagEmoji: string;
+    nickname: string;
+    fifaRanking: number | null;
+    appearances: number | null;
+    bestFinish: string;
+    coach: string;
+    primaryColor: string;
+    starPlayers: { name: string; position: string; club: string; }[];
+  }; 
+  isProvisional?: boolean 
+}) {
   if (isProvisional) {
     return (
       <div className="text-center px-8 animate-fadeIn max-w-4xl mx-auto">
